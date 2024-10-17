@@ -14,8 +14,14 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         textTheme: const TextTheme(
+          // onboarding title
           titleLarge: TextStyle(fontFamily: "Poppins", fontSize: 40, fontWeight: FontWeight.w800, color: Constants.mainOrange),
-          titleSmall: TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange)
+          // onboarding text
+          titleSmall: TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange),
+          // body & btn text
+          bodyMedium: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
+          // role card text
+          bodySmall: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600)
         )
       ),
       debugShowCheckedModeBanner: false,

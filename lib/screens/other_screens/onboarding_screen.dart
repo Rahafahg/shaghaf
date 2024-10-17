@@ -1,8 +1,9 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 
 class FirstScreen extends StatelessWidget {
@@ -47,7 +48,7 @@ class FirstScreen extends StatelessWidget {
                       Text(phrases[index][1],style: Theme.of(context).textTheme.titleSmall,),
                       const SizedBox(height: 50),
                       MainButton(
-                        onPressed: () => index!=2 ? key.currentState?.next() : log("I'm Done !!"),
+                        onPressed: () => index!=2 ? key.currentState?.next() : context.push(screen: const SelectRoleScreen()),
                         text: index!=2 ? "Next" : "Continue",
                         width: 290,
                         height: 45,

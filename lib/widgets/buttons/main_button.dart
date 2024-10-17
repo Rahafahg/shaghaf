@@ -16,7 +16,7 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Constants.mainOrange)),
-        child: Text(text, style: const TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600))
+        child: Text(text, style: Theme.of(context).textTheme.bodyMedium)
       ),
     );
   }
