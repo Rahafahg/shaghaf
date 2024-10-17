@@ -6,8 +6,8 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 
-class FirstScreen extends StatelessWidget {
-  const FirstScreen({super.key});
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

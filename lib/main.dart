@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
+import 'package:shaghaf/services/setup.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setup();
   runApp(const MainApp());
 }
 
@@ -25,7 +28,7 @@ class MainApp extends StatelessWidget {
         )
       ),
       debugShowCheckedModeBanner: false,
-      home: const FirstScreen()
+      home: const OnboardingScreen()
     );
   }
 }
