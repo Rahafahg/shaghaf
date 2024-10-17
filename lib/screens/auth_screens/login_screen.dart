@@ -5,6 +5,36 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final formKey = GlobalKey<FormState>();
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Login"),
+            Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: email,
+                      decoration: const InputDecoration(hintText: 'email'),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextFormField(
+                      controller: password,
+                      decoration: const InputDecoration(hintText: 'password'),
+                    ),
+                    ElevatedButton(onPressed: () {}, child: Text("Login"))
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
   }
 }
