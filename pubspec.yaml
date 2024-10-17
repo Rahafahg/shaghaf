@@ -17,3 +17,18 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+  - 'assets/'
+  - 'assets/images/'
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+  
+    - family: Mirza
+      fonts:
+        - asset: assets/fonts/Mirza-Bold.ttf
+        - asset: assets/fonts/Mirza-SemiBold.ttf
+        - asset: assets/fonts/Mirza-Medium.ttf
+        - asset: assets/fonts/Mirza-Regular.ttf
