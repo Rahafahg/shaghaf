@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/widgets/text_fields/auth_field.dart';
 
 class CreateUserAccountScreen extends StatelessWidget {
@@ -101,7 +103,9 @@ class CreateUserAccountScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                context.pushReplacement(screen: const LoginScreen());
+                              },
                               child: Container(
                                 decoration: const BoxDecoration(
                                     border: Border(
