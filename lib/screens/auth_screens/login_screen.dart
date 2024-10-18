@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/screens/auth_screens/create_account_screen.dart';
+import 'package:shaghaf/screens/auth_screens/create_user_account_screen.dart';
 import 'package:shaghaf/widgets/text_fields/auth_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -46,14 +46,14 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       AuthField(
-                        hint: 'Email',
+                        type: 'Email',
                         controller: emailController,
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       AuthField(
-                        hint: 'Password',
+                        type: 'Password',
                         controller: passwordController,
                       ),
                       const SizedBox(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/screens/auth_screens/create_account_screen.dart';
+import 'package:shaghaf/screens/auth_screens/create_organizer_account_screen.dart';
+import 'package:shaghaf/screens/auth_screens/create_user_account_screen.dart';
 
 class RoleCard extends StatelessWidget {
   final bool? isOrganizer;
@@ -21,7 +22,7 @@ class RoleCard extends StatelessWidget {
           width: context.getWidth(),
           height: 30,
           decoration: const BoxDecoration(color: Colors.black54,borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
-          child: Text(isOrganizer!=null ? "Organizer" : "Participant", style:Theme.of(context).textTheme.bodySmall),
+          child: Text(isOrganizer!=null ? "Organizer" : "Participant", style:Theme.of(context).textTheme.bodyMedium),
         ),
       ),
     );

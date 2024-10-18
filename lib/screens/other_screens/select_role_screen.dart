@@ -15,7 +15,7 @@ class SelectRoleScreen extends StatelessWidget {
           children: [
             Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
             const SizedBox(height: 55,),
-            Row(mainAxisAlignment: MainAxisAlignment.start,children: [const SizedBox(width: 47,),Text("What are you ?", style: Theme.of(context).textTheme.bodyMedium,)]),
+            Row(mainAxisAlignment: MainAxisAlignment.start,children: [const SizedBox(width: 47,),Text("What are you ?", style: Theme.of(context).textTheme.bodyLarge,)]),
             const SizedBox(height: 40),
             const RoleCard(),
             const SizedBox(height: 40),

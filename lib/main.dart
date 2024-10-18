@@ -22,9 +22,11 @@ class MainApp extends StatelessWidget {
           // onboarding text
           titleSmall: TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange),
           // body & btn text
-          bodyMedium: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
+          bodyLarge: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
           // role card text
-          bodySmall: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600)
+          bodyMedium: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
+          // error msg in login
+          bodySmall: TextStyle(fontSize: 14, fontFamily: "Poppins"),
         )
       ),
       debugShowCheckedModeBanner: false,
