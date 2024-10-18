@@ -6,7 +6,8 @@ class MainButton extends StatelessWidget {
   final String text;
   final double? width;
   final double? height;
-  const MainButton({super.key, this.onPressed, required this.text, this.width, this.height});
+  final double? fontSize;
+  const MainButton({super.key, this.onPressed, required this.text, this.width, this.height, this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Constants.mainOrange)),
-        child: Text(text, style: Theme.of(context).textTheme.bodyLarge)
+        child: Text(text, style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: fontSize))
       ),
     );
   }
