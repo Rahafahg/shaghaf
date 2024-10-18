@@ -52,6 +52,7 @@ class AuthField extends StatelessWidget {
           ),
         )
         : TextFormField(
+          controller: controller,
           obscureText: type=='Password',
           style: Theme.of(context).textTheme.bodySmall,
           decoration: InputDecoration(
@@ -76,7 +77,7 @@ class AuthField extends StatelessWidget {
             if(type.toLowerCase()=='phone number' && (text.substring(0,2)!="05" || text.length!=10)) {
               return "Enter a valid phone number";
             }
-            if(type.toLowerCase()=='password' && (text.length < 5)) {
+            if(type.toLowerCase()=='password' && (text.length < 6)) {
               return "Password is too short";
             }
             return null;
