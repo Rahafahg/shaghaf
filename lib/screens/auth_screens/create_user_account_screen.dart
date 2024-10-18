@@ -30,6 +30,7 @@ class CreateUserAccountScreen extends StatelessWidget {
             children: [
               // logo
               Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
+              // form
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 44),
                 child: Container(
