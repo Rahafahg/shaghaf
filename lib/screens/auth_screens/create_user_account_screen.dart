@@ -27,93 +27,125 @@ class CreateUserAccountScreen extends StatelessWidget {
         final bloc = context.read<AuthBloc>();
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
-            if(state is ErrorState) {
+            if (state is ErrorState) {
               context.pop();
-              showDialog(context: context, builder: (context)=>ErrorDialog(msg: state.msg));
-            }
-            if(state is LoadingState) {
               showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) => const Center(child: CircularProgressIndicator(color: Constants.mainOrange))
-              );
+                  context: context,
+                  builder: (context) => ErrorDialog(msg: state.msg));
             }
-            if(state is SuccessState) {
+            if (state is LoadingState) {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => const Center(
+                      child: CircularProgressIndicator(
+                          color: Constants.mainOrange)));
+            }
+            if (state is SuccessState) {
               context.pop();
-              context.pushReplacement(screen: OtpScreen(email: emailController.text, firstName: fNameController.text,lastName: lNameController.text,phoneNumber: phoneNumberController.text));
+              context.pushReplacement(
+                  screen: OtpScreen(
+                      email: emailController.text,
+                      role: 'user',
+                      firstName: fNameController.text,
+                      lastName: lNameController.text,
+                      phoneNumber: phoneNumberController.text));
             }
           },
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  width: context.getWidth(),
-                  height: context.getHeight(),
-                  decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_bg.png'),fit: BoxFit.cover)),
+                body: SingleChildScrollView(
+              child: Container(
+                width: context.getWidth(),
+                height: context.getHeight(),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/auth_bg.png'),
+                        fit: BoxFit.cover)),
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       // logo
-                      Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
+                      Container(
+                          padding: const EdgeInsets.only(top: 61, left: 92),
+                          child: Image.asset('assets/images/logo.png')),
                       // form
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 44),
                         child: Container(
                           width: context.getWidth(),
-                          decoration: BoxDecoration(color: const Color(0xC9D9D9D9),borderRadius: BorderRadius.circular(20)),
+                          decoration: BoxDecoration(
+                              color: const Color(0xC9D9D9D9),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Form(
                             key: formKey,
                             child: Padding(
                               padding: const EdgeInsets.all(16),
                               child: Column(
                                 children: [
-                                  AuthField(type: 'First Name',controller: fNameController),
+                                  AuthField(
+                                      type: 'First Name',
+                                      controller: fNameController),
                                   const SizedBox(height: 10),
-                                  AuthField(type: 'Last Name',controller: lNameController),
+                                  AuthField(
+                                      type: 'Last Name',
+                                      controller: lNameController),
                                   const SizedBox(height: 10),
-                                  AuthField(type: 'Email', controller: emailController),
+                                  AuthField(
+                                      type: 'Email', controller: emailController),
                                   const SizedBox(height: 10),
-                                  AuthField(type: 'Password',controller: passwordController),
+                                  AuthField(
+                                      type: 'Password',
+                                      controller: passwordController),
                                   const SizedBox(height: 10),
-                                  AuthField(type: 'Phone Number',controller: phoneNumberController),
+                                  AuthField(
+                                      type: 'Phone Number',
+                                      controller: phoneNumberController),
                                   const SizedBox(height: 20),
                                   MainButton(
                                     text: "Sign Up",
                                     width: context.getWidth(),
                                     onPressed: () {
                                       if (formKey.currentState!.validate()) {
-                                        bloc.add(CreateAccountEvent(email: emailController.text,password: passwordController.text));
+                                        bloc.add(CreateAccountEvent(
+                                            email: emailController.text,
+                                            password: passwordController.text));
                                       }
                                     },
                                   ),
                                   const SizedBox(height: 4),
                                   InkWell(
-                                    onTap: () => context.pushReplacement(screen: const LoginScreen()),
-                                    child: SizedBox(
-                                      width: context.getWidth(),
-                                      child: Text(
-                                        "I Already have an account",
-                                        textAlign: TextAlign.end,
-                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                          color: Constants.mainOrange,
-                                          decoration: TextDecoration.underline,
-                                          decorationColor:Constants.mainOrange,
-                                          fontSize: 11
-                                        )
-                                      )
-                                    )
-                                  )
+                                      onTap: () => context.pushReplacement(
+                                          screen: const LoginScreen()),
+                                      child: SizedBox(
+                                          width: context.getWidth(),
+                                          child: Text("I Already have an account",
+                                              textAlign: TextAlign.end,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                      color: Constants.mainOrange,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      decorationColor:
+                                                          Constants.mainOrange,
+                                                      fontSize: 11))))
                                 ],
                               ),
                             ),
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 40,
+                      ),
                     ],
                   ),
                 ),
-              )
-            ),
+              ),
+            )),
           ),
         );
       }),
