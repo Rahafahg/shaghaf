@@ -35,7 +35,7 @@ class OtpScreen extends StatelessWidget {
               );
             }
             if(state is SuccessState) {
-              context.pushRemove(screen: const SelectCategories());
+              context.pushRemove(screen: const SelectCategoriesScreen());
             }
           },
           child: GestureDetector(
