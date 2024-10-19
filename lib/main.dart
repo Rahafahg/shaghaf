@@ -34,7 +34,10 @@ class MainApp extends StatelessWidget {
         )
       ),
       debugShowCheckedModeBanner: false,
-      home: GetIt.I.get<AuthLayer>().user != null ? const SelectCategoriesScreen() : const OnboardingScreen()
+      home: GetIt.I.get<AuthLayer>().user != null ?
+        GetIt.I.get<AuthLayer>().didChooseFav ? const UserHomeScreen()
+        : const SelectCategoriesScreen()
+      : const OnboardingScreen()
     );
   }
 }
