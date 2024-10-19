@@ -20,4 +20,8 @@ final class CreateAccountEvent extends AuthEvent {
 
 // final class CreateOrganizerAccountEvent extends AuthEvent {}
 
-// final class LoginEvent extends AuthEvent {}
+final class LoginEvent extends AuthEvent {
+  final String email;
+  final String password;
+  LoginEvent({required this.email, required this.password});
+}

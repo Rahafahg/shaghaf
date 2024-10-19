@@ -35,29 +35,16 @@ class SupabaseLayer {
     }
   }
 
-  // Future login(
-  //     {required String email,
-  //     required String password,
-  //     required String externalId}) async {
-  //   try {
-  //     final AuthResponse response = await supabase.auth
-  //         .signInWithPassword(email: email, password: password);
-
-  //     await supabase.from('customer').update(
-  //         {'notification_id': externalId}).eq('customer_id', response.user!.id);
-
-  //     final temp = await supabase
-  //         .from('customer')
-  //         .select()
-  //         .eq('customer_id', response.user!.id);
-  //     GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-  //     GetIt.I
-  //         .get<AuthLayer>()
-  //         .box
-  //         .write('customer', GetIt.I.get<AuthLayer>().user);
-  //     return response;
-  //   } catch (e) {
-  //     return e;
-  //   }
-  // }
+  Future login({required String email,required String password,required String externalId}) async {
+    try {
+      final AuthResponse response = await supabase.auth.signInWithPassword(email: email, password: password);
+      await supabase.from('users').update({'external_id': externalId}).eq('user_id', response.user!.id);
+      final temp = await supabase.from('users').select().eq('user_id', response.user!.id);
+      GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
+      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
 }

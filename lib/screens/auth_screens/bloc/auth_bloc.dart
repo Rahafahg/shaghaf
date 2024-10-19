@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<CreateAccountEvent>(createUserAccountMethod);
     on<VerifyOtpEvent>(verifyOtpMethod);
+    on<LoginEvent>(loginMethod);
   }
 
   FutureOr<void> createUserAccountMethod(CreateAccountEvent event, Emitter<AuthState> emit) async {
@@ -41,6 +42,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(SuccessState());
     } catch (e) {
+      emit(ErrorState(msg: e.toString()));
+    }
+  }
+
+  FutureOr<void> loginMethod(LoginEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(LoadingState());
+      await supabaseLayer.login(email: event.email, password: event.password, externalId: externalId);
+      emit(SuccessState());
+    } catch (e){
       emit(ErrorState(msg: e.toString()));
     }
   }
