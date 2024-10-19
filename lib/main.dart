@@ -4,6 +4,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
+import 'package:shaghaf/screens/user_screens/user_home_screen.dart';
 import 'package:shaghaf/services/setup.dart';
 
 Future<void> main() async {
@@ -33,7 +34,7 @@ class MainApp extends StatelessWidget {
         )
       ),
       debugShowCheckedModeBanner: false,
-      home: GetIt.I.get<AuthLayer>().user != null ? const SelectCategories() : const OnboardingScreen()
+      home: GetIt.I.get<AuthLayer>().user != null ? const UserHomeScreen() : const OnboardingScreen()
     );
   }
 }
