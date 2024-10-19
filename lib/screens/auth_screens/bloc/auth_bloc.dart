@@ -10,18 +10,22 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final supabaseLayer = GetIt.I.get<SupabaseLayer>();
-  TextEditingController fNameController = TextEditingController();
-  TextEditingController lNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   final String externalId = Random().nextInt(999999999).toString();
 
   AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {});
     on<CreateAccountEvent>(createUserAccountMethod);
     on<VerifyOtpEvent>(verifyOtpMethod);
+  }
+
+  FutureOr<void> createUserAccountMethod(CreateAccountEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(LoadingState());
+      await supabaseLayer.createAccount(email: event.email, password: event.password);
+      emit(SuccessState());
+    } catch (e) {
+      emit(ErrorState(msg: e.toString()));
+    }
   }
 
   FutureOr<void> verifyOtpMethod(VerifyOtpEvent event, Emitter<AuthState> emit) async {
@@ -37,17 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(SuccessState());
     } catch (e) {
-      emit(ErrorState());
-    }
-  }
-
-  FutureOr<void> createUserAccountMethod(CreateAccountEvent event, Emitter<AuthState> emit) async {
-    try {
-      emit(LoadingState());
-      await supabaseLayer.createAccount(email: emailController.text, password: passwordController.text);
-      emit(SuccessState());
-    } catch (e) {
-      emit(ErrorState());
+      emit(ErrorState(msg: e.toString()));
     }
   }
 }

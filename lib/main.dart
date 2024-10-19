@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
+import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/services/setup.dart';
 
 Future<void> main() async {
@@ -24,13 +27,13 @@ class MainApp extends StatelessWidget {
           // body & btn text
           bodyLarge: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
           // role card text
-          bodyMedium: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
+          displaySmall: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
           // error msg in login
           bodySmall: TextStyle(fontSize: 14, fontFamily: "Poppins"),
         )
       ),
       debugShowCheckedModeBanner: false,
-      home: const OnboardingScreen()
+      home: GetIt.I.get<AuthLayer>().user != null ? const SelectCategories() : const OnboardingScreen()
     );
   }
 }

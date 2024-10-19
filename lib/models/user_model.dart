@@ -5,12 +5,14 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
+    required this.externalId
   });
   late final String userId;
   late final String email;
   late final String firstName;
   late final String lastName;
   late final String phoneNumber;
+  late final String externalId;
   
   UserModel.fromJson(Map<String, dynamic> json){
     userId = json['user_id'];
@@ -18,6 +20,7 @@ class UserModel {
     firstName = json['first_name'];
     lastName = json['last_name'];
     phoneNumber = json['phone_number'];
+    externalId = json['external_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +30,7 @@ class UserModel {
     data['first_name'] = firstName;
     data['last_name'] = lastName;
     data['phone_number'] = phoneNumber;
+    data['external_id'] = externalId;
     return data;
   }
 }
