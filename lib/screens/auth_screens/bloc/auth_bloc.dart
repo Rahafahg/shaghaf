@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-// import 'dart:math';
+import 'dart:math' as mm;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -13,8 +12,8 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final supabaseLayer = GetIt.I.get<SupabaseLayer>();
   TextEditingController otpController = TextEditingController();
-  // final String externalId = Random().nextInt(999999999).toString();
-  final String externalId = '1234567890';
+  final String externalId = mm.Random().nextInt(999999999).toString();
+  // final String externalId = '1234567890';
 
   AuthBloc() : super(AuthInitial()) {
     on<CreateAccountEvent>(createUserAccountMethod);
@@ -27,17 +26,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CreateAccountEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      final AuthResponse response = await supabaseLayer.createAccount(
-          email: event.email, password: event.password);
-          
+      await supabaseLayer.createAccount(email: event.email, password: event.password);
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: 'User already exists or something went wrong :('));
     }
   }
 
-  FutureOr<void> verifyOtpMethod(
-      VerifyOtpEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> verifyOtpMethod(VerifyOtpEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOtp(
@@ -82,8 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         log('no');
       }
       if (role == 'user' || role == 'organizer') {
-         await supabaseLayer.supabase.auth
-            .signInWithPassword(email: event.email, password: event.password);
+        await supabaseLayer.supabase.auth.signInWithPassword(email: event.email, password: event.password);
         // log(login.toString());
         emit(SuccessState(role: role));
       }
@@ -93,8 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> verifyOrganizerOtpMethod(
-      VerifyOrganizerOtpEvent event, Emitter<AuthState> emit) async {
+  Future<void> verifyOrganizerOtpMethod(VerifyOrganizerOtpEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOrganizerOtp(
