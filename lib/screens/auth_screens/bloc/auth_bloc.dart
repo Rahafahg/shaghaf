@@ -16,30 +16,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<CreateAccountEvent>(createUserAccountMethod);
     on<VerifyOtpEvent>(verifyOtpMethod);
+    on<VerifyOrganizerOtpEvent>(verifyOrganizerOtpMethod);
     on<LoginEvent>(loginMethod);
   }
 
-  FutureOr<void> createUserAccountMethod(CreateAccountEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> createUserAccountMethod(
+      CreateAccountEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      await supabaseLayer.createAccount(email: event.email, password: event.password);
+      await supabaseLayer.createAccount(
+          email: event.email, password: event.password);
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: e.toString()));
     }
   }
 
-  FutureOr<void> verifyOtpMethod(VerifyOtpEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> verifyOtpMethod(
+      VerifyOtpEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOtp(
-        email: event.email,
-        otp: event.otp,
-        firstName: event.firstName,
-        lastName: event.lastName,
-        phoneNumber: event.phoneNumber,
-        externalId: externalId
-      );
+          email: event.email,
+          otp: event.otp,
+          firstName: event.firstName,
+          lastName: event.lastName,
+          phoneNumber: event.phoneNumber,
+          externalId: externalId);
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: e.toString()));
@@ -49,9 +52,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> loginMethod(LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      await supabaseLayer.login(email: event.email, password: event.password, externalId: externalId);
+      await supabaseLayer.login(
+          email: event.email, password: event.password, externalId: externalId);
       emit(SuccessState());
-    } catch (e){
+    } catch (e) {
+      emit(ErrorState(msg: e.toString()));
+    }
+  }
+
+  Future<void> verifyOrganizerOtpMethod(
+      VerifyOrganizerOtpEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(LoadingState());
+      await supabaseLayer.verifyOrganizerOtp(
+        email: event.email,
+        otp: event.otp,
+        name: event.name,
+        contactNumber: event.contactNumber,
+        description: event.description,
+        image: event.image
+      );
+      emit(SuccessState());
+    } catch (e) {
       emit(ErrorState(msg: e.toString()));
     }
   }
