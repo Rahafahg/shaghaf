@@ -4,6 +4,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/user_screens/user_notification_screen.dart';
+import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -123,7 +124,32 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Text("welcome home")
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                workshopCard(
+                  title: "Pasat Workshope",
+                  subCatigory: "Cooking",
+                  date: "Jan 30 - Feb 2, 2024",
+                  rate: "4.2",
+                ),
+                workshopCard(
+                  title: "Pasat Workshope",
+                  subCatigory: "Cooking",
+                  date: "Jan 30 - Feb 2, 2024",
+                  rate: "4.2",
+                ),
+              ],
+            )
+            //  , workshopCard(
+            //     title: "Pasat Workshope",
+            //     subCatigory: "Cooking",
+            //     date: "Jan 30 - Feb 2, 2024",
+            //     rate: "4.2",
+            //   ),
           ]),
         ),
       ),
