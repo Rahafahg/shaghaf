@@ -99,9 +99,9 @@ class LoginScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(height: 1,width: 100,color: Constants.mainOrange),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Text("or",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Constants.mainOrange)),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text("or",style: TextStyle(fontSize: 14, fontFamily: "Poppins", color: Constants.mainOrange)),
                                       ),
                                       Container(height: 1,width: 100,color: Constants.mainOrange),
                                     ],
@@ -118,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Text("Sign in as particepant with gmail",style: TextStyle(fontSize: 12)),
+                                            Text("Sign in as particepant with gmail",style: TextStyle(fontSize: 12, fontFamily: "Poppins", fontWeight: FontWeight.w600, color: Colors.white)),
                                             SizedBox(width: 8),
                                             FaIcon(FontAwesomeIcons.google,color: Color(0xffffffff))
                                           ],
@@ -135,7 +135,7 @@ class LoginScreen extends StatelessWidget {
                                       decoration: BoxDecoration(color: const Color.fromARGB(255, 255, 255, 255),
                                       borderRadius: BorderRadius.circular(25)),
                                       child: const Center(
-                                        child: Text("Continue as a guest",style: TextStyle(fontSize: 13,color: Constants.mainOrange))
+                                        child: Text("Continue as a guest",style: TextStyle(fontSize: 12,color: Constants.mainOrange, fontWeight: FontWeight.w600, fontFamily: "Poppins"))
                                       ),
                                     ),
                                   ),

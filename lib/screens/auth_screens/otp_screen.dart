@@ -91,12 +91,9 @@ class OtpScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 "Confirm your Email",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Constants.mainOrange),
+                                style: TextStyle(fontSize: 18, color: Constants.mainOrange, fontFamily: "Poppins", fontWeight: FontWeight.w600,)
                               ),
                               const SizedBox(
                                 height: 7,
@@ -130,14 +127,11 @@ class OtpScreen extends StatelessWidget {
                                         image: image!,
                                         licenseNumber: licenseNumber!,
                                         name: name!)),
-                                defaultPinTheme: PinTheme(
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontSize: 16),
+                                defaultPinTheme: const PinTheme(
+                                    textStyle: TextStyle(fontSize: 16, fontFamily: "Poppins"),
                                     height: 45,
                                     width: 45,
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: Colors.white70,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)))),

@@ -43,9 +43,9 @@ class OnboardingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(phrases[index][0],style: Theme.of(context).textTheme.titleLarge,),
+                      Text(phrases[index][0],style: const TextStyle(fontFamily: "Poppins", fontSize: 40, fontWeight: FontWeight.w800, color: Constants.mainOrange)),
                       const SizedBox(height: 8),
-                      Text(phrases[index][1],style: Theme.of(context).textTheme.titleSmall,),
+                      Text(phrases[index][1],style: const TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange)),
                       const SizedBox(height: 50),
                       MainButton(
                         onPressed: () => index!=2 ? key.currentState?.next() : context.push(screen: const SelectRoleScreen()),

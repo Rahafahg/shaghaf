@@ -120,18 +120,15 @@ class CreateUserAccountScreen extends StatelessWidget {
                                           screen: const LoginScreen()),
                                       child: SizedBox(
                                           width: context.getWidth(),
-                                          child: Text("I Already have an account",
+                                          child: const Text("I Already have an account",
                                               textAlign: TextAlign.end,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall!
-                                                  .copyWith(
-                                                      color: Constants.mainOrange,
+                                              style: TextStyle(fontSize: 11, fontFamily: "Poppins", color: Constants.mainOrange,
                                                       decoration: TextDecoration
                                                           .underline,
                                                       decorationColor:
                                                           Constants.mainOrange,
-                                                      fontSize: 11))))
+                                                      )
+                                              )))
                                 ],
                               ),
                             ),
