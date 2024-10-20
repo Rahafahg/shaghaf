@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -24,11 +25,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CreateAccountEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      await supabaseLayer.createAccount(
+      final AuthResponse response = await supabaseLayer.createAccount(
           email: event.email, password: event.password);
+          
       emit(SuccessState());
     } catch (e) {
-      emit(ErrorState(msg: e.toString()));
+      emit(ErrorState(msg: 'User already exists or something went wrong :('));
     }
   }
 

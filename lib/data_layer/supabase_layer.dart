@@ -13,6 +13,9 @@ class SupabaseLayer {
     try {
       final AuthResponse response =
           await supabase.auth.signUp(email: email, password: password);
+          if(response.user!.userMetadata!.isEmpty) {
+            throw Exception('User Already Exists');
+          }
       return response;
     } catch (e) {
       return e;
