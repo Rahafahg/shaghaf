@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:developer';
+// import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -11,7 +12,8 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final supabaseLayer = GetIt.I.get<SupabaseLayer>();
   TextEditingController otpController = TextEditingController();
-  final String externalId = Random().nextInt(999999999).toString();
+  // final String externalId = Random().nextInt(999999999).toString();
+  final String externalId = '1234567890';
 
   AuthBloc() : super(AuthInitial()) {
     on<CreateAccountEvent>(createUserAccountMethod);
@@ -50,13 +52,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> loginMethod(LoginEvent event, Emitter<AuthState> emit) async {
+    String role = "";
     try {
       emit(LoadingState());
-      await supabaseLayer.login(
-          email: event.email, password: event.password, externalId: externalId);
-      emit(SuccessState());
+      final users = <Future>[];
+      users.add(supabaseLayer.supabase.from('organizer').select('email'));
+      users.add(supabaseLayer.supabase.from('users').select('email'));
+      final results = await Future.wait(users);
+      log(results[1][0].toString());
+      for (var user in results[1]) {
+        log(user['email'].toString());
+        if (event.email == user['email'].toString()) {
+          role = 'user';
+          log(role);
+          break;
+        }
+        log('no');
+      }
+      log(results[0][0].toString());
+      for (var organizer in results[0]) {
+        log(organizer['email'].toString());
+        if (event.email == organizer['email'].toString()) {
+          role = 'organizer';
+          log(role);
+          break;
+        }
+        log('no');
+      }
+      if (role == 'user' || role == 'organizer') {
+         await supabaseLayer.supabase.auth
+            .signInWithPassword(email: event.email, password: event.password);
+        // log(login.toString());
+        emit(SuccessState(role: role));
+      }
+
     } catch (e) {
-      emit(ErrorState(msg: e.toString()));
+      emit(ErrorState(msg: 'User not found'));
     }
   }
 
@@ -65,13 +96,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOrganizerOtp(
-        email: event.email,
-        otp: event.otp,
-        name: event.name,
-        contactNumber: event.contactNumber,
-        description: event.description,
-        image: event.image
-      );
+          email: event.email,
+          otp: event.otp,
+          name: event.name,
+          contactNumber: event.contactNumber,
+          description: event.description,
+          image: event.image);
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: e.toString()));
