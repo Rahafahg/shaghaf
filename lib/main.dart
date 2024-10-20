@@ -5,11 +5,15 @@ import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/screens/user_screens/user_home_screen.dart';
 import 'package:shaghaf/services/setup.dart';
+import 'package:device_preview/device_preview.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setup();
-  runApp(const MainApp());
+  runApp(DevicePreview(
+      enabled: false,
+      builder: (context) => const MainApp(),
+    ));
 }
 
 class MainApp extends StatelessWidget {
