@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyOtpEvent>(verifyOtpMethod);
     on<VerifyOrganizerOtpEvent>(verifyOrganizerOtpMethod);
     on<LoginEvent>(loginMethod);
+    on<LoginWithEmailEvent>(loginWithEmailMethod);
   }
 
   FutureOr<void> createUserAccountMethod(
@@ -29,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoadingState());
       final AuthResponse response = await supabaseLayer.createAccount(
           email: event.email, password: event.password);
-          
+
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: 'User already exists or something went wrong :('));
@@ -82,12 +83,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         log('no');
       }
       if (role == 'user' || role == 'organizer') {
-         await supabaseLayer.supabase.auth
+        await supabaseLayer.supabase.auth
             .signInWithPassword(email: event.email, password: event.password);
         // log(login.toString());
         emit(SuccessState(role: role));
       }
-
     } catch (e) {
       emit(ErrorState(msg: 'User not found'));
     }
@@ -105,6 +105,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           description: event.description,
           image: event.image);
       emit(SuccessState());
+    } catch (e) {
+      emit(ErrorState(msg: e.toString()));
+    }
+  }
+
+  FutureOr<void> loginWithEmailMethod(
+      LoginWithEmailEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(LoadingState());
+   final AuthResponse response =  await supabaseLayer.nativeGoogleSignIn();
+    String role = "";
+   final users = <Future>[];
+      users.add(supabaseLayer.supabase.from('organizer').select('email'));
+      users.add(supabaseLayer.supabase.from('users').select('email'));
+      final results = await Future.wait(users);
+      log(results[1][0].toString());
+      for (var user in results[1]) {
+        log(user['email'].toString());
+        if (response.user?.email == user['email'].toString()) {
+          role = 'user';
+          log(role);
+          break;
+        }
+        log('no');
+      }
+      log(results[0][0].toString());
+      for (var organizer in results[0]) {
+        log(organizer['email'].toString());
+        if (response.user?.email == organizer['email'].toString()) {
+          role = 'organizer';
+          log(role);
+          break;
+        }
+        log('no');
+      }
+      emit(SuccessState(role: role));
     } catch (e) {
       emit(ErrorState(msg: e.toString()));
     }
