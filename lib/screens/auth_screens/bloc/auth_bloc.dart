@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           externalId: externalId);
       emit(SuccessState());
     } catch (e) {
-      emit(ErrorState(msg: e.toString()));
+      emit(ErrorState(msg: "Incorrect OTP"));
     }
   }
 
@@ -106,7 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           image: event.image);
       emit(SuccessState());
     } catch (e) {
-      emit(ErrorState(msg: e.toString()));
+      emit(ErrorState(msg: "Incorrect OTP"));
     }
   }
 }

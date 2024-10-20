@@ -13,9 +13,9 @@ class SupabaseLayer {
     try {
       final AuthResponse response =
           await supabase.auth.signUp(email: email, password: password);
-          if(response.user!.userMetadata!.isEmpty) {
-            throw Exception('User Already Exists');
-          }
+      if (response.user!.userMetadata!.isEmpty) {
+        throw Exception('User Already Exists');
+      }
       return response;
     } catch (e) {
       return e;
@@ -29,27 +29,29 @@ class SupabaseLayer {
       required String lastName,
       required String phoneNumber,
       required String externalId}) async {
-    try {
-      log("verifyOtp 1");
-      final AuthResponse response = await supabase.auth
-          .verifyOTP(email: email, token: otp, type: OtpType.email);
-      log("verifyOtp 2");
-      final id = response.user!.id;
-      UserModel user = UserModel.fromJson({
-        'user_id': id,
-        'external_id': externalId,
-        'email': email,
-        'first_name': firstName,
-        'last_name': lastName,
-        'phone_number': phoneNumber,
-      });
-      await supabase.from("users").insert(user.toJson());
-      GetIt.I.get<AuthLayer>().box.write('user', user.toJson());
-      GetIt.I.get<AuthLayer>().user = user;
-      return response;
-    } catch (e) {
-      return e;
-    }
+    // try {
+    log("verifyOtp 1");
+
+    final AuthResponse response = await supabase.auth
+        .verifyOTP(email: email, token: otp, type: OtpType.signup);
+
+    log("verifyOtp 2");
+    final id = response.user!.id;
+    UserModel user = UserModel.fromJson({
+      'user_id': id,
+      'external_id': externalId,
+      'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone_number': phoneNumber,
+    });
+    await supabase.from("users").insert(user.toJson());
+    GetIt.I.get<AuthLayer>().box.write('user', user.toJson());
+    GetIt.I.get<AuthLayer>().user = user;
+    return response;
+    // } catch (e) {
+    //   return e;
+    // }
   }
 
   Future verifyOrganizerOtp(
@@ -59,26 +61,22 @@ class SupabaseLayer {
       required String description,
       required String contactNumber,
       required String image}) async {
-    try {
-      final AuthResponse response = await supabase.auth
-          .verifyOTP(email: email, token: otp, type: OtpType.email);
-      final id = response.user!.id;
-      OrganizerModel organizer = OrganizerModel.fromJson({
-        'organizer_id': id,
-        'email': email,
-        'name': name,
-        'image': image,
-        'description': description,
-        'contact_number': contactNumber,
-        'license_number': '123456789'
-      });
-      await supabase.from("organizer").insert(organizer.toJson());
-      GetIt.I.get<AuthLayer>().box.write('organizer', organizer.toJson());
-      GetIt.I.get<AuthLayer>().organizer = organizer;
-      return response;
-    } catch (e) {
-      return e;
-    }
+    final AuthResponse response = await supabase.auth
+        .verifyOTP(email: email, token: otp, type: OtpType.signup);
+    final id = response.user!.id;
+    OrganizerModel organizer = OrganizerModel.fromJson({
+      'organizer_id': id,
+      'email': email,
+      'name': name,
+      'image': image,
+      'description': description,
+      'contact_number': contactNumber,
+      'license_number': '123456789'
+    });
+    await supabase.from("organizer").insert(organizer.toJson());
+    GetIt.I.get<AuthLayer>().box.write('organizer', organizer.toJson());
+    GetIt.I.get<AuthLayer>().organizer = organizer;
+    return response;
   }
 
   Future login(
