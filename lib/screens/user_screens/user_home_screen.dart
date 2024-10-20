@@ -5,6 +5,7 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/user_screens/user_notification_screen.dart';
+import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -75,11 +76,11 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, bottom: 12),
+                  padding: EdgeInsets.only(left: 16, bottom: 12),
                   child: Text(
                     "Workshop of the week",
                     style: TextStyle(fontSize: 18, color: Constants.textColor),
@@ -96,7 +97,7 @@ class UserHomeScreen extends StatelessWidget {
                   // width: context.getWidth(),
                   height: 200,
                 ),
-                Center(
+                const Center(
                   child: Text(
                     "Pasta Workshop",
                     style: TextStyle(
@@ -106,7 +107,7 @@ class UserHomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   bottom: 10,
                   right: 18,
                   child: Row(
@@ -124,7 +125,32 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Text("welcome home")
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                workshopCard(
+                  title: "Pasat Workshope",
+                  subCatigory: "Cooking",
+                  date: "Jan 30 - Feb 2, 2024",
+                  rate: "4.2",
+                ),
+                workshopCard(
+                  title: "Pasat Workshope",
+                  subCatigory: "Cooking",
+                  date: "Jan 30 - Feb 2, 2024",
+                  rate: "4.2",
+                ),
+              ],
+            )
+            //  , workshopCard(
+            //     title: "Pasat Workshope",
+            //     subCatigory: "Cooking",
+            //     date: "Jan 30 - Feb 2, 2024",
+            //     rate: "4.2",
+            //   ),
           ]),
         ),
       ),
