@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -67,7 +66,10 @@ class workshopCard extends StatelessWidget {
                     children: [
                       Icon(Icons.calendar_today, size: 16, color: Colors.grey),
                       SizedBox(width: 4),
-                      Text('$date'),
+                      Text(
+                        '$date',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ],
                   ),
                   SizedBox(height: 5),
@@ -75,7 +77,8 @@ class workshopCard extends StatelessWidget {
                     children: [
                       Icon(Icons.star, size: 16, color: Colors.orange),
                       SizedBox(width: 4),
-                      Text('$rate'),
+                      Text('$rate',
+                          style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),
                 ],

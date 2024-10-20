@@ -23,14 +23,18 @@ class MainApp extends StatelessWidget {
         textTheme: const TextTheme(
           // onboarding title
           titleLarge: TextStyle(fontFamily: "Poppins", fontSize: 40, fontWeight: FontWeight.w800, color: Constants.mainOrange),
+          // title in pages
+         titleMedium: TextStyle(fontFamily: "Poppins", fontSize: 26, fontWeight: FontWeight.w600, color: Constants.mainOrange),
           // onboarding text
           titleSmall: TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange),
           // body & btn text
           bodyLarge: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
           // role card text
           displaySmall: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
+          //for larger text 
+          bodyMedium: TextStyle(fontSize: 18, fontFamily: "Poppins",fontWeight:FontWeight.w500),
           // error msg in login
-          bodySmall: TextStyle(fontSize: 14, fontFamily: "Poppins"),
+          bodySmall: TextStyle(fontSize: 12, fontFamily: "Poppins"),
         )
       ),
       debugShowCheckedModeBanner: false,
