@@ -96,14 +96,10 @@ class UserHomeScreen extends StatelessWidget {
                   // width: context.getWidth(),
                   height: 200,
                 ),
-                const Center(
+                 Center(
                   child: Text(
                     "Pasta Workshop",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
                 const Positioned(
@@ -144,12 +140,6 @@ class UserHomeScreen extends StatelessWidget {
                 ),
               ],
             )
-            //  , workshopCard(
-            //     title: "Pasat Workshope",
-            //     subCatigory: "Cooking",
-            //     date: "Jan 30 - Feb 2, 2024",
-            //     rate: "4.2",
-            //   ),
           ]),
         ),
       ),
