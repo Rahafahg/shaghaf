@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -7,24 +9,20 @@ import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 
 class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
-  const WorkshopCard(
-      {super.key,
-      required this.workshop});
+  const WorkshopCard({super.key,required this.workshop});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        context.push(screen: WorkshopDetailScreen(workshop: workshop));
-      },
+      onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: workshop)),
       child: Container(
         width: context.getWidth(divideBy: 2.3),
         height: context.getHeight(divideBy: 3.5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
           color: Colors.green,
+          borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
-            image: workshop.image.isNotEmpty ? Image.network(workshop.image, loadingBuilder: (context, child, loadingProgress) => CircularProgressIndicator(),).image : const AssetImage("assets/images/pasta_workshop.png"),
+            image: workshop.image.isNotEmpty ? Image.network(workshop.image, loadingBuilder: (context, child, loadingProgress) => const CircularProgressIndicator(),).image : const AssetImage("assets/images/pasta_workshop.png"),
             fit: BoxFit.cover,
           ),
           boxShadow: [
@@ -54,13 +52,14 @@ class WorkshopCard extends StatelessWidget {
                     Text(
                       workshop.title,
                       style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w200,
                       ),
                     ),
                     Text(
-                      workshop.categoryId,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryId==workshop.categoryId).categoryName,
+                      style: const TextStyle(fontSize: 10, fontFamily: "Poppins", fontWeight: FontWeight.w300),
                     ),
                     const SizedBox(height: 5),
                     Row(
@@ -69,8 +68,8 @@ class WorkshopCard extends StatelessWidget {
                             size: 16, color: Colors.grey),
                         const SizedBox(width: 4),
                         Text(
-                          workshop.organizerId,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          workshop.workshops.isEmpty ? 'handle me later' : workshop.workshops.first.date,
+                          style: const TextStyle(fontFamily: "Poppins", fontSize: 8, fontWeight: FontWeight.w300),
                         ),
                       ],
                     ),
@@ -79,8 +78,7 @@ class WorkshopCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.star, size: 16, color: Colors.orange),
                         const SizedBox(width: 4),
-                        Text(workshop.rating.toString(),
-                            style: Theme.of(context).textTheme.bodySmall),
+                        Text(workshop.rating.toString(),style: const TextStyle(fontFamily: "Poppins", fontSize: 8)),
                       ],
                     ),
                   ],
