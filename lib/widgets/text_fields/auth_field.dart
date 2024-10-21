@@ -72,6 +72,7 @@ class AuthField extends StatelessWidget {
                     ? 5
                     : 1, // Max lines for Description, can adjust if needed
                 style: const TextStyle(fontSize: 14, fontFamily: "Poppins"),
+                keyboardType: type.toLowerCase()=='email' ? TextInputType.emailAddress : null,
                 decoration: InputDecoration(
                   errorStyle: const TextStyle(
                       fontSize: 8, fontFamily: "Poppins", color: Colors.red),

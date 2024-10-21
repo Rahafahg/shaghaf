@@ -9,6 +9,7 @@ import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/categories_model.dart';
+import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -113,7 +114,7 @@ class SelectCategoriesScreen extends StatelessWidget {
                           'user_id': GetIt.I.get<AuthLayer>().user!.userId,
                           'category_id': favCategories.first.categoryId
                         });
-                        context.pushRemove(screen: const UserHomeScreen());
+                        context.pushRemove(screen: const NavigationScreen());
                       }
                     })
               ],

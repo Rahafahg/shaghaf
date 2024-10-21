@@ -6,6 +6,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
+import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/organizer_home_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
@@ -45,7 +46,7 @@ class LoginScreen extends StatelessWidget {
             if (state is SuccessState) {
               context.pop();
               state.role == 'user'
-                  ? context.pushRemove(screen: const UserHomeScreen())
+                  ? context.pushRemove(screen: const NavigationScreen())
                   : context.pushRemove(screen: const OrganizerHomeScreen());
             }
           },
