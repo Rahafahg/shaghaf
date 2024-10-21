@@ -17,10 +17,9 @@ class UserHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = GetIt.I.get<AuthLayer>().user;
     return BlocProvider(
-      create: (context) => UserHomeBloc(),
+      create: (context) => UserHomeBloc()..add(GetWorkshopsEvent()),
       child: Builder(
         builder: (context) {
-          final bloc = context.read<UserHomeBloc>()..add(GetWorkshopsEvent());
           return Scaffold(
             backgroundColor: Constants.backgroundColor,
             appBar: PreferredSize(
@@ -39,9 +38,9 @@ class UserHomeScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Hello ${user?.firstName ?? 'guest'}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 16, color: Constants.lightOrange)),
-                              Text(
+                              const Text(
                                 "Welcome to Shaghaf",
                                 style: TextStyle(
                                     fontSize: 16, color: Constants.mainOrange),
@@ -78,7 +77,7 @@ class UserHomeScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                 hintText: 'Search for a workshop ...',
                                 hintStyle:
-                                    TextStyle(fontSize: 12, color: Colors.black45),
+                                    const TextStyle(fontSize: 12, color: Colors.black45),
                                 filled: true,
                                 fillColor: Colors.white,
                                 prefixIcon: const Icon(
@@ -139,12 +138,12 @@ class UserHomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2),
                           shrinkWrap: true,
                           itemCount: state.workshops.length,
@@ -163,7 +162,7 @@ class UserHomeScreen extends StatelessWidget {
                   ),
                 );
                 }
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               },
             ),
           );

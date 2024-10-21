@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AuthField extends StatelessWidget {
   final String type;

@@ -23,7 +23,7 @@ class WorkshopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(screen: WorkshopDetailScreen());
+        context.push(screen: const WorkshopDetailScreen());
       },
       child: Container(
         width: context.getWidth(divideBy: 2.3),
@@ -32,22 +32,22 @@ class WorkshopCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.green,
           image: DecorationImage(
-            image: img.isNotEmpty ? NetworkImage(img) : AssetImage("assets/images/pasta_workshop.png"),
+            image: img.isNotEmpty ? NetworkImage(img) : const AssetImage("assets/images/pasta_workshop.png"),
             fit: BoxFit.cover,
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade300,
               blurRadius: 4,
-              offset: Offset(4, 8), // Shadow position
+              offset: const Offset(4, 8), // Shadow position
             ),
           ],
         ),
         child: Column(
           children: [
-            Spacer(),
+            const Spacer(),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0)),
@@ -55,39 +55,39 @@ class WorkshopCard extends StatelessWidget {
               ),
               width: context.getWidth(),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$title",
-                      style: TextStyle(
+                      title,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      '$subCatigory',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      subCatigory,
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
-                        Icon(Icons.calendar_today,
+                        const Icon(Icons.calendar_today,
                             size: 16, color: Colors.grey),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
-                          '$date',
+                          date,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
-                        Icon(Icons.star, size: 16, color: Colors.orange),
-                        SizedBox(width: 4),
-                        Text('$rate',
+                        const Icon(Icons.star, size: 16, color: Colors.orange),
+                        const SizedBox(width: 4),
+                        Text(rate,
                             style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),

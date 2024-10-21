@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as mm;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -30,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CreateAccountEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      final AuthResponse response = await supabaseLayer.createAccount(
+      await supabaseLayer.createAccount(
           email: event.email, password: event.password);
 
       emit(SuccessState());

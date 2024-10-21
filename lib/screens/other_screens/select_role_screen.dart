@@ -17,12 +17,12 @@ class SelectRoleScreen extends StatelessWidget {
             const SizedBox(height: 55,),
             const Row(mainAxisAlignment: MainAxisAlignment.start,children: [SizedBox(width: 47,),Text("What are you ?", style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600))]),
             const SizedBox(height: 78),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const RoleCard(),
-            const SizedBox(width: 54),
-            const RoleCard(isOrganizer:true)
+                RoleCard(),
+            SizedBox(width: 54),
+            RoleCard(isOrganizer:true)
               ],
             )
           ],

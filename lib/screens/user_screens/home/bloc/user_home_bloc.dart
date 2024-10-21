@@ -1,11 +1,9 @@
 import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/models/workshop_model.dart';
-
 part 'user_home_event.dart';
 part 'user_home_state.dart';
 

@@ -71,19 +71,19 @@ class SupabaseLayer {
     if (image != null) {
       try {
         // Upload file to Supabase storage
-        final response = await GetIt.I
+        await GetIt.I
             .get<SupabaseLayer>()
             .supabase
             .storage
             .from('organizer_images')
-            .upload('public/${image!.path.split('/').last}', image);
+            .upload('public/${image.path.split('/').last}', image);
       } catch (e) {
         log('Error uploading image: $e');
       }
 
       try {
         // Upload file to Supabase storage
-        imageUrl = await GetIt.I
+        imageUrl = GetIt.I
             .get<SupabaseLayer>()
             .supabase
             .storage
