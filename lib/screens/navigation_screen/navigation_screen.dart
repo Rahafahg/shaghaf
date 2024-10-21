@@ -8,6 +8,7 @@ import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 import 'package:shaghaf/screens/user_screens/my_workshops_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile_screen.dart';
+import 'package:shaghaf/screens/user_screens/user_categories_screen.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
@@ -24,7 +25,7 @@ class NavigationScreen extends StatelessWidget {
           builder: (context, state) {
             return IndexedStack(
               index: context.read<NavigationBloc>().currentScreen,
-              children: const [UserHomeScreen(),Placeholder(),MyWorkshopsScreen(),ProfileScreen(),],
+              children: const [UserHomeScreen(),UserCategoriesScreen(),MyWorkshopsScreen(),ProfileScreen(),],
             );
           },
         ),
