@@ -25,7 +25,6 @@ dependencies:
   google_sign_in: ^6.2.1
   otp_timer_button: ^1.1.1
   custom_radio_grouped_button: ^2.2.1
-  custom_radio_grouped_button: ^2.2.1
 
 dev_dependencies:
   flutter_test:
