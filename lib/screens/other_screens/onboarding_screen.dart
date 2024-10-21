@@ -29,7 +29,7 @@ class OnboardingScreen extends StatelessWidget {
         overrideDone: const SizedBox(height: 30),
         globalBackgroundColor: Colors.transparent,
         controlsMargin: EdgeInsets.zero,
-        // scrollPhysics: NeverScrollableScrollPhysics(), // uncomment me to disable scroll
+        scrollPhysics: NeverScrollableScrollPhysics(), // uncomment me to disable scroll
         pages: List.generate(3, (index){
           return PageViewModel(
             decoration: const PageDecoration(fullScreen: true, contentMargin: EdgeInsets.zero, bodyFlex: 0),

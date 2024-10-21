@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
@@ -9,16 +11,11 @@ part 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   int currentScreen = 0;
-  List<Widget> screens = [
-    const UserHomeScreen(),
-    const Placeholder(),
-    const Placeholder(),
-    const ProfileScreen()
-  ];
   NavigationBloc() : super(NavigationInitial()) {
     on<SwitchScreenEvent>((event, emit) {
       currentScreen = event.targetPage;
-      emit(SwitchScreenState());
+      log(currentScreen.toString());
+      emit(SwitchScreenState(targetPage: event.targetPage));
     });
   }
 }
