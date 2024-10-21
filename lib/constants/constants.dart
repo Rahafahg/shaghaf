@@ -11,4 +11,5 @@ class Constants {
   static const Color cardColor = Color(0xffFFFDFD);
   static const Color profileColor = Color(0xffF8EEE9);
   static const Color appRedColor = Color(0xffDC0D17);
+  static const Color appGreyColor = Color(0xffCCCCCC);
 }
