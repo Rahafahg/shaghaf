@@ -7,4 +7,7 @@ final class NavigationInitial extends NavigationState {}
 
 // final class PageInitial extends NavigationState {}
 
-final class SwitchScreenState extends NavigationState {}
+final class SwitchScreenState extends NavigationState {
+  final int? targetPage;
+  SwitchScreenState({this.targetPage});
+}
