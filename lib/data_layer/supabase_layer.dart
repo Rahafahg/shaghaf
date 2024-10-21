@@ -113,19 +113,38 @@ class SupabaseLayer {
   Future login(
       {required String email,
       required String password,
+      required String role,
       required String externalId}) async {
     try {
       final AuthResponse response = await supabase.auth
           .signInWithPassword(email: email, password: password);
-      await supabase
-          .from('users')
-          .update({'external_id': externalId}).eq('user_id', response.user!.id);
-      final temp = await supabase
-          .from('users')
-          .select()
-          .eq('user_id', response.user!.id);
-      GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
+      if (role == 'user') {
+        await supabase.from('users').update({'external_id': externalId}).eq(
+            'user_id', response.user!.id);
+        final temp = await supabase
+            .from('users')
+            .select()
+            .eq('user_id', response.user!.id);
+        GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
+        GetIt.I
+            .get<AuthLayer>()
+            .box
+            .write('user', GetIt.I.get<AuthLayer>().user);
+        log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
+      }
+      if (role == 'organizer') {
+        final temp = await supabase
+            .from('organizer')
+            .select()
+            .eq('organizer_id', response.user!.id);
+        GetIt.I.get<AuthLayer>().organizer =
+            OrganizerModel.fromJson(temp.first);
+        GetIt.I
+            .get<AuthLayer>()
+            .box
+            .write('organizer', GetIt.I.get<AuthLayer>().organizer);
+        log(GetIt.I.get<AuthLayer>().box.hasData('organizer').toString());
+      }
       return response;
     } catch (e) {
       return e;
@@ -172,12 +191,13 @@ class SupabaseLayer {
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
       GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
       log(GetIt.I.get<AuthLayer>().user!.email);
-       return response;
+      return response;
     } catch (e) {
       log(e.toString());
     }
-}
-getAllCategories() async {
+  }
+
+  getAllCategories() async {
     final categoriesAsMap = await supabase.from('categories').select();
     log(categoriesAsMap.toString());
 

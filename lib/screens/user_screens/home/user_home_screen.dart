@@ -149,11 +149,7 @@ class UserHomeScreen extends StatelessWidget {
                           itemCount: state.workshops.length,
                           itemBuilder: (context, index) {
                             return WorkshopCard(
-                              title: state.workshops[index].title,
-                              subCatigory: state.workshops[index].categoryId,
-                              date: "Jan 30 - Feb 2, 2024",
-                              rate: "4.2",
-                              img: state.workshops[index].image,
+                              workshop: state.workshops[index],
                             );
                           },
                         )

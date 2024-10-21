@@ -83,8 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         log('no');
       }
       if (role == 'user' || role == 'organizer') {
-        await supabaseLayer.supabase.auth
-            .signInWithPassword(email: event.email, password: event.password);
+        await supabaseLayer.login(email: event.email, password: event.password, externalId: externalId, role: role);
         // log(login.toString());
         emit(SuccessState(role: role));
       }

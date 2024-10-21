@@ -7,11 +7,11 @@ import 'package:shaghaf/models/user_model.dart';
 class AuthLayer {
   UserModel? user;
   OrganizerModel? organizer;
-  final box = GetStorage();
   bool didChooseFav = false;
+  final box = GetStorage();
 
   AuthLayer() {
-    // box.erase();
+    log(box.hasData('user').toString());
     if (box.hasData('fav')) {
       if (box.read('fav') == true) {
         didChooseFav = true;

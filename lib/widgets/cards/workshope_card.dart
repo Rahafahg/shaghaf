@@ -2,28 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 
 class WorkshopCard extends StatelessWidget {
-  final String title;
-  final String subCatigory;
-  final String date;
-  final String rate;
-  final String img;
+  final WorkshopGroupModel workshop;
   const WorkshopCard(
       {super.key,
-      required this.title,
-      required this.subCatigory,
-      required this.date,
-      required this.rate,
-      required this.img
-      });
+      required this.workshop});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(screen: const WorkshopDetailScreen());
+        context.push(screen: WorkshopDetailScreen(workshop: workshop));
       },
       child: Container(
         width: context.getWidth(divideBy: 2.3),
@@ -32,7 +24,7 @@ class WorkshopCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.green,
           image: DecorationImage(
-            image: img.isNotEmpty ? NetworkImage(img) : const AssetImage("assets/images/pasta_workshop.png"),
+            image: workshop.image.isNotEmpty ? Image.network(workshop.image, loadingBuilder: (context, child, loadingProgress) => CircularProgressIndicator(),).image : const AssetImage("assets/images/pasta_workshop.png"),
             fit: BoxFit.cover,
           ),
           boxShadow: [
@@ -60,14 +52,14 @@ class WorkshopCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      workshop.title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
-                      subCatigory,
+                      workshop.categoryId,
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                     const SizedBox(height: 5),
@@ -77,7 +69,7 @@ class WorkshopCard extends StatelessWidget {
                             size: 16, color: Colors.grey),
                         const SizedBox(width: 4),
                         Text(
-                          date,
+                          workshop.organizerId,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -87,7 +79,7 @@ class WorkshopCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.star, size: 16, color: Colors.orange),
                         const SizedBox(width: 4),
-                        Text(rate,
+                        Text(workshop.rating.toString(),
                             style: Theme.of(context).textTheme.bodySmall),
                       ],
                     ),
