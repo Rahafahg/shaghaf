@@ -61,32 +61,34 @@ class SupabaseLayer {
       required String name,
       required String description,
       required String contactNumber,
-      required File image}) async {
+      required File? image}) async {
     final AuthResponse response = await supabase.auth
         .verifyOTP(email: email, token: otp, type: OtpType.signup);
     String imageUrl = "";
-    try {
-      // Upload file to Supabase storage
-      final response = await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .upload('public/${image.path.split('/').last}', image);
-    } catch (e) {
-      log('Error uploading image: $e');
-    }
+    if (image != null) {
+      try {
+        // Upload file to Supabase storage
+        final response = await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .upload('public/${image!.path.split('/').last}', image);
+      } catch (e) {
+        log('Error uploading image: $e');
+      }
 
-    try {
-      // Upload file to Supabase storage
-      imageUrl = await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .getPublicUrl('public/${image.path.split('/').last}');
-    } catch (e) {
-      log('Error uploading image: $e');
+      try {
+        // Upload file to Supabase storage
+        imageUrl = await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .getPublicUrl('public/${image.path.split('/').last}');
+      } catch (e) {
+        log('Error uploading image: $e');
+      }
     }
 
     final id = response.user!.id;

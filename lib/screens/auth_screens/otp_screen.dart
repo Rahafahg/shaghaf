@@ -126,7 +126,7 @@ class OtpScreen extends StatelessWidget {
                                         otp: value,
                                         contactNumber: contactNumber!,
                                         description: description!,
-                                        image: image!,
+                                        image: image,
                                         licenseNumber: licenseNumber!,
                                         name: name!)),
                                 defaultPinTheme: const PinTheme(
