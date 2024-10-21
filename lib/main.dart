@@ -23,10 +23,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GetIt.I.get<AuthLayer>().user != null ?
-        GetIt.I.get<AuthLayer>().didChooseFav ? const UserHomeScreen()
-        : const SelectCategoriesScreen()
-      : const OnboardingScreen()
+      home: SelectCategoriesScreen()
+      // GetIt.I.get<AuthLayer>().user != null ?
+      //   GetIt.I.get<AuthLayer>().didChooseFav ? const UserHomeScreen()
+      //   : const SelectCategoriesScreen()
+      // : const OnboardingScreen()
     );
   }
 }

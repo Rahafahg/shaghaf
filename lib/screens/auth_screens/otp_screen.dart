@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
+import 'package:shaghaf/screens/organizer_screens/organizer_home_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 
@@ -58,7 +61,11 @@ class OtpScreen extends StatelessWidget {
                           color: Constants.mainOrange)));
             }
             if (state is SuccessState) {
-              context.pushRemove(screen: const SelectCategoriesScreen());
+              GetIt.I.get<SupabaseLayer>().getAllCategories();
+              context.pushRemove(
+                  screen: role == 'user'
+                      ? const SelectCategoriesScreen()
+                      : const OrganizerHomeScreen());
             }
           },
           child: GestureDetector(
@@ -93,10 +100,13 @@ class OtpScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             children: [
-                              const Text(
-                                "Confirm your Email",
-                                style: TextStyle(fontSize: 18, color: Constants.mainOrange, fontFamily: "Poppins", fontWeight: FontWeight.w600,)
-                              ),
+                              const Text("Confirm your Email",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Constants.mainOrange,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w600,
+                                  )),
                               const SizedBox(
                                 height: 7,
                               ),
@@ -130,7 +140,8 @@ class OtpScreen extends StatelessWidget {
                                         licenseNumber: licenseNumber!,
                                         name: name!)),
                                 defaultPinTheme: const PinTheme(
-                                    textStyle: TextStyle(fontSize: 16, fontFamily: "Poppins"),
+                                    textStyle: TextStyle(
+                                        fontSize: 16, fontFamily: "Poppins"),
                                     height: 45,
                                     width: 45,
                                     decoration: BoxDecoration(

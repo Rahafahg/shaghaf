@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
+import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -127,5 +129,35 @@ class SupabaseLayer {
     } catch (e) {
       return e;
     }
+  }
+
+  getAllCategories() async {
+    final categoriesAsMap = await supabase.from('categories').select();
+    log(categoriesAsMap.toString());
+
+    // Convert the map into a list of CategoriesModel
+    final List<CategoriesModel> categories =
+        categoriesAsMap.map<CategoriesModel>((category) {
+      return CategoriesModel.fromJson(category);
+    }).toList();
+
+    // Separate the 'Others' category from the list
+    final List<CategoriesModel> othersCategory = categories
+        .where((category) => category.categoryName == 'Others')
+        .toList();
+    final List<CategoriesModel> otherCategories = categories
+        .where((category) => category.categoryName != 'Others')
+        .toList();
+
+    // Add 'Others' at the end of the list
+    final List<CategoriesModel> orderedCategories = [
+      ...otherCategories,
+      ...othersCategory
+    ];
+
+    // Assign the ordered categories to the DataLayer
+    GetIt.I.get<DataLayer>().categories = orderedCategories;
+
+    log(GetIt.I.get<DataLayer>().categories.toString());
   }
 }
