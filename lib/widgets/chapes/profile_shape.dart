@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 class RPSCustomPainter extends CustomPainter {
+  final double width;
+
+  RPSCustomPainter({super.repaint, required this.width});
   @override
   void paint(Canvas canvas, Size size) {
+    double scale = width / 400;
     Path path_0 = Path();
-    path_0.moveTo(200, 200);
-    path_0.cubicTo(310.457, 200, 400, 110.457, 400, 0);
+    path_0.moveTo(200 * scale, 200 * scale);
+    path_0.cubicTo(310.457 * scale, 200 * scale, 400 * scale, 110.457 * scale,
+        400 * scale, 0);
     path_0.lineTo(0, 0);
-    path_0.cubicTo(0, 110.457, 89.5431, 200, 200, 200);
+    path_0.cubicTo(0, 110.457 * scale, 89.5431 * scale, 200 * scale,
+        200 * scale, 200 * scale);
     path_0.close();
 
     Paint paint_0_fill = Paint()..style = PaintingStyle.fill;

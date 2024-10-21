@@ -13,5 +13,6 @@ class Constants {
   static const Color categoryColor_2 = Color(0xffF2B330);
   static const Color dividerColor = Color.fromARGB(255, 206, 208, 210);
    static const Color lightTextColor = Color(0xff666666);
-
+  static const Color profileColor = Color(0xffF8EEE9);
+  static const Color appRedColor = Color(0xffDC0D17);
 }
