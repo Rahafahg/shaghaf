@@ -11,7 +11,7 @@ class AuthLayer {
   bool didChooseFav = false;
 
   AuthLayer() {
-    // box.erase();
+    box.erase();
     if (box.hasData('fav')) {
       if (box.read('fav') == true) {
         didChooseFav = true;
