@@ -19,6 +19,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   pinput: ^5.0.0
   hugeicons: ^0.0.7
+  custom_radio_grouped_button: ^2.2.1
 
 dev_dependencies:
   flutter_test:
