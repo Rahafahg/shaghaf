@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/screens/auth_screens/login_screen.dart';
+import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
-import 'package:shaghaf/screens/user_screens/user_home_screen.dart';
 import 'package:shaghaf/services/setup.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:shaghaf/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setup();
-  runApp(const MainApp());
+  runApp(DevicePreview(
+    enabled: true,
+    builder: (context) => const MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {
@@ -19,22 +24,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        textTheme: const TextTheme(
-          // onboarding title
-          titleLarge: TextStyle(fontFamily: "Poppins", fontSize: 40, fontWeight: FontWeight.w800, color: Constants.mainOrange),
-          // onboarding text
-          titleSmall: TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange),
-          // body & btn text
-          bodyLarge: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
-          // role card text
-          displaySmall: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600),
-          // error msg in login
-          bodySmall: TextStyle(fontSize: 14, fontFamily: "Poppins"),
-        )
-      ),
+      theme: myappTheme,
       debugShowCheckedModeBanner: false,
-      home: GetIt.I.get<AuthLayer>().user != null ? const UserHomeScreen() : const OnboardingScreen()
+      home: GetIt.I.get<AuthLayer>().user != null
+      ? GetIt.I.get<AuthLayer>().didChooseFav
+        ? const NavigationScreen()
+        : const SelectCategoriesScreen()
+      : GetIt.I.get<AuthLayer>().onboarding ? const LoginScreen() : const OnboardingScreen()
     );
   }
 }

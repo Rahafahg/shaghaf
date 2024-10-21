@@ -5,18 +5,21 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/chapes/onboarding_chape.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    
     final List<List<String>> phrases = [
       ["Discover", "the innovative community around you"],
       ["Learn", "and improve your skills in many fields"],
       ["Follow", "your passion wherever it might be"]
     ];
-    final key = GlobalKey<IntroductionScreenState>(); // to switch onboarding screen
+    final key =
+        GlobalKey<IntroductionScreenState>(); // to switch onboarding screen
     return Scaffold(
       body: IntroductionScreen(
         key: key,
@@ -35,7 +38,11 @@ class OnboardingScreen extends StatelessWidget {
             image: Image.asset("assets/images/onboarding_pic${index+1}.png", width: context.getWidth(),height: context.getHeight(),fit: BoxFit.cover,),
             bodyWidget: Stack(
               children: [
-                Image.asset('assets/images/onboarding_container.png'),
+                CustomPaint(
+                      size: Size(
+                          context.getWidth(), context.getHeight(divideBy: 2.3)),
+                      painter: RPSCustomPainter(),
+                    ),
                 Positioned(
                   bottom: 50,
                   left: 41,
@@ -43,9 +50,9 @@ class OnboardingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(phrases[index][0],style: Theme.of(context).textTheme.titleLarge,),
+                      Text(phrases[index][0],style: const TextStyle(fontFamily: "Poppins", fontSize: 40, fontWeight: FontWeight.w800, color: Constants.mainOrange)),
                       const SizedBox(height: 8),
-                      Text(phrases[index][1],style: Theme.of(context).textTheme.titleSmall,),
+                      Text(phrases[index][1],style: const TextStyle(fontFamily: "Poppins", fontSize: 16, color: Constants.mainOrange)),
                       const SizedBox(height: 50),
                       MainButton(
                         onPressed: () => index!=2 ? key.currentState?.next() : context.push(screen: const SelectRoleScreen()),
@@ -55,12 +62,7 @@ class OnboardingScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
-              ],
-            ),
-          );
-        })
-      )
-    );
+            )]));
+            })));
   }
 }

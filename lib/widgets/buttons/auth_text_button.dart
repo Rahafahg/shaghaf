@@ -16,12 +16,8 @@ class AuthTextButton extends StatelessWidget {
         child: Text(
           text,
           textAlign: text.toLowerCase().contains('already') ? TextAlign.end : null,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Constants.mainOrange,
-            decoration: TextDecoration.underline,
-            decorationColor: Constants.mainOrange,
-            fontSize: 11
-          )
+          style: const TextStyle(fontSize: 11, fontFamily: "Poppins", color: Constants.mainOrange, decoration: TextDecoration.underline,
+            decorationColor: Constants.mainOrange),
         )
       )
     );

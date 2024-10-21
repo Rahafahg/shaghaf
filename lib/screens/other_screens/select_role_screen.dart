@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/widgets/cards/role_card.dart';
 
@@ -7,6 +9,7 @@ class SelectRoleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GetIt.I.get<AuthLayer>().onboardingShown();
     return Scaffold(
       body: Container(
         width: context.getWidth(),
@@ -15,11 +18,16 @@ class SelectRoleScreen extends StatelessWidget {
           children: [
             Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
             const SizedBox(height: 55,),
-            Row(mainAxisAlignment: MainAxisAlignment.start,children: [const SizedBox(width: 47,),Text("What are you ?", style: Theme.of(context).textTheme.bodyLarge,)]),
-            const SizedBox(height: 40),
-            const RoleCard(),
-            const SizedBox(height: 40),
-            const RoleCard(isOrganizer:true)
+            const Row(mainAxisAlignment: MainAxisAlignment.start,children: [SizedBox(width: 47,),Text("What are you ?", style: TextStyle(fontSize: 18, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600))]),
+            const SizedBox(height: 78),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RoleCard(),
+            SizedBox(width: 54),
+            RoleCard(isOrganizer:true)
+              ],
+            )
           ],
         ),
       )
