@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
@@ -16,7 +18,7 @@ class OtpScreen extends StatelessWidget {
   final String? phoneNumber;
   final String? contactNumber;
   final String? name;
-  final String? image;
+  final File? image;
   final String? description;
   final String? licenseNumber;
 

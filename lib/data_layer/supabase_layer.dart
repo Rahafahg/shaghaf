@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
@@ -60,15 +61,40 @@ class SupabaseLayer {
       required String name,
       required String description,
       required String contactNumber,
-      required String image}) async {
+      required File image}) async {
     final AuthResponse response = await supabase.auth
         .verifyOTP(email: email, token: otp, type: OtpType.signup);
+    String imageUrl = "";
+    try {
+      // Upload file to Supabase storage
+      final response = await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .upload('public/${image.path.split('/').last}', image);
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
+
+    try {
+      // Upload file to Supabase storage
+      imageUrl = await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .getPublicUrl('public/${image.path.split('/').last}');
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
+
     final id = response.user!.id;
     OrganizerModel organizer = OrganizerModel.fromJson({
       'organizer_id': id,
       'email': email,
       'name': name,
-      'image': image,
+      'image': imageUrl,
       'description': description,
       'contact_number': contactNumber,
       'license_number': '123456789'

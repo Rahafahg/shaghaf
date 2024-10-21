@@ -21,7 +21,7 @@ final class VerifyOrganizerOtpEvent extends AuthEvent {
   final String email;
   final String otp;
   final String name;
-  final String image;
+  final File image;
   final String contactNumber;
   final String licenseNumber;
   final String description;
