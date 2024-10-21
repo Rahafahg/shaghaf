@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -23,7 +25,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
     TextEditingController contactNumberController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
-
+    File? image;
     return BlocProvider(
       create: (context) => AuthBloc(),
       child: Builder(builder: (context) {
@@ -51,7 +53,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                       email: emailController.text,
                       role: 'organizer',
                       name: nameController.text,
-                      image: " lNameController.text",
+                      image: image,
                       contactNumber: contactNumberController.text,
                       description: descriptionController.text,
                       licenseNumber: 'asdf'));
@@ -104,7 +106,23 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       type: 'Contact Number',
                                       controller: contactNumberController),
                                   const SizedBox(height: 10),
-                                  const AuthField(type: 'Photo (optional)'),
+                                  AuthField(
+                                      type: 'Photo (optional)',
+                                      onUploadImg: () async {
+                                        // Pick image from gallery
+                                        final photoAsFile = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.gallery);
+                                        if (photoAsFile != null) {
+                                          image = File(photoAsFile.path);
+                                          String fileName =
+                                              image!.path.split('/').last;
+                                          log("img name: $fileName");
+                                        
+                                        } else {
+                                          log('No image selected');
+                                        }
+                                      }),
                                   const SizedBox(height: 20),
                                   AuthField(
                                     type: 'Description',
