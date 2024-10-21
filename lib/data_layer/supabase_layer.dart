@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
@@ -98,6 +99,52 @@ class SupabaseLayer {
       return response;
     } catch (e) {
       return e;
+    }
+  }
+
+  Future nativeGoogleSignIn() async {
+    const webClientId =
+        '597665796791-ckkteirgascldjib553shdoc8b91p814.apps.googleusercontent.com';
+
+    const iosClientId =
+        '597665796791-gbqm8tukgrgf5b874icenmtrtr2b4rsl.apps.googleusercontent.com';
+
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: iosClientId,
+        serverClientId: webClientId,
+      );
+      final googleUser = await googleSignIn.signIn();
+      final googleAuth = await googleUser!.authentication;
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+
+      if (accessToken == null) {
+        throw 'No Access Token found.';
+      }
+      if (idToken == null) {
+        throw 'No ID Token found.';
+      }
+
+      final response = await supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+      log("you are logeed!");
+      log(response.session!.accessToken);
+      await supabase.from('users').update({'external_id': 1111111111111}).eq(
+          'user_id', response.user!.id);
+      final temp = await supabase
+          .from('users')
+          .select()
+          .eq('user_id', response.user!.id);
+      GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
+      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
+      log(GetIt.I.get<AuthLayer>().user!.email);
+       return response;
+    } catch (e) {
+      log(e.toString());
     }
   }
 }
