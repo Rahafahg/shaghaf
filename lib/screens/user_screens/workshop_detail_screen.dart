@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
@@ -49,18 +46,18 @@ class WorkshopDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Pasta Workshop Making"),
+                      Text("Pasta Workshop Making"),
                       Row(
                         children: [
                           HugeIcon(
                             icon: HugeIcons.strokeRoundedUserGroup,
                             color: Constants.textColor,
                           ),
-                          const SizedBox(width: 5),
-                          const Text("All")
+                          SizedBox(width: 5),
+                          Text("All")
                         ],
                       )
                     ],
@@ -156,17 +153,17 @@ class WorkshopDetailScreen extends StatelessWidget {
                     "Available Days",
                   ),
                   const SizedBox(height: 10),
-                  DateRadioButton(),
-                  SizedBox(
+                  const DateRadioButton(),
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     "Available Seats",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Row(
+                  const Row(
                     children: [
                       HugeIcon(
                           icon: HugeIcons.strokeRoundedSeatSelector,
@@ -181,16 +178,16 @@ class WorkshopDetailScreen extends StatelessWidget {
                     color: Constants.dividerColor,
                     thickness: 1,
                   ),
-                  Text(
+                  const Text(
                     "Location",
                   ),
-                  Row(
+                  const Row(
                     children: [
                       HugeIcon(
                         icon: HugeIcons.strokeRoundedLocation01,
                         color: Constants.mainOrange,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
@@ -205,7 +202,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                     ],
                   ),
                   Center(child: Image.asset("assets/images/map_defult.png")),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Row(
@@ -215,13 +212,13 @@ class WorkshopDetailScreen extends StatelessWidget {
                         children: [
                           IconButton(
                               onPressed: () {},
-                              icon: HugeIcon(
+                              icon: const HugeIcon(
                                   icon: HugeIcons.strokeRoundedPlusSignSquare,
                                   color: Constants.mainOrange)),
-                          Text("1"),
+                          const Text("1"),
                           IconButton(
                               onPressed: () {},
-                              icon: HugeIcon(
+                              icon: const HugeIcon(
                                   icon: HugeIcons.strokeRoundedMinusSignSquare,
                                   color: Constants.mainOrange))
                         ],
@@ -232,7 +229,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Constants.mainOrange,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
                           ),
                         ),

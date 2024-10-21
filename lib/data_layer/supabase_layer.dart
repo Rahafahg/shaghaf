@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math' as mm;
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -205,6 +206,7 @@ class SupabaseLayer {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
     GetIt.I.get<DataLayer>().workshops = workshops;
+    GetIt.I.get<DataLayer>().workshopOfTheWeek = workshops[mm.Random().nextInt(workshops.length)];
   }
 
   getAllCategories() async {

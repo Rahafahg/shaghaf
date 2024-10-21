@@ -85,7 +85,8 @@ class ProfileScreen extends StatelessWidget {
                   fixedSize: const Size(130, 34)),
               onPressed: () {
                 GetIt.I.get<AuthLayer>().user = null;
-                GetIt.I.get<AuthLayer>().box.erase();
+                GetIt.I.get<AuthLayer>().box.remove('user');
+                GetIt.I.get<AuthLayer>().box.remove('organizer');
                 context.pushRemove(screen: const LoginScreen());
               },
               child: const Row(

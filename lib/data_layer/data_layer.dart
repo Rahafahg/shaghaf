@@ -4,4 +4,5 @@ import 'package:shaghaf/models/workshop_group_model.dart';
 class DataLayer {
   List<CategoriesModel> categories = [];
   List<WorkshopGroupModel> workshops = [];
+  WorkshopGroupModel? workshopOfTheWeek;
 }

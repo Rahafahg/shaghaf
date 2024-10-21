@@ -13,7 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setup();
   runApp(DevicePreview(
-    enabled: true,
+    enabled: false,
     builder: (context) => const MainApp(),
   ));
 }

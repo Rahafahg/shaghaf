@@ -6,6 +6,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
+import 'package:shaghaf/screens/user_screens/my_workshops_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile_screen.dart';
 
 class NavigationScreen extends StatelessWidget {
@@ -15,25 +16,15 @@ class NavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => UserHomeBloc()..add(GetWorkshopsEvent()),
-        ),
-        BlocProvider(
-          create: (context) => NavigationBloc(),
-        ),
-        // other blocs can be added here
+        BlocProvider(create: (context) => UserHomeBloc()..add(GetWorkshopsEvent())),
+        BlocProvider(create: (context) => NavigationBloc()),
       ],
       child: Scaffold(
         body: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             return IndexedStack(
               index: context.read<NavigationBloc>().currentScreen,
-              children: [
-                UserHomeScreen(),
-                Placeholder(),
-                Placeholder(),
-                ProfileScreen(),
-              ],
+              children: const [UserHomeScreen(),Placeholder(),MyWorkshopsScreen(),ProfileScreen(),],
             );
           },
         ),
@@ -44,9 +35,7 @@ class NavigationScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 0.3),
               child: NavigationBar(
                 selectedIndex: context.read<NavigationBloc>().currentScreen,
-                onDestinationSelected: (value) => context
-                    .read<NavigationBloc>()
-                    .add(SwitchScreenEvent(targetPage: value)),
+                onDestinationSelected: (value) => context.read<NavigationBloc>().add(SwitchScreenEvent(targetPage: value)),
                 height: context.getHeight(divideBy: 15),
                 destinations: [
                   NavigationDestination(
