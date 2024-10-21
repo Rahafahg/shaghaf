@@ -17,10 +17,10 @@ class NotificationCard extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.shade300,
             blurRadius: 4,
-            offset: Offset(4, 8), // Shadow position
+            offset: const Offset(4, 8), // Shadow position
           ),
         ],
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         color: Constants.cardColor,
       ),
       child: Padding(
@@ -30,12 +30,12 @@ class NotificationCard extends StatelessWidget {
               CrossAxisAlignment.start, // Align text to the left
           children: [
             Text(
-              "$title",
+              title,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 8), // Add spacing between texts if needed
+            const SizedBox(height: 8), // Add spacing between texts if needed
             Text(
-              "$body",
+              body,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],

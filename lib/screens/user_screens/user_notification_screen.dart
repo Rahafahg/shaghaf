@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
-import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/widgets/cards/notification_card.dart';
 
 class UserNotificationScreen extends StatelessWidget {
@@ -39,14 +38,14 @@ class UserNotificationScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 20),
-            NotificationCard(
+            const NotificationCard(
               title: "Check the new workshop!",
               body: "data to bee displayed in here for the notification",
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            NotificationCard(
+            const NotificationCard(
               title: "Another Notificatio",
               body: "this is the body of the notification",
             )

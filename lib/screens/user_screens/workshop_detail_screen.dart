@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
-  const WorkshopDetailScreen({super.key});
+  final WorkshopGroupModel workshop;
+  const WorkshopDetailScreen({super.key, required this.workshop});
 
   @override
   Widget build(BuildContext context) {
