@@ -9,8 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future<void> setup() async {
   await GetStorage.init();
   await dotenv.load();
-  await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL']!, anonKey: dotenv.env['SUPABASE_ANON']!);
+  await Supabase.initialize(url: dotenv.env['SUPABASE_URL']!, anonKey: dotenv.env['SUPABASE_ANON']!);
   GetIt.I.registerSingleton<AuthLayer>(AuthLayer());
   GetIt.I.registerSingleton<SupabaseLayer>(SupabaseLayer());
   GetIt.I.registerSingleton<DataLayer>(DataLayer());

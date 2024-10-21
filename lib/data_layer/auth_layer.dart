@@ -8,10 +8,15 @@ class AuthLayer {
   UserModel? user;
   OrganizerModel? organizer;
   bool didChooseFav = false;
+  bool onboarding = false;
   final box = GetStorage();
 
   AuthLayer() {
     // box.erase();
+    if(box.hasData('onboarding')) {
+      log('onboarding already shown');
+      onboarding = true;
+    }
     if (box.hasData('fav')) {
       if (box.read('fav') == true) {
         didChooseFav = true;
@@ -36,6 +41,11 @@ class AuthLayer {
       return true;
     }
     return false;
+  }
+
+  onboardingShown() {
+    onboarding = true;
+    box.write('onboarding', true);
   }
 
   favChosen() {

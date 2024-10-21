@@ -12,6 +12,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final List<List<String>> phrases = [
       ["Discover", "the innovative community around you"],
       ["Learn", "and improve your skills in many fields"],
