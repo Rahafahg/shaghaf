@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
@@ -9,6 +9,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
+import 'package:otp_timer_button/otp_timer_button.dart';
 
 class OtpScreen extends StatelessWidget {
   final String email;
@@ -137,7 +138,19 @@ class OtpScreen extends StatelessWidget {
                                         color: Colors.white70,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)))),
-                              )
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Didn’t receive code ? ", style: TextStyle(color: Color(0xff666666),fontFamily: "Poppins", fontSize: 12),),
+                                  OtpTimerButton(
+                                    onPressed: ()=>log("handle me"),
+                                    text: const Text("Re-send", style: TextStyle(fontFamily: "Poppins", color: Constants.mainOrange, fontSize: 12),),
+                                    duration: 60,
+                                    buttonType: ButtonType.text_button,
+                                  ),
+                                ],
+                              ),
                             ],
                           )),
                     ),

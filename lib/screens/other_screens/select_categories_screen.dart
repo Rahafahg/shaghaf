@@ -6,7 +6,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/screens/user_screens/user_home_screen.dart';
+import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 class SelectCategoriesScreen extends StatelessWidget {
   const SelectCategoriesScreen({super.key});

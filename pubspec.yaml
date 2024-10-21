@@ -23,6 +23,7 @@ dependencies:
   device_preview: ^1.2.0
   flutter_svg: ^2.0.10+1
   google_sign_in: ^6.2.1
+  otp_timer_button: ^1.1.1
 
 dev_dependencies:
   flutter_test:

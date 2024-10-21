@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
-class workshopCard extends StatelessWidget {
+class WorkshopCard extends StatelessWidget {
   final String title;
   final String subCatigory;
   final String date;
   final String rate;
-  const workshopCard(
+  final String img;
+  const WorkshopCard(
       {super.key,
       required this.title,
       required this.subCatigory,
       required this.date,
-      required this.rate});
+      required this.rate,
+      required this.img
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class workshopCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         color: Colors.green,
         image: DecorationImage(
-          image: AssetImage("assets/images/pasta_workshop.png"),
+          image: img.isEmpty ? AssetImage('assets/images/pottery.png') : NetworkImage(img),
           fit: BoxFit.cover,
         ),
         boxShadow: [

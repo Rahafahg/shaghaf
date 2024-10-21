@@ -8,7 +8,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/organizer_home_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
-import 'package:shaghaf/screens/user_screens/user_home_screen.dart';
+import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 import 'package:shaghaf/widgets/buttons/auth_text_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
