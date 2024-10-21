@@ -11,7 +11,7 @@ class AuthLayer {
   final box = GetStorage();
 
   AuthLayer() {
-    log(box.hasData('user').toString());
+    // box.erase();
     if (box.hasData('fav')) {
       if (box.read('fav') == true) {
         didChooseFav = true;
