@@ -4,6 +4,7 @@ import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
@@ -14,6 +15,7 @@ class SelectCategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> selected = [];
+    final categories = GetIt.I.get<DataLayer>().categories;
     return Scaffold(
       appBar: AppBar(centerTitle: true,title: Image.asset('assets/images/logo.png',height: 50)),
       body: SafeArea(
@@ -28,20 +30,20 @@ class SelectCategoriesScreen extends StatelessWidget {
                 MultiSelectContainer(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  items: List.generate(8, (index) => MultiSelectCard(
+                  items: List.generate(categories.length, (index) => MultiSelectCard(
                     value: 'value${index + 1}',
                     decorations: MultiSelectItemDecorations(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      decoration:  BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         image: DecorationImage(
-                          image: AssetImage('assets/images/pottery.png'),
+                          image: NetworkImage(categories[index].image),
                           fit: BoxFit.cover,
                         ),
                       ),
                       selectedDecoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(Radius.circular(10)),
                         image: DecorationImage(
-                          image: const AssetImage('assets/images/pottery.png'),
+                          image: NetworkImage(categories[index].image),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
                           Constants.mainOrange.withOpacity(0.3),
@@ -54,7 +56,7 @@ class SelectCategoriesScreen extends StatelessWidget {
                       width: 160,
                       height: 140,
                       alignment: Alignment.center,
-                      child: Text('category ${index+1}',style: const TextStyle(color: Colors.white,fontSize: 24, fontFamily: "Poppins")),
+                      child: Text(categories[index].categoryName,style: const TextStyle(color: Colors.white,fontSize: 22, fontFamily: "Poppins")),
                     ),
                   )),
                   onChange: (selectedItems, selectedItem) {

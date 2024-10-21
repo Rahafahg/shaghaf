@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
+import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -62,32 +64,34 @@ class SupabaseLayer {
       required String name,
       required String description,
       required String contactNumber,
-      required File image}) async {
+      required File? image}) async {
     final AuthResponse response = await supabase.auth
         .verifyOTP(email: email, token: otp, type: OtpType.signup);
     String imageUrl = "";
-    try {
-      // Upload file to Supabase storage
-      final response = await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .upload('public/${image.path.split('/').last}', image);
-    } catch (e) {
-      log('Error uploading image: $e');
-    }
+    if (image != null) {
+      try {
+        // Upload file to Supabase storage
+        final response = await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .upload('public/${image!.path.split('/').last}', image);
+      } catch (e) {
+        log('Error uploading image: $e');
+      }
 
-    try {
-      // Upload file to Supabase storage
-      imageUrl = await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .getPublicUrl('public/${image.path.split('/').last}');
-    } catch (e) {
-      log('Error uploading image: $e');
+      try {
+        // Upload file to Supabase storage
+        imageUrl = await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .getPublicUrl('public/${image.path.split('/').last}');
+      } catch (e) {
+        log('Error uploading image: $e');
+      }
     }
 
     final id = response.user!.id;
@@ -172,5 +176,34 @@ class SupabaseLayer {
     } catch (e) {
       log(e.toString());
     }
+}
+getAllCategories() async {
+    final categoriesAsMap = await supabase.from('categories').select();
+    log(categoriesAsMap.toString());
+
+    // Convert the map into a list of CategoriesModel
+    final List<CategoriesModel> categories =
+        categoriesAsMap.map<CategoriesModel>((category) {
+      return CategoriesModel.fromJson(category);
+    }).toList();
+
+    // Separate the 'Others' category from the list
+    final List<CategoriesModel> othersCategory = categories
+        .where((category) => category.categoryName == 'Others')
+        .toList();
+    final List<CategoriesModel> otherCategories = categories
+        .where((category) => category.categoryName != 'Others')
+        .toList();
+
+    // Add 'Others' at the end of the list
+    final List<CategoriesModel> orderedCategories = [
+      ...otherCategories,
+      ...othersCategory
+    ];
+
+    // Assign the ordered categories to the DataLayer
+    GetIt.I.get<DataLayer>().categories = orderedCategories;
+
+    log(GetIt.I.get<DataLayer>().categories.toString());
   }
 }
