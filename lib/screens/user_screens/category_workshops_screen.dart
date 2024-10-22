@@ -5,6 +5,7 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
+import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class CategoryWorkshopsScreen extends StatelessWidget {
   final CategoriesModel category;
@@ -35,7 +36,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView.separated(
-            itemBuilder: (context,index)=> MyWorkShopsCard(workshop: categoryWorkshops[index]),
+            itemBuilder: (context,index)=> WorkshopCard(workshop: categoryWorkshops[index], shape: 'rect',),
             separatorBuilder: (context,index)=> const SizedBox(height: 20,),
             itemCount: categoryWorkshops.length
           )
