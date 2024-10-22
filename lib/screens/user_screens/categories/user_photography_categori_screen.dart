@@ -3,12 +3,12 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 
-class UserCokkingCategoriScreen extends StatelessWidget {
-  const UserCokkingCategoriScreen({super.key});
+class UserPhotographyCategoriScreen extends StatelessWidget {
+  const UserPhotographyCategoriScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  return Scaffold(
         backgroundColor: Constants.backgroundColor,
         appBar: AppBar(
             leading: IconButton(
@@ -23,7 +23,7 @@ class UserCokkingCategoriScreen extends StatelessWidget {
             forceMaterialTransparency: true,
             centerTitle: true,
             title: const Text(
-              "Cook",
+              "Photography",
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: "Poppins",

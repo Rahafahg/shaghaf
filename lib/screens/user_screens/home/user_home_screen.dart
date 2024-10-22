@@ -1,3 +1,4 @@
+import 'dart:math' as mm;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -77,16 +78,16 @@ class UserHomeScreen extends StatelessWidget {
                           height: 40,
                           child: TextField(
                             onChanged: (value) => context.read<UserHomeBloc>().add(HomeSearchEvent(search: value)),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              hintText: 'Search for a workshop ...',
-                              hintStyle: const TextStyle(fontSize: 12, color: Colors.black45),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: const Icon(Icons.search,color: Constants.lightGreen),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                            ),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.zero,
+                            hintText: 'Search for a workshop ...',
+                            hintStyle: const TextStyle(fontSize: 12, color: Colors.black45),
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(Icons.search,color: Constants.lightGreen),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                           ),
+                        ),
                         ),
                         state.workshops.isEmpty && state.search == true
                         ? SizedBox(height: context.getHeight(divideBy: 2),child: const Center(child: Text("No workshops found")))

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -10,10 +8,10 @@ class DateRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomRadioButton(
-      buttonTextStyle: const ButtonTextStyle(
+      buttonTextStyle: ButtonTextStyle(
         selectedColor: Colors.white,
         unSelectedColor: Constants.mainOrange,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 16,
         ),
       ),
@@ -34,7 +32,7 @@ class DateRadioButton extends StatelessWidget {
         "13 Sep",
       ],
       radioButtonValue: (value) {
-        log(value);
+        print(value);
       },
       selectedColor: Constants.mainOrange,
 

@@ -7,6 +7,9 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
+import 'package:shaghaf/extensions/screen_nav.dart';
+import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/user_screens/user_ticket_screen.dart';
 
 class MyWorkShopsCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -15,7 +18,9 @@ class MyWorkShopsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.push(screen: WorkshopDetailScreen(workshop: workshop)),
+      onTap: () {
+        context.push(screen: UserTicketScreen());
+      },
       child: Container(
         alignment: Alignment.center,
         width: context.getWidth(divideBy: 1.1),
