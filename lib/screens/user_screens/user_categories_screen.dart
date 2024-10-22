@@ -56,6 +56,7 @@ class UserCategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         centerTitle: true,
         title: Image.asset(
           'assets/images/logo.png',
@@ -75,8 +76,7 @@ class UserCategoriesScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10.0,
                   crossAxisSpacing: 10.0,
-                  childAspectRatio: 1.2
-                  ),
+                  childAspectRatio: 1.2),
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 return CategoryCard(
