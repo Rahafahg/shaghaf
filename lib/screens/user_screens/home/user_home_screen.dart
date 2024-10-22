@@ -187,39 +187,10 @@ class UserHomeScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 18,color: Constants.textColor,fontFamily: "Poppins")
                             )
                           ),
-                          DefaultTabController(
-                            length: categoriesWidgets.length,
-                            child: TabBar(
-                              onTap: (index) => bloc.add(ChangeCategoryEvent(category: categories[index])),
-                              tabAlignment: TabAlignment.start,
-                              overlayColor: WidgetStateColor.transparent,
-                              padding: EdgeInsets.zero,
-                              indicatorPadding: EdgeInsets.zero,
-                              labelPadding: EdgeInsets.zero,
-                              indicator: const BoxDecoration(color: Colors.transparent),
-                              isScrollable: true,
-                              dividerColor: Colors.transparent,
-                              indicatorColor: Colors.transparent,
-                              tabs: categories.map((category) {
-                                final isSelected = selectedCategory == category;
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-                                    decoration: BoxDecoration(
-                                      color: isSelected ? Constants.mainOrange : Colors.white,
-                                      border: Border.all(color:Constants.mainOrange),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(category,style: TextStyle(color: isSelected ? const Color.fromARGB(255,255, 255, 255) : Constants.mainOrange)),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
+                          ContainersTabBar(
+                            tabs: categories,
+                            selectedTab: selectedCategory,
+                            onTap: (index) => bloc.add(ChangeCategoryEvent(category: categories[index])),
                           ),
                           // suggested for you
                           GridView.builder(
