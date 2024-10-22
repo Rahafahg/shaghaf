@@ -14,24 +14,40 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   UserHomeBloc() : super(UserHomeInitial()) {
     on<GetWorkshopsEvent>(getWorkshopsMethod);
     on<HomeSearchEvent>(searchMethod);
+    on<ChangeCategoryEvent>(changeCategory);
   }
 
-  FutureOr<void> searchMethod(HomeSearchEvent event, Emitter<UserHomeState> emit) {
-    if(event.search.isEmpty) {
-      emit(SuccessWorkshopsState(search: false, workshops: dataLayer.workshops));
-    }
-    else {
-      emit(SuccessWorkshopsState(search: true, workshops: dataLayer.workshops.where((workshop)=>workshop.title.contains(event.search)).toList()));
+  FutureOr<void> searchMethod(
+      HomeSearchEvent event, Emitter<UserHomeState> emit) {
+    if (event.search.isEmpty) {
+      emit(
+          SuccessWorkshopsState(search: false, workshops: dataLayer.workshops));
+    } else {
+      emit(SuccessWorkshopsState(
+          search: true,
+          workshops: dataLayer.workshops
+              .where((workshop) => workshop.title.contains(event.search))
+              .toList()));
     }
   }
 
-  FutureOr<void> getWorkshopsMethod(GetWorkshopsEvent event, Emitter<UserHomeState> emit) async {
+  FutureOr<void> getWorkshopsMethod(
+      GetWorkshopsEvent event, Emitter<UserHomeState> emit) async {
     try {
       emit(LoadingWorkshopsState());
       await supabaseLayer.getAllWorkshops();
-      emit(SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
+      emit(
+          SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
     } catch (e) {
       emit(ErrorWorkshopsState(msg: 'Bad Internet Connection :('));
     }
+  }
+
+  FutureOr<void> changeCategory(
+      ChangeCategoryEvent event, Emitter<UserHomeState> emit) {
+    emit(SuccessWorkshopsState(
+        workshops: dataLayer.workshops,
+        search: false,
+        selectedCategory: event.category));
   }
 }

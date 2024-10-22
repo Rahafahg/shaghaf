@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
@@ -116,6 +117,11 @@ class SelectCategoriesScreen extends StatelessWidget {
                             .update({'favorite_categories': categories}).eq(
                                 'user_id',
                                 GetIt.I.get<AuthLayer>().user!.userId);
+                        GetIt.I.get<AuthLayer>().user!.favoriteCategories =
+                            categories;
+
+                        GetStorage()
+                            .write('user', GetIt.I.get<AuthLayer>().user);
                         context.pushRemove(screen: const NavigationScreen());
                       }
                     })
