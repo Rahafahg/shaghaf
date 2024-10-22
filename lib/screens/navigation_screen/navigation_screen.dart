@@ -6,9 +6,9 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
-import 'package:shaghaf/screens/user_screens/my_workshops_screen.dart';
-import 'package:shaghaf/screens/user_screens/profile_screen.dart';
-import 'package:shaghaf/screens/user_screens/user_categories_screen.dart';
+import 'package:shaghaf/screens/user_screens/workshops/my_workshops_screen.dart';
+import 'package:shaghaf/screens/user_screens/profile/profile_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_categories_screen.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
-import 'package:shaghaf/screens/user_screens/category_workshops_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/category_workshops_screen.dart';
 
 class UserCategoriesScreen extends StatelessWidget {
   const UserCategoriesScreen({super.key});

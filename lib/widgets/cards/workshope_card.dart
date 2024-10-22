@@ -3,20 +3,19 @@ import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
-import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
-import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 
 class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
   final String shape;
-  const WorkshopCard({super.key,required this.workshop, this.shape='square'});
+  final Function()? onTap;
+  const WorkshopCard({super.key,required this.workshop, this.shape='square', this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: workshop)),
+      onTap: onTap,
       child: shape=='square' ? Container(
         width: context.getWidth(divideBy: 2.3),
         height: context.getHeight(divideBy: 3.5),
@@ -24,25 +23,17 @@ class WorkshopCard extends StatelessWidget {
           color: Colors.green,
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
-            image: workshop.image.isNotEmpty ? Image.network(workshop.image, loadingBuilder: (context, child, loadingProgress) => const CircularProgressIndicator(),).image : const AssetImage("assets/images/pasta_workshop.png"),
+            image: workshop.image.isNotEmpty ? Image.network(workshop.image).image : const AssetImage("assets/images/pasta_workshop.png"),
             fit: BoxFit.cover,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 4,
-              offset: const Offset(4, 8), // Shadow position
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.grey.shade300,blurRadius: 4,offset: const Offset(4, 8))],
         ),
         child: Column(
           children: [
             const Spacer(),
             Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),topRight: Radius.circular(10.0)),
                 color: Constants.cardColor,
               ),
               width: context.getWidth(),
@@ -53,11 +44,7 @@ class WorkshopCard extends StatelessWidget {
                   children: [
                     Text(
                       workshop.title,
-                      style: const TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w200,
-                      ),
+                      style: const TextStyle(fontFamily: "Poppins",fontSize: 12,fontWeight: FontWeight.w200,),
                     ),
                     Text(
                       GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryId==workshop.categoryId).categoryName,
@@ -66,8 +53,7 @@ class WorkshopCard extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today,
-                            size: 16, color: Colors.grey),
+                        const Icon(Icons.calendar_today,size: 16, color: Colors.grey),
                         const SizedBox(width: 4),
                         Text(
                           workshop.workshops.isEmpty ? 'handle me later' : workshop.workshops.first.date,
@@ -90,9 +76,7 @@ class WorkshopCard extends StatelessWidget {
           ],
         ),
       )
-      : InkWell(
-      onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: workshop)),
-      child: Container(
+      : Container(
         alignment: Alignment.center,
         width: context.getWidth(divideBy: 1.1),
         height: context.getHeight(divideBy: 6.2),
@@ -100,27 +84,18 @@ class WorkshopCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: Constants.cardColor,
           border: Border.all(color: Constants.appGreyColor),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 4,
-              offset: const Offset(4, 8), // Shadow position
-            ),
-          ],
+          boxShadow: [BoxShadow(color: Colors.grey.shade300,blurRadius: 4,offset: const Offset(4, 8))],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10)),
-                child: SizedBox(
-                  width: context.getWidth(divideBy: 3.5),
-                  child: workshop.image.isNotEmpty ? Image.network(workshop.image, fit: BoxFit.cover,) : Image.asset(
-                    "assets/images/pasta_workshop.png",
-                  ),
-                )),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+              child: SizedBox(
+                width: context.getWidth(divideBy: 3.5),
+                child: workshop.image.isNotEmpty ? Image.network(workshop.image, fit: BoxFit.cover,) : Image.asset("assets/images/pasta_workshop.png",),
+              )
+            ),
             const SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -203,8 +178,7 @@ class WorkshopCard extends StatelessWidget {
             )
           ],
         ),
-      ),
-    )
+      )
     );
   }
 }

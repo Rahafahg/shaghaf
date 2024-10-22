@@ -4,6 +4,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/models/categories_model.dart';
+import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class CategoryWorkshopsScreen extends StatelessWidget {
@@ -35,7 +36,11 @@ class CategoryWorkshopsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView.separated(
-            itemBuilder: (context,index)=> WorkshopCard(workshop: categoryWorkshops[index], shape: 'rect',),
+            itemBuilder: (context,index)=> WorkshopCard(
+              workshop: categoryWorkshops[index],
+              shape: 'rect',
+              onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: categoryWorkshops[index]))
+            ),
             separatorBuilder: (context,index)=> const SizedBox(height: 20,),
             itemCount: categoryWorkshops.length
           )
