@@ -16,6 +16,7 @@ import 'package:shaghaf/screens/user_screens/user_notification_screen.dart';
 import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
+import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/tapbar/tap_custom.dart';
 
 class UserHomeScreen extends StatelessWidget {
@@ -27,10 +28,9 @@ class UserHomeScreen extends StatelessWidget {
     List<String> categories = ['All'];
     categories.addAll(user!.favoriteCategories.split(','));
 
-    log(categories.toString());
-    List<Widget> categoriesWidgets =
-        categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
+    String? selectedCategory = "All";
+    log(selectedCategory);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -90,7 +90,7 @@ class UserHomeScreen extends StatelessWidget {
                   WorkshopGroupModel workshopOfTheWeek =
                       GetIt.I.get<DataLayer>().workshopOfTheWeek ??
                           workshops.first;
-                  var selectedCategory = state.selectedCategory;
+                  selectedCategory = state.selectedCategory ?? "All";
 
                   // body
                   return SingleChildScrollView(
@@ -213,64 +213,71 @@ class UserHomeScreen extends StatelessWidget {
                                                 fontSize: 18,
                                                 color: Constants.textColor,
                                                 fontFamily: "Poppins"))),
-                                    DefaultTabController(
-                                      length: categoriesWidgets.length,
-                                      child: TabBar(
-                                        onTap: (index) => bloc.add(
-                                            ChangeCategoryEvent(
-                                                category: categories[index])),
-                                        tabAlignment: TabAlignment.start,
-                                        overlayColor:
-                                            WidgetStateColor.transparent,
-                                        padding: EdgeInsets.zero,
-                                        indicatorPadding: EdgeInsets.zero,
-                                        labelPadding: EdgeInsets.zero,
-                                        indicator: const BoxDecoration(
-                                          color: Colors
-                                              .transparent, // Removes any visible indicator
-                                        ),
-                                        isScrollable: true,
-                                        dividerColor: Colors.transparent,
-                                        indicatorColor: Colors.transparent,
-                                        tabs: categories.map((category) {
-                                          final isSelected =
-                                              selectedCategory == category;
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 20),
-                                              decoration: BoxDecoration(
-                                                color: isSelected
-                                                    ? Constants.mainOrange
-                                                    : Colors.white,
-                                                border: Border.all(
-                                                    color:
-                                                        Constants.mainOrange),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Text(category,
-                                                      style: TextStyle(
-                                                        color: isSelected
-                                                            ? const Color
-                                                                .fromARGB(255,
-                                                                255, 255, 255)
-                                                            : Constants
-                                                                .mainOrange,
-                                                      )),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
+                                    // DefaultTabController(
+                                    //   length: categories.length,
+                                    //   child: TabBar(
+                                    //     onTap: (index) => bloc.add(
+                                    //         ChangeCategoryEvent(
+                                    //             category: categories[index])),
+                                    //     tabAlignment: TabAlignment.start,
+                                    //     overlayColor:
+                                    //         WidgetStateColor.transparent,
+                                    //     padding: EdgeInsets.zero,
+                                    //     indicatorPadding: EdgeInsets.zero,
+                                    //     labelPadding: EdgeInsets.zero,
+                                    //     indicator: const BoxDecoration(
+                                    //       color: Colors
+                                    //           .transparent, // Removes any visible indicator
+                                    //     ),
+                                    //     isScrollable: true,
+                                    //     dividerColor: Colors.transparent,
+                                    //     indicatorColor: Colors.transparent,
+                                    //     tabs: categories.map((category) {
+                                    //       final isSelected =
+                                    //           selectedCategory == category;
+                                    //       return Padding(
+                                    //         padding: const EdgeInsets.all(8.0),
+                                    //         child: Container(
+                                    //           padding:
+                                    //               const EdgeInsets.symmetric(
+                                    //                   vertical: 5,
+                                    //                   horizontal: 20),
+                                    //           decoration: BoxDecoration(
+                                    //             color: isSelected
+                                    //                 ? Constants.mainOrange
+                                    //                 : Colors.white,
+                                    //             border: Border.all(
+                                    //                 color:
+                                    //                     Constants.mainOrange),
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(10),
+                                    //           ),
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Text(category,
+                                    //                   style: TextStyle(
+                                    //                     color: isSelected
+                                    //                         ? const Color
+                                    //                             .fromARGB(255,
+                                    //                             255, 255, 255)
+                                    //                         : Constants
+                                    //                             .mainOrange,
+                                    //                   )),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       );
+                                    //     }).toList(),
+                                    //   ),
+                                    // ),
+                                    // // suggested for you
+                                    ContainersTabBar(
+                                      tabs: categories,
+                                      selectedTab: selectedCategory,
+                                      onTap: (index) => bloc.add(
+                                          ChangeCategoryEvent(
+                                              category: categories[index])),
                                     ),
-                                    // suggested for you
                                     GridView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(),
