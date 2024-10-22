@@ -40,28 +40,26 @@ class AuthField extends StatelessWidget {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w600))),
         type == 'Photo (optional)'
-            ? InkWell(
-                onTap: onUploadImg,
-                child: TextFormField(
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white70,
-                    hintText: "Upload photo",
-                    hintStyle: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Poppins",
-                        color: Color(0xff666666)),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(20.0)), // Circular border radius
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 16.0), // Reducing height
-                  ),
+            ? TextFormField(
+              readOnly: true,
+              onTap: onUploadImg,
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Colors.white70,
+                hintText: "Upload photo",
+                hintStyle: TextStyle(
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                    color: Color(0xff666666)),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(20.0)), // Circular border radius
                 ),
-              )
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 16.0), // Reducing height
+              ),
+            )
             : TextFormField(
                 controller: controller,
                 obscureText: type == 'Password',

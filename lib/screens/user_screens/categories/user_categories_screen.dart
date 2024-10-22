@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
+import 'package:shaghaf/screens/user_screens/categories/bloc/categories_bloc.dart';
 import 'package:shaghaf/screens/user_screens/categories/category_workshops_screen.dart';
 
 class UserCategoriesScreen extends StatelessWidget {
@@ -37,7 +39,9 @@ class UserCategoriesScreen extends StatelessWidget {
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) => InkWell(
-                  onTap: () => context.push(screen: CategoryWorkshopsScreen(category: categories[index],)),
+                  onTap: () {
+                    context.push(screen: CategoryWorkshopsScreen(category: categories[index], bloc: context.read<CategoriesBloc>()..add(CategorySearchEvent(category: categories[index], searchTerm: '')),));
+                  },
                   child: Container(
                   width: 160,
                   height: 140,

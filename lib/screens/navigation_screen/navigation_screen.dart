@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
+import 'package:shaghaf/screens/user_screens/categories/bloc/categories_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 import 'package:shaghaf/screens/user_screens/workshops/my_workshops_screen.dart';
@@ -22,6 +23,9 @@ class NavigationScreen extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => NavigationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoriesBloc(),
         ),
         // other blocs can be added here
       ],

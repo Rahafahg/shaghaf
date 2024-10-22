@@ -15,6 +15,7 @@ import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/tapbar/tap_custom.dart';
+import 'package:shaghaf/widgets/text_fields/search_field.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -86,18 +87,7 @@ class UserHomeScreen extends StatelessWidget {
                         // search bar
                         SizedBox(
                           height: 40,
-                          child: TextField(
-                            onChanged: (value) => bloc.add(HomeSearchEvent(search: value)),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              hintText: 'Search for a workshop ...',
-                              hintStyle: const TextStyle(fontSize: 12, color: Colors.black45),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: const Icon(Icons.search,color: Constants.lightGreen),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: SearchField(onChanged: (value)=> bloc.add(HomeSearchEvent(search: value)))
                         ),
                         state.workshops.isEmpty && state.search == true
                         ? Column(
