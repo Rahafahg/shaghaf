@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:get_it/get_it.dart';
@@ -103,15 +104,18 @@ class SelectCategoriesScreen extends StatelessWidget {
                         log(selected.toString());
                         log(favCategories.length.toString());
                         GetIt.I.get<AuthLayer>().favChosen();
+                        String categories = selected.join(
+                            ','); // Separates categories with a comma and space
 
-                        // await GetIt.I
-                        //     .get<SupabaseLayer>()
-                        //     .supabase
-                        //     .from('favorite_categories')
-                        //     .insert({
-                        //   'user_id': GetIt.I.get<AuthLayer>().user!.userId,
-                        //   'category_id': favCategories.first.categoryId
-                        // });
+                        log(categories);
+                        log(GetIt.I.get<AuthLayer>().user!.userId);
+                        await GetIt.I
+                            .get<SupabaseLayer>()
+                            .supabase
+                            .from('users')
+                            .update({'favorite_categories': categories}).eq(
+                                'user_id',
+                                GetIt.I.get<AuthLayer>().user!.userId);
                         context.pushRemove(screen: const NavigationScreen());
                       }
                     })
