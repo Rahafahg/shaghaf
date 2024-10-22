@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -38,9 +39,9 @@ class LoginScreen extends StatelessWidget {
               showDialog(
                   barrierDismissible: false,
                   context: context,
-                  builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                          color: Constants.mainOrange)));
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
@@ -170,7 +171,8 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 GestureDetector(
-                                  onTap: () => context.pushRemove(screen: const NavigationScreen()),
+                                  onTap: () => context.pushRemove(
+                                      screen: const NavigationScreen()),
                                   child: Container(
                                     width: context.getWidth(),
                                     height: 45,
