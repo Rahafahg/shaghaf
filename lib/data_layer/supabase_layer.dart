@@ -191,7 +191,7 @@ class SupabaseLayer {
           .select()
           .eq('user_id', response.user!.id);
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
+      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user!.toJson());
       log(GetIt.I.get<AuthLayer>().user!.email);
       return response;
     } catch (e) {
