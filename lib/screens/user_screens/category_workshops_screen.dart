@@ -4,7 +4,6 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/models/categories_model.dart';
-import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class CategoryWorkshopsScreen extends StatelessWidget {

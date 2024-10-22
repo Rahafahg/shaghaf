@@ -6,7 +6,6 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
-import 'package:shaghaf/screens/user_screens/user_ticket_screen.dart';
 import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 
 class WorkshopCard extends StatelessWidget {

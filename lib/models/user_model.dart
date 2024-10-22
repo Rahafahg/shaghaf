@@ -1,22 +1,21 @@
 class UserModel {
-  UserModel({
-    required this.userId,
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
-    required this.favoriteCategories,
-    required this.externalId
-  });
+  UserModel(
+      {required this.userId,
+      required this.email,
+      required this.firstName,
+      required this.lastName,
+      required this.phoneNumber,
+      required this.favoriteCategories,
+      required this.externalId});
   late final String userId;
   late final String email;
   late final String firstName;
   late final String lastName;
   late final String phoneNumber;
-  late final String favoriteCategories;
+  late String favoriteCategories;
   late final String externalId;
-  
-  UserModel.fromJson(Map<String, dynamic> json){
+
+  UserModel.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     email = json['email'];
     firstName = json['first_name'];

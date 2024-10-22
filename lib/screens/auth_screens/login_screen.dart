@@ -170,8 +170,7 @@ class LoginScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 GestureDetector(
-                                  onTap: () => log(
-                                      "No validation required, im a guest !!"),
+                                  onTap: () => context.pushRemove(screen: const NavigationScreen()),
                                   child: Container(
                                     width: context.getWidth(),
                                     height: 45,
