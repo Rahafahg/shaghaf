@@ -28,7 +28,7 @@ class UserHomeScreen extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size(context.getWidth(), context.getHeight(divideBy: 13)),
           child: Padding(
-            padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
+            padding: const EdgeInsets.only(top: 11, right: 16, left: 16),
             child: AppBar(
               backgroundColor: Constants.backgroundColor,
               actions: [

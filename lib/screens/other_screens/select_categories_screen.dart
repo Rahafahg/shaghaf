@@ -104,14 +104,14 @@ class SelectCategoriesScreen extends StatelessWidget {
                         log(favCategories.length.toString());
                         GetIt.I.get<AuthLayer>().favChosen();
 
-                        await GetIt.I
-                            .get<SupabaseLayer>()
-                            .supabase
-                            .from('favorite_categories')
-                            .insert({
-                          'user_id': GetIt.I.get<AuthLayer>().user!.userId,
-                          'category_id': favCategories.first.categoryId
-                        });
+                        // await GetIt.I
+                        //     .get<SupabaseLayer>()
+                        //     .supabase
+                        //     .from('favorite_categories')
+                        //     .insert({
+                        //   'user_id': GetIt.I.get<AuthLayer>().user!.userId,
+                        //   'category_id': favCategories.first.categoryId
+                        // });
                         context.pushRemove(screen: const NavigationScreen());
                       }
                     })
