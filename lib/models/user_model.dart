@@ -7,13 +7,13 @@ class UserModel {
       required this.phoneNumber,
       required this.favoriteCategories,
       required this.externalId});
-  late final String userId;
-  late final String email;
-  late final String firstName;
-  late final String lastName;
-  late final String phoneNumber;
+  late String userId;
+  late String email;
+  late String firstName;
+  late String lastName;
+  late String phoneNumber;
   late String favoriteCategories;
-  late final String externalId;
+  late String externalId;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
