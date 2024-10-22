@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:moyasar/moyasar.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -16,6 +18,10 @@ class WorkshopDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
     int quantity = 2;
     return Scaffold(
       body: SingleChildScrollView(
@@ -57,7 +63,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                       Text(
                         workshop.title,
                         style: const TextStyle(
-                            color: Constants.textColor, fontSize: 20),
+                            color: Constants.textColor,
+                            fontSize: 20,
+                            fontFamily: "Poppins"),
                       ),
                       Row(
                         children: [
@@ -75,15 +83,25 @@ class WorkshopDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: 38,
-                        width: 38,
-                        decoration: BoxDecoration(
-                          color: Constants.categoryColor_2,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child:
-                            Image.asset("assets/images/cooking-category.png"),
+                      Row(
+                        children: [
+                          Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Image.network(category.icon),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            category.categoryName,
+                            style: const TextStyle(
+                                color: Constants.textColor,
+                                fontSize: 16,
+                                fontFamily: "Poppins"),
+                          ),
+                        ],
                       ),
                       Row(
                         children: [

@@ -18,7 +18,7 @@ class DateRadioButton extends StatelessWidget {
           DateFormat('MMM d').format(dateTime); // format date
       dates.add("$formattedDate ${element.fromTime}-${element.toTime}");
     }
-    dates.add("fvfgdddd");
+
     return CustomRadioButton(
       buttonTextStyle: const ButtonTextStyle(
         selectedColor: Colors.white,

@@ -1,15 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shaghaf/constants/constants.dart';
-import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 
 class ContainersTabBar extends StatelessWidget {
   final List<String> tabs;
   final String? selectedTab;
-  void Function(int)? onTap;
-  ContainersTabBar(
+  final void Function(int)? onTap;
+  const ContainersTabBar(
       {super.key,
       required this.tabs,
       required this.selectedTab,

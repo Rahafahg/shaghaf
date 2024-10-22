@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:meta/meta.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
-import 'package:shaghaf/models/user_model.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -18,9 +14,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   UserProfileBloc() : super(ProfileInitial()) {
-    on<UserProfileEvent>((event, emit) {
-      // TODO: implement event handler
-    });
     on<EditUserProfileEvent>(editUserProfile);
     on<SubmitUserProfileEvent>(submitUserProfile);
   }
