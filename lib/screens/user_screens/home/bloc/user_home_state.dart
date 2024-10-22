@@ -5,7 +5,11 @@ sealed class UserHomeState {}
 
 final class UserHomeInitial extends UserHomeState {}
 
-final class DataDoneState extends UserHomeState {
-  final List<WorkshopGroupModel> workshops;
-  DataDoneState({required this.workshops});
+final class LoadingWorkshopsState extends UserHomeState {}
+
+final class ErrorWorkshopsState extends UserHomeState {
+  final String msg;
+  ErrorWorkshopsState({required this.msg});
 }
+
+final class SuccessWorkshopsState extends UserHomeState {}

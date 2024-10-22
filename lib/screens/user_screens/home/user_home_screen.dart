@@ -1,13 +1,17 @@
+import 'dart:math' as mm;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/user_notification_screen.dart';
+import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
@@ -16,148 +20,128 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = GetIt.I.get<AuthLayer>().user;
-    
-        return Scaffold(
-          backgroundColor: Constants.backgroundColor,
-          appBar: PreferredSize(
-            preferredSize:
-                Size(context.getWidth(), context.getHeight(divideBy: 13)),
-            child: AppBar(
-              backgroundColor: Constants.backgroundColor,
-              title: Padding(
-                padding: const EdgeInsets.only(bottom: 8, top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Scaffold(
+        backgroundColor: Constants.backgroundColor,
+        // app bar
+        appBar: PreferredSize(
+          preferredSize: Size(context.getWidth(), context.getHeight(divideBy: 13)),
+          child: AppBar(
+            backgroundColor: Constants.backgroundColor,
+            actions: [
+              IconButton(
+                onPressed: () => context.push(screen: const UserNotificationScreen()),
+                icon: const HugeIcon(icon: HugeIcons.strokeRoundedNotification01,color: Constants.lightGreen,),
+              ),
+            ],
+            leadingWidth: context.getWidth(),
+            leading: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hello ${user?.firstName ?? 'guest'}",
+                  style: const TextStyle(fontSize: 16, color: Constants.lightOrange)
+                ),
+                const Text(
+                  "Welcome to Shaghaf",
+                  style: TextStyle(fontSize: 16, color: Constants.mainOrange),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: BlocBuilder<UserHomeBloc, UserHomeState>(
+          builder: (context, state) {
+            if (state is ErrorWorkshopsState) {
+              return Center(child: Text(state.msg, style: const TextStyle(fontFamily: "Poppins", fontSize: 20)));
+            }
+            if (state is LoadingWorkshopsState) {
+              return const Center(child: CircularProgressIndicator(color: Constants.mainOrange));
+            }
+            if(state is SuccessWorkshopsState) {
+              final workshops = GetIt.I.get<DataLayer>().workshops;
+              WorkshopGroupModel workshopOfTheWeek = workshops[mm.Random().nextInt(workshops.length)];
+              // body
+              return SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // search bar
+                      SizedBox(
+                        height: 40,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.zero,
+                            hintText: 'Search for a workshop ...',
+                            hintStyle: const TextStyle(fontSize: 12, color: Colors.black45),
+                            filled: true,
+                            fillColor: Colors.white,
+                            prefixIcon: const Icon(Icons.search,color: Constants.lightGreen),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                      ),
+                      // workshop of the week
+                      Container(
+                        padding: const EdgeInsets.only(top: 15, bottom:12),
+                        width: context.getWidth(),
+                        child: const Text("Workshop of the week", textAlign: TextAlign.start, style: TextStyle(fontSize: 18, color: Constants.textColor, fontFamily: "Poppins"))
+                      ),
+                      InkWell(
+                        onTap: () => context.push(screen: WorkshopDetailScreen(workshop: workshopOfTheWeek)),
+                        child: Stack(
+                          alignment: Alignment.center,
                           children: [
-                            Text("Hello ${user?.firstName ?? 'guest'}",
-                                style: const TextStyle(
-                                    fontSize: 16, color: Constants.lightOrange)),
-                            const Text(
-                              "Welcome to Shaghaf",
-                              style: TextStyle(
-                                  fontSize: 16, color: Constants.mainOrange),
+                            SizedBox(
+                              width: context.getWidth(),
+                              // height: 200,
+                              height: context.getHeight(divideBy: 4),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(workshopOfTheWeek.image,fit: BoxFit.cover,height: 200)
+                              ),
+                            ),
+                            Center(
+                              child: Text(
+                                workshopOfTheWeek.title,
+                                style: const TextStyle(fontFamily: "Poppins", color: Constants.backgroundColor, fontSize: 26),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              right: 18,
+                              child: Row(
+                                children: [
+                                  Text(workshopOfTheWeek.rating.toString(),style: const TextStyle(color: Constants.backgroundColor, fontSize: 16),),
+                                  const Icon(Icons.star,color: Colors.amber,),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () =>
-                          context.push(screen: const UserNotificationScreen()),
-                      icon: const HugeIcon(
-                        icon: HugeIcons.strokeRoundedNotification01,
-                        color: Constants.lightGreen,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          body: BlocBuilder<UserHomeBloc, UserHomeState>(
-            builder: (context, state) {
-              if(state is DataDoneState) {
-                return SafeArea(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: SizedBox(
-                          height: 45,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Search for a workshop ...',
-                              hintStyle:
-                                  const TextStyle(fontSize: 12, color: Colors.black45),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: const Icon(
-                                Icons.search,
-                                color: Constants.lightGreen,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16, bottom: 12),
-                            child: Text(
-                              "Workshop of the week",
-                              style: TextStyle(
-                                  fontSize: 18, color: Constants.textColor),
-                            ),
-                          )
-                        ],
-                      ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/pasta_workshop.png",
-                            fit: BoxFit.cover,
-                            // width: context.getWidth(),
-                            height: 200,
-                          ),
-                          Center(
-                            child: Text(
-                              "Pasta Workshop",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                          const Positioned(
-                            bottom: 10,
-                            right: 18,
-                            child: Row(
-                              children: [
-                                Text(
-                                  "4.6",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
+                      const SizedBox(height: 40,),
+                      // suggested for you << NOTICE >>
                       GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20
+                        ),
                         shrinkWrap: true,
-                        itemCount: state.workshops.length,
-                        itemBuilder: (context, index) {
-                          return WorkshopCard(
-                            workshop: state.workshops[index],
-                          );
-                        },
+                        itemCount: workshops.length,
+                        itemBuilder: (context, index) => WorkshopCard(workshop: workshops[index])
                       )
-                    ]),
+                    ]
                   ),
                 ),
               );
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-        );
+            }
+            return const Center(child: Text('something went wrong'));
+          },
+        ),
+      ),
+    );
   }
 }

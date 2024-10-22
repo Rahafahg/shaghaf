@@ -8,6 +8,7 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseLayer {
@@ -195,6 +196,15 @@ class SupabaseLayer {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  getAllWorkshops() async {
+    List<WorkshopGroupModel> workshops = [];
+    final response = await GetIt.I.get<SupabaseLayer>().supabase.from('workshop_group').select('*, workshop(*)');
+    for (var workshopAsJson in response) {
+      workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
+    }
+    GetIt.I.get<DataLayer>().workshops = workshops;
   }
 
   getAllCategories() async {
