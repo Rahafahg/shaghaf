@@ -11,6 +11,7 @@ import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/user_notification_screen.dart';
 import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
+import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
@@ -93,7 +94,7 @@ class UserHomeScreen extends StatelessWidget {
                         // column of cards "real search results"
                         ? SingleChildScrollView(
                           child: Column(
-                            children: List.generate(100, (index)=>const Text("data")),
+                            children: [SizedBox(height: 15),...List.generate(state.workshops.length, (index)=>MyWorkShopsCard(workshop: state.workshops[index]))],
                           ),
                         )
                         : Column(
@@ -137,8 +138,13 @@ class UserHomeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 40,),
-                            // suggested for you << NOTICE >>
+                            const SizedBox(height: 20,),
+                            Container(
+                              padding: const EdgeInsets.only(top: 15, bottom:12),
+                              width: context.getWidth(),
+                              child: const Text("Suggested For You", textAlign: TextAlign.start, style: TextStyle(fontSize: 18, color: Constants.textColor, fontFamily: "Poppins"))
+                            ),
+                            // suggested for you
                             GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -42,8 +42,8 @@ class MyWorkshopsScreen extends StatelessWidget {
                 )),
           ),
           body: const TabBarView(children: [
-            Column(children: [SizedBox(height: 27), MyWorkShopsCard()]),
-            Column(children: [SizedBox(height: 27), MyWorkShopsCard()]),
+            Column(children: [SizedBox(height: 27),]),
+            Column(children: [SizedBox(height: 27),]),
           ])),
     );
   }

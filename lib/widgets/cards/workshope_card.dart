@@ -9,13 +9,14 @@ import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
 
 class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
-  const WorkshopCard({super.key,required this.workshop});
+  final String shape;
+  const WorkshopCard({super.key,required this.workshop, this.shape='square'});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: workshop)),
-      child: Container(
+      child: shape=='square' ? Container(
         width: context.getWidth(divideBy: 2.3),
         height: context.getHeight(divideBy: 3.5),
         decoration: BoxDecoration(
@@ -87,6 +88,11 @@ class WorkshopCard extends StatelessWidget {
             )
           ],
         ),
+      )
+      : Container(
+        width: 100,
+        height: 100,
+        color: Colors.yellow,
       ),
     );
   }
