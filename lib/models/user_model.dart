@@ -5,6 +5,7 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
+    required this.favoriteCategories,
     required this.externalId
   });
   late final String userId;
@@ -12,6 +13,7 @@ class UserModel {
   late final String firstName;
   late final String lastName;
   late final String phoneNumber;
+  late final String favoriteCategories;
   late final String externalId;
   
   UserModel.fromJson(Map<String, dynamic> json){
@@ -20,6 +22,7 @@ class UserModel {
     firstName = json['first_name'];
     lastName = json['last_name'];
     phoneNumber = json['phone_number'];
+    favoriteCategories = json['favorite_categories'];
     externalId = json['external_id'];
   }
 
@@ -30,6 +33,7 @@ class UserModel {
     data['first_name'] = firstName;
     data['last_name'] = lastName;
     data['phone_number'] = phoneNumber;
+    data['favorite_categories'] = favoriteCategories;
     data['external_id'] = externalId;
     return data;
   }

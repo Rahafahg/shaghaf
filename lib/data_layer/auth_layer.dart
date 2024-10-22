@@ -12,7 +12,7 @@ class AuthLayer {
   final box = GetStorage();
 
   AuthLayer() {
-    // box.erase();
+    box.erase();
     if(box.hasData('onboarding')) {
       log('onboarding already shown');
       onboarding = true;

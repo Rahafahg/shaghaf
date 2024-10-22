@@ -74,7 +74,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child:
-                            Image.asset("assets/images/cooking-category.png"),
+            Image.asset('assets/images/categories/Frame 117.png'),
                       ),
                       Row(
                         children: [
