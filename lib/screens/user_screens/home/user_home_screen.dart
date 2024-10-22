@@ -31,6 +31,7 @@ class UserHomeScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 11, right: 16, left: 16),
             child: AppBar(
+              forceMaterialTransparency: true,
               backgroundColor: Constants.backgroundColor,
               actions: [
                 IconButton(

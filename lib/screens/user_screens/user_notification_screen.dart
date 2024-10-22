@@ -10,6 +10,7 @@ class UserNotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         leading: IconButton(
           onPressed: () {
             context.pop();

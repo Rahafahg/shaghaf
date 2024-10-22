@@ -63,6 +63,7 @@ class UserCategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         centerTitle: true,
         title: Image.asset(
           'assets/images/logo.png',

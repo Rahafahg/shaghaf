@@ -6,6 +6,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
+import 'package:shaghaf/screens/user_screens/my_workshops_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile_screen.dart';
 import 'package:shaghaf/screens/user_screens/user_categories_screen.dart';
 
@@ -29,10 +30,10 @@ class NavigationScreen extends StatelessWidget {
           builder: (context, state) {
             return IndexedStack(
               index: context.read<NavigationBloc>().currentScreen,
-              children: [
+              children: const [
                 UserHomeScreen(),
                 UserCategoriesScreen(),
-                Placeholder(),
+                MyWorkshopsScreen(),
                 ProfileScreen(),
               ],
             );
@@ -41,18 +42,22 @@ class NavigationScreen extends StatelessWidget {
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             return Container(
-              color: Constants.lightOrange,
-              padding: const EdgeInsets.only(top: 0.3),
+              padding: const EdgeInsets.only(top: 0.3, bottom: 4),
+              decoration: const BoxDecoration(
+                  border: Border(
+                      top: BorderSide(
+                          color: Constants.lightOrange, width: 0.5))),
               child: NavigationBar(
                 selectedIndex: context.read<NavigationBloc>().currentScreen,
                 onDestinationSelected: (value) => context
                     .read<NavigationBloc>()
                     .add(SwitchScreenEvent(targetPage: value)),
-                height: context.getHeight(divideBy: 15),
+                height: context.getHeight(divideBy: 16),
                 destinations: [
                   NavigationDestination(
                     label: "Home",
                     icon: HugeIcon(
+                      size: 24.0,
                       icon: HugeIcons.strokeRoundedHome09,
                       color: context.read<NavigationBloc>().currentScreen == 0
                           ? Constants.mainOrange
@@ -62,7 +67,7 @@ class NavigationScreen extends StatelessWidget {
                   NavigationDestination(
                     label: "Categories",
                     icon: HugeIcon(
-                      size: 25.0,
+                      size: 24.0,
                       icon: HugeIcons.strokeRoundedMenuSquare,
                       color: context.read<NavigationBloc>().currentScreen == 1
                           ? Constants.mainOrange
@@ -70,8 +75,9 @@ class NavigationScreen extends StatelessWidget {
                     ),
                   ),
                   NavigationDestination(
-                    label: "My workshops",
+                    label: "Workshops",
                     icon: HugeIcon(
+                      size: 24.0,
                       icon: HugeIcons.strokeRoundedFile02,
                       color: context.read<NavigationBloc>().currentScreen == 2
                           ? Constants.mainOrange
@@ -81,6 +87,7 @@ class NavigationScreen extends StatelessWidget {
                   NavigationDestination(
                     label: "Profile",
                     icon: HugeIcon(
+                      size: 24.0,
                       icon: HugeIcons.strokeRoundedUser,
                       color: context.read<NavigationBloc>().currentScreen == 3
                           ? Constants.mainOrange
