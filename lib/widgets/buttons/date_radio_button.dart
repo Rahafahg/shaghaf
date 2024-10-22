@@ -1,38 +1,43 @@
+import 'dart:developer';
+
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 
 class DateRadioButton extends StatelessWidget {
-  const DateRadioButton({super.key});
-
+  const DateRadioButton({super.key, required this.workshop});
+  final List<Workshop> workshop;
   @override
   Widget build(BuildContext context) {
+    List<String> dates = [];
+    for (var element in workshop) {
+      DateTime dateTime = DateTime.parse(element.date);
+      String formattedDate =
+          DateFormat('MMM d').format(dateTime); // format date
+      dates.add("$formattedDate ${element.fromTime}-${element.toTime}");
+    }
+    dates.add("fvfgdddd");
     return CustomRadioButton(
-      buttonTextStyle: ButtonTextStyle(
+      buttonTextStyle: const ButtonTextStyle(
         selectedColor: Colors.white,
         unSelectedColor: Constants.mainOrange,
-        textStyle: const TextStyle(
-          fontSize: 16,
+        textStyle: TextStyle(
+          fontSize: 11,
         ),
       ),
+      elevation: 2,
       autoWidth: false,
-      enableButtonWrap: true,
+      enableButtonWrap: false,
+      horizontal: false,
       wrapAlignment: WrapAlignment.center,
       unSelectedColor: Theme.of(context).canvasColor,
-      buttonLables: const [
-        "10 Sep",
-        "11 Sep",
-        "12 Sep",
-        "13 Sep",
-      ],
-      buttonValues: const [
-        "10 Sep",
-        "11 Sep",
-        "12 Sep",
-        "13 Sep",
-      ],
+      buttonLables: dates,
+      buttonValues: dates,
       radioButtonValue: (value) {
-        print(value);
+        log(value);
+        log(dates.toString());
       },
       selectedColor: Constants.mainOrange,
 
@@ -40,7 +45,7 @@ class DateRadioButton extends StatelessWidget {
       selectedBorderColor: Colors.grey, // Set the selected border color to grey
       unSelectedBorderColor:
           Colors.grey, // Set the unselected border color to grey
-      width: 90,
+      width: 140,
     );
   }
 }

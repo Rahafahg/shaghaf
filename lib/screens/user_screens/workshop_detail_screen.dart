@@ -16,6 +16,7 @@ class WorkshopDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int quantity = 2;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -23,8 +24,8 @@ class WorkshopDetailScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.asset(
-                  "assets/images/pasta_workshop.png",
+                Image.network(
+                  workshop.image,
                   width: context.getWidth(),
                   height: context.getHeight(divideBy: 3),
                   fit: BoxFit.cover,
@@ -38,7 +39,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                     },
                     child: const Icon(
                       Icons.arrow_back_ios,
-                      color: Colors.white,
+                      color: Constants.lightGreen,
                       size: 28.0,
                     ),
                   ),
@@ -50,18 +51,22 @@ class WorkshopDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Pasta Workshop Making"),
+                      Text(
+                        workshop.title,
+                        style: const TextStyle(
+                            color: Constants.textColor, fontSize: 20),
+                      ),
                       Row(
                         children: [
-                          HugeIcon(
+                          const HugeIcon(
                             icon: HugeIcons.strokeRoundedUserGroup,
                             color: Constants.textColor,
                           ),
-                          SizedBox(width: 5),
-                          Text("All")
+                          const SizedBox(width: 5),
+                          Text(workshop.targetedAudience)
                         ],
                       )
                     ],
@@ -109,9 +114,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                     "Description",
                   ),
                   const SizedBox(height: 5),
-                  const Text(
-                    "Here will be a description of the workshop",
-                    style: TextStyle(
+                  Text(
+                    workshop.description,
+                    style: const TextStyle(
                         color: Constants.lightTextColor, fontSize: 14),
                   ),
                   const Divider(
@@ -129,24 +134,24 @@ class WorkshopDetailScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage(
-                            "assets/images/Instructor_photo.png",
+                          backgroundImage: NetworkImage(
+                            workshop.workshops.last.instructorImage,
                           ),
                         ),
                       ),
                       const SizedBox(width: 4),
-                      const Text(
-                        "Mr. Khaled Hassan",
-                        style: TextStyle(fontSize: 16),
+                      Text(
+                        workshop.workshops.last.instructorName,
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
-                  const Text(
-                    "Here is a description of the instructor",
-                    style: TextStyle(
+                  Text(
+                    workshop.workshops.last.instructorDescription,
+                    style: const TextStyle(
                         color: Constants.lightTextColor, fontSize: 14),
                   ),
                   const Divider(
@@ -157,7 +162,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                     "Available Days",
                   ),
                   const SizedBox(height: 10),
-                  const DateRadioButton(),
+                  DateRadioButton(workshop: workshop.workshops),
                   const SizedBox(
                     height: 20,
                   ),
@@ -167,15 +172,16 @@ class WorkshopDetailScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      HugeIcon(
+                      const HugeIcon(
                           icon: HugeIcons.strokeRoundedSeatSelector,
                           color: Constants.mainOrange),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Text("4/10"),
+                      Text(
+                          "${workshop.workshops.last.availableSeats - 10}/${workshop.workshops.last.availableSeats}"),
                     ],
                   ),
                   const Divider(
@@ -185,20 +191,21 @@ class WorkshopDetailScreen extends StatelessWidget {
                   const Text(
                     "Location",
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      HugeIcon(
+                      const HugeIcon(
                         icon: HugeIcons.strokeRoundedLocation01,
                         color: Constants.mainOrange,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
-                          title: Text("Location Name"),
+                          title: Text(
+                              workshop.workshops.last.venueName ?? "Online"),
                           subtitle: Text(
-                            "Venu Type",
-                            style: TextStyle(
+                            workshop.workshops.last.venueType ?? "online",
+                            style: const TextStyle(
                                 color: Constants.lightTextColor, fontSize: 14),
                           ),
                         ),
@@ -219,7 +226,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                               icon: const HugeIcon(
                                   icon: HugeIcons.strokeRoundedPlusSignSquare,
                                   color: Constants.mainOrange)),
-                          const Text("1"),
+                          Text("$quantity"),
                           IconButton(
                               onPressed: () {},
                               icon: const HugeIcon(
@@ -277,9 +284,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.zero,
                           ),
                         ),
-                        child: const Text(
-                          "Pay 50.0 SR",
-                          style: TextStyle(color: Constants.backgroundColor),
+                        child: Text(
+                          "Pay ${workshop.workshops.last.price * quantity} SR",
+                          style:
+                              const TextStyle(color: Constants.backgroundColor),
                         ),
                       )
                     ],

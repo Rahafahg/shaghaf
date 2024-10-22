@@ -155,7 +155,8 @@ class UserHomeScreen extends StatelessWidget {
                               ),
                               shrinkWrap: true,
                               itemCount: workshops.length,
-                              itemBuilder: (context, index) => WorkshopCard(workshop: workshops[index])
+                              itemBuilder: (context, index) => WorkshopCard(workshop: workshops[index],onTap: ()=> context.push(screen: WorkshopDetailScreen(workshop: workshops[index])),)
+                              
                             )
                           ],
                         )
