@@ -3,8 +3,8 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 
-class UserCokkingCategoriScreen extends StatelessWidget {
-  const UserCokkingCategoriScreen({super.key});
+class UserArtCategoriScreen extends StatelessWidget {
+  const UserArtCategoriScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class UserCokkingCategoriScreen extends StatelessWidget {
             forceMaterialTransparency: true,
             centerTitle: true,
             title: const Text(
-              "Cook",
+              "Art",
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: "Poppins",
@@ -46,3 +46,4 @@ class UserCokkingCategoriScreen extends StatelessWidget {
         ));
   }
 }
+

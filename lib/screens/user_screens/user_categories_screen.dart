@@ -2,23 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_art_categori_screen.dart';
 import 'package:shaghaf/screens/user_screens/categories/user_cokking_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_fashion_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_handicrafts_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_others_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_photography_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_pottery_categori_screen.dart';
+import 'package:shaghaf/screens/user_screens/categories/user_social_skills_categori_screen.dart';
 import 'package:shaghaf/widgets/cards/user_category_cards.dart';
 // Example import
 
 class UserCategoriesScreen extends StatelessWidget {
-  UserCategoriesScreen({super.key});
+  const UserCategoriesScreen({super.key});
 
   final List<Map<String, dynamic>> categories = const [
     {
       "title": "Pottery",
       "image": "assets/images/categories/pottery.png",
-      "screento": UserCokkingCategoriScreen(), // Use the actual widget here
+      "screento": UserPotteryCategoriScreen(), // Use the actual widget here
     },
     {
       "title": "Art",
       "image": "assets/images/categories/art.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserArtCategoriScreen(),
     },
     {
       "title": "Cook",
@@ -28,27 +35,27 @@ class UserCategoriesScreen extends StatelessWidget {
     {
       "title": "Photography",
       "image": "assets/images/categories/Photography.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserPhotographyCategoriScreen(),
     },
     {
       "title": "Handicrafts",
       "image": "assets/images/categories/Handicrafts.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserHandicraftsCategoriScreen(),
     },
     {
       "title": "Social Skills",
       "image": "assets/images/categories/social.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserSocialSkillsCategoriScreen(),
     },
     {
       "title": "Fashion",
       "image": "assets/images/categories/fashion.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserFashionCategoriScreen(),
     },
     {
       "title": "Others",
       "image": "assets/images/categories/others.png",
-      "screento": UserCokkingCategoriScreen(),
+      "screento": UserOthersCategoriScreen(),
     },
   ];
 
@@ -75,8 +82,7 @@ class UserCategoriesScreen extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10.0,
                   crossAxisSpacing: 10.0,
-                  childAspectRatio: 1.2
-                  ),
+                  childAspectRatio: 1.2),
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 return CategoryCard(
