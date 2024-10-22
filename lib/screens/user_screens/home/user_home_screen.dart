@@ -13,6 +13,8 @@ import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_notification_screen.dart';
 import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
+import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
+import 'package:shaghaf/widgets/tapbar/tap_custom.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -28,6 +30,8 @@ class UserHomeScreen extends StatelessWidget {
     log(categories.toString());
     List<Widget> categoriesWidgets = categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
+    String? selectedCategory = "All";
+    log(selectedCategory);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -70,8 +74,11 @@ class UserHomeScreen extends StatelessWidget {
                 }
                 if (state is SuccessWorkshopsState) {
                   final workshops = GetIt.I.get<DataLayer>().workshops;
-                  WorkshopGroupModel workshopOfTheWeek = GetIt.I.get<DataLayer>().workshopOfTheWeek ?? workshops.first;
-                  var selectedCategory = state.selectedCategory;
+                  WorkshopGroupModel workshopOfTheWeek =
+                      GetIt.I.get<DataLayer>().workshopOfTheWeek ??
+                          workshops.first;
+                  selectedCategory = state.selectedCategory ?? "All";
+
                   // body
                   return SingleChildScrollView(
                     child: Column(
@@ -116,7 +123,7 @@ class UserHomeScreen extends StatelessWidget {
                               ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: state.workshops.length,
-                                itemBuilder: (context,index)=>WorkshopCard(workshop: state.workshops[index], onTap: () => context.push(screen: WorkshopDetailScreen(workshop: state.workshops[index])),),
+                                itemBuilder: (context,index)=>WorkshopCard(workshop: state.workshops[index], shape: 'rect', onTap: () => context.push(screen: WorkshopDetailScreen(workshop: state.workshops[index])),),
                                 separatorBuilder: (context, index) => const SizedBox(height: 20),
                               )
                             ],

@@ -11,6 +11,7 @@ part 'user_home_state.dart';
 class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   final supabaseLayer = GetIt.I.get<SupabaseLayer>();
   final dataLayer = GetIt.I.get<DataLayer>();
+  bool changedCategory =false;
   UserHomeBloc() : super(UserHomeInitial()) {
     on<GetWorkshopsEvent>(getWorkshopsMethod);
     on<HomeSearchEvent>(searchMethod);
