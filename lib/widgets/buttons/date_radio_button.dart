@@ -8,10 +8,10 @@ class DateRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomRadioButton(
-      buttonTextStyle: ButtonTextStyle(
+      buttonTextStyle: const ButtonTextStyle(
         selectedColor: Colors.white,
         unSelectedColor: Constants.mainOrange,
-        textStyle: const TextStyle(
+        textStyle: TextStyle(
           fontSize: 16,
         ),
       ),

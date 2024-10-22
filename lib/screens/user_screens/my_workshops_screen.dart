@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
-import 'package:shaghaf/widgets/cards/my_workshop_card.dart';
 import 'package:shaghaf/widgets/tapbar/tap_custom.dart';
 
 class MyWorkshopsScreen extends StatelessWidget {

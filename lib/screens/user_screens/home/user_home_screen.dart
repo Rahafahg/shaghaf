@@ -1,4 +1,3 @@
-import 'dart:math' as mm;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -91,12 +90,34 @@ class UserHomeScreen extends StatelessWidget {
                         ),
                         ),
                         state.workshops.isEmpty && state.search == true
-                        ? SizedBox(height: context.getHeight(divideBy: 2),child: const Center(child: Text("No workshops found")))
+                        ? Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(top: 15, bottom:12),
+                              width: context.getWidth(),
+                              child: Text("Search results for '${state.searchTerm}'", textAlign: TextAlign.start, style: const TextStyle(fontSize: 18, color: Constants.textColor, fontFamily: "Poppins"))
+                            ),
+                            SizedBox(height: context.getHeight(divideBy: 2),child: const Center(child: Text("No workshops found"))),
+                          ],
+                        )
                         : state.workshops.isNotEmpty && state.search == true
                         // column of cards "real search results"
                         ? SingleChildScrollView(
                           child: Column(
-                            children: [SizedBox(height: 15),...List.generate(state.workshops.length, (index)=>MyWorkShopsCard(workshop: state.workshops[index]))],
+                            children: [
+                              const SizedBox(height: 15),
+                              Container(
+                                padding: const EdgeInsets.only(top: 15, bottom:12),
+                                width: context.getWidth(),
+                                child: Text("Search results for '${state.searchTerm}'", textAlign: TextAlign.start, style: const TextStyle(fontSize: 18, color: Constants.textColor, fontFamily: "Poppins"))
+                              ),
+                              ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: state.workshops.length,
+                                itemBuilder: (context,index)=>MyWorkShopsCard(workshop: state.workshops[index]),
+                                separatorBuilder: (context, index) => const SizedBox(height: 20),
+                              )
+                            ],
                           ),
                         )
                         : Column(

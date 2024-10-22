@@ -15,5 +15,6 @@ final class ErrorWorkshopsState extends UserHomeState {
 final class SuccessWorkshopsState extends UserHomeState {
   final List<WorkshopGroupModel> workshops;
   final bool search;
-  SuccessWorkshopsState({required this.search, required this.workshops});
+  final String? searchTerm;
+  SuccessWorkshopsState({required this.search, required this.workshops, this.searchTerm});
 }

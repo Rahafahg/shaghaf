@@ -6,9 +6,6 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
-import 'package:shaghaf/screens/user_screens/workshop_detail_screen.dart';
-import 'package:shaghaf/extensions/screen_nav.dart';
-import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/user_screens/user_ticket_screen.dart';
 
 class MyWorkShopsCard extends StatelessWidget {
@@ -19,7 +16,7 @@ class MyWorkShopsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push(screen: UserTicketScreen());
+        context.push(screen: const UserTicketScreen());
       },
       child: Container(
         alignment: Alignment.center,
@@ -66,7 +63,7 @@ class MyWorkShopsCard extends StatelessWidget {
                           workshop.title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
                           ),
@@ -85,7 +82,7 @@ class MyWorkShopsCard extends StatelessWidget {
                 ),
                 Text(
                   GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryId == workshop.categoryId).categoryName,
-                  style: TextStyle(fontSize: 14, color: Constants.mainOrange),
+                  style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
                 ),
                 Row(
                   children: [

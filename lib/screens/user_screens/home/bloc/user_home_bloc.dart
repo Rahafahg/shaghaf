@@ -21,7 +21,7 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
       emit(SuccessWorkshopsState(search: false, workshops: dataLayer.workshops));
     }
     else {
-      emit(SuccessWorkshopsState(search: true, workshops: dataLayer.workshops.where((workshop)=>workshop.title.contains(event.search)).toList()));
+      emit(SuccessWorkshopsState(search: true,searchTerm: event.search, workshops: dataLayer.workshops.where((workshop)=>workshop.title.contains(event.search)).toList()));
     }
   }
 
