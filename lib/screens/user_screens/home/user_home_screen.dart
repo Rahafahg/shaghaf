@@ -29,7 +29,8 @@ class UserHomeScreen extends StatelessWidget {
     }
 
     log(categories.toString());
-    List<Widget> categoriesWidgets = categories.map((category) => Text(category)).toList();
+    List<Widget> categoriesWidgets =
+        categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
     String? selectedCategory = "All";
     log(selectedCategory);
@@ -142,18 +143,18 @@ class UserHomeScreen extends StatelessWidget {
                                   ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: state.workshops.length,
-                                    itemBuilder: (context, index) =>
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                          child: WorkshopCard(
-                                                                                workshop: state.workshops[index],
-                                                                                shape: 'rect',
-                                                                                onTap: () => context.push(
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: WorkshopCard(
+                                        workshop: state.workshops[index],
+                                        shape: 'rect',
+                                        onTap: () => context.push(
                                             screen: WorkshopDetailScreen(
                                                 workshop:
                                                     state.workshops[index])),
-                                                                              ),
-                                        ),
+                                      ),
+                                    ),
                                     separatorBuilder: (context, index) =>
                                         const SizedBox(height: 20),
                                   )
@@ -189,20 +190,38 @@ class UserHomeScreen extends StatelessWidget {
                                         // height: 200,
                                         height: context.getHeight(divideBy: 4),
                                         child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: Image.network(
-                                                workshopOfTheWeek.image,
-                                                fit: BoxFit.cover,
-                                                height: 200)),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          workshopOfTheWeek.title,
-                                          style: const TextStyle(
-                                              fontFamily: "Poppins",
-                                              color: Constants.backgroundColor,
-                                              fontSize: 26),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Container(
+                                              height: context.getHeight(),
+                                              width: context.getWidth(),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withOpacity(0.35),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        workshopOfTheWeek
+                                                            .image),
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                              child: Container(
+                                                height: context.getHeight(),
+                                                width: context.getWidth(),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                    color: Colors.black
+                                                        .withOpacity(0.25)),
+                                                child: Text(
+                                                    workshopOfTheWeek.title,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                        fontFamily: "Poppins")),
+                                              )),
                                         ),
                                       ),
                                       Positioned(
@@ -250,7 +269,8 @@ class UserHomeScreen extends StatelessWidget {
                               // suggested for you
                               selectedCategory == "All"
                                   ? GridView.builder(
-                                      padding: const EdgeInsets.fromLTRB(16,5,16,16),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 5, 16, 16),
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       gridDelegate:
@@ -269,7 +289,8 @@ class UserHomeScreen extends StatelessWidget {
                                                   workshop: workshops[index])),
                                           workshop: workshops[index]))
                                   : GridView.builder(
-                                      padding: const EdgeInsets.fromLTRB(16,5,16,16),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 5, 16, 16),
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       gridDelegate:
@@ -279,13 +300,11 @@ class UserHomeScreen extends StatelessWidget {
                                               mainAxisSpacing: 20,
                                               childAspectRatio: 0.91),
                                       shrinkWrap: true,
-                                      itemCount: groupedworkshops[selectedCategory]
-                                              ?.length ??
+                                      itemCount: groupedworkshops[selectedCategory]?.length ??
                                           0,
                                       itemBuilder: (context, index) => WorkshopCard(
                                           onTap: () => context.push(
-                                              screen: WorkshopDetailScreen(
-                                                  workshop: groupedworkshops[selectedCategory]![index])),
+                                              screen: WorkshopDetailScreen(workshop: groupedworkshops[selectedCategory]![index])),
                                           workshop: groupedworkshops[selectedCategory]![index])),
                             ])
                 ]));
