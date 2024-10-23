@@ -7,7 +7,13 @@ class MainButton extends StatelessWidget {
   final double? width;
   final double? height;
   final double? fontSize;
-  const MainButton({super.key, this.onPressed, required this.text, this.width, this.height, this.fontSize});
+  const MainButton(
+      {super.key,
+      this.onPressed,
+      required this.text,
+      this.width,
+      this.height,
+      this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +21,19 @@ class MainButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: onPressed,
-        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Constants.mainOrange)),
-        child: Text(text, style: TextStyle(fontSize: fontSize, color: Colors.white, fontFamily: "Poppins", fontWeight: FontWeight.w600))
-      ),
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Constants.mainOrange,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Text(text,
+              style: TextStyle(
+                  fontSize: fontSize,
+                  color: Colors.white,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w600))),
     );
   }
 }
