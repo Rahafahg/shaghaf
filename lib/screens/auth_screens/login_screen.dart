@@ -9,6 +9,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
+import 'package:shaghaf/screens/organizer_screens/home/organizer_navigation_screen.dart/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/auth_text_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
@@ -47,7 +48,7 @@ class LoginScreen extends StatelessWidget {
               context.pop();
               state.role == 'user'
                   ? context.pushRemove(screen: const NavigationScreen())
-                  : context.pushRemove(screen: const OrganizerHomeScreen());
+                  : context.pushRemove(screen:  OrgNavigationScreen());
             }
           },
           child: GestureDetector(
