@@ -30,10 +30,10 @@ class MainButton extends StatelessWidget {
           ),
           child: Text(text,
               style: TextStyle(
-                  fontSize: fontSize,
-                  color: Colors.white,
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w600))),
+                fontSize: fontSize,
+                color: Colors.white,
+                fontFamily: "Poppins",
+              ))),
     );
   }
 }
