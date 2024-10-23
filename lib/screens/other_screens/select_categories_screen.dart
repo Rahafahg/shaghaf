@@ -46,7 +46,7 @@ class SelectCategoriesScreen extends StatelessWidget {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 image: DecorationImage(
-                                  image: NetworkImage(categories[index].image),
+                                  image: AssetImage(categories[index].image),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -54,7 +54,7 @@ class SelectCategoriesScreen extends StatelessWidget {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 image: DecorationImage(
-                                  image: NetworkImage(categories[index].image),
+                                  image: AssetImage(categories[index].image),
                                   fit: BoxFit.cover,
                                   colorFilter: ColorFilter.mode(
                                     Constants.mainOrange.withOpacity(0.3),

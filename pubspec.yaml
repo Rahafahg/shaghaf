@@ -42,6 +42,7 @@ flutter:
   - 'assets/images/'
   - '.env'
   - 'assets/images/categories/'
+  - 'assets/images/categories/icons/'
   - 'assets/lottie/'
   fonts:
     - family: Poppins
