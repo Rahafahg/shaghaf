@@ -91,7 +91,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Image.network(category.icon),
+                            child: Image.asset(category.icon),
                           ),
                           const SizedBox(width: 5),
                           Text(
