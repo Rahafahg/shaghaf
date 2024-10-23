@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:get_it/get_it.dart'; 
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
