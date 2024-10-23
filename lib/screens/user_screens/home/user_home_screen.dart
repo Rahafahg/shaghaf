@@ -74,94 +74,98 @@ class UserHomeScreen extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: BlocBuilder<UserHomeBloc, UserHomeState>(
-              builder: (context, state) {
-                if (state is ErrorWorkshopsState) {
-                  return Center(
-                      child: Text(state.msg,
-                          style: const TextStyle(
-                              fontFamily: "Poppins", fontSize: 20)));
-                }
-                if (state is LoadingWorkshopsState) {
-                  return Center(
-                      child: LottieBuilder.asset("assets/lottie/loading.json"));
-                }
-                if (state is SuccessWorkshopsState) {
-                  final workshops = GetIt.I.get<DataLayer>().workshops;
-                  final groupedworkshops = groupworkshopsByCategory(workshops);
-                  WorkshopGroupModel workshopOfTheWeek =
-                      GetIt.I.get<DataLayer>().workshopOfTheWeek ??
-                          workshops.first;
-                  selectedCategory = state.selectedCategory ?? "All";
+          child: BlocBuilder<UserHomeBloc, UserHomeState>(
+            builder: (context, state) {
+              if (state is ErrorWorkshopsState) {
+                return Center(
+                    child: Text(state.msg,
+                        style: const TextStyle(
+                            fontFamily: "Poppins", fontSize: 20)));
+              }
+              if (state is LoadingWorkshopsState) {
+                return Center(
+                    child: LottieBuilder.asset("assets/lottie/loading.json"));
+              }
+              if (state is SuccessWorkshopsState) {
+                final workshops = GetIt.I.get<DataLayer>().workshops;
+                final groupedworkshops = groupworkshopsByCategory(workshops);
+                WorkshopGroupModel workshopOfTheWeek =
+                    GetIt.I.get<DataLayer>().workshopOfTheWeek ??
+                        workshops.first;
+                selectedCategory = state.selectedCategory ?? "All";
 
-                  // body
-                  return SingleChildScrollView(
-                      child: Column(children: [
-                    // search bar
-                    SizedBox(
+                // body
+                return SingleChildScrollView(
+                    child: Column(children: [
+                  // search bar
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 12, 16, 0),
+                    child: SizedBox(
                         height: 40,
                         child: SearchField(
                             onChanged: (value) =>
                                 bloc.add(HomeSearchEvent(search: value)))),
-                    state.workshops.isEmpty && state.search == true
-                        ? Column(
-                            children: [
-                              Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 15, bottom: 12),
-                                  width: context.getWidth(),
-                                  child: Text(
-                                      "Search results for '${state.searchTerm}'",
-                                      textAlign: TextAlign.start,
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Constants.textColor,
-                                          fontFamily: "Poppins"))),
-                              SizedBox(
-                                  height: context.getHeight(divideBy: 2),
-                                  child: const Center(
-                                      child: Text("No workshops found"))),
-                            ],
-                          )
-                        : state.workshops.isNotEmpty && state.search == true
-                            // "search results"
-                            ? SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.only(
-                                            top: 15, bottom: 12),
-                                        width: context.getWidth(),
-                                        child: Text(
-                                            "Search results for '${state.searchTerm}'",
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Constants.textColor,
-                                                fontFamily: "Poppins"))),
-                                    ListView.separated(
-                                      shrinkWrap: true,
-                                      itemCount: state.workshops.length,
-                                      itemBuilder: (context, index) =>
-                                          WorkshopCard(
-                                        workshop: state.workshops[index],
-                                        shape: 'rect',
-                                        onTap: () => context.push(
+                  ),
+                  state.workshops.isEmpty && state.search == true
+                      ? Column(
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.all(16),
+                                width: context.getWidth(),
+                                child: Text(
+                                    "Search results for '${state.searchTerm}'",
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.textColor,
+                                        fontFamily: "Poppins"))),
+                            SizedBox(
+                                height: context.getHeight(divideBy: 2),
+                                child: const Center(
+                                    child: Text("No workshops found"))),
+                          ],
+                        )
+                      : state.workshops.isNotEmpty && state.search == true
+                          // "search results"
+                          ? SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.all(16),
+                                      width: context.getWidth(),
+                                      child: Text(
+                                          "Search results for '${state.searchTerm}'",
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Constants.textColor,
+                                              fontFamily: "Poppins"))),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: state.workshops.length,
+                                    itemBuilder: (context, index) =>
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                          child: WorkshopCard(
+                                                                                workshop: state.workshops[index],
+                                                                                shape: 'rect',
+                                                                                onTap: () => context.push(
                                             screen: WorkshopDetailScreen(
                                                 workshop:
                                                     state.workshops[index])),
-                                      ),
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(height: 20),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Column(children: [
-                                // workshop of the week
-                                Container(
+                                                                              ),
+                                        ),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 20),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Column(children: [
+                              // workshop of the week
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                child: Container(
                                     padding: const EdgeInsets.only(
                                         top: 15, bottom: 12),
                                     width: context.getWidth(),
@@ -171,10 +175,13 @@ class UserHomeScreen extends StatelessWidget {
                                             fontSize: 18,
                                             color: Constants.textColor,
                                             fontFamily: "Poppins"))),
-                                InkWell(
-                                  onTap: () => context.push(
-                                      screen: WorkshopDetailScreen(
-                                          workshop: workshopOfTheWeek)),
+                              ),
+                              InkWell(
+                                onTap: () => context.push(
+                                    screen: WorkshopDetailScreen(
+                                        workshop: workshopOfTheWeek)),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
@@ -222,75 +229,70 @@ class UserHomeScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, bottom: 12),
-                                    width: context.getWidth(),
-                                    child: const Text("Suggested For You",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Constants.textColor,
-                                            fontFamily: "Poppins"))),
-                                ContainersTabBar(
-                                  tabs: categories,
-                                  selectedTab: selectedCategory,
-                                  onTap: (index) => bloc.add(
-                                      ChangeCategoryEvent(
-                                          category: categories[index])),
-                                ),
-                                // suggested for you
-                                selectedCategory == "All"
-                                    ? GridView.builder(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 20,
-                                                mainAxisSpacing: 20,
-                                                childAspectRatio: 0.91),
-                                        // Vertical spacing between cards
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  width: context.getWidth(),
+                                  child: const Text("Suggested For You",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Constants.textColor,
+                                          fontFamily: "Poppins"))),
+                              ContainersTabBar(
+                                tabs: categories,
+                                selectedTab: selectedCategory,
+                                onTap: (index) => bloc.add(ChangeCategoryEvent(
+                                    category: categories[index])),
+                              ),
+                              // suggested for you
+                              selectedCategory == "All"
+                                  ? GridView.builder(
+                                      padding: const EdgeInsets.fromLTRB(16,5,16,8),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 20,
+                                              mainAxisSpacing: 20,
+                                              childAspectRatio: 0.91),
+                                      // Vertical spacing between cards
 
-                                        shrinkWrap: true,
-                                        itemCount: workshops.length,
-                                        itemBuilder: (context, index) => WorkshopCard(
-                                            onTap: () => context.push(
-                                                screen: WorkshopDetailScreen(
-                                                    workshop:
-                                                        workshops[index])),
-                                            workshop: workshops[index]))
-                                    : GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 20,
-                                          mainAxisSpacing: 20,
-                                          // childAspectRatio:2.5,
-                                        ),
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            groupedworkshops[selectedCategory]
-                                                    ?.length ??
-                                                0,
-                                        itemBuilder: (context, index) => WorkshopCard(
-                                            onTap: () => context.push(
-                                                screen: WorkshopDetailScreen(
-                                                    workshop: groupedworkshops[selectedCategory]![index])),
-                                            workshop: groupedworkshops[selectedCategory]![index])),
-                              ])
-                  ]));
-                }
-                return const Center(child: Text('something went wrong'));
-              },
-            ),
+                                      shrinkWrap: true,
+                                      itemCount: workshops.length,
+                                      itemBuilder: (context, index) => WorkshopCard(
+                                          onTap: () => context.push(
+                                              screen: WorkshopDetailScreen(
+                                                  workshop: workshops[index])),
+                                          workshop: workshops[index]))
+                                  : GridView.builder(
+                                      padding: const EdgeInsets.all(16),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 20,
+                                              mainAxisSpacing: 20,
+                                              childAspectRatio: 0.91),
+                                      shrinkWrap: true,
+                                      itemCount: groupedworkshops[selectedCategory]
+                                              ?.length ??
+                                          0,
+                                      itemBuilder: (context, index) => WorkshopCard(
+                                          onTap: () => context.push(
+                                              screen: WorkshopDetailScreen(
+                                                  workshop: groupedworkshops[selectedCategory]![index])),
+                                          workshop: groupedworkshops[selectedCategory]![index])),
+                            ])
+                ]));
+              }
+              return const Center(child: Text('something went wrong'));
+            },
           ),
         ),
       ),
