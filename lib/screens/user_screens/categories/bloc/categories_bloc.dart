@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:ffi';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -87,7 +86,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       emit(ShowCategoryWorkshopsState(workshops: categoryWorkshops));
     }
     else {
-      workshops = categoryWorkshops.where((workshop)=>workshop.title.contains(event.searchTerm)).toList();
+      workshops = categoryWorkshops.where((workshop)=>workshop.title.toLowerCase().contains(event.searchTerm.toLowerCase())).toList();
       emit(ShowCategoryWorkshopsState(workshops: workshops));
     }
   }

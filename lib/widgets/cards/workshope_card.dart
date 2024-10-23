@@ -13,7 +13,8 @@ class WorkshopCard extends StatelessWidget {
   final String shape;
   final Function()? onTap;
   final String? date;
-  const WorkshopCard({super.key,required this.workshop, this.shape='square', this.onTap, this.date});
+  final double? price;
+  const WorkshopCard({super.key,required this.workshop, this.shape='square', this.onTap, this.date, this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -414,7 +415,7 @@ class WorkshopCard extends StatelessWidget {
                                   const Icon(HugeIcons.strokeRoundedUser,
                                       size: 16, color: Constants.lightGreen),
                                   const SizedBox(width: 4),
-                                  Text("${workshop.workshops.first.price} SR",
+                                  Text("${price ?? workshop.workshops.first.price} SR",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall),

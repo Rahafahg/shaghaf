@@ -16,6 +16,10 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc() : super(ProfileInitial()) {
     on<EditUserProfileEvent>(editUserProfile);
     on<SubmitUserProfileEvent>(submitUserProfile);
+    on<ViewUserProfileEvent>((event, emit) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      emit(SuccessProfileState());
+    });
   }
 
   FutureOr<void> editUserProfile(

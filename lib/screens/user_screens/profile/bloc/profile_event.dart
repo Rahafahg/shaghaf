@@ -22,3 +22,5 @@ final class SubmitUserProfileEvent extends UserProfileEvent {
       required this.lastName,
       required this.phoneNumber});
 }
+
+final class ViewUserProfileEvent extends UserProfileEvent {}
