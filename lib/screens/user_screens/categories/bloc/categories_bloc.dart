@@ -14,6 +14,10 @@ part 'categories_state.dart';
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   final TextEditingController dateController = TextEditingController();
   List<WorkshopGroupModel> workshops = [];
+  List<String> types = ['All', 'In-Site', 'Online'];
+  String selectedType = 'All';
+  List<String> ratingsList = ['All', 'Top-Rated'];
+  String ratingType = 'All';
   double minPrice = 0;
   double maxPrice = 500;
   CategoriesBloc() : super(CategoriesInitial()) {
@@ -39,12 +43,26 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==event.date && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
     });
     on<ResetFilterEvent>(resetFilterMethod);
+    on<ChangeTypeEvent>((event, emit) {
+      selectedType = types[event.index];
+      if(dateController.text.isNotEmpty) {
+        emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==dateController.text && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
+      }
+      else {
+        emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.price>=minPrice&&workshop.price<=maxPrice)).toList()));
+      }
+    });
+    on<ChangeRatingEvent>((event, emit) {
+      ratingType = ratingsList[event.index];
+      emit(ShowCategoryWorkshopsState(workshops: workshops));
+    });
   }
 
   FutureOr<void> resetFilterMethod(ResetFilterEvent event, Emitter<CategoriesState> emit) {
     dateController.value = TextEditingValue.empty;
     minPrice = 0;
     maxPrice = 500;
+    selectedType = 'All';
     emit(ShowCategoryWorkshopsState(workshops: workshops));
   }
 

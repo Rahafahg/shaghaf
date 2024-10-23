@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -10,10 +12,13 @@ class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
   final String shape;
   final Function()? onTap;
-  const WorkshopCard({super.key,required this.workshop, this.shape='square', this.onTap});
+  final String? date;
+  const WorkshopCard({super.key,required this.workshop, this.shape='square', this.onTap, this.date});
 
   @override
   Widget build(BuildContext context) {
+    log('${workshop.title}atatat');
+    log(date.toString());
     return InkWell(
       onTap: onTap,
       child: shape=='square' ? Container(
@@ -157,7 +162,7 @@ class WorkshopCard extends StatelessWidget {
                               size: 16, color: Colors.grey),
                           const SizedBox(width: 4),
                           Text(
-                            workshop.workshops.first.date,
+                            date ?? workshop.workshops.first.date,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],

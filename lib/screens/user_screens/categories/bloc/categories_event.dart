@@ -27,3 +27,13 @@ final class FilterEvent extends CategoriesEvent {
   final RangeValues? range;
   FilterEvent({this.date, this.range});
 }
+
+final class ChangeTypeEvent extends CategoriesEvent {
+  final int index;
+  ChangeTypeEvent({required this.index});
+}
+
+final class ChangeRatingEvent extends CategoriesEvent {
+  final int index;
+  ChangeRatingEvent({required this.index});
+}
