@@ -300,28 +300,84 @@ class WorkshopCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                   color: Constants.cardColor,
                   border: Border.all(color: Constants.appGreyColor),
-                  boxShadow: [BoxShadow(color: Colors.grey.shade300,blurRadius: 4,offset: const Offset(4, 8))],
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 4,
+                        offset: const Offset(4, 8))
+                  ],
                 ),
-                child : SizedBox(
-                  width: context.getWidth(divideBy: 1.85),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.calendar_today,size: 16, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          Text(
-                            date ?? workshop.workshops.first.date,
-                            style: Theme.of(context).textTheme.bodySmall,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10)),
+                        child: SizedBox(
+                          width: context.getWidth(divideBy: 3.5),
+                          child: SizedBox(
+                            width: context.getWidth(),
+                            height: context.getHeight(),
+                            child: workshop.image.isNotEmpty
+                                ? Image.network(
+                                    workshop.image,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    "assets/images/pasta_workshop.png",
+                                  ),
                           ),
-                          Text(
-                            GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryId == workshop.categoryId).categoryName,
-                            style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
-                          ),
-                          Row(
+                        )),
+                    const SizedBox(width: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: context.getWidth(divideBy: 1.85),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CircleAvatar(
+                              SizedBox(
+                                width: context.getWidth(divideBy: 2.5),
+                                child: Text(
+                                  workshop.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
+                                  const SizedBox(width: 4),
+                                  Text(workshop.rating.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          GetIt.I
+                              .get<DataLayer>()
+                              .categories
+                              .firstWhere((category) =>
+                                  category.categoryId == workshop.categoryId)
+                              .categoryName,
+                          style: const TextStyle(
+                              fontSize: 14, color: Constants.mainOrange),
+                        ),
+                        Row(
+                          children: [
+                            CircleAvatar(
                                 radius: 12,
                                 child: workshop.workshops.first.instructorImage
                                         .isNotEmpty
@@ -347,7 +403,7 @@ class WorkshopCard extends StatelessWidget {
                                       size: 16, color: Colors.grey),
                                   const SizedBox(width: 4),
                                   Text(
-                                    workshop.workshops.first.date,
+                                    date!=null && date!.isNotEmpty ? date! : workshop.workshops.first.date,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
@@ -369,8 +425,10 @@ class WorkshopCard extends StatelessWidget {
                         ),
                       ],
                     )
-                ]),
-              )));
+                  ],
+                ),
+              )
+          );
               
   }
 }
