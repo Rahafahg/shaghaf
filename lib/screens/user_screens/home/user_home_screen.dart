@@ -245,12 +245,18 @@ class UserHomeScreen extends StatelessWidget {
                                 // suggested for you
                                 selectedCategory == "All"
                                     ? GridView.builder(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 20),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 2,
-                                                crossAxisSpacing: 20),
+                                                crossAxisSpacing: 20,
+                                                mainAxisSpacing: 20,
+                                                childAspectRatio: 0.91),
+                                        // Vertical spacing between cards
+
                                         shrinkWrap: true,
                                         itemCount: workshops.length,
                                         itemBuilder: (context, index) => WorkshopCard(
@@ -264,16 +270,21 @@ class UserHomeScreen extends StatelessWidget {
                                             const NeverScrollableScrollPhysics(),
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 20),
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 20,
+                                          mainAxisSpacing: 20,
+                                          // childAspectRatio:2.5,
+                                        ),
                                         shrinkWrap: true,
                                         itemCount:
-                                            groupedworkshops[selectedCategory]?.length ??
+                                            groupedworkshops[selectedCategory]
+                                                    ?.length ??
                                                 0,
                                         itemBuilder: (context, index) => WorkshopCard(
-                                            onTap: () =>
-                                                context.push(screen: WorkshopDetailScreen(workshop: groupedworkshops[selectedCategory]![index])),
-                                            workshop: groupedworkshops[selectedCategory]![index]))
+                                            onTap: () => context.push(
+                                                screen: WorkshopDetailScreen(
+                                                    workshop: groupedworkshops[selectedCategory]![index])),
+                                            workshop: groupedworkshops[selectedCategory]![index])),
                               ])
                   ]));
                 }
