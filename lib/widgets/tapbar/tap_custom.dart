@@ -13,8 +13,7 @@ class TapCustomStyle extends StatelessWidget {
         height: 38,
         width: context.getHeight(divideBy: 4.6),
         decoration: BoxDecoration(
-          border: Border.all(color: Constants.appGreyColor),
-          color: const Color.fromARGB(61, 204, 204, 204),
+          border: Border.all(color: Constants.mainOrange),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(title));

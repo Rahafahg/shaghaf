@@ -21,7 +21,7 @@ class MyWorkshopsScreen extends StatelessWidget {
                   fontFamily: "Poppins",
                   color: Constants.textColor),
             ),
-            bottom: const PreferredSize(
+            bottom: PreferredSize(
                 preferredSize: Size(double.infinity, 60),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -30,19 +30,35 @@ class MyWorkshopsScreen extends StatelessWidget {
                       Divider(),
                       SizedBox(height: 10),
                       TabBar(
-                          splashBorderRadius:
-                              BorderRadius.all(Radius.circular(10)),
-                          tabs: [
-                            TapCustomStyle(title: "Incoming"),
-                            TapCustomStyle(title: "Previous"),
-                          ]),
+                        labelColor: Constants.backgroundColor,
+                        splashBorderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        indicator: BoxDecoration(
+                          color: const Color.fromARGB(165, 222, 101, 49),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        indicatorPadding:
+                            const EdgeInsets.symmetric(vertical: 1),
+                        tabs: [
+                          TapCustomStyle(
+                            title: "Incoming",
+                          ),
+                          TapCustomStyle(
+                            title: "Previous",
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 )),
           ),
           body: const TabBarView(children: [
-            Column(children: [SizedBox(height: 27),]),
-            Column(children: [SizedBox(height: 27),]),
+            Column(children: [
+              SizedBox(height: 27),
+            ]),
+            Column(children: [
+              SizedBox(height: 27),
+            ]),
           ])),
     );
   }
