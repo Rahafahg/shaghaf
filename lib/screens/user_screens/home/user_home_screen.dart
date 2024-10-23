@@ -29,8 +29,7 @@ class UserHomeScreen extends StatelessWidget {
     }
 
     log(categories.toString());
-    List<Widget> categoriesWidgets =
-        categories.map((category) => Text(category)).toList();
+    List<Widget> categoriesWidgets = categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
     String? selectedCategory = "All";
     log(selectedCategory);
