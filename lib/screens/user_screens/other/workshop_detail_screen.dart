@@ -43,7 +43,7 @@ class WorkshopDetailScreen extends StatelessWidget {
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
             if (state is SuccessState) {
-              context.pushReplacement(screen: const UserTicketScreen());
+              context.pushReplacement(screen: UserTicketScreen(booking: state.booking));
             }
           },
           child: Scaffold(
@@ -448,7 +448,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                     bloc.add(SaveBookingEvent(
                                                         workshop: workshop.workshops.first,
                                                         quantity: bloc.quantity,
-                                                        
                                                         ));
                                                   } else {}
                                                 },

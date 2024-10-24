@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -18,23 +19,35 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     });
 
     on<ReduceQuantityEvent>((event, emit) {
-      emit(ChangeQuantityState(quantity: quantity != 1 ? quantity = quantity - 1 : 1));
+      emit(ChangeQuantityState(
+          quantity: quantity != 1 ? quantity = quantity - 1 : 1));
     });
 
     on<UpdateDayEvent>((event, emit) {
-      emit(ChangeQuantityState(quantity: quantity=1, specific: event.specific));
+      emit(ChangeQuantityState(
+          quantity: quantity = 1, specific: event.specific));
     });
 
-    on<SaveBookingEvent>((event, emit) {
-      event.workshop;
+    on<SaveBookingEvent>((event, emit) async {
       String qr = Random().nextInt(999999999).toString();
       double price = event.workshop.price * event.quantity;
-      GetIt.I.get<SupabaseLayer>().saveBooking(
-          numberOfTickets: event.quantity,
-          qr: qr,
-          workshop: event.workshop,
-          totalPrice: price);
-      emit(SuccessState());
+
+      try {
+        final bookingAsMap = await GetIt.I.get<SupabaseLayer>().saveBooking(
+              numberOfTickets: event.quantity,
+              qr: qr,
+              workshop: event.workshop,
+              totalPrice: price,
+            );
+        if (bookingAsMap != null) {
+          final booking = BookingModel.fromJson(bookingAsMap);
+          emit(SuccessState(booking: booking));
+        } else {
+          print('Failed to save booking. Please try again.');
+        }
+      } catch (e) {
+        print('Error saving booking: $e');
+      }
     });
   }
 }
