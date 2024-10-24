@@ -195,7 +195,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                           date: bloc.dateController.text,
                           price: state.workshops[index].workshops.where((workshop)=>workshop.date==bloc.dateController.text).toList().isNotEmpty ? state.workshops[index].workshops.where((workshop)=>workshop.date==bloc.dateController.text).toList().first.price : state.workshops[index].workshops.first.price,
                           shape: 'rect',
-                          onTap: () => context.push(screen: WorkshopDetailScreen(workshop: state.workshops[index])),
+                          onTap: () => context.push(screen: WorkshopDetailScreen(workshop: state.workshops[index], date: bloc.dateController.text)),
                         ),
                       );
                     }

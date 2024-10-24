@@ -7,10 +7,12 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 
 class DateRadioButton extends StatelessWidget {
-  const DateRadioButton({super.key, required this.workshop});
   final List<Workshop> workshop;
+  final String selectedDate;
+  const DateRadioButton({super.key, required this.workshop, required this.selectedDate});
   @override
   Widget build(BuildContext context) {
+    log(selectedDate);
     List<String> dates = [];
     for (var element in workshop) {
       DateTime dateTime = DateTime.parse(element.date);
@@ -30,6 +32,7 @@ class DateRadioButton extends StatelessWidget {
       elevation: 2,
       autoWidth: false,
       enableButtonWrap: false,
+      defaultSelected: dates.where((date)=>date.contains(selectedDate)).toList().first,
       horizontal: false,
       wrapAlignment: WrapAlignment.center,
       unSelectedColor: Theme.of(context).canvasColor,

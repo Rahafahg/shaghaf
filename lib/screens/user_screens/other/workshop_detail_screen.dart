@@ -16,15 +16,13 @@ import 'package:shaghaf/widgets/dialogs/mayasor.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
   final WorkshopGroupModel workshop;
-  const WorkshopDetailScreen({super.key, required this.workshop});
+  final String? date;
+  const WorkshopDetailScreen({super.key, required this.workshop, this.date});
 
   @override
   Widget build(BuildContext context) {
-    final category = GetIt.I
-        .get<DataLayer>()
-        .categories
-        .firstWhere((category) => category.categoryId == workshop.categoryId);
-
+    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date!=null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
     return BlocProvider(
       create: (context) => BookingBloc(),
       child: Builder(builder: (context) {
@@ -46,9 +44,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                       top: 40.0,
                       left: 16.0,
                       child: GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
+                        onTap: () => context.pop(),
                         child: const Icon(
                           Icons.arrow_back_ios,
                           color: Constants.lightGreen,
@@ -195,7 +191,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         "Available Days",
                       ),
                       const SizedBox(height: 10),
-                      DateRadioButton(workshop: workshop.workshops),
+                      DateRadioButton(workshop: workshop.workshops, selectedDate: selectedDate),
                       const SizedBox(
                         height: 20,
                       ),
