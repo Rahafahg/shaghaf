@@ -12,3 +12,9 @@ final class UpdateDayEvent extends BookingEvent {
   final String selectedDate;
   UpdateDayEvent({required this.specific, required this.selectedDate});
 }
+
+final class SaveBookingEvent extends BookingEvent {
+  final Workshop workshop;
+  final int quantity;
+  SaveBookingEvent({required this.workshop,required this.quantity});
+}

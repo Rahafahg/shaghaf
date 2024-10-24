@@ -10,3 +10,5 @@ final class ChangeQuantityState extends BookingState {
   final Workshop? specific;
   ChangeQuantityState({required this.quantity, this.specific});
 }
+
+final class SuccessState extends BookingState {}
