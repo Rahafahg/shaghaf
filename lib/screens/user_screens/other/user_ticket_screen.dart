@@ -3,6 +3,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 
 class UserTicketScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class UserTicketScreen extends StatelessWidget {
           ),
           leading: IconButton(
             onPressed: () {
-              context.pushRemove(screen: const UserHomeScreen());
+              context.pushRemove(screen: const NavigationScreen());
             },
             icon: Icon(
               Icons.arrow_back_ios,

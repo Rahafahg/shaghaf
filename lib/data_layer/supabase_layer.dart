@@ -249,7 +249,7 @@ class SupabaseLayer {
   }
 
   getBookings() async {
-    final bookingAsMap = await supabase.from('booking').select();
+    final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
     GetIt.I.get<DataLayer>().bookings =

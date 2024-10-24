@@ -14,4 +14,5 @@ Future<void> setup() async {
   GetIt.I.registerSingleton<SupabaseLayer>(SupabaseLayer());
   GetIt.I.registerSingleton<DataLayer>(DataLayer());
   await GetIt.I.get<SupabaseLayer>().getAllCategories();
+  await GetIt.I.get<SupabaseLayer>().getBookings();
 }

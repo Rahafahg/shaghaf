@@ -403,8 +403,62 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   MainButton(
                                     text:
                                         "Pay ${specific.price * state.quantity} SR",
-                                    onPressed: () => Mayasor(context,
-                                        specific.price * bloc.quantity),
+                                           onPressed: () => showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(24),
+                                        width: context.getWidth(),
+                                        height:
+                                            context.getHeight(divideBy: 1.35),
+                                        decoration: const BoxDecoration(
+                                          color: Constants.backgroundColor,
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            const Text("Fill Card Info",
+                                                style: TextStyle(fontSize: 20)),
+                                            Theme(
+                                              data: ThemeData(
+                                                  textTheme: const TextTheme()),
+                                              child: CreditCard(
+                                                config: PaymentConfig(
+                                                  creditCard: CreditCardConfig(
+                                                      saveCard: false,
+                                                      manual: false),
+                                                  publishableApiKey: dotenv
+                                                      .env['MOYASAR_KEY']!,
+                                                  amount: ((workshop.workshops
+                                                              .last.price *
+                                                          bloc.quantity *
+                                                          100))
+                                                      .toInt(),
+                                                  description: "description",
+                                                ),
+                                                onPaymentResult:
+                                                    (PaymentResponse
+                                                        result) async {
+                                                  if (result.status ==
+                                                      PaymentStatus.paid) {
+                                                    log("Payment is donnee ${result.status}");
+                                                    bloc.add(SaveBookingEvent(
+                                                        workshop: workshop.workshops.first,
+                                                        quantity: bloc.quantity,
+                                                        
+                                                        ));
+                                                  } else {}
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   )
                                 ],
                               );
@@ -438,63 +492,62 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 MainButton(
                                   text:
                                       "Pay ${specific.price * bloc.quantity} SR",
-                                      onPressed: () => log("lkjb"),
-                                  //     onPressed: () => showModalBottomSheet(
-                                  //   context: context,
-                                  //   isScrollControlled: true,
-                                  //   backgroundColor: Colors.transparent,
-                                  //   builder: (context) {
-                                  //     return Container(
-                                  //       padding: const EdgeInsets.all(24),
-                                  //       width: context.getWidth(),
-                                  //       height:
-                                  //           context.getHeight(divideBy: 1.35),
-                                  //       decoration: const BoxDecoration(
-                                  //         color: Constants.backgroundColor,
-                                  //         borderRadius: BorderRadius.vertical(
-                                  //             top: Radius.circular(20)),
-                                  //       ),
-                                  //       child: Column(
-                                  //         children: [
-                                  //           const Text("Fill Card Info",
-                                  //               style: TextStyle(fontSize: 20)),
-                                  //           Theme(
-                                  //             data: ThemeData(
-                                  //                 textTheme: const TextTheme()),
-                                  //             child: CreditCard(
-                                  //               config: PaymentConfig(
-                                  //                 creditCard: CreditCardConfig(
-                                  //                     saveCard: false,
-                                  //                     manual: false),
-                                  //                 publishableApiKey: dotenv
-                                  //                     .env['MOYASAR_KEY']!,
-                                  //                 amount: ((workshop.workshops
-                                  //                             .last.price *
-                                  //                         bloc.quantity *
-                                  //                         100))
-                                  //                     .toInt(),
-                                  //                 description: "description",
-                                  //               ),
-                                  //               onPaymentResult:
-                                  //                   (PaymentResponse
-                                  //                       result) async {
-                                  //                 if (result.status ==
-                                  //                     PaymentStatus.paid) {
-                                  //                   log("Payment is donnee ${result.status}");
-                                  //                   bloc.add(SaveBookingEvent(
-                                  //                       workshop: workshop.workshops.first,
-                                  //                       quantity: bloc.quantity,
+                                      onPressed: () => showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(24),
+                                        width: context.getWidth(),
+                                        height:
+                                            context.getHeight(divideBy: 1.35),
+                                        decoration: const BoxDecoration(
+                                          color: Constants.backgroundColor,
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20)),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            const Text("Fill Card Info",
+                                                style: TextStyle(fontSize: 20)),
+                                            Theme(
+                                              data: ThemeData(
+                                                  textTheme: const TextTheme()),
+                                              child: CreditCard(
+                                                config: PaymentConfig(
+                                                  creditCard: CreditCardConfig(
+                                                      saveCard: false,
+                                                      manual: false),
+                                                  publishableApiKey: dotenv
+                                                      .env['MOYASAR_KEY']!,
+                                                  amount: ((workshop.workshops
+                                                              .last.price *
+                                                          bloc.quantity *
+                                                          100))
+                                                      .toInt(),
+                                                  description: "description",
+                                                ),
+                                                onPaymentResult:
+                                                    (PaymentResponse
+                                                        result) async {
+                                                  if (result.status ==
+                                                      PaymentStatus.paid) {
+                                                    log("Payment is donnee ${result.status}");
+                                                    bloc.add(SaveBookingEvent(
+                                                        workshop: workshop.workshops.first,
+                                                        quantity: bloc.quantity,
                                                         
-                                  //                       ));
-                                  //                 } else {}
-                                  //               },
-                                  //             ),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
+                                                        ));
+                                                  } else {}
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 )
                               ],
                             );
