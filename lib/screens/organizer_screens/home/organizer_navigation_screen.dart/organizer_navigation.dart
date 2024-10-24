@@ -7,6 +7,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/home/organizer_add_workshop_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
+import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/screens/user_screens/profile/profile_screen.dart';
 
 class OrgNavigationScreen extends StatelessWidget {
@@ -21,6 +22,9 @@ class OrgNavigationScreen extends StatelessWidget {
         // ),
         BlocProvider(
           create: (context) => NavigationBloc(),
+        ),
+         BlocProvider(
+          create: (context) => UserProfileBloc(),
         ),
         //other blocs can be added here
       ],
