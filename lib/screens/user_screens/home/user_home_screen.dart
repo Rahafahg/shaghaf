@@ -219,7 +219,7 @@ class UserHomeScreen extends StatelessWidget {
                                                     workshopOfTheWeek.title,
                                                     style: const TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 18,
+                                                        fontSize: 22,
                                                         fontFamily: "Poppins")),
                                               )),
                                         ),

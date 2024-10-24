@@ -10,3 +10,5 @@ final class ChangeQuantityState extends BookingState {
 
   ChangeQuantityState({required this.quantity});
 }
+
+final class SuccessState extends BookingState {}

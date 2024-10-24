@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 
@@ -7,6 +8,7 @@ class DataLayer {
   List<WorkshopGroupModel> workshops = [];
   WorkshopGroupModel? workshopOfTheWeek;
   Map<String, List<WorkshopGroupModel>> workshopsByCategory = {};
+  List<BookingModel> bookings = [];
 }
 
 Map<String, List<WorkshopGroupModel>> groupworkshopsByCategory(

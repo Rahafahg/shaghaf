@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
+import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
@@ -191,7 +192,10 @@ class SupabaseLayer {
           .select()
           .eq('user_id', response.user!.id);
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user!.toJson());
+      GetIt.I
+          .get<AuthLayer>()
+          .box
+          .write('user', GetIt.I.get<AuthLayer>().user!.toJson());
       log(GetIt.I.get<AuthLayer>().user!.email);
       return response;
     } catch (e) {
@@ -201,12 +205,17 @@ class SupabaseLayer {
 
   getAllWorkshops() async {
     List<WorkshopGroupModel> workshops = [];
-    final response = await GetIt.I.get<SupabaseLayer>().supabase.from('workshop_group').select('*, workshop(*)');
+    final response = await GetIt.I
+        .get<SupabaseLayer>()
+        .supabase
+        .from('workshop_group')
+        .select('*, workshop(*)');
     for (var workshopAsJson in response) {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
     GetIt.I.get<DataLayer>().workshops = workshops;
-    GetIt.I.get<DataLayer>().workshopOfTheWeek = workshops[mm.Random().nextInt(workshops.length)];
+    GetIt.I.get<DataLayer>().workshopOfTheWeek =
+        workshops[mm.Random().nextInt(workshops.length)];
   }
 
   getAllCategories() async {
@@ -237,5 +246,31 @@ class SupabaseLayer {
     GetIt.I.get<DataLayer>().categories = orderedCategories;
 
     log(GetIt.I.get<DataLayer>().categories.toString());
+  }
+
+  getBookings() async {
+    final bookingAsMap = await supabase.from('booking').select();
+    log(bookingAsMap.toString());
+    // Convert the map into a list of CategoriesModel
+    GetIt.I.get<DataLayer>().bookings =
+        bookingAsMap.map<BookingModel>((booking) {
+      return BookingModel.fromJson(booking);
+    }).toList();
+    log(GetIt.I.get<DataLayer>().bookings.toString());
+  }
+
+  saveBooking(
+      {required Workshop workshop,
+      required String qr,
+      required int numberOfTickets,
+      required double totalPrice}) async {
+    await supabase.from('booking').insert({
+      'user_id': GetIt.I.get<AuthLayer>().user!.userId,
+      'workshop_id': workshop.workshopId,
+      'number_of_tickets': numberOfTickets,
+      'total_price': totalPrice,
+      'qr_code': qr,
+    });
+    getBookings();
   }
 }

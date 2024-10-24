@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 
 class UserTicketScreen extends StatelessWidget {
+  
   const UserTicketScreen({super.key});
 
   @override
@@ -22,7 +25,7 @@ class UserTicketScreen extends StatelessWidget {
           ),
           leading: IconButton(
             onPressed: () {
-              context.pop();
+              context.pushRemove(screen: const UserHomeScreen());
             },
             icon: Icon(
               Icons.arrow_back_ios,
@@ -62,7 +65,23 @@ class UserTicketScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Center(child: Image.asset("assets/images/qr_code.png")),
+                      Center(
+                        child: Container(
+                          height: context.getHeight(divideBy: 4),
+                          width: context.getWidth(divideBy: 1.9),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: QrImageView(
+                              data: '1234567890',
+                              version: QrVersions.auto,
+                              size: 250,
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
