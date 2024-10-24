@@ -9,7 +9,8 @@ import 'package:shaghaf/models/workshop_group_model.dart';
 class DateRadioButton extends StatelessWidget {
   final List<Workshop> workshop;
   final String selectedDate;
-  const DateRadioButton({super.key, required this.workshop, required this.selectedDate});
+  final void Function(String) onTap;
+  const DateRadioButton({super.key, required this.workshop, required this.selectedDate, required this.onTap});
   @override
   Widget build(BuildContext context) {
     log(selectedDate);
@@ -38,12 +39,8 @@ class DateRadioButton extends StatelessWidget {
       unSelectedColor: Theme.of(context).canvasColor,
       buttonLables: dates,
       buttonValues: dates,
-      radioButtonValue: (value) {
-        log(value);
-        log(dates.toString());
-      },
+      radioButtonValue: onTap,
       selectedColor: Constants.mainOrange,
-
       enableShape: true,
       selectedBorderColor: Colors.grey, // Set the selected border color to grey
       unSelectedBorderColor:

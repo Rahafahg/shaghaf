@@ -45,6 +45,9 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     on<ChangeTypeEvent>((event, emit) {
       selectedType = types[event.index];
       if(dateController.text.isNotEmpty) {
+        if(selectedType=='In-Site') {
+          // final List<WorkshopGroupModel> insite 
+        }
         emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==dateController.text && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
       }
       else {

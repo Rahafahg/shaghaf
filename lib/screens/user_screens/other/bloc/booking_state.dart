@@ -7,6 +7,6 @@ final class BookingInitial extends BookingState {}
 
 final class ChangeQuantityState extends BookingState {
   final int quantity;
-
-  ChangeQuantityState({required this.quantity});
+  final Workshop? specific;
+  ChangeQuantityState({required this.quantity, this.specific});
 }

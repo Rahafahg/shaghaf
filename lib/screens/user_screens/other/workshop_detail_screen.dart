@@ -21,10 +21,20 @@ class WorkshopDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date!=null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty
+        ? date!.split('-').last
+        : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     return BlocProvider(
-      create: (context) => BookingBloc(),
+      create: (context) => BookingBloc()
+        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         final bloc = context.read<BookingBloc>();
         return Scaffold(
@@ -66,8 +76,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             height: 35,
                             width: 35,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                                borderRadius: BorderRadius.circular(12)),
                             child: Image.asset(category.icon),
                           ),
                           const SizedBox(width: 5),
@@ -96,14 +105,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              // Container(
-                              //   height: 35,
-                              //   width: 35,
-                              //   decoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.circular(12),
-                              //   ),
-                              //   child: Image.network(category.icon),
-                              // ),
                               const SizedBox(width: 5),
                               Text(
                                 category.categoryName,
@@ -123,11 +124,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 child: const CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: AssetImage(
-                                    "assets/images/Organizer_image.jpg",
-                                  ),
-                                ),
+                                    radius: 50,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/Organizer_image.jpg")),
                               ),
                               const SizedBox(width: 5),
                               const Text("Organizer"),
@@ -143,11 +142,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                         "Description",
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        workshop.description,
-                        style: const TextStyle(
-                            color: Constants.lightTextColor, fontSize: 14),
-                      ),
+                      Text(workshop.description,
+                          style: const TextStyle(
+                              color: Constants.lightTextColor, fontSize: 14)),
                       const Divider(
                         color: Constants.dividerColor,
                         thickness: 1,
@@ -155,33 +152,79 @@ class WorkshopDetailScreen extends StatelessWidget {
                       const Text(
                         "Instructor",
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(
-                                workshop.workshops.last.instructorImage,
+                      BlocBuilder<BookingBloc, BookingState>(
+                        builder: (context, state) {
+                          if (state is ChangeQuantityState) {
+                            if(state.specific!=null) {
+                              specific = state.specific!;
+                              return Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(
+                                        state.specific!.instructorImage,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    state.specific!.instructorName,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              );
+                            }
+                          }
+                          return Row(
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: NetworkImage(
+                                    specific.instructorImage,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            workshop.workshops.last.instructorName,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
+                              const SizedBox(width: 4),
+                              Text(
+                                specific.instructorName,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        workshop.workshops.last.instructorDescription,
-                        style: const TextStyle(
-                            color: Constants.lightTextColor, fontSize: 14),
+                      BlocBuilder<BookingBloc, BookingState>(
+                        builder: (context, state) {
+                          if (state is ChangeQuantityState) {
+                            if(state.specific != null) {
+                              specific = state.specific!;
+                            return Text(
+                              state.specific!.instructorDescription,
+                              style: const TextStyle(
+                                  color: Constants.lightTextColor,
+                                  fontSize: 14),
+                            );
+                            }
+                          }
+                          return Text(
+                            specific.instructorDescription,
+                            style: const TextStyle(
+                                color: Constants.lightTextColor, fontSize: 14),
+                          );
+                        },
                       ),
                       const Divider(
                         color: Constants.dividerColor,
@@ -191,7 +234,17 @@ class WorkshopDetailScreen extends StatelessWidget {
                         "Available Days",
                       ),
                       const SizedBox(height: 10),
-                      DateRadioButton(workshop: workshop.workshops, selectedDate: selectedDate),
+                      DateRadioButton(
+                          onTap: (chosenDay) => bloc.add(UpdateDayEvent(
+                                selectedDate: chosenDay.split(' ')[1],
+                                specific: workshop.workshops
+                                    .where((workshop) => workshop.date
+                                        .contains(chosenDay.split(' ')[1]))
+                                    .toList()
+                                    .first,
+                              )),
+                          workshop: workshop.workshops,
+                          selectedDate: selectedDate),
                       const SizedBox(
                         height: 20,
                       ),
@@ -209,8 +262,19 @@ class WorkshopDetailScreen extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          Text(
-                              "${workshop.workshops.last.availableSeats}/${workshop.workshops.last.numberOfSeats}"),
+                          BlocBuilder<BookingBloc, BookingState>(
+                            builder: (context, state) {
+                              if (state is ChangeQuantityState) {
+                                if(state.specific!=null) {
+                                  specific = state.specific!;
+                                return Text(
+                                    "${specific.availableSeats}/${specific.numberOfSeats}");
+                                }
+                              }
+                              return Text(
+                                  "${specific.availableSeats}/${specific.numberOfSeats}");
+                            },
+                          ),
                         ],
                       ),
                       const Divider(
@@ -227,23 +291,64 @@ class WorkshopDetailScreen extends StatelessWidget {
                             color: Constants.mainOrange,
                           ),
                           const SizedBox(width: 8),
-                          Expanded(
-                            child: ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(workshop.workshops.last.venueName ??
-                                  "Online"),
-                              subtitle: Text(
-                                workshop.workshops.last.venueType ?? "online",
-                                style: const TextStyle(
-                                    color: Constants.lightTextColor,
-                                    fontSize: 14),
-                              ),
-                            ),
+                          BlocBuilder<BookingBloc, BookingState>(
+                            builder: (context, state) {
+                              if (state is ChangeQuantityState) {
+                                if(state.specific != null) {
+                                  specific = state.specific!;
+                                return Expanded(
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(state.specific!.isOnline
+                                        ? 'Online'
+                                        : state.specific!.venueName ??
+                                            "To be determained later"),
+                                    subtitle: Text(
+                                      specific.isOnline
+                                          ? 'Online'
+                                          : specific.venueType ??
+                                              "To be determained later",
+                                      style: const TextStyle(
+                                          color: Constants.lightTextColor,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                );
+                                }
+                              }
+                              return Expanded(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: Text(specific.isOnline
+                                      ? 'Online'
+                                      : specific.venueName ??
+                                          "To be determained later"),
+                                  subtitle: Text(
+                                    specific.isOnline
+                                        ? 'Online'
+                                        : specific.venueType ??
+                                            "To be determained later",
+                                    style: const TextStyle(
+                                        color: Constants.lightTextColor,
+                                        fontSize: 14),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
-                      Center(
-                          child: Image.asset("assets/images/map_defult.png")),
+                      BlocBuilder<BookingBloc, BookingState>(
+                        builder: (context, state) {
+                          if(state is ChangeQuantityState) {
+                            if(state.specific != null) {
+                              specific = state.specific!;
+                            return state.specific!.isOnline ? SizedBox.shrink() : Center(child: Image.asset("assets/images/map_defult.png"));
+                            }
+                          }
+                          return specific.isOnline ? SizedBox.shrink() : Center(child: Image.asset("assets/images/map_defult.png"));
+                        },
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -278,11 +383,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 ),
                                 MainButton(
                                   text:
-                                      "Pay ${workshop.workshops.last.price * state.quantity} SR",
+                                      "Pay ${specific.price * state.quantity} SR",
                                   onPressed: () => Mayasor(
-                                      context,
-                                      workshop.workshops.last.price *
-                                          bloc.quantity),
+                                      context, specific.price * bloc.quantity),
                                 )
                               ],
                             );
@@ -315,11 +418,9 @@ class WorkshopDetailScreen extends StatelessWidget {
                               ),
                               MainButton(
                                 text:
-                                    "Pay ${workshop.workshops.last.price * bloc.quantity} SR",
+                                    "Pay ${specific.price * bloc.quantity} SR",
                                 onPressed: () => Mayasor(
-                                    context,
-                                    workshop.workshops.last.price *
-                                        bloc.quantity),
+                                    context, specific.price * bloc.quantity),
                               )
                             ],
                           );
