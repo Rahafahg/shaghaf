@@ -11,7 +11,11 @@ class AddField extends StatelessWidget {
   final void Function()? onUploadImg;
   final File? image;
   const AddField(
-      {super.key, required this.type, this.controller, this.onUploadImg, this.image});
+      {super.key,
+      required this.type,
+      this.controller,
+      this.onUploadImg,
+      this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,7 @@ class AddField extends StatelessWidget {
         children: [
           SizedBox(
               width: type == 'Price' || type == 'Seats'
-                  ? context.getWidth(divideBy: 2.7)
+                  ? context.getWidth(divideBy: 3)
                   : context.getWidth(),
               child: Text(type,
                   style: const TextStyle(
@@ -55,17 +59,17 @@ class AddField extends StatelessWidget {
                             horizontal: 16.0), // Reducing height
                       ),
                     ),
-                     Positioned(
+                    Positioned(
                         top: 10,
                         bottom: 10,
                         left: 10,
                         right: 10,
-                        child: image == null ?  const HugeIcon(
-                            size: 40,
-                            icon: HugeIcons.strokeRoundedImageAdd01,
-                            color: Constants.mainOrange): 
-                            Image.file(image!)
-                            )
+                        child: image == null
+                            ? const HugeIcon(
+                                size: 40,
+                                icon: HugeIcons.strokeRoundedImageAdd01,
+                                color: Constants.mainOrange)
+                            : Image.file(image!))
                   ]),
                 )
               : Container(
@@ -110,7 +114,7 @@ class AddField extends StatelessWidget {
                             Radius.circular(13.0)), // Circular border radius
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0), // Reducing height
+                          vertical: 10.0, horizontal: 14.0), // Reducing height
                     ),
                     validator: (text) {
                       if (text!.isEmpty) {
