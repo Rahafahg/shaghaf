@@ -18,7 +18,8 @@ class AddWorkshopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // File? image;
+    File? workshopImage;
+    File? instructorimage;
     return BlocProvider(
       create: (context) => AddWorkshopBloc(),
       child: Builder(builder: (context) {
@@ -90,47 +91,48 @@ class AddWorkshopScreen extends StatelessWidget {
                                 builder: (context, state) {
                                   if (state is ChangeImageState) {
                                     return AddField(
-                                        image: state.image,
-                                        type: 'Add Photo',
-                                        onUploadImg: () async {
-                                          print(
-                                              "---------------------------aaaaaaa333333");
-                                          // Pick image from gallery
-                                          final photoAsFile =
-                                              await ImagePicker().pickImage(
-                                                  source: ImageSource.gallery);
-                                          if (photoAsFile != null) {
-                                            bloc.image = File(photoAsFile.path);
-                                            String fileName = bloc.image!.path
-                                                .split('/')
-                                                .last;
-                                            log("img name: $fileName");
-                                            bloc.add(ChangeImageEvent());
-                                          } else {
-                                            log('No image selected');
-                                          }
-                                        });
-                                  }
-                                  return AddField(
-                                      image: bloc.image,
+                                      image: state.image,
                                       type: 'Add Photo',
                                       onUploadImg: () async {
-                                        print(
-                                            "---------------------------aaaaaaa3333334444444444444");
                                         // Pick image from gallery
                                         final photoAsFile = await ImagePicker()
                                             .pickImage(
                                                 source: ImageSource.gallery);
                                         if (photoAsFile != null) {
-                                          bloc.image = File(photoAsFile.path);
-                                          String fileName =
-                                              bloc.image!.path.split('/').last;
+                                          workshopImage =
+                                              File(photoAsFile.path);
+                                          String fileName = workshopImage!.path
+                                              .split('/')
+                                              .last;
                                           log("img name: $fileName");
-                                          bloc.add(ChangeImageEvent());
+                                          bloc.add(ChangeImageEvent(
+                                              image: workshopImage));
                                         } else {
                                           log('No image selected');
                                         }
-                                      });
+                                      },
+                                    );
+                                  }
+                                  return AddField(
+                                    image: workshopImage,
+                                    type: 'Add Photo',
+                                    onUploadImg: () async {
+                                      // Pick image from gallery
+                                      final photoAsFile = await ImagePicker()
+                                          .pickImage(
+                                              source: ImageSource.gallery);
+                                      if (photoAsFile != null) {
+                                        workshopImage = File(photoAsFile.path);
+                                        String fileName =
+                                            workshopImage!.path.split('/').last;
+                                        log("img name: $fileName");
+                                        bloc.add(ChangeImageEvent(
+                                            image: workshopImage));
+                                      } else {
+                                        log('No image selected');
+                                      }
+                                    },
+                                  );
                                 },
                               ),
                               const AddField(type: 'Workshop Title'),
@@ -148,12 +150,57 @@ class AddWorkshopScreen extends StatelessWidget {
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
-                          content: const Column(
+                          content: Column(
                             children: [
-                              AddField(type: 'Audience'),
-                              AddField(type: 'Instructor photo'),
-                              AddField(type: 'Instructor description'),
-                              Row(
+                              const AddField(type: 'Audience'),
+                              BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
+                                  builder: (context, state) {
+                                if (state is ChangeImageState) {
+                                  return AddField(
+                                    image: state.image,
+                                    type: 'Instructor photo',
+                                    onUploadImg: () async {
+                                      // Pick image from gallery
+                                      final photoAsFile = await ImagePicker()
+                                          .pickImage(
+                                              source: ImageSource.gallery);
+                                      if (photoAsFile != null) {
+                                        instructorimage =
+                                            File(photoAsFile.path);
+                                        String fileName = instructorimage!.path
+                                            .split('/')
+                                            .last;
+                                        log("img name: $fileName");
+                                        bloc.add(ChangeImageEvent(
+                                            image: instructorimage));
+                                      } else {
+                                        log('No image selected');
+                                      }
+                                    },
+                                  );
+                                }
+                                return AddField(
+                                  image: instructorimage,
+                                  type: 'Instructor photo',
+                                  onUploadImg: () async {
+                                    // Pick image from gallery
+                                    final photoAsFile = await ImagePicker()
+                                        .pickImage(source: ImageSource.gallery);
+                                    if (photoAsFile != null) {
+                                      instructorimage = File(photoAsFile.path);
+                                      String fileName =
+                                          instructorimage!.path.split('/').last;
+                                      log("img name: $fileName");
+                                      bloc.add(ChangeImageEvent(
+                                          image: instructorimage));
+                                    } else {
+                                      log('No image selected');
+                                    }
+                                  },
+                                );
+                              }),
+                              const AddField(type: 'Instructor description'),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -183,7 +230,7 @@ class AddWorkshopScreen extends StatelessWidget {
                               child: const Column(
                                 children: [
                                   TabBar(
-                                      isScrollable: false,
+                                      physics: NeverScrollableScrollPhysics(),
                                       unselectedLabelStyle: TextStyle(
                                           color: Constants.appGreyColor),
                                       labelStyle: TextStyle(

@@ -7,6 +7,8 @@ final class StepContinueEvent extends AddWorkshopEvent {}
 
 final class StepCancelEvent extends AddWorkshopEvent {}
 
-final class ChangeImageEvent extends AddWorkshopEvent {}
+final class ChangeImageEvent extends AddWorkshopEvent {
+  final File? image;
 
-
+  ChangeImageEvent({required this.image});
+}

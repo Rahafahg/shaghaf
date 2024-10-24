@@ -9,7 +9,7 @@ part 'add_workshop_state.dart';
 
 class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   int currentStep = 0;
-  File? image;
+
   AddWorkshopBloc() : super(AddWorkshopInitial()) {
     on<StepContinueEvent>(stepContinue);
     on<StepCancelEvent>(stepCancel);
@@ -35,6 +35,6 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   FutureOr<void> changeImage(
       ChangeImageEvent event, Emitter<AddWorkshopState> emit) {
     print("-----------------aaaaaaaaaaaaaaa1");
-    emit(ChangeImageState(image: image));
+    emit(ChangeImageState(image: event.image));
   }
 }
