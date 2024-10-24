@@ -30,6 +30,7 @@ class MyWorkshopsScreen extends StatelessWidget {
                       Divider(),
                       SizedBox(height: 10),
                       TabBar(
+                        overlayColor: WidgetStatePropertyAll(Colors.transparent),
                         labelColor: Constants.backgroundColor,
                         splashBorderRadius:
                             const BorderRadius.all(Radius.circular(10)),
