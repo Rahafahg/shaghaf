@@ -14,9 +14,15 @@ class MyWorkShopsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final booking = GetIt.I
+        .get<DataLayer>()
+        .bookings
+        .where((booking) =>
+            booking.workshopId == workshop.workshops.first.workshopId)
+        .first;
     return InkWell(
       onTap: () {
-        context.push(screen: const UserTicketScreen());
+        context.push(screen: UserTicketScreen(booking: booking));
       },
       child: Container(
         alignment: Alignment.center,
@@ -43,9 +49,14 @@ class MyWorkShopsCard extends StatelessWidget {
                     bottomLeft: Radius.circular(10)),
                 child: SizedBox(
                   width: context.getWidth(divideBy: 3.5),
-                  child: workshop.image.isNotEmpty ? Image.network(workshop.image, fit: BoxFit.cover,) : Image.asset(
-                    "assets/images/pasta_workshop.png",
-                  ),
+                  child: workshop.image.isNotEmpty
+                      ? Image.network(
+                          workshop.image,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          "assets/images/pasta_workshop.png",
+                        ),
                 )),
             const SizedBox(width: 10),
             Column(
@@ -71,7 +82,8 @@ class MyWorkShopsCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.star, size: 16, color: Colors.orange),
+                          const Icon(Icons.star,
+                              size: 16, color: Colors.orange),
                           const SizedBox(width: 4),
                           Text(workshop.rating.toString(),
                               style: Theme.of(context).textTheme.bodySmall),
@@ -81,15 +93,25 @@ class MyWorkShopsCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryId == workshop.categoryId).categoryName,
-                  style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
+                  GetIt.I
+                      .get<DataLayer>()
+                      .categories
+                      .firstWhere((category) =>
+                          category.categoryId == workshop.categoryId)
+                      .categoryName,
+                  style: const TextStyle(
+                      fontSize: 14, color: Constants.mainOrange),
                 ),
                 Row(
                   children: [
                     CircleAvatar(
                         radius: 12,
-                        child: workshop.workshops.first.instructorImage.isNotEmpty ? Image.network(workshop.workshops.first.instructorImage) : Image.asset(
-                            "assets/images/default_organizer_image.png")),
+                        child: workshop
+                                .workshops.first.instructorImage.isNotEmpty
+                            ? Image.network(
+                                workshop.workshops.first.instructorImage)
+                            : Image.asset(
+                                "assets/images/default_organizer_image.png")),
                     const SizedBox(width: 4),
                     Text(
                       workshop.workshops.first.instructorName,
