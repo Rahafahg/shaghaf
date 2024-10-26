@@ -18,7 +18,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
 
   FutureOr<void> stepContinue(
       StepContinueEvent event, Emitter<AddWorkshopState> emit) {
-    if (currentStep < 2) {
+    if (currentStep < 1) {
       currentStep += 1;
       emit(ChangeStepState());
     }

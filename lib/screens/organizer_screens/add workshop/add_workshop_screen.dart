@@ -52,7 +52,7 @@ class AddWorkshopScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            bloc.currentStep == 2
+                            bloc.currentStep == 1
                                 ? MainButton(
                                     text: 'Create',
                                     onPressed: () => log("You are donnee"),
@@ -70,12 +70,13 @@ class AddWorkshopScreen extends StatelessWidget {
                                     color: Constants.mainOrange,
                                     fontFamily: "Poppins",
                                   )),
-                            ),
+                            )
                           ],
                         ),
                       );
                     },
                     steps: [
+                      //1-basic information
                       Step(
                           isActive: bloc.currentStep >= 0,
                           title: const Text("Basic information",
@@ -84,17 +85,49 @@ class AddWorkshopScreen extends StatelessWidget {
                                   color: Constants.mainOrange,
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w500)),
-                          content: Column(
-                            children: [
-                              BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-                                builder: (context, state) {
-                                  if (state is ChangeImageState) {
+                          content: Container(
+                            // height: 600,
+                            width: context.getWidth(),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: kElevationToShadow[1],
+                                color: Constants.cardColor),
+                            child: Column(
+                              children: [
+                                BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
+                                  builder: (context, state) {
+                                    if (state is ChangeImageState) {
+                                      return AddField(
+                                          image: state.image,
+                                          type: 'Add Photo',
+                                          onUploadImg: () async {
+                                            print(
+                                                "---------------------------aaaaaaa333333");
+                                            // Pick image from gallery
+                                            final photoAsFile =
+                                                await ImagePicker().pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            if (photoAsFile != null) {
+                                              bloc.image =
+                                                  File(photoAsFile.path);
+                                              String fileName = bloc.image!.path
+                                                  .split('/')
+                                                  .last;
+                                              log("img name: $fileName");
+                                              bloc.add(ChangeImageEvent());
+                                            } else {
+                                              log('No image selected');
+                                            }
+                                          });
+                                    }
                                     return AddField(
-                                        image: state.image,
+                                        image: bloc.image,
                                         type: 'Add Photo',
                                         onUploadImg: () async {
                                           print(
-                                              "---------------------------aaaaaaa333333");
+                                              "---------------------------aaaaaaa3333334444444444444");
                                           // Pick image from gallery
                                           final photoAsFile =
                                               await ImagePicker().pickImage(
@@ -110,34 +143,16 @@ class AddWorkshopScreen extends StatelessWidget {
                                             log('No image selected');
                                           }
                                         });
-                                  }
-                                  return AddField(
-                                      image: bloc.image,
-                                      type: 'Add Photo',
-                                      onUploadImg: () async {
-                                        print(
-                                            "---------------------------aaaaaaa3333334444444444444");
-                                        // Pick image from gallery
-                                        final photoAsFile = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.gallery);
-                                        if (photoAsFile != null) {
-                                          bloc.image = File(photoAsFile.path);
-                                          String fileName =
-                                              bloc.image!.path.split('/').last;
-                                          log("img name: $fileName");
-                                          bloc.add(ChangeImageEvent());
-                                        } else {
-                                          log('No image selected');
-                                        }
-                                      });
-                                },
-                              ),
-                              const AddField(type: 'Workshop Title'),
-                              const AddField(type: 'Workshop Description'),
-                              const CategoryDropDown()
-                            ],
+                                  },
+                                ),
+                                const AddField(type: 'Workshop Title'),
+                                const AddField(type: 'Workshop Description'),
+                                const CategoryDropDown(),
+                                AddField(type: 'Audience'),
+                              ],
+                            ),
                           )),
+                      //2-detail
                       Step(
                           isActive: bloc.currentStep >= 1,
                           title: const Text(
@@ -148,72 +163,86 @@ class AddWorkshopScreen extends StatelessWidget {
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w500),
                           ),
-                          content: const Column(
-                            children: [
-                              AddField(type: 'Audience'),
-                              AddField(type: 'Instructor photo'),
-                              AddField(type: 'Instructor description'),
-                              Row(
+                          content: Container(
+                            // height:
+                            //     600, // Ensure the container has a fixed height
+                            width: context.getWidth(),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: kElevationToShadow[1],
+                              color: Constants.cardColor,
+                            ),
+                            child: Column(
+                              children: [
+                                AddField(type: 'Instructor photo'),
+                                AddField(type: 'Instructor description'),
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     AddField(type: "Price"),
-                                    AddField(type: "Seats")
-                                  ])
-                            ],
-                          )),
-                      Step(
-                          isActive: bloc.currentStep >= 2,
-                          title: const Text("Date and location",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Constants.mainOrange,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w500)),
-                          content: DefaultTabController(
-                            length: 2,
-                            child: Container(
-                              height: 600,
-                              width: context.getWidth(),
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: kElevationToShadow[1],
-                                  color: Constants.cardColor),
-                              child: const Column(
-                                children: [
-                                  TabBar(
-                                      isScrollable: false,
-                                      unselectedLabelStyle: TextStyle(
-                                          color: Constants.appGreyColor),
-                                      labelStyle: TextStyle(
-                                          color: Constants.mainOrange),
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      indicatorColor: Constants.mainOrange,
-                                      dividerColor: Constants.appGreyColor,
-                                      tabs: [
-                                        Tab(text: "In site"),
-                                        Tab(text: "Online")
-                                      ]),
-                                  Expanded(
-                                    child: TabBarView(children: [
-                                      Column(children: [
-                                        SizedBox(height: 10),
-                                        AddDateField(),
-                                        AddField(type: 'Venue name'),
-                                        AddField(type: 'Venue type'),
-                                        Expanded(
-                                          child: TimeField(),
-                                        )
-                                      ]),
-                                      Center(
-                                          child: AddField(type: 'meeting_url')),
-                                    ]),
-                                  )
-                                ],
-                              ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    AddField(type: "Seats"),
+                                  ],
+                                ),
+                                AddField(type: 'Venue name'),
+                                AddField(type: 'Venue type'),
+                                // Expanded(
+                                //   // Wrap the DefaultTabController in Expanded to ensure it fits inside the Column
+                                //   child: DefaultTabController(
+                                //     length: 2,
+                                //     child: Column(
+                                //       children: [
+                                // TabBar(
+                                //   isScrollable: false,
+                                //   unselectedLabelStyle: TextStyle(
+                                //     color: Constants.appGreyColor,
+                                //   ),
+                                //   labelStyle: TextStyle(
+                                //     color: Constants.mainOrange,
+                                //   ),
+                                //   indicatorSize:
+                                //       TabBarIndicatorSize.tab,
+                                //   indicatorColor: Constants.mainOrange,
+                                //   dividerColor: Constants.appGreyColor,
+                                //   tabs: const [
+                                //     Tab(text: "In site"),
+                                //     Tab(text: "Online"),
+                                //   ],
+                                // ),
+                                // Expanded(
+                                //   // Wrap TabBarView in Expanded to take available space
+                                //   child: TabBarView(
+                                //     children: [
+                                //       Column(
+                                //         children: [
+                                //           const SizedBox(height: 10),
+                                //           AddDateField(),
+                                //           AddField(type: 'Venue name'),
+                                //           AddField(type: 'Venue type'),
+                                //           Expanded(
+                                //             // Use Expanded only here, as the parent column now has constrained height
+                                //             child: TimeField(),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //       Center(
+                                //         child: AddField(
+                                //             type: 'meeting_url'),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
                             ),
-                          ))
+                          )),
                     ]);
               },
             ),
