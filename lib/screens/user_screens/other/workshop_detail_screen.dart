@@ -15,7 +15,6 @@ import 'package:shaghaf/screens/user_screens/other/bloc/booking_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
-import 'package:shaghaf/widgets/dialogs/mayasor.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
@@ -45,7 +44,7 @@ class WorkshopDetailScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is SuccessState) {
               context.pushReplacement(
-                  screen: UserTicketScreen(booking: state.booking));
+                  screen: UserTicketScreen(workshop: specific,booking: state.booking));
             }
           },
           child: Scaffold(
@@ -443,8 +442,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                             manual: false),
                                                     publishableApiKey: dotenv
                                                         .env['MOYASAR_KEY']!,
-                                                    amount: ((workshop.workshops
-                                                                .last.price *
+                                                    amount: ((specific.price *
                                                             bloc.quantity *
                                                             100))
                                                         .toInt(),
@@ -532,8 +530,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                       manual: false),
                                                   publishableApiKey: dotenv
                                                       .env['MOYASAR_KEY']!,
-                                                  amount: ((workshop.workshops
-                                                              .last.price *
+                                                  amount: ((specific.price *
                                                           bloc.quantity *
                                                           100))
                                                       .toInt(),

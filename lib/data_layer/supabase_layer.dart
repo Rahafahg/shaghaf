@@ -204,6 +204,7 @@ class SupabaseLayer {
   }
 
   getAllWorkshops() async {
+    log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
     final response = await GetIt.I
         .get<SupabaseLayer>()
@@ -249,7 +250,7 @@ class SupabaseLayer {
   }
 
   getBookings() async {
-    final bookingAsMap = await supabase.from('booking').select();
+    final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
     GetIt.I.get<DataLayer>().bookings =
@@ -276,6 +277,7 @@ class SupabaseLayer {
       }).select();
 
       log(booking.toString());
+      getBookedWorkshops();
       return booking.first;
     } catch (e) {
       log('Error saving booking: $e');

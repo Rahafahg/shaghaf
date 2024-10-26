@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 
 class UserTicketScreen extends StatelessWidget {
   final BookingModel booking;
-  const UserTicketScreen({super.key, required this.booking});
+  final Workshop workshop;
+  final Function()? onBack;
+  const UserTicketScreen({super.key, required this.booking, this.onBack, required this.workshop});
 
   @override
   Widget build(BuildContext context) {
-    
+    final workshopGroup = GetIt.I.get<DataLayer>().workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==workshop.workshopGroupId);
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       appBar: AppBar(
@@ -26,7 +31,7 @@ class UserTicketScreen extends StatelessWidget {
                 color: Constants.textColor),
           ),
           leading: IconButton(
-            onPressed: () {
+            onPressed: onBack ?? () {
               context.pushRemove(screen: const NavigationScreen());
             },
             icon: Icon(
@@ -57,8 +62,8 @@ class UserTicketScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Pottery making",
+                      Text(
+                        workshopGroup.title,
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: "Poppins",
@@ -97,14 +102,14 @@ class UserTicketScreen extends StatelessWidget {
                           Text("${booking.bookingDate}")
                         ],
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Icon(Icons.watch_later_outlined,
                               size: 16, color: Constants.mainOrange),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("2-pm to 3-pm")
+                          Text("${workshop.fromTime} to ${workshop.toTime}")
                         ],
                       ),
                       const SizedBox(
@@ -114,8 +119,8 @@ class UserTicketScreen extends StatelessWidget {
                         "Description",
                         style: TextStyle(fontFamily: "Poppins", fontSize: 16),
                       ),
-                      const Text(
-                        "here is a description of the ticket",
+                      Text(
+                        workshopGroup.description,
                         style: TextStyle(color: Constants.lightTextColor),
                       )
                     ],

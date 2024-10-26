@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:math';
-
-import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -19,13 +17,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     });
 
     on<ReduceQuantityEvent>((event, emit) {
-      emit(ChangeQuantityState(
-          quantity: quantity != 1 ? quantity = quantity - 1 : 1));
+      emit(ChangeQuantityState(quantity: quantity != 1 ? quantity = quantity - 1 : 1));
     });
 
     on<UpdateDayEvent>((event, emit) {
-      emit(ChangeQuantityState(
-          quantity: quantity = 1, specific: event.specific));
+      emit(ChangeQuantityState(quantity: quantity = 1, specific: event.specific));
     });
 
     on<SaveBookingEvent>((event, emit) async {

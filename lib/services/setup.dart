@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
@@ -14,5 +16,9 @@ Future<void> setup() async {
   GetIt.I.registerSingleton<SupabaseLayer>(SupabaseLayer());
   GetIt.I.registerSingleton<DataLayer>(DataLayer());
   await GetIt.I.get<SupabaseLayer>().getAllCategories();
-  await GetIt.I.get<SupabaseLayer>().getBookings();
+  await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
+  if(GetIt.I.get<AuthLayer>().user!=null) {
+    await GetIt.I.get<SupabaseLayer>().getBookings();
+    log('wwwww ${GetIt.I.get<DataLayer>().workshops.length}');
+  }
 }
