@@ -11,4 +11,7 @@ final class ChangeQuantityState extends BookingState {
   ChangeQuantityState({required this.quantity, this.specific});
 }
 
-final class SuccessState extends BookingState {}
+final class SuccessState extends BookingState {
+  final BookingModel booking;
+  SuccessState({required this.booking});
+}

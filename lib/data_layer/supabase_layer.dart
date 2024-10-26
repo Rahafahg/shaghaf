@@ -249,7 +249,7 @@ class SupabaseLayer {
   }
 
   getBookings() async {
-    final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
+    final bookingAsMap = await supabase.from('booking').select();
     log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
     GetIt.I.get<DataLayer>().bookings =
@@ -259,18 +259,27 @@ class SupabaseLayer {
     log(GetIt.I.get<DataLayer>().bookings.toString());
   }
 
-  saveBooking(
-      {required Workshop workshop,
-      required String qr,
-      required int numberOfTickets,
-      required double totalPrice}) async {
-    await supabase.from('booking').insert({
-      'user_id': GetIt.I.get<AuthLayer>().user!.userId,
-      'workshop_id': workshop.workshopId,
-      'number_of_tickets': numberOfTickets,
-      'total_price': totalPrice,
-      'qr_code': qr,
-    });
-    getBookings();
+  Future<dynamic> saveBooking({
+    required Workshop workshop,
+    required String qr,
+    required int numberOfTickets,
+    required double totalPrice,
+  }) async {
+    try {
+      // Inserting a new booking, relying on the default booking_date and booking_id
+      final booking = await supabase.from('booking').insert({
+        'user_id': GetIt.I.get<AuthLayer>().user!.userId,
+        'workshop_id': workshop.workshopId,
+        'number_of_tickets': numberOfTickets,
+        'total_price': totalPrice,
+        'qr_code': qr,
+      }).select();
+
+      log(booking.toString());
+      return booking.first;
+    } catch (e) {
+      log('Error saving booking: $e');
+      return null;
+    }
   }
 }

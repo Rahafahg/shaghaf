@@ -3,15 +3,16 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
-import 'package:shaghaf/screens/user_screens/home/user_home_screen.dart';
 
 class UserTicketScreen extends StatelessWidget {
-  
-  const UserTicketScreen({super.key});
+  final BookingModel booking;
+  const UserTicketScreen({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       appBar: AppBar(
@@ -76,7 +77,7 @@ class UserTicketScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: QrImageView(
-                              data: '1234567890',
+                              data: booking.qrCode,
                               version: QrVersions.auto,
                               size: 250,
                             ),
@@ -86,14 +87,14 @@ class UserTicketScreen extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.calendar_today,
+                          const Icon(Icons.calendar_today,
                               size: 16, color: Constants.mainOrange),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
-                          Text("2024-10-22")
+                          Text("${booking.bookingDate}")
                         ],
                       ),
                       const Row(
