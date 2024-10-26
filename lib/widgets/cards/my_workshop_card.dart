@@ -22,7 +22,7 @@ class MyWorkShopsCard extends StatelessWidget {
         .first;
     return InkWell(
       onTap: () {
-        context.push(screen: UserTicketScreen(booking: booking));
+        context.push(screen: UserTicketScreen(workshop: GetIt.I.get<DataLayer>().bookedWorkshops.firstWhere((b)=>b.workshopId==booking.workshopId),booking: booking));
       },
       child: Container(
         alignment: Alignment.center,
