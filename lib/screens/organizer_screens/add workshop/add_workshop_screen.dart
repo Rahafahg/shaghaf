@@ -3,26 +3,37 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/dropdwons/category_dropdown.dart';
-import 'package:shaghaf/widgets/text_fields/add_date_field.dart';
+import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/text_fields/add_field.dart';
-import 'package:shaghaf/widgets/text_fields/time_field.dart';
+import 'package:shaghaf/widgets/text_fields/workshop_form.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // File? image;
+    File? workshopImage;
+
     return BlocProvider(
       create: (context) => AddWorkshopBloc(),
       child: Builder(builder: (context) {
         final bloc = context.read<AddWorkshopBloc>();
+        Widget a = WorkShopForm(
+          bloc: bloc,
+          date: bloc.dates[0],
+          index: bloc.controllers.isNotEmpty
+              ? bloc.controllers['Instructor name']![bloc.index]
+              : '',
+        );
+        bloc.workShopForms.add(a);
+
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
@@ -55,7 +66,8 @@ class AddWorkshopScreen extends StatelessWidget {
                             bloc.currentStep == 1
                                 ? MainButton(
                                     text: 'Create',
-                                    onPressed: () => log("You are donnee"),
+                                    onPressed: () =>
+                                        log(bloc.controllers.toString()),
                                   )
                                 : MainButton(
                                     text: 'Next',
@@ -102,43 +114,44 @@ class AddWorkshopScreen extends StatelessWidget {
                                           image: state.image,
                                           type: 'Add Photo',
                                           onUploadImg: () async {
-                                            print(
-                                                "---------------------------aaaaaaa333333");
                                             // Pick image from gallery
                                             final photoAsFile =
                                                 await ImagePicker().pickImage(
                                                     source:
                                                         ImageSource.gallery);
                                             if (photoAsFile != null) {
-                                              bloc.image =
+                                              workshopImage =
                                                   File(photoAsFile.path);
-                                              String fileName = bloc.image!.path
+                                              String fileName = workshopImage!
+                                                  .path
                                                   .split('/')
                                                   .last;
                                               log("img name: $fileName");
-                                              bloc.add(ChangeImageEvent());
+                                              bloc.add(ChangeImageEvent(
+                                                  image: workshopImage));
                                             } else {
                                               log('No image selected');
                                             }
                                           });
                                     }
                                     return AddField(
-                                        image: bloc.image,
+                                        image: workshopImage,
                                         type: 'Add Photo',
                                         onUploadImg: () async {
-                                          print(
-                                              "---------------------------aaaaaaa3333334444444444444");
                                           // Pick image from gallery
                                           final photoAsFile =
                                               await ImagePicker().pickImage(
                                                   source: ImageSource.gallery);
                                           if (photoAsFile != null) {
-                                            bloc.image = File(photoAsFile.path);
-                                            String fileName = bloc.image!.path
+                                            workshopImage =
+                                                File(photoAsFile.path);
+                                            String fileName = workshopImage!
+                                                .path
                                                 .split('/')
                                                 .last;
                                             log("img name: $fileName");
-                                            bloc.add(ChangeImageEvent());
+                                            bloc.add(ChangeImageEvent(
+                                                image: workshopImage));
                                           } else {
                                             log('No image selected');
                                           }
@@ -148,7 +161,7 @@ class AddWorkshopScreen extends StatelessWidget {
                                 const AddField(type: 'Workshop Title'),
                                 const AddField(type: 'Workshop Description'),
                                 const CategoryDropDown(),
-                                AddField(type: 'Audience'),
+                                const AddField(type: 'Audience'),
                               ],
                             ),
                           )),
@@ -173,74 +186,60 @@ class AddWorkshopScreen extends StatelessWidget {
                               boxShadow: kElevationToShadow[1],
                               color: Constants.cardColor,
                             ),
-                            child: Column(
-                              children: [
-                                AddField(type: 'Instructor photo'),
-                                AddField(type: 'Instructor description'),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                            child:
+                                BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
+                              builder: (context, state) {
+                                List<String> formattedDates =
+                                    dateFormte(dates: bloc.dates);
+                                return Column(
                                   children: [
-                                    AddField(type: "Price"),
-                                    SizedBox(
-                                      width: 5,
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          ContainersTabBar(
+                                              tabs: formattedDates,
+                                              selectedTab:
+                                                  formattedDates[bloc.index],
+                                              onTap: (index) {
+                                                bloc.add(ChangeDateEvent(
+                                                    index: index));
+                                              }),
+                                          ElevatedButton(
+                                              onPressed: () async =>
+                                                  await showDatePicker(
+                                                    context: context,
+                                                    firstDate: DateTime(2023),
+                                                    lastDate: DateTime(2026),
+                                                  ).then(
+                                                    (value) {
+                                                      if (value != null) {
+                                                        log("eeeeeeeeeeee");
+                                                        bloc.add(AddDateEvent(
+                                                            date: value.toString()));
+                                                        bloc.workShopForms
+                                                            .add(WorkShopForm(
+                                                          date: value.toString(),
+                                                          bloc: bloc,
+                                                          index: bloc
+                                                                  .controllers
+                                                                  .isNotEmpty
+                                                              ? bloc.controllers[
+                                                                      'Instructor name']![
+                                                                  bloc.index]
+                                                              : '',
+                                                        ));
+                                                      }
+                                                    },
+                                                  ),
+                                              child: const Text("Add date"))
+                                        ],
+                                      ),
                                     ),
-                                    AddField(type: "Seats"),
+                                    bloc.workShopForms[bloc.index]
                                   ],
-                                ),
-                                AddField(type: 'Venue name'),
-                                AddField(type: 'Venue type'),
-                                // Expanded(
-                                //   // Wrap the DefaultTabController in Expanded to ensure it fits inside the Column
-                                //   child: DefaultTabController(
-                                //     length: 2,
-                                //     child: Column(
-                                //       children: [
-                                // TabBar(
-                                //   isScrollable: false,
-                                //   unselectedLabelStyle: TextStyle(
-                                //     color: Constants.appGreyColor,
-                                //   ),
-                                //   labelStyle: TextStyle(
-                                //     color: Constants.mainOrange,
-                                //   ),
-                                //   indicatorSize:
-                                //       TabBarIndicatorSize.tab,
-                                //   indicatorColor: Constants.mainOrange,
-                                //   dividerColor: Constants.appGreyColor,
-                                //   tabs: const [
-                                //     Tab(text: "In site"),
-                                //     Tab(text: "Online"),
-                                //   ],
-                                // ),
-                                // Expanded(
-                                //   // Wrap TabBarView in Expanded to take available space
-                                //   child: TabBarView(
-                                //     children: [
-                                //       Column(
-                                //         children: [
-                                //           const SizedBox(height: 10),
-                                //           AddDateField(),
-                                //           AddField(type: 'Venue name'),
-                                //           AddField(type: 'Venue type'),
-                                //           Expanded(
-                                //             // Use Expanded only here, as the parent column now has constrained height
-                                //             child: TimeField(),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //       Center(
-                                //         child: AddField(
-                                //             type: 'meeting_url'),
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
+                                );
+                              },
                             ),
                           )),
                     ]);
@@ -252,3 +251,32 @@ class AddWorkshopScreen extends StatelessWidget {
     );
   }
 }
+
+dateFormte({required List? dates}) {
+  List<String> formatedDates = [];
+  if (dates != null) {
+    for (var element in dates) {
+      DateTime dateTime = DateTime.parse(element);
+      String formattedDate = DateFormat('MMM d').format(dateTime); // format date
+      formatedDates.add(formattedDate);
+    }
+  }
+  return formatedDates;
+}
+
+
+//? Not Working ):
+// pickImageFromgallery({required File image, required bloc}) async {
+//   print("---------------------------aaaaaaa333333");
+//   // Pick image from gallery
+//   final photoAsFile =
+//       await ImagePicker().pickImage(source: ImageSource.gallery);
+//   if (photoAsFile != null) {
+//     image = File(photoAsFile.path);
+//     String fileName = image.path.split('/').last;
+//     log("img name: $fileName");
+//     bloc.add(ChangeImageEvent(image: image));
+//   } else {
+//     log('No image selected');
+//   }
+// }

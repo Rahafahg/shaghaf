@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart'; 
+import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
+import 'package:shaghaf/screens/organizer_screens/home/organizer_navigation_screen.dart/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/services/setup.dart';
@@ -24,13 +25,16 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: myappTheme,
-      debugShowCheckedModeBanner: false,
-      home: GetIt.I.get<AuthLayer>().user != null
-      ? GetIt.I.get<AuthLayer>().didChooseFav
-        ? const NavigationScreen()
-        : const SelectCategoriesScreen()
-      : GetIt.I.get<AuthLayer>().onboarding ? const LoginScreen() : const OnboardingScreen()
-    );
+        theme: myappTheme,
+        debugShowCheckedModeBanner: false,
+        home: GetIt.I.get<AuthLayer>().organizer != null
+            ? const OrgNavigationScreen()
+            : GetIt.I.get<AuthLayer>().user != null
+                ? GetIt.I.get<AuthLayer>().didChooseFav
+                    ? const NavigationScreen()
+                    : const SelectCategoriesScreen()
+                : GetIt.I.get<AuthLayer>().onboarding
+                    ? const LoginScreen()
+                    : const OnboardingScreen());
   }
 }

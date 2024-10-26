@@ -19,7 +19,7 @@ class OrgNavigationScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // BlocProvider(
-        //   create: (context) => UserHomeBloc().,
+        //   create: (context) => OrganizerHomeBloc().,
         // ),
         BlocProvider(
           create: (context) => NavigationBloc(),
@@ -39,7 +39,7 @@ class OrgNavigationScreen extends StatelessWidget {
               backgroundColor: Constants.lightOrange,
               foregroundColor: Colors.white,
               shape: const CircleBorder(),
-              onPressed: () => context.push(screen: AddWorkshopScreen()),
+              onPressed: () => context.push(screen: const AddWorkshopScreen()),
               child: const Icon(Icons.add),
             ),
           ),

@@ -6,10 +6,15 @@ import 'package:shaghaf/extensions/screen_size.dart';
 class AddDateField extends StatelessWidget {
   const AddDateField({
     super.key,
+    required this.date,
+    this.bloc,
   });
-
+  final String date;
+  final dynamic bloc;
   @override
   Widget build(BuildContext context) {
+    final TextEditingController dateController =
+        TextEditingController(text: date.toString());
     return Column(
       children: [
         SizedBox(
@@ -27,11 +32,20 @@ class AddDateField extends StatelessWidget {
                   Radius.circular(13.0)), // Circular border radius
               border: Border.all(color: Constants.mainOrange)),
           child: TextField(
-            // controller: bloc.dateController,
-            onTap: () async => await showDatePicker(
-                context: context,
-                firstDate: DateTime(2023),
-                lastDate: DateTime(2026)),
+            controller: dateController,
+            onTap: () async {
+              await showDatePicker(
+                      initialDate: DateTime.parse(date),
+                      context: context,
+                      firstDate: DateTime(2023),
+                      lastDate: DateTime(2026))
+                  .then((value) {
+                if (value != null) {
+                  dateController.text = value.toString();
+                  // bloc.dates.add(dateController.text);
+                }
+              });
+            },
             readOnly: true,
             decoration: const InputDecoration(
                 fillColor: Colors.white70,
