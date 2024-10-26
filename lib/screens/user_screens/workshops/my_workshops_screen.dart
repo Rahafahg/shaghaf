@@ -25,6 +25,23 @@ class MyWorkshopsScreen extends StatelessWidget {
     List<Workshop> bookedWorkshops = getBookedWorkshops();
     log('message3');
     log(bookedWorkshops.length.toString());
+    List<Workshop> attendedWorkshops = [];
+    List<Workshop> notAttendedWorkshops = [];
+    for (var booking in bookings) {
+      final workshopId = booking.workshopId;
+      for (var workshopGroup in workshops) {
+        for (var workshop in workshopGroup.workshops) {
+          if(workshop.workshopId==workshopId && booking.isAttended==true) {
+            attendedWorkshops.add(workshop);
+          }
+          if(workshop.workshopId==workshopId && booking.isAttended==false) {
+            notAttendedWorkshops.add(workshop);
+          }
+        }
+      }
+    }
+    log(attendedWorkshops.length.toString());
+    log(notAttendedWorkshops.length.toString());
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -62,23 +79,34 @@ class MyWorkshopsScreen extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListView.separated(
-                  itemCount: bookedWorkshops.length,
+                  itemCount: notAttendedWorkshops.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 20,),
                   itemBuilder: (context, index) => WorkshopCard(
-                    workshop: workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==bookedWorkshops[index].workshopGroupId),
-                    date: bookedWorkshops[index].date,
-                    onTap: ()=>context.push(screen: UserTicketScreen(workshop: bookedWorkshops[index],booking: bookings[index], onBack: ()=>context.pop())),
-                    price: bookedWorkshops[index].price,
+                    workshop: workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==notAttendedWorkshops[index].workshopGroupId),
+                    date: notAttendedWorkshops[index].date,
+                    onTap: ()=>context.push(screen: UserTicketScreen(workshop: notAttendedWorkshops[index],booking: bookings[index], onBack: ()=>context.pop())),
+                    price: notAttendedWorkshops[index].price,
                     shape: 'rect',
                   ),
                 ),
               ),
-            // Text(GetIt.I.get<DataLayer>().bookings.length.toString()),
-            Text(bookings.length.toString()),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ListView.separated(
+                  itemCount: attendedWorkshops.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 20,),
+                  itemBuilder: (context, index) => WorkshopCard(
+                    workshop: workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==attendedWorkshops[index].workshopGroupId),
+                    date: attendedWorkshops[index].date,
+                    onTap: ()=>context.push(screen: UserTicketScreen(workshop: attendedWorkshops[index],booking: bookings[index], onBack: ()=>context.pop())),
+                    price: attendedWorkshops[index].price,
+                    shape: 'rect',
+                  ),
+                ),
+              ),
           ])),
     );
   }

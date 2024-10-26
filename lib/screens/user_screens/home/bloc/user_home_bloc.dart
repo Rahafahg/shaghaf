@@ -32,8 +32,8 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
     try {
       emit(LoadingWorkshopsState());
       await supabaseLayer.getAllWorkshops();
-      emit(
-          SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
+      getBookedWorkshops();
+      emit(SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
     } catch (e) {
       emit(ErrorWorkshopsState(msg: 'Bad Internet Connection :('));
     }
