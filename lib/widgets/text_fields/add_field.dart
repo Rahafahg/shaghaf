@@ -10,12 +10,14 @@ class AddField extends StatelessWidget {
   final TextEditingController? controller;
   final void Function()? onUploadImg;
   final File? image;
+  final Function(String?)? onSaved;
   const AddField(
       {super.key,
       required this.type,
       this.controller,
       this.onUploadImg,
-      this.image});
+      this.image,
+      this.onSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class AddField extends StatelessWidget {
         children: [
           SizedBox(
               width: type == 'Price' || type == 'Seats'
-                  ? context.getWidth(divideBy: 2.7)
+                  ? context.getWidth(divideBy: 3)
                   : context.getWidth(),
               child: Text(type,
                   style: const TextStyle(
@@ -76,13 +78,14 @@ class AddField extends StatelessWidget {
                 )
               : Container(
                   width: type == 'Price' || type == 'Seats'
-                      ? context.getWidth(divideBy: 2.7)
+                      ? context.getWidth(divideBy: 3)
                       : context.getWidth(),
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(
                           Radius.circular(13.0)), // Circular border radius
                       border: Border.all(color: Constants.mainOrange)),
                   child: TextFormField(
+                    onFieldSubmitted: onSaved,
                     controller: controller,
                     obscureText: type == 'Password',
                     minLines: type == 'Workshop Description' ||

@@ -3,12 +3,12 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
 class TimeField extends StatelessWidget {
-  const TimeField({
-    super.key,
-  });
-
+  const TimeField({super.key, required this.timeFromController, required this.timeToController});
+   final TextEditingController timeFromController;
+   final TextEditingController timeToController;
   @override
   Widget build(BuildContext context) {
+ 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -36,6 +36,7 @@ class TimeField extends StatelessWidget {
                           Radius.circular(13.0)), // Circular border radius
                       border: Border.all(color: Constants.mainOrange)),
                   child: TextFormField(
+                    controller: timeFromController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white70,
@@ -65,6 +66,7 @@ class TimeField extends StatelessWidget {
                           Radius.circular(13.0)), // Circular border radius
                       border: Border.all(color: Constants.mainOrange)),
                   child: TextFormField(
+                    controller: timeToController,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white70,
