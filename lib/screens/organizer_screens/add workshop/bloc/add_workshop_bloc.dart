@@ -12,20 +12,20 @@ part 'add_workshop_event.dart';
 part 'add_workshop_state.dart';
 
 class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
-  List<String> dates = [DateTime.now().toString()];
-  List<Widget> workShopForms = [];
+  // List<String> dates = [DateTime.now().toString()];
+  // List<Widget> workShopForms = [];
   // List <String>controllers = [];
-  Map<String, List<String>> controllers = {};
-  void addItem({required String key, required String item}) {
+  // Map<String, List<String>> controllers = {};
+  // void addItem({required String key, required String item}) {
 
-    if (controllers.containsKey(key)) {
+  //   if (controllers.containsKey(key)) {
 
-      controllers[key]!.add(item);
-    } else {
+  //     controllers[key]!.add(item);
+  //   } else {
 
-      controllers[key] = [item];
-    }
-  }
+  //     controllers[key] = [item];
+  //   }
+  // }
 
   int currentStep = 0;
   int index = 0;
@@ -34,10 +34,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<StepCancelEvent>(stepCancel);
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
-    on<AddDateEvent>(addDate);
-    on<SubmitWorkshopEvent>((event, emit) async {
-      await GetIt.I.get<SupabaseLayer>().addWorkshop();
-    });
+    // on<AddDateEvent>(addDate);
   }
 
   FutureOr<void> stepContinue(
@@ -68,8 +65,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     emit(ChangeDateState());
   }
 
-  FutureOr<void> addDate(AddDateEvent event, Emitter<AddWorkshopState> emit) {
-    dates.add(event.date);
-    emit(ChangeDateState());
-  }
+  // FutureOr<void> addDate(AddDateEvent event, Emitter<AddWorkshopState> emit) {
+  //   dates.add(event.date);
+  //   emit(ChangeDateState());
+  // }
 }

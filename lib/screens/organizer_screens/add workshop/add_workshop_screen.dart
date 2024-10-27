@@ -26,12 +26,7 @@ class AddWorkshopScreen extends StatelessWidget {
         final bloc = context.read<AddWorkshopBloc>();
         Widget a = WorkShopForm(
           bloc: bloc,
-          date: bloc.dates[0],
-          index: bloc.controllers.isNotEmpty
-              ? bloc.controllers['Instructor name']![bloc.index]
-              : '',
         );
-        bloc.workShopForms.add(a);
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
@@ -183,60 +178,8 @@ class AddWorkshopScreen extends StatelessWidget {
                               boxShadow: kElevationToShadow[1],
                               color: Constants.cardColor,
                             ),
-                            child:
-                                BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-                              builder: (context, state) {
-                                List<String> formattedDates =
-                                    dateFormte(dates: bloc.dates);
-                                return Column(
-                                  children: [
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          ContainersTabBar(
-                                              tabs: formattedDates,
-                                              selectedTab:
-                                                  formattedDates[bloc.index],
-                                              onTap: (index) {
-                                                bloc.add(ChangeDateEvent(
-                                                    index: index));
-                                              }),
-                                          ElevatedButton(
-                                              onPressed: () async =>
-                                                  await showDatePicker(
-                                                    context: context,
-                                                    firstDate: DateTime(2023),
-                                                    lastDate: DateTime(2026),
-                                                  ).then(
-                                                    (value) {
-                                                      if (value != null) {
-                                                        log("eeeeeeeeeeee");
-                                                        bloc.add(AddDateEvent(
-                                                            date: value.toString()));
-                                                        bloc.workShopForms
-                                                            .add(WorkShopForm(
-                                                          date: value.toString(),
-                                                          bloc: bloc,
-                                                          index: bloc
-                                                                  .controllers
-                                                                  .isNotEmpty
-                                                              ? bloc.controllers[
-                                                                      'Instructor name']![
-                                                                  bloc.index]
-                                                              : '',
-                                                        ));
-                                                      }
-                                                    },
-                                                  ),
-                                              child: const Text("Add date"))
-                                        ],
-                                      ),
-                                    ),
-                                    bloc.workShopForms[bloc.index]
-                                  ],
-                                );
-                              },
+                            child: WorkShopForm(
+                              bloc: bloc,
                             ),
                           )),
                     ]);
@@ -249,17 +192,18 @@ class AddWorkshopScreen extends StatelessWidget {
   }
 }
 
-dateFormte({required List? dates}) {
-  List<String> formatedDates = [];
-  if (dates != null) {
-    for (var element in dates) {
-      DateTime dateTime = DateTime.parse(element);
-      String formattedDate = DateFormat('MMM d').format(dateTime); // format date
-      formatedDates.add(formattedDate);
-    }
-  }
-  return formatedDates;
-}
+// dateFormte({required List? dates}) {
+//   List<String> formatedDates = [];
+//   if (dates != null) {
+//     for (var element in dates) {
+//       DateTime dateTime = DateTime.parse(element);
+//       String formattedDate =
+//           DateFormat('MMM d').format(dateTime); // format date
+//       formatedDates.add(formattedDate);
+//     }
+//   }
+//   return formatedDates;
+// }
 
 
 //? Not Working ):

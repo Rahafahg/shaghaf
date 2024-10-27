@@ -35,13 +35,13 @@ class AddDateField extends StatelessWidget {
             controller: dateController,
             onTap: () async {
               await showDatePicker(
-                      initialDate: DateTime.parse(date),
+                      initialDate: DateTime.parse(DateTime.now().toString()),
                       context: context,
-                      firstDate: DateTime(2023),
-                      lastDate: DateTime(2026))
+                      firstDate: DateTime(2024),
+                      lastDate: DateTime(2025))
                   .then((value) {
                 if (value != null) {
-                  dateController.text = value.toString();
+                  dateController.text = value.toString().split(' ').first;
                   // bloc.dates.add(dateController.text);
                 }
               });
