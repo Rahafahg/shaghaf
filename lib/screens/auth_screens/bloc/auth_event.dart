@@ -50,3 +50,8 @@ final class LoginEvent extends AuthEvent {
 }
 
 final class LoginWithEmailEvent extends AuthEvent {}
+
+final class AddingImageEvent extends AuthEvent {
+  final File? image;
+  AddingImageEvent({required this.image});
+}

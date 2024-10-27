@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   TextEditingController otpController = TextEditingController();
   final String externalId = mm.Random().nextInt(999999999).toString();
   // final String externalId = '1234567890';
+  File? selectedImage;
 
   AuthBloc() : super(AuthInitial()) {
     on<CreateAccountEvent>(createUserAccountMethod);
@@ -23,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyOrganizerOtpEvent>(verifyOrganizerOtpMethod);
     on<LoginEvent>(loginMethod);
     on<LoginWithEmailEvent>(loginWithEmailMethod);
+    on<AddingImageEvent>(AddingImageMethod);
   }
 
   FutureOr<void> createUserAccountMethod(
@@ -38,7 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> verifyOtpMethod(VerifyOtpEvent event, Emitter<AuthState> emit) async {
+  FutureOr<void> verifyOtpMethod(
+      VerifyOtpEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOtp(
@@ -83,7 +86,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         log('no');
       }
       if (role == 'user' || role == 'organizer') {
-        await supabaseLayer.login(email: event.email, password: event.password, externalId: externalId, role: role);
+        await supabaseLayer.login(
+            email: event.email,
+            password: event.password,
+            externalId: externalId,
+            role: role);
         // log(login.toString());
         emit(SuccessState(role: role));
       }
@@ -92,7 +99,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> verifyOrganizerOtpMethod(VerifyOrganizerOtpEvent event, Emitter<AuthState> emit) async {
+  Future<void> verifyOrganizerOtpMethod(
+      VerifyOrganizerOtpEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
       await supabaseLayer.verifyOrganizerOtp(
@@ -119,9 +127,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 //       kDebugMode ? LaunchMode.platformDefault : LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
 // );
 // log(h.toString());
-   final AuthResponse response =  await supabaseLayer.nativeGoogleSignIn();
-    String role = "";
-   final users = <Future>[];
+      final AuthResponse response = await supabaseLayer.nativeGoogleSignIn();
+      String role = "";
+      final users = <Future>[];
       users.add(supabaseLayer.supabase.from('organizer').select('email'));
       users.add(supabaseLayer.supabase.from('users').select('email'));
       final results = await Future.wait(users);
@@ -149,5 +157,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (e) {
       emit(ErrorState(msg: e.toString()));
     }
+  }
+
+  FutureOr<void> AddingImageMethod(
+      AddingImageEvent event, Emitter<AuthState> emit) {
+    print("---------------image added----------");
+    selectedImage = event.image;
+    emit(AddingImageState(image: event.image));
   }
 }
