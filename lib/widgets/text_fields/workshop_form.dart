@@ -10,19 +10,21 @@ import 'package:shaghaf/widgets/text_fields/add_field.dart';
 import 'package:shaghaf/widgets/text_fields/time_field.dart';
 
 class WorkShopForm extends StatelessWidget {
-  const WorkShopForm(
-      {super.key, this.bloc, required this.date, required this.index});
-  final String date;
+  const WorkShopForm({
+    super.key,
+     this.bloc, 
+    //required this.date, required this.index
+  });
+  // final String date;
   final dynamic bloc;
-  final String index;
+  // final String index;
   @override
   Widget build(BuildContext context) {
     File? instructorimage;
     final TextEditingController timeFromController = TextEditingController();
     final TextEditingController timeToController = TextEditingController();
     final TextEditingController instructorNameController =
-        TextEditingController(
-            text:index);
+        TextEditingController();
     final TextEditingController instructorDescController =
         TextEditingController();
     final TextEditingController priceController = TextEditingController();
@@ -33,7 +35,9 @@ class WorkShopForm extends StatelessWidget {
     return Column(
       children: [
         AddDateField(
-          date: date,
+          // date: DateTime.now().toString(),
+            date: '',
+
         ),
         TimeField(
           timeFromController: timeFromController,

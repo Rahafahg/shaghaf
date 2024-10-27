@@ -3,12 +3,14 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
 class TimeField extends StatelessWidget {
-  const TimeField({super.key, required this.timeFromController, required this.timeToController});
-   final TextEditingController timeFromController;
-   final TextEditingController timeToController;
+  const TimeField(
+      {super.key,
+      required this.timeFromController,
+      required this.timeToController});
+  final TextEditingController timeFromController;
+  final TextEditingController timeToController;
   @override
   Widget build(BuildContext context) {
- 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
@@ -37,6 +39,18 @@ class TimeField extends StatelessWidget {
                       border: Border.all(color: Constants.mainOrange)),
                   child: TextFormField(
                     controller: timeFromController,
+                    onTap: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: const TimeOfDay(hour: 10, minute: 47),
+                      ).then((value) {
+                        if (value != null) {
+                          timeFromController.text = value
+                              .format(context); // Formats as a readable string
+                          // bloc.dates.add(dateController.text);
+                        }
+                      });
+                    },
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white70,
@@ -67,6 +81,18 @@ class TimeField extends StatelessWidget {
                       border: Border.all(color: Constants.mainOrange)),
                   child: TextFormField(
                     controller: timeToController,
+                    onTap: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: const TimeOfDay(hour: 10, minute: 47),
+                      ).then((value) {
+                        if (value != null) {
+                          timeToController.text = value
+                              .format(context); // Formats as a readable string
+                          // bloc.dates.add(dateController.text);
+                        }
+                      });
+                    },
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white70,
