@@ -19,7 +19,12 @@ final class ChangeDateEvent extends AddWorkshopEvent {
 }
 
 final class AddDateEvent extends AddWorkshopEvent {
- final String date;
+  final String date;
 
   AddDateEvent({required this.date});
+}
+
+
+final class SubmitWorkshopEvent extends AddWorkshopEvent {
+  
 }

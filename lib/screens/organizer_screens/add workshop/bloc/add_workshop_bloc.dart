@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:shaghaf/data_layer/supabase_layer.dart';
 
 part 'add_workshop_event.dart';
 part 'add_workshop_state.dart';
@@ -32,6 +35,9 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
     on<AddDateEvent>(addDate);
+    on<SubmitWorkshopEvent>((event, emit) async {
+      await GetIt.I.get<SupabaseLayer>().addWorkshop();
+    });
   }
 
   FutureOr<void> stepContinue(

@@ -20,7 +20,6 @@ class AddWorkshopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     File? workshopImage;
-
     return BlocProvider(
       create: (context) => AddWorkshopBloc(),
       child: Builder(builder: (context) {
@@ -33,7 +32,6 @@ class AddWorkshopScreen extends StatelessWidget {
               : '',
         );
         bloc.workShopForms.add(a);
-
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
@@ -66,8 +64,7 @@ class AddWorkshopScreen extends StatelessWidget {
                             bloc.currentStep == 1
                                 ? MainButton(
                                     text: 'Create',
-                                    onPressed: () =>
-                                        log(bloc.controllers.toString()),
+                                    onPressed: () => bloc.add(SubmitWorkshopEvent()),
                                   )
                                 : MainButton(
                                     text: 'Next',

@@ -284,4 +284,45 @@ class SupabaseLayer {
       return null;
     }
   }
+
+  Future<void> addWorkshop() async {
+    log('add 1');
+    try {
+      final response = await supabase.from('workshop_group').insert({
+        'title' : 'hey from supabase !!',
+        'image' : 'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
+        'description' : 'helo im desc',
+        'category_id' : '6dd02c50-016c-4bc9-8d90-61354d9677d8',
+        'targeted_audience' : 'shaghaf',
+        'organizer_id' : GetIt.I.get<AuthLayer>().organizer!.organizerId
+      }).select();
+      log(response.first['workshop_group_id']);
+      await addSingleWorkshop(response.first['workshop_group_id']);
+    } catch (e) {
+      log('message ${e.toString()}');
+    }
+  }
+
+  Future<void> addSingleWorkshop(String workshopGroupId) async {
+    log('add 2');
+    log(workshopGroupId);
+    try {
+      await supabase.from('workshop').insert({
+        'date' : '2024-11-17',
+        'from_time' : '10:00',
+        'to_time' : '12:00',
+        'price' : 151,
+        'number_of_seats' : 12,
+        'available_seats' : 12,
+        'instructor_name' : 'yso kh',
+        'instructor_image' : 'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
+        'instructor_description' : 'hi hi im inst desc',
+        'is_online' : false,
+        'workshop_group_id' : workshopGroupId
+      });
+      log('$workshopGroupId successfull');
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }
