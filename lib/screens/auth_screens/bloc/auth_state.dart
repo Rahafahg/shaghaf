@@ -14,5 +14,13 @@ final class LoadingState extends AuthState {}
 
 final class SuccessState extends AuthState {
   final String? role;
-  SuccessState({this.role});
+  final File? image; 
+
+  SuccessState({this.role, this.image});
+}
+
+
+final class AddingImageState extends AuthState {
+  final File? image;
+  AddingImageState({required this.image});
 }

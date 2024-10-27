@@ -25,7 +25,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
     TextEditingController contactNumberController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
-    File? image;
+   // File? image;
     return BlocProvider(
       create: (context) => AuthBloc(),
       child: Builder(builder: (context) {
@@ -53,7 +53,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                       email: emailController.text,
                       role: 'organizer',
                       name: nameController.text,
-                      image: image,
+                      image: state.image,
                       contactNumber: contactNumberController.text,
                       description: descriptionController.text,
                       licenseNumber: 'asdf'));
@@ -106,23 +106,35 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       type: 'Contact Number',
                                       controller: contactNumberController),
                                   const SizedBox(height: 10),
-                                  AuthField(
-                                      type: 'Photo (optional)',
-                                      onUploadImg: () async {
-                                        // Pick image from gallery
-                                        final photoAsFile = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.gallery);
-                                        if (photoAsFile != null) {
-                                          image = File(photoAsFile.path);
-                                          String fileName =
-                                              image!.path.split('/').last;
-                                          log("img name: $fileName");
-                                        
-                                        } else {
-                                          log('No image selected');
+                                          BlocBuilder<AuthBloc, AuthState>(
+                                      builder: (context, state) {
+                                        File? image;
+                                        if (state is AddingImageState) {
+                                          image = state.image;
+                                        } else if (state is SuccessState) {
+                                          image = state.image;
                                         }
-                                      }),
+                                        return AuthField(
+                                          type: 'Photo (optional)',
+                                          image:
+                                              image, // Pass the selected image
+                                          onUploadImg: () async {
+                                            final photoAsFile =
+                                                await ImagePicker().pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            if (photoAsFile != null) {
+                                              final image =
+                                                  File(photoAsFile.path);
+                                              bloc.add(AddingImageEvent(
+                                                  image: image));
+                                            } else {
+                                              log('No image selected');
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
                                   const SizedBox(height: 20),
                                   AuthField(
                                     type: 'Description',

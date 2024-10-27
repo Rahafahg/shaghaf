@@ -8,6 +8,7 @@ class shimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      
       width: 200.0,
       height: 200.0,
       child: Shimmer.fromColors(

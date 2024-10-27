@@ -6,7 +6,7 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/widgets/effects/shimmer.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -225,6 +225,7 @@ class WorkshopCard extends StatelessWidget {
                                         loadingProgress) =>
                                     loadingProgress == null
                                         ? child
+                                        
                                         : shimmerEffect(),
                               )
                             : Image.asset(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
@@ -6,7 +9,13 @@ class AuthField extends StatelessWidget {
   final String type;
   final TextEditingController? controller;
   final void Function()? onUploadImg;
-  const AuthField({super.key, required this.type, this.controller, this.onUploadImg});
+  final File? image;
+  const AuthField(
+      {super.key,
+      required this.type,
+      this.controller,
+      this.onUploadImg,
+      this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -40,26 +49,41 @@ class AuthField extends StatelessWidget {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w600))),
         type == 'Photo (optional)'
-            ? TextFormField(
-              readOnly: true,
-              onTap: onUploadImg,
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Colors.white70,
-                hintText: "Upload photo",
-                hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Poppins",
-                    color: Color(0xff666666)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(20.0)), // Circular border radius
+            ? GestureDetector(
+                onTap: onUploadImg,
+                child: Container(
+                  width: context.getWidth(),
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey),
+                    color: Colors.white70,
+                  ),
+                  child: image != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.file(
+                            image!,
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
+                        )
+                      : const Center(
+                          child: HugeIcon(
+                              size: 40,
+                              icon: HugeIcons.strokeRoundedImageAdd01,
+                              color: Constants.mainOrange)
+                          // Text(
+                          //   "Upload photo",
+                          //   style: TextStyle(
+                          //       fontSize: 14,
+                          //       fontFamily: "Poppins",
+                          //       color: Color(0xff666666)),
+                          // ),
+                          ),
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 16.0), // Reducing height
-              ),
-            )
+              )
             : TextFormField(
                 controller: controller,
                 obscureText: type == 'Password',
@@ -70,7 +94,9 @@ class AuthField extends StatelessWidget {
                     ? 5
                     : 1, // Max lines for Description, can adjust if needed
                 style: const TextStyle(fontSize: 14, fontFamily: "Poppins"),
-                keyboardType: type.toLowerCase()=='email' ? TextInputType.emailAddress : null,
+                keyboardType: type.toLowerCase() == 'email'
+                    ? TextInputType.emailAddress
+                    : null,
                 decoration: InputDecoration(
                   errorStyle: const TextStyle(
                       fontSize: 8, fontFamily: "Poppins", color: Colors.red),
