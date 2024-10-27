@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
-import 'package:shaghaf/screens/organizer_screens/home/organizer_navigation_screen.dart/organizer_navigation.dart';
+import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/services/setup.dart';

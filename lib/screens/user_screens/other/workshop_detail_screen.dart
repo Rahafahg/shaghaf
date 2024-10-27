@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:moyasar/moyasar.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -24,27 +25,18 @@ class WorkshopDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = GetIt.I
-        .get<DataLayer>()
-        .categories
-        .firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date != null && date!.isNotEmpty
-        ? date!.split('-').last
-        : workshop.workshops.first.date.split('-').last;
-    Workshop specific = workshop.workshops
-        .where((workshop) => workshop.date.contains(selectedDate))
-        .toList()
-        .first;
+    final organizer = GetIt.I.get<AuthLayer>().organizer;
+    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
     return BlocProvider(
-      create: (context) => BookingBloc()
-        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
             if (state is SuccessState) {
-              context.pushReplacement(
-                  screen: UserTicketScreen(workshop: specific,booking: state.booking));
+              context.pushReplacement(screen: UserTicketScreen(workshop: specific,booking: state.booking));
             }
           },
           child: Scaffold(
@@ -65,11 +57,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         left: 16.0,
                         child: GestureDetector(
                           onTap: () => context.pop(),
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            color: Constants.lightGreen,
-                            size: 28.0,
-                          ),
+                          child: const Icon(Icons.arrow_back_ios,color: Constants.lightGreen,size: 28.0,),
                         ),
                       ),
                     ],
@@ -85,24 +73,17 @@ class WorkshopDetailScreen extends StatelessWidget {
                             Container(
                               height: 35,
                               width: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
                               child: Image.asset(category.icon),
                             ),
                             const SizedBox(width: 5),
                             Text(
                               workshop.title,
-                              style: const TextStyle(
-                                  color: Constants.textColor,
-                                  fontSize: 20,
-                                  fontFamily: "Poppins"),
+                              style: const TextStyle(color: Constants.textColor,fontSize: 20,fontFamily: "Poppins"),
                             ),
                             Row(
                               children: [
-                                const HugeIcon(
-                                  icon: HugeIcons.strokeRoundedUserGroup,
-                                  color: Constants.textColor,
-                                ),
+                                const HugeIcon(icon: HugeIcons.strokeRoundedUserGroup,color: Constants.textColor,),
                                 const SizedBox(width: 5),
                                 Text(workshop.targetedAudience)
                               ],
@@ -118,10 +99,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName,
-                                  style: const TextStyle(
-                                      color: Constants.textColor,
-                                      fontSize: 16,
-                                      fontFamily: "Poppins"),
+                                  style: const TextStyle(color: Constants.textColor,fontSize: 16,fontFamily: "Poppins"),
                                 ),
                               ],
                             ),
@@ -130,13 +108,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: AssetImage(
-                                          "assets/images/Organizer_image.jpg")),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),),
+                                  child: CircleAvatar(radius: 50,backgroundImage: organizer != null ? NetworkImage(organizer.image) : AssetImage("assets/images/Organizer_image.jpg")),
                                 ),
                                 const SizedBox(width: 5),
                                 const Text("Organizer"),
@@ -349,35 +322,34 @@ class WorkshopDetailScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        // specific.latitude == null && specific.latitude!.isEmpty ? SizedBox.shrink() : SizedBox(height: context.getHeight(divideBy: 3),width: context.getWidth(),child: UserMap(lat: double.parse(specific.latitude!), lng: double.parse(specific.longitude!)),),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             if (state is ChangeQuantityState) {
                               if (state.specific != null) {
                                 specific = state.specific!;
-                                return state.specific!.isOnline
+                                return state.specific!.isOnline || state.specific?.latitude == null || state.specific!.latitude!.isEmpty
                                     ? SizedBox.shrink()
                                     : SizedBox(
                                         height: context.getHeight(divideBy: 3),
                                         width: context.getWidth(),
                                     child: UserMap(lat: double.parse(specific.latitude!), lng: double.parse(specific.longitude!),),
                                       );
-                                
                               }
                             }
-                            return specific.isOnline
+                            return specific.isOnline || specific.latitude == null || specific.latitude!.isEmpty
                                 ? SizedBox.shrink()
                                 : SizedBox(
                                     height: context.getHeight(divideBy: 4),
                                     width: context.getWidth(),
-
                                     child: UserMap(lat: double.parse(specific.latitude!), lng: double.parse(specific.longitude!),),
                                   );
                           },
                         ),
-                        const SizedBox(
+                        organizer != null ? SizedBox.shrink() : const SizedBox(
                           height: 30,
                         ),
-                        BlocBuilder<BookingBloc, BookingState>(
+                        organizer != null ? SizedBox.shrink() : BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             if (state is ChangeQuantityState) {
                               return Row(

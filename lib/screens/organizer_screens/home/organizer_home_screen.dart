@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/data_layer.dart';
+import 'package:shaghaf/extensions/screen_nav.dart';
+import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
+import 'package:shaghaf/screens/user_screens/workshops/my_workshops_screen.dart';
+import 'package:shaghaf/widgets/cards/workshope_card.dart';
 import 'package:shaghaf/widgets/tapbar/tap_custom.dart';
 
 class OrganizerHomeScreen extends StatelessWidget {
@@ -49,12 +55,19 @@ class OrganizerHomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            Column(
-              children: [
-                SizedBox(height: 27),
-              ],
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: ListView.separated(
+                itemCount: GetIt.I.get<DataLayer>().orgWorkshops.length,
+                separatorBuilder: (context,index) => SizedBox(height: 20,),
+                itemBuilder: (context,index)=>WorkshopCard(
+                  workshop: GetIt.I.get<DataLayer>().orgWorkshops[index],
+                  shape: 'rect',
+                  onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: GetIt.I.get<DataLayer>().orgWorkshops[index])),
+                ),
+              ),
             ),
             Column(
               children: [

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -12,6 +13,19 @@ class DataLayer {
   Map<String, List<WorkshopGroupModel>> workshopsByCategory = {};
   List<BookingModel> bookings = [];
   List<Workshop> bookedWorkshops = [];
+  List<WorkshopGroupModel> orgWorkshops = [];
+}
+
+getOrgWorkshops() {
+  List<WorkshopGroupModel> temp = [];
+  for (var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+    if(workshopGroup.organizerId == GetIt.I.get<AuthLayer>().organizer!.organizerId) {
+      temp.add(workshopGroup);
+    }
+  }
+  GetIt.I.get<DataLayer>().orgWorkshops = temp;
+  log("here here today");
+  log(GetIt.I.get<DataLayer>().orgWorkshops.length.toString());
 }
 
 List<Workshop> getBookedWorkshops() {
