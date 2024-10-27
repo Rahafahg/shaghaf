@@ -372,7 +372,7 @@ class WorkshopCard extends StatelessWidget {
                                   const Icon(Icons.star,
                                       size: 16, color: Colors.orange),
                                   const SizedBox(width: 4),
-                                  Text(workshop.rating.toString(),
+                                  Text(workshop.rating.toString().substring(0,3),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall),

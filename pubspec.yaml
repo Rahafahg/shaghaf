@@ -33,6 +33,7 @@ dependencies:
   barcode_scan2: ^4.3.3
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
