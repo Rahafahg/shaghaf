@@ -45,68 +45,81 @@ class MyWorkshopsScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          centerTitle: true,
-          title: const Text(
-            "My Workshops",
+          backgroundColor: Constants.backgroundColor,
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            centerTitle: true,
+            title: const Text(
+              "My Workshops",
             style: TextStyle(fontSize: 20,fontFamily: "Poppins",color: Constants.textColor),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size(double.infinity, 60),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    TabBar(
+            ),
+            bottom: PreferredSize(
+                preferredSize: const Size(double.infinity, 60),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      TabBar(
                       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                      labelColor: Constants.backgroundColor,
+                        labelColor: Constants.backgroundColor,
                       splashBorderRadius: const BorderRadius.all(Radius.circular(10)),
-                      indicator: BoxDecoration(
-                        color: const Color.fromARGB(165, 222, 101, 49),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                        indicator: BoxDecoration(
+                          color: const Color.fromARGB(165, 222, 101, 49),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       indicatorPadding: const EdgeInsets.symmetric(vertical: 1),
                       tabs: const [TapCustomStyle(title: "Incoming"),TapCustomStyle(title: "Previous")],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
               )
             ),
           ),
           body: TabBarView(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ListView.separated(
-                  itemCount: notAttendedWorkshops.length,
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListView.separated(
+                itemCount: notAttendedWorkshops.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 20,),
-                  itemBuilder: (context, index) => WorkshopCard(
+                itemBuilder: (context, index) => WorkshopCard(
                     workshop: workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==notAttendedWorkshops[index].workshopGroupId),
-                    date: notAttendedWorkshops[index].date,
-                    onTap: ()=>context.push(screen: UserTicketScreen(workshop: notAttendedWorkshops[index],booking: bookings[index], onBack: ()=>context.pop())),
-                    price: notAttendedWorkshops[index].price,
-                    shape: 'rect',
-                  ),
+                  date: notAttendedWorkshops[index].date,
+                  onTap: () => context.push(
+                      screen: UserTicketScreen(
+                          workshop: notAttendedWorkshops[index],
+                          booking: bookings[index],
+                          onBack: () => context.pop())),
+                  price: notAttendedWorkshops[index].price,
+                  shape: 'rect',
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ListView.separated(
-                  itemCount: attendedWorkshops.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 20,),
-                  itemBuilder: (context, index) => WorkshopCard(
-                    workshop: workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==attendedWorkshops[index].workshopGroupId),
-                    date: attendedWorkshops[index].date,
-                    onTap: ()=>context.push(screen: UserTicketScreen(workshop: attendedWorkshops[index],booking: bookings[index], onBack: ()=>context.pop())),
-                    price: attendedWorkshops[index].price,
-                    shape: 'rect',
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListView.separated(
+                itemCount: attendedWorkshops.length,
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 20,
+                ),
+                itemBuilder: (context, index) => WorkshopCard(
+                  workshop: workshops.firstWhere((workshopGroup) =>
+                      workshopGroup.workshopGroupId ==
+                      attendedWorkshops[index].workshopGroupId),
+                  date: attendedWorkshops[index].date,
+                  onTap: () => context.push(
+                      screen: UserTicketScreen(
+                          workshop: attendedWorkshops[index],
+                          booking: bookings[index],
+                          onBack: () => context.pop())),
+                  price: attendedWorkshops[index].price,
+                  isAttended: true,
+                  shape: 'rect',
                 ),
               ),
+            ),
           ])),
     );
   }

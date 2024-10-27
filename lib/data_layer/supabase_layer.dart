@@ -250,7 +250,10 @@ class SupabaseLayer {
   }
 
   getBookings() async {
-    final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
+    final bookingAsMap = await supabase
+        .from('booking')
+        .select()
+        .eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
     GetIt.I.get<DataLayer>().bookings =
@@ -282,6 +285,22 @@ class SupabaseLayer {
     } catch (e) {
       log('Error saving booking: $e');
       return null;
+    }
+  }
+
+  submitRating(
+      {required String workshopGroupId,
+      required double rating,
+      String? comment}) async {
+    try {
+      await supabase.from('review').insert({
+        'rating': rating,
+        'comments': comment,
+        'workshop_group_id': workshopGroupId,
+        'user_id': GetIt.I.get<AuthLayer>().user!.userId,
+      }).select();
+    } catch (e) {
+      log("Error submit rating: $e");
     }
   }
 }
