@@ -122,6 +122,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 16,),
+                              //here i am 
                               const Text(
                                 "Type",
                                 style: TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
@@ -136,6 +137,8 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   );
                                 },
                               ),
+
+                              
                               const SizedBox(height: 16),
                               const Text(
                                 "Ratings",

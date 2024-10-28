@@ -67,6 +67,7 @@ class OtpScreen extends StatelessWidget {
                   screen: role == 'user'
                       ? const SelectCategoriesScreen()
                       : const OrgNavigationScreen());
+                   //   : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(

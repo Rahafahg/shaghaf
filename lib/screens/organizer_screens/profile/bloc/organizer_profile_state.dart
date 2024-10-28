@@ -16,6 +16,8 @@ final class SuccessOrgProfileState extends OrganizerProfileState {
   final File? imageFile;
 
   SuccessOrgProfileState({this.imageFile});
+
+  get organizerContact => null;
 }
 
 final class EditingOrgProfileState extends OrganizerProfileState {}
