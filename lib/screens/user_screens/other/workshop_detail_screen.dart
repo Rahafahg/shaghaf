@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +10,7 @@ import 'package:moyasar/moyasar.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
+import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -17,6 +19,7 @@ import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -26,17 +29,28 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
-    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty
+        ? date!.split('-').last
+        : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     return BlocProvider(
-      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()
+        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
             if (state is SuccessState) {
-              context.pushReplacement(screen: UserTicketScreen(workshop: specific,booking: state.booking));
+              context.pushReplacement(
+                  screen: UserTicketScreen(
+                      workshop: specific, booking: state.booking));
             }
           },
           child: Scaffold(
@@ -57,7 +71,11 @@ class WorkshopDetailScreen extends StatelessWidget {
                         left: 16.0,
                         child: GestureDetector(
                           onTap: () => context.pop(),
-                          child: const Icon(Icons.arrow_back_ios,color: Constants.lightGreen,size: 28.0,),
+                          child: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Constants.lightGreen,
+                            size: 28.0,
+                          ),
                         ),
                       ),
                     ],
@@ -73,17 +91,24 @@ class WorkshopDetailScreen extends StatelessWidget {
                             Container(
                               height: 35,
                               width: 35,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12)),
                               child: Image.asset(category.icon),
                             ),
                             const SizedBox(width: 5),
                             Text(
                               workshop.title,
-                              style: const TextStyle(color: Constants.textColor,fontSize: 20,fontFamily: "Poppins"),
+                              style: const TextStyle(
+                                  color: Constants.textColor,
+                                  fontSize: 20,
+                                  fontFamily: "Poppins"),
                             ),
                             Row(
                               children: [
-                                const HugeIcon(icon: HugeIcons.strokeRoundedUserGroup,color: Constants.textColor,),
+                                const HugeIcon(
+                                  icon: HugeIcons.strokeRoundedUserGroup,
+                                  color: Constants.textColor,
+                                ),
                                 const SizedBox(width: 5),
                                 Text(workshop.targetedAudience)
                               ],
@@ -99,7 +124,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName,
-                                  style: const TextStyle(color: Constants.textColor,fontSize: 16,fontFamily: "Poppins"),
+                                  style: const TextStyle(
+                                      color: Constants.textColor,
+                                      fontSize: 16,
+                                      fontFamily: "Poppins"),
                                 ),
                               ],
                             ),
@@ -108,8 +136,15 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),),
-                                  child: CircleAvatar(radius: 50,backgroundImage: organizer != null ? NetworkImage(organizer.image) : AssetImage("assets/images/Organizer_image.jpg")),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: organizer != null
+                                          ? NetworkImage(organizer.image)
+                                          : AssetImage(
+                                              "assets/images/Organizer_image.jpg")),
                                 ),
                                 const SizedBox(width: 5),
                                 const Text("Organizer"),
@@ -328,211 +363,273 @@ class WorkshopDetailScreen extends StatelessWidget {
                             if (state is ChangeQuantityState) {
                               if (state.specific != null) {
                                 specific = state.specific!;
-                                return state.specific!.isOnline || state.specific?.latitude == null || state.specific!.latitude!.isEmpty
+                                return state.specific!.isOnline ||
+                                        state.specific?.latitude == null ||
+                                        state.specific!.latitude!.isEmpty
                                     ? SizedBox.shrink()
                                     : SizedBox(
                                         height: context.getHeight(divideBy: 3),
                                         width: context.getWidth(),
-                                    child: UserMap(lat: double.parse(specific.latitude!), lng: double.parse(specific.longitude!),),
+                                        child: UserMap(
+                                          lat: double.parse(specific.latitude!),
+                                          lng:
+                                              double.parse(specific.longitude!),
+                                        ),
                                       );
                               }
                             }
-                            return specific.isOnline || specific.latitude == null || specific.latitude!.isEmpty
+                            return specific.isOnline ||
+                                    specific.latitude == null ||
+                                    specific.latitude!.isEmpty
                                 ? SizedBox.shrink()
                                 : SizedBox(
                                     height: context.getHeight(divideBy: 4),
                                     width: context.getWidth(),
-                                    child: UserMap(lat: double.parse(specific.latitude!), lng: double.parse(specific.longitude!),),
+                                    child: UserMap(
+                                      lat: double.parse(specific.latitude!),
+                                      lng: double.parse(specific.longitude!),
+                                    ),
                                   );
                           },
                         ),
-                        organizer == null ? SizedBox.shrink() : const SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
-                        organizer == null ? SizedBox.shrink() : BlocBuilder<BookingBloc, BookingState>(
-                          builder: (context, state) {
-                            if (state is ChangeQuantityState) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            bloc.add(AddQuantityEvent());
-                                            log(bloc.quantity.toString());
-                                          },
-                                          icon: const HugeIcon(
-                                              icon: HugeIcons
-                                                  .strokeRoundedPlusSignSquare,
-                                              color: Constants.mainOrange)),
-                                      Text("${state.quantity}"),
-                                      IconButton(
-                                          onPressed: () {
-                                            bloc.add(ReduceQuantityEvent());
-                                            log(bloc.quantity.toString());
-                                          },
-                                          icon: const HugeIcon(
-                                              icon: HugeIcons
-                                                  .strokeRoundedMinusSignSquare,
-                                              color: Constants.mainOrange))
-                                    ],
-                                  ),
-                                  MainButton(
-                                    text:
-                                        "Pay ${specific.price * state.quantity} SR",
-                                    onPressed: () => showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (context) {
-                                        return Container(
-                                          padding: const EdgeInsets.all(24),
-                                          width: context.getWidth(),
-                                          height:
-                                              context.getHeight(divideBy: 1.35),
-                                          decoration: const BoxDecoration(
-                                            color: Constants.backgroundColor,
-                                            borderRadius: BorderRadius.vertical(
-                                                top: Radius.circular(20)),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              const Text("Fill Card Info",
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
-                                              Theme(
-                                                data: ThemeData(
-                                                    textTheme:
-                                                        const TextTheme()),
-                                                child: CreditCard(
-                                                  config: PaymentConfig(
-                                                    creditCard:
-                                                        CreditCardConfig(
-                                                            saveCard: false,
-                                                            manual: false),
-                                                    publishableApiKey: dotenv
-                                                        .env['MOYASAR_KEY']!,
-                                                    amount: ((specific.price *
-                                                            bloc.quantity *
-                                                            100))
-                                                        .toInt(),
-                                                    description: "description",
-                                                  ),
-                                                  onPaymentResult:
-                                                      (PaymentResponse
-                                                          result) async {
-                                                    if (result.status ==
-                                                        PaymentStatus.paid) {
-                                                      log("Payment is donnee ${result.status}");
-                                                      bloc.add(SaveBookingEvent(
-                                                        workshop: workshop
-                                                            .workshops.first,
-                                                        quantity: bloc.quantity,
-                                                      ));
-                                                    } else {}
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
-                              );
-                            }
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          bloc.add(AddQuantityEvent());
-                                          log(bloc.quantity.toString());
-                                        },
-                                        icon: const HugeIcon(
-                                            icon: HugeIcons
-                                                .strokeRoundedPlusSignSquare,
-                                            color: Constants.mainOrange)),
-                                    Text("${bloc.quantity}"),
-                                    IconButton(
-                                        onPressed: () {
-                                          bloc.add(ReduceQuantityEvent());
-                                          log(bloc.quantity.toString());
-                                        },
-                                        icon: const HugeIcon(
-                                            icon: HugeIcons
-                                                .strokeRoundedMinusSignSquare,
-                                            color: Constants.mainOrange))
-                                  ],
-                                ),
-                                MainButton(
-                                  text:
-                                      "Pay ${specific.price * bloc.quantity} SR",
-                                  onPressed: () => showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) {
-                                      return Container(
-                                        padding: const EdgeInsets.all(24),
-                                        width: context.getWidth(),
-                                        height:
-                                            context.getHeight(divideBy: 1.35),
-                                        decoration: const BoxDecoration(
-                                          color: Constants.backgroundColor,
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20)),
-                                        ),
-                                        child: Column(
+                        organizer != null
+                            ? MainButton(
+                                text: "Scan Now",
+                                width: context.getWidth(),
+                                onPressed: () async {
+                                  var result = await BarcodeScanner
+                                      .scan(); //barcode scanner
+                                  log(result.type
+                                      .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
+                                  log(result.format
+                                      .toString()); // The barcode format (as enum)
+                                  log(result.rawContent);
+                                  await GetIt.I
+                                      .get<SupabaseLayer>()
+                                      .supabase
+                                      .from('booking')
+                                      .update({'is_attended': true}).match({
+                                    'workshop_id': specific.workshopId,
+                                    'qr_code': result.rawContent,
+                                  });
+                                })
+                            : BlocBuilder<BookingBloc, BookingState>(
+                                builder: (context, state) {
+                                  if (state is ChangeQuantityState) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
                                           children: [
-                                            const Text("Fill Card Info",
-                                                style: TextStyle(fontSize: 20)),
-                                            Theme(
-                                              data: ThemeData(
-                                                  textTheme: const TextTheme()),
-                                              child: CreditCard(
-                                                config: PaymentConfig(
-                                                  creditCard: CreditCardConfig(
-                                                      saveCard: false,
-                                                      manual: false),
-                                                  publishableApiKey: dotenv
-                                                      .env['MOYASAR_KEY']!,
-                                                  amount: ((specific.price *
-                                                          bloc.quantity *
-                                                          100))
-                                                      .toInt(),
-                                                  description: "description",
-                                                ),
-                                                onPaymentResult:
-                                                    (PaymentResponse
-                                                        result) async {
-                                                  if (result.status ==
-                                                      PaymentStatus.paid) {
-                                                    log("Payment is donnee ${result.status}");
-                                                    bloc.add(SaveBookingEvent(
-                                                      workshop: workshop
-                                                          .workshops.first,
-                                                      quantity: bloc.quantity,
-                                                    ));
-                                                  } else {}
+                                            IconButton(
+                                                onPressed: () {
+                                                  bloc.add(AddQuantityEvent());
+                                                  log(bloc.quantity.toString());
                                                 },
-                                              ),
-                                            ),
+                                                icon: const HugeIcon(
+                                                    icon: HugeIcons
+                                                        .strokeRoundedPlusSignSquare,
+                                                    color:
+                                                        Constants.mainOrange)),
+                                            Text("${state.quantity}"),
+                                            IconButton(
+                                                onPressed: () {
+                                                  bloc.add(
+                                                      ReduceQuantityEvent());
+                                                  log(bloc.quantity.toString());
+                                                },
+                                                icon: const HugeIcon(
+                                                    icon: HugeIcons
+                                                        .strokeRoundedMinusSignSquare,
+                                                    color:
+                                                        Constants.mainOrange))
                                           ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                        )
+                                        MainButton(
+                                          text:
+                                              "Pay ${specific.price * state.quantity} SR",
+                                          onPressed: () => showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (context) {
+                                              return Container(
+                                                padding:
+                                                    const EdgeInsets.all(24),
+                                                width: context.getWidth(),
+                                                height: context.getHeight(
+                                                    divideBy: 1.35),
+                                                decoration: const BoxDecoration(
+                                                  color:
+                                                      Constants.backgroundColor,
+                                                  borderRadius:
+                                                      BorderRadius.vertical(
+                                                          top: Radius.circular(
+                                                              20)),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    const Text("Fill Card Info",
+                                                        style: TextStyle(
+                                                            fontSize: 20)),
+                                                    Theme(
+                                                      data: ThemeData(
+                                                          textTheme:
+                                                              const TextTheme()),
+                                                      child: CreditCard(
+                                                        config: PaymentConfig(
+                                                          creditCard:
+                                                              CreditCardConfig(
+                                                                  saveCard:
+                                                                      false,
+                                                                  manual:
+                                                                      false),
+                                                          publishableApiKey:
+                                                              dotenv.env[
+                                                                  'MOYASAR_KEY']!,
+                                                          amount: ((specific
+                                                                      .price *
+                                                                  bloc.quantity *
+                                                                  100))
+                                                              .toInt(),
+                                                          description:
+                                                              "description",
+                                                        ),
+                                                        onPaymentResult:
+                                                            (PaymentResponse
+                                                                result) async {
+                                                          if (result.status ==
+                                                              PaymentStatus
+                                                                  .paid) {
+                                                            log("Payment is donnee ${result.status}");
+                                                            bloc.add(
+                                                                SaveBookingEvent(
+                                                              workshop: workshop
+                                                                  .workshops
+                                                                  .first,
+                                                              quantity:
+                                                                  bloc.quantity,
+                                                            ));
+                                                          } else {}
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                bloc.add(AddQuantityEvent());
+                                                log(bloc.quantity.toString());
+                                              },
+                                              icon: const HugeIcon(
+                                                  icon: HugeIcons
+                                                      .strokeRoundedPlusSignSquare,
+                                                  color: Constants.mainOrange)),
+                                          Text("${bloc.quantity}"),
+                                          IconButton(
+                                              onPressed: () {
+                                                bloc.add(ReduceQuantityEvent());
+                                                log(bloc.quantity.toString());
+                                              },
+                                              icon: const HugeIcon(
+                                                  icon: HugeIcons
+                                                      .strokeRoundedMinusSignSquare,
+                                                  color: Constants.mainOrange))
+                                        ],
+                                      ),
+                                      MainButton(
+                                        text:
+                                            "Pay ${specific.price * bloc.quantity} SR",
+                                        onPressed: () => showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return Container(
+                                              padding: const EdgeInsets.all(24),
+                                              width: context.getWidth(),
+                                              height: context.getHeight(
+                                                  divideBy: 1.35),
+                                              decoration: const BoxDecoration(
+                                                color:
+                                                    Constants.backgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            20)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  const Text("Fill Card Info",
+                                                      style: TextStyle(
+                                                          fontSize: 20)),
+                                                  Theme(
+                                                    data: ThemeData(
+                                                        textTheme:
+                                                            const TextTheme()),
+                                                    child: CreditCard(
+                                                      config: PaymentConfig(
+                                                        creditCard:
+                                                            CreditCardConfig(
+                                                                saveCard: false,
+                                                                manual: false),
+                                                        publishableApiKey:
+                                                            dotenv.env[
+                                                                'MOYASAR_KEY']!,
+                                                        amount: ((specific
+                                                                    .price *
+                                                                bloc.quantity *
+                                                                100))
+                                                            .toInt(),
+                                                        description:
+                                                            "description",
+                                                      ),
+                                                      onPaymentResult:
+                                                          (PaymentResponse
+                                                              result) async {
+                                                        if (result.status ==
+                                                            PaymentStatus
+                                                                .paid) {
+                                                          log("Payment is donnee ${result.status}");
+                                                          bloc.add(
+                                                              SaveBookingEvent(
+                                                            workshop: workshop
+                                                                .workshops
+                                                                .first,
+                                                            quantity:
+                                                                bloc.quantity,
+                                                          ));
+                                                        } else {}
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                },
+                              )
                       ],
                     ),
                   ),
