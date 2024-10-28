@@ -27,3 +27,5 @@ final class SubmitWorkshopEvent extends AddWorkshopEvent {
   final File image;
   SubmitWorkshopEvent({required this.image});
 }
+
+final class GetOrgWorkshopsEvent extends AddWorkshopEvent {}

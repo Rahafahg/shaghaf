@@ -6,11 +6,10 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/add_workshop_screen.dart';
+import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/organizer_profile_screen.dart';
-import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
-import 'package:shaghaf/screens/user_screens/profile/profile_screen.dart';
 
 class OrgNavigationScreen extends StatelessWidget {
   const OrgNavigationScreen({super.key});
@@ -19,9 +18,9 @@ class OrgNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // BlocProvider(
-        //   create: (context) => OrganizerHomeBloc(),
-        // ),
+        BlocProvider(
+          create: (context) => AddWorkshopBloc()..add(GetOrgWorkshopsEvent()),
+        ),
         BlocProvider(
           create: (context) => NavigationBloc(),
         ),

@@ -49,23 +49,27 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<StepCancelEvent>(stepCancel);
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
-    on<SubmitWorkshopEvent>((event, emit) async {
-      await GetIt.I.get<SupabaseLayer>().addWorkshop(
-        title: titleController.text,
-        workshopImage: event.image,
-        description: descController.text,
-        categoryId: GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryName==categoryController.text).categoryId,
-        targetedAudience: audienceController.text,
-        date: dateController.text,
-        availableSeats: 100, // TODO handle me later,
-        from: timeFromController.text,
-        to: timeToController.text,
-        instructorDesc: instructorDescController.text,
-        instructorName: instructorNameController.text,
-        price: double.parse(priceController.text),
-        seats: 15 // TODO handle me later
-      );
-    });
+    on<SubmitWorkshopEvent>(submitWorkshopMethod);
+    on<GetOrgWorkshopsEvent>((event, emit) => emit(AddSuccessState()));
+  }
+
+  FutureOr<void> submitWorkshopMethod(SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
+    await GetIt.I.get<SupabaseLayer>().addWorkshop(
+      title: titleController.text,
+      workshopImage: event.image,
+      description: descController.text,
+      categoryId: GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryName==categoryController.text).categoryId,
+      targetedAudience: audienceController.text,
+      date: dateController.text,
+      availableSeats: 100, // TODO handle me later,
+      from: timeFromController.text,
+      to: timeToController.text,
+      instructorDesc: instructorDescController.text,
+      instructorName: instructorNameController.text,
+      price: double.parse(priceController.text),
+      seats: 15 // TODO handle me later
+    );
+    emit(AddSuccessState());
   }
 
   FutureOr<void> stepContinue(StepContinueEvent event, Emitter<AddWorkshopState> emit) {

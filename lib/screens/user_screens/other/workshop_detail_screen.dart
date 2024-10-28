@@ -346,10 +346,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   );
                           },
                         ),
-                        organizer != null ? SizedBox.shrink() : const SizedBox(
+                        organizer == null ? SizedBox.shrink() : const SizedBox(
                           height: 30,
                         ),
-                        organizer != null ? SizedBox.shrink() : BlocBuilder<BookingBloc, BookingState>(
+                        organizer == null ? SizedBox.shrink() : BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             if (state is ChangeQuantityState) {
                               return Row(

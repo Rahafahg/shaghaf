@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
@@ -21,5 +23,6 @@ Future<void> setup() async {
   }
   if(GetIt.I.get<AuthLayer>().organizer != null) {
     getOrgWorkshops();
+    log('message heeeeeeey im here');
   }
 }
