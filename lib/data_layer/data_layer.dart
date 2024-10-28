@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
+import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -24,8 +25,7 @@ getOrgWorkshops() {
     }
   }
   GetIt.I.get<DataLayer>().orgWorkshops = temp;
-  log("here here today");
-  log(GetIt.I.get<DataLayer>().orgWorkshops.length.toString());
+  log('org workshops : ${GetIt.I.get<DataLayer>().orgWorkshops.length}');
 }
 
 List<Workshop> getBookedWorkshops() {

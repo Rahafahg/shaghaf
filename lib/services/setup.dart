@@ -23,6 +23,5 @@ Future<void> setup() async {
   }
   if(GetIt.I.get<AuthLayer>().organizer != null) {
     getOrgWorkshops();
-    log('message heeeeeeey im here');
   }
 }

@@ -50,7 +50,11 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
     on<SubmitWorkshopEvent>(submitWorkshopMethod);
-    on<GetOrgWorkshopsEvent>((event, emit) => emit(AddSuccessState()));
+    // on<GetOrgWorkshopsEvent>((event, emit) {
+    //   // getOrgWorkshops();
+    //   // log('message LLOOOOOOOOOOOOOOOOOOOOOOOOK');
+    //   emit(AddWorkshopInitial());
+    // });
   }
 
   FutureOr<void> submitWorkshopMethod(SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
@@ -61,14 +65,17 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
       categoryId: GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryName==categoryController.text).categoryId,
       targetedAudience: audienceController.text,
       date: dateController.text,
-      availableSeats: 100, // TODO handle me later,
+      availableSeats: int.parse(seatsController.text),
       from: timeFromController.text,
       to: timeToController.text,
       instructorDesc: instructorDescController.text,
       instructorName: instructorNameController.text,
       price: double.parse(priceController.text),
-      seats: 15 // TODO handle me later
+      seats: int.parse(seatsController.text)
     );
+    await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
+    await getOrgWorkshops();
+    log(GetIt.I.get<DataLayer>().orgWorkshops.length.toString());
     emit(AddSuccessState());
   }
 

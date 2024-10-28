@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/dropdwons/category_dropdown.dart';
@@ -35,7 +36,12 @@ class AddWorkshopScreen extends StatelessWidget {
               title: const Text("Add workshop"),
               centerTitle: true,
             ),
-            body: BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
+            body: BlocConsumer<AddWorkshopBloc, AddWorkshopState>(
+              listener: (context, state) {
+                if(state is AddSuccessState) {
+                  context.pushRemove(screen: const OrgNavigationScreen());
+                }
+              },
               builder: (context, state) {
                 return Stepper(
                   onStepContinue: () => bloc.add(StepContinueEvent()),
@@ -48,8 +54,11 @@ class AddWorkshopScreen extends StatelessWidget {
                       child: Row(
                         textDirection: TextDirection.rtl,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          bloc.currentStep == 1 ? MainButton(text: 'Create',onPressed: ()=> bloc.add(SubmitWorkshopEvent(image: workshopImage!))) // handle me later
+                        children: [
+                          bloc.currentStep == 1
+                          ? MainButton(text: 'Create',onPressed: (){
+                            bloc.add(SubmitWorkshopEvent(image: workshopImage!));
+                          }) // handle me later
                           : MainButton(text: 'Next',onPressed: details.onStepContinue),
                           const SizedBox(width: 8),
                           bloc.currentStep == 0 ? const SizedBox.shrink() : TextButton(
@@ -123,11 +132,11 @@ class AddWorkshopScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        workshopImage != null ? SizedBox.shrink() : Text("workshop image is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
+                        workshopImage != null ? const SizedBox.shrink() : const Text("workshop image is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
                         AddField(type: 'Workshop Title', controller: bloc.titleController),
                         AddField(type: 'Workshop Description', controller: bloc.descController),
                         CategoryDropDown(controller: bloc.categoryController),
-                        bloc.categoryController.text == 'Category' ? SizedBox.shrink() : Text("Category is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
+                        bloc.categoryController.text == 'Category' ? const SizedBox.shrink() : const Text("Category is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
                         const AddField(type: 'Audience'),
                       ],
                     ),
@@ -146,8 +155,6 @@ class AddWorkshopScreen extends StatelessWidget {
                     ),
                   ),
                   content: Container(
-                    // height:
-                    //     600, // Ensure the container has a fixed height
                     width: context.getWidth(),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -168,33 +175,3 @@ class AddWorkshopScreen extends StatelessWidget {
     );
   }
 }
-
-// dateFormte({required List? dates}) {
-//   List<String> formatedDates = [];
-//   if (dates != null) {
-//     for (var element in dates) {
-//       DateTime dateTime = DateTime.parse(element);
-//       String formattedDate =
-//           DateFormat('MMM d').format(dateTime); // format date
-//       formatedDates.add(formattedDate);
-//     }
-//   }
-//   return formatedDates;
-// }
-
-
-//? Not Working ):
-// pickImageFromgallery({required File image, required bloc}) async {
-//   print("---------------------------aaaaaaa333333");
-//   // Pick image from gallery
-//   final photoAsFile =
-//       await ImagePicker().pickImage(source: ImageSource.gallery);
-//   if (photoAsFile != null) {
-//     image = File(photoAsFile.path);
-//     String fileName = image.path.split('/').last;
-//     log("img name: $fileName");
-//     bloc.add(ChangeImageEvent(image: image));
-//   } else {
-//     log('No image selected');
-//   }
-// }

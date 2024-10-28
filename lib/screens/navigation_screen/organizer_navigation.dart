@@ -19,7 +19,7 @@ class OrgNavigationScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AddWorkshopBloc()..add(GetOrgWorkshopsEvent()),
+          create: (context) => AddWorkshopBloc(),
         ),
         BlocProvider(
           create: (context) => NavigationBloc(),
