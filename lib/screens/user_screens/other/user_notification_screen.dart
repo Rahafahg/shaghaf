@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/widgets/cards/notification_card.dart';
-import 'package:shaghaf/widgets/dialogs/successfully_dialog.dart';
+
 
 class UserNotificationScreen extends StatelessWidget {
   const UserNotificationScreen({super.key});
@@ -51,12 +51,12 @@ class UserNotificationScreen extends StatelessWidget {
               title: "Another Notificatio",
               body: "this is the body of the notification",
             ),
-            ElevatedButton(
-          onPressed: () {
-            SuccessfullyDialog(context);
-          },
-          child: Text('Show Alert'),
-        ),
+            //     ElevatedButton(
+            //   onPressed: () {
+            //     SuccessfullyDialog(context);
+            //   },
+            //   child: Text('Show Alert'),
+            // ),
           ],
         ),
       ),

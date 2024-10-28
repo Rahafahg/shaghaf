@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -7,6 +9,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/widgets/effects/shimmer.dart';
 
+import 'package:shaghaf/widgets/dialogs/rating_dialog.dart';
 
 class WorkshopCard extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -14,16 +17,22 @@ class WorkshopCard extends StatelessWidget {
   final Function()? onTap;
   final String? date;
   final double? price;
-  const WorkshopCard(
-      {super.key,
-      required this.workshop,
-      this.shape = 'square',
-      this.onTap,
-      this.date,
-      this.price});
+  final bool? isAttended;
+  const WorkshopCard({
+    super.key,
+    required this.workshop,
+    this.shape = 'square',
+    this.onTap,
+    this.date,
+    this.price,
+    this.isAttended,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var fraction = (workshop.rating % 1 * pow(10, 2)).floor();
+    String rating = "${workshop.rating.toString().split(".")[0]}.$fraction";
+
     // return InkWell(
     //   onTap: onTap,
     //   child: shape=='square' ? Container(
@@ -291,7 +300,7 @@ class WorkshopCard extends StatelessWidget {
                                   const Icon(Icons.star,
                                       size: 16, color: Colors.orange),
                                   const SizedBox(width: 4),
-                                  Text(workshop.rating.toString(),
+                                  Text(rating,
                                       style: const TextStyle(
                                           fontFamily: "Poppins", fontSize: 8)),
                                 ],
@@ -339,7 +348,7 @@ class WorkshopCard extends StatelessWidget {
                                         (context, child, loadingProgress) =>
                                             loadingProgress == null
                                                 ? child
-                                                : CircularProgressIndicator(),
+                                                : shimmerEffect(),
                                   )
                                 : Image.asset(
                                     "assets/images/pasta_workshop.png"), // placeholder
@@ -372,7 +381,7 @@ class WorkshopCard extends StatelessWidget {
                                   const Icon(Icons.star,
                                       size: 16, color: Colors.orange),
                                   const SizedBox(width: 4),
-                                  Text(workshop.rating.toString().substring(0,3),
+                                  Text(rating,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall),
@@ -435,18 +444,46 @@ class WorkshopCard extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  const Icon(HugeIcons.strokeRoundedUser,
-                                      size: 16, color: Constants.lightGreen),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                      "${price ?? workshop.workshops.first.price} SR",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
-                                ],
-                              ),
+                              isAttended == true
+                                  ? SizedBox(
+                                      width: context.getWidth(divideBy: 7),
+                                      height: context.getHeight(divideBy: 27),
+                                      child: TextButton(
+                                          style: TextButton.styleFrom(
+                                              foregroundColor:
+                                                  Constants.backgroundColor,
+                                              alignment: Alignment.center,
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      149, 222, 101, 49),
+                                              side: const BorderSide(
+                                                  color: Constants.mainOrange),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5))),
+                                          onPressed: () {
+                                            ratingDialog(
+                                                context: context,
+                                                workshop: workshop);
+                                          },
+                                          child: const Text(
+                                            "Rate",
+                                          )),
+                                    )
+                                  : Row(
+                                      children: [
+                                        const Icon(HugeIcons.strokeRoundedUser,
+                                            size: 16,
+                                            color: Constants.lightGreen),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                            "${price ?? workshop.workshops.first.price} SR",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall),
+                                      ],
+                                    ),
                             ],
                           ),
                         ),

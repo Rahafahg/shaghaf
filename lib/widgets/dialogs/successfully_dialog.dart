@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
-void SuccessfullyDialog(BuildContext context) {
+void successfullyDialog(
+    {required BuildContext context, required String title}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -14,7 +15,7 @@ void SuccessfullyDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10), // Optional: round corners
         ),
-        child: Container(
+        child: SizedBox(
           width: context.getWidth(divideBy: 1.3),
           height: context.getHeight(divideBy: 3),
           child: Stack(
@@ -33,23 +34,23 @@ void SuccessfullyDialog(BuildContext context) {
                   //  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Successfully Completed',
-                      style: TextStyle(
+                      title,
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     HugeIcon(
                       icon: HugeIcons.strokeRoundedCheckmarkCircle02,
                       color: Colors.green.shade400,
                       size: 100,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
-                    Text(
+                    const Text(
                       'The process completed Successfully',
                       style: TextStyle(color: Colors.black),
                     ),
