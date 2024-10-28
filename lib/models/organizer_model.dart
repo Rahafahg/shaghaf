@@ -1,11 +1,11 @@
 class OrganizerModel {
-  final String organizerId;
-  final String email;
-  final String name;
-  final String image;
-  final String description;
-  final String contactNumber;
-  final String licenseNumber;
+  late String organizerId;
+  late String email;
+  late String name;
+  late String image;
+  late String description;
+  late String contactNumber;
+  late String licenseNumber;
 
   OrganizerModel({
     required this.organizerId,
