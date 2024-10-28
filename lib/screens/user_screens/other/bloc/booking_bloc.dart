@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as mm;
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -25,24 +26,24 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     });
 
     on<SaveBookingEvent>((event, emit) async {
-      String qr = Random().nextInt(999999999).toString();
+      String qr = mm.Random().nextInt(999999999).toString();
       double price = event.workshop.price * event.quantity;
-
       try {
         final bookingAsMap = await GetIt.I.get<SupabaseLayer>().saveBooking(
-              numberOfTickets: event.quantity,
-              qr: qr,
-              workshop: event.workshop,
-              totalPrice: price,
-            );
+          numberOfTickets: event.quantity,
+          qr: qr,
+          workshop: event.workshop,
+          totalPrice: price,
+        );
         if (bookingAsMap != null) {
           final booking = BookingModel.fromJson(bookingAsMap);
+          GetIt.I.get<SupabaseLayer>().getBookings();
           emit(SuccessState(booking: booking));
         } else {
-          print('Failed to save booking. Please try again.');
+          log('Failed to save booking. Please try again.');
         }
       } catch (e) {
-        print('Error saving booking: $e');
+        log('Error saving booking: $e');
       }
     });
   }

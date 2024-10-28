@@ -28,7 +28,7 @@ class UserMap extends StatelessWidget {
                 height: 50,
                 width: 50,
                 alignment: Alignment.topCenter,
-                child: Icon(Icons.location_pin, color: Colors.red, size: 50))
+                child: const Icon(Icons.location_pin, color: Colors.red, size: 50))
           ])
         ]);
   }

@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 
@@ -13,21 +11,6 @@ part 'add_workshop_event.dart';
 part 'add_workshop_state.dart';
 
 class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
-  // List<String> dates = [DateTime.now().toString()];
-  // List<Widget> workShopForms = [];
-  // List <String>controllers = [];
-  // Map<String, List<String>> controllers = {};
-  // void addItem({required String key, required String item}) {
-
-  //   if (controllers.containsKey(key)) {
-
-  //     controllers[key]!.add(item);
-  //   } else {
-
-  //     controllers[key] = [item];
-  //   }
-  // }
-
   int currentStep = 0;
   int index = 0;
   TextEditingController titleController = TextEditingController();
@@ -50,11 +33,6 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
     on<SubmitWorkshopEvent>(submitWorkshopMethod);
-    // on<GetOrgWorkshopsEvent>((event, emit) {
-    //   // getOrgWorkshops();
-    //   // log('message LLOOOOOOOOOOOOOOOOOOOOOOOOK');
-    //   emit(AddWorkshopInitial());
-    // });
   }
 
   FutureOr<void> submitWorkshopMethod(SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {

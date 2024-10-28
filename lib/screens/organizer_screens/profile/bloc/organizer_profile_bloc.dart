@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';

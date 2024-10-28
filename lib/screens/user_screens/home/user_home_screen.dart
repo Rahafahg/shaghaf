@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -168,7 +167,7 @@ class UserHomeScreen extends StatelessWidget {
                           : Column(children: [
                               // workshop of the week
                               Padding(
-                                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                                 child: Container(
                                     padding: const EdgeInsets.only(
                                         top: 15, bottom: 12),
@@ -185,7 +184,7 @@ class UserHomeScreen extends StatelessWidget {
                                     screen: WorkshopDetailScreen(
                                         workshop: workshopOfTheWeek)),
                                 child: Padding(
-                                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
@@ -256,7 +255,7 @@ class UserHomeScreen extends StatelessWidget {
                                 height: 20,
                               ),
                               Container(
-                                  padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   width: context.getWidth(),
                                   child: const Text("Suggested For You",
                                       textAlign: TextAlign.start,

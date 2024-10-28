@@ -19,7 +19,6 @@ import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -143,8 +142,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       radius: 50,
                                       backgroundImage: organizer != null
                                           ? NetworkImage(organizer.image)
-                                          : AssetImage(
-                                              "assets/images/Organizer_image.jpg")),
+                                          : const AssetImage("assets/images/Organizer_image.jpg")),
                                 ),
                                 const SizedBox(width: 5),
                                 const Text("Organizer"),
@@ -366,7 +364,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 return state.specific!.isOnline ||
                                         state.specific?.latitude == null ||
                                         state.specific!.latitude!.isEmpty
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : SizedBox(
                                         height: context.getHeight(divideBy: 3),
                                         width: context.getWidth(),
@@ -381,7 +379,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             return specific.isOnline ||
                                     specific.latitude == null ||
                                     specific.latitude!.isEmpty
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : SizedBox(
                                     height: context.getHeight(divideBy: 4),
                                     width: context.getWidth(),
