@@ -280,6 +280,14 @@ class SupabaseLayer {
     required String description,
     required String categoryId,
     required String targetedAudience,
+    required String date,
+    required String from,
+    required String to,
+    required double price,
+    required int seats,
+    required int availableSeats,
+    required String instructorName,
+    required String instructorDesc,
   }) async {
     log('add 1');
     String imageUrl = '';
@@ -305,26 +313,46 @@ class SupabaseLayer {
         'organizer_id' : GetIt.I.get<AuthLayer>().organizer!.organizerId
       }).select();
       log(response.first['workshop_group_id']);
-      await addSingleWorkshop(response.first['workshop_group_id']);
+      await addSingleWorkshop(
+        workshopGroupId: response.first['workshop_group_id'],
+        date: date,
+        from: from,
+        to: to,
+        price: price,
+        seats: seats,
+        availableSeats: availableSeats,
+        instructorName: instructorName,
+        instructorDesc: instructorDesc
+      );
     } catch (e) {
       log('message ${e.toString()}');
     }
   }
 
-  Future<void> addSingleWorkshop(String workshopGroupId) async {
+  Future<void> addSingleWorkshop({
+    required String workshopGroupId,
+    required String date,
+    required String from,
+    required String to,
+    required double price,
+    required int seats,
+    required int availableSeats,
+    required String instructorName,
+    required String instructorDesc,
+  }) async {
     log('add 2');
     log(workshopGroupId);
     try {
       await supabase.from('workshop').insert({
-        'date' : '2024-11-17',
-        'from_time' : '10:00',
-        'to_time' : '12:00',
-        'price' : 151,
-        'number_of_seats' : 12,
-        'available_seats' : 12,
-        'instructor_name' : 'yso kh',
+        'date' : date,
+        'from_time' : from,
+        'to_time' : to,
+        'price' : price,
+        'number_of_seats' : seats,
+        'available_seats' : availableSeats,
+        'instructor_name' : instructorName,
         'instructor_image' : 'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
-        'instructor_description' : 'hi hi im inst desc',
+        'instructor_description' : instructorDesc,
         'is_online' : false,
         'workshop_group_id' : workshopGroupId
       });

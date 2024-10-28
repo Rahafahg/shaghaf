@@ -34,18 +34,16 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   TextEditingController descController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   TextEditingController audienceController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
-  // TextEditingController titleController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeFromController = TextEditingController();
+  TextEditingController timeToController = TextEditingController();
+  File? instructorimage; // handle me later
+  TextEditingController instructorNameController = TextEditingController();
+  TextEditingController instructorDescController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController seatsController = TextEditingController();
+  TextEditingController venueNameController = TextEditingController();
+  TextEditingController venueTypeController = TextEditingController();
   AddWorkshopBloc() : super(AddWorkshopInitial()) {
     on<StepContinueEvent>(stepContinue);
     on<StepCancelEvent>(stepCancel);
@@ -57,10 +55,17 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
         workshopImage: event.image,
         description: descController.text,
         categoryId: GetIt.I.get<DataLayer>().categories.firstWhere((category)=>category.categoryName==categoryController.text).categoryId,
-        targetedAudience: audienceController.text
+        targetedAudience: audienceController.text,
+        date: dateController.text,
+        availableSeats: 100, // TODO handle me later,
+        from: timeFromController.text,
+        to: timeToController.text,
+        instructorDesc: instructorDescController.text,
+        instructorName: instructorNameController.text,
+        price: double.parse(priceController.text),
+        seats: 15 // TODO handle me later
       );
     });
-    // on<AddDateEvent>(addDate);
   }
 
   FutureOr<void> stepContinue(StepContinueEvent event, Emitter<AddWorkshopState> emit) {

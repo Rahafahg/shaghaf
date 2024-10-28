@@ -10,54 +10,31 @@ import 'package:shaghaf/widgets/text_fields/add_field.dart';
 import 'package:shaghaf/widgets/text_fields/time_field.dart';
 
 class WorkShopForm extends StatelessWidget {
-  const WorkShopForm({
-    super.key,
-     this.bloc, 
-    //required this.date, required this.index
-  });
-  // final String date;
-  final dynamic bloc;
-  // final String index;
+  final AddWorkshopBloc bloc;
+  const WorkShopForm({super.key,required this.bloc});
+  
   @override
   Widget build(BuildContext context) {
-    File? instructorimage;
-    final TextEditingController timeFromController = TextEditingController();
-    final TextEditingController timeToController = TextEditingController();
-    final TextEditingController instructorNameController =
-        TextEditingController();
-    final TextEditingController instructorDescController =
-        TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    final TextEditingController seatsController = TextEditingController();
-    final TextEditingController venueNameController = TextEditingController();
-    final TextEditingController venueTypeController = TextEditingController();
-
     return Column(
       children: [
-        AddDateField(
-          // date: DateTime.now().toString(),
-            date: '',
-
-        ),
-        TimeField(
-          timeFromController: timeFromController,
-          timeToController: timeToController,
-        ),
+        AddDateField(controller: bloc.dateController, date: ''),
+        TimeField(timeFromController: bloc.timeFromController,timeToController: bloc.timeToController,),
+        // map here
         BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-            builder: (context, state) {
+          bloc: bloc,
+          builder: (context, state) {
           if (state is ChangeImageState) {
             return AddField(
               image: state.image,
               type: 'Instructor photo',
               onUploadImg: () async {
                 // Pick image from gallery
-                final photoAsFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final photoAsFile = await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (photoAsFile != null) {
-                  instructorimage = File(photoAsFile.path);
-                  String fileName = instructorimage!.path.split('/').last;
+                  bloc.instructorimage = File(photoAsFile.path);
+                  String fileName = bloc.instructorimage!.path.split('/').last;
                   log("img name: $fileName");
-                  bloc.add(ChangeImageEvent(image: instructorimage));
+                  bloc.add(ChangeImageEvent(image: bloc.instructorimage));
                 } else {
                   log('No image selected');
                 }
@@ -65,65 +42,34 @@ class WorkShopForm extends StatelessWidget {
             );
           }
           return AddField(
-            image: instructorimage,
+            image: bloc.instructorimage,
             type: 'Instructor photo',
             onUploadImg: () async {
               // Pick image from gallery
-              final photoAsFile =
-                  await ImagePicker().pickImage(source: ImageSource.gallery);
+              final photoAsFile = await ImagePicker().pickImage(source: ImageSource.gallery);
               if (photoAsFile != null) {
-                instructorimage = File(photoAsFile.path);
-                String fileName = instructorimage!.path.split('/').last;
+                bloc.instructorimage = File(photoAsFile.path);
+                String fileName = bloc.instructorimage!.path.split('/').last;
                 log("img name: $fileName");
-                bloc.add(ChangeImageEvent(image: instructorimage));
+                bloc.add(ChangeImageEvent(image: bloc.instructorimage));
               } else {
                 log('No image selected');
               }
             },
           );
         }),
-        AddField(
-          type: 'Instructor name',
-          controller: instructorNameController,
-          onSaved: (value) {
-            instructorNameController.text = value ?? ' ';
-            bloc.addItem(
-                key: 'Instructor name', item: instructorNameController.text);
-          },
-        ),
-        AddField(
-          type: 'Instructor description',
-          controller: instructorDescController,
-          onSaved: (value) {
-            instructorDescController.text = value ?? ' ';
-            bloc.addItem(
-                key: 'Instructor description',
-                item: instructorDescController.text);
-          },
-        ),
+        AddField(type: 'Instructor name',controller: bloc.instructorNameController,),
+        AddField(type: 'Instructor description',controller: bloc.instructorDescController,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AddField(
-              type: "Price",
-              controller: priceController,
-              onSaved: (value) {
-                priceController.text = value ?? ' ';
-                bloc.addItem(
-                    key: 'Instructor description', item: priceController.text);
-              },
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            AddField(
-              type: "Seats",
-              controller: seatsController,
-            ),
+            AddField(type: "Price in SR",controller: bloc.priceController,),
+            const SizedBox(width: 5,),
+            AddField(type: "Seats",controller: bloc.seatsController,),
           ],
         ),
-        AddField(type: 'Venue name', controller: venueNameController),
-        AddField(type: 'Venue type', controller: venueTypeController),
+        AddField(type: 'Venue name', controller: bloc.venueNameController),
+        AddField(type: 'Venue type', controller: bloc.venueTypeController),
       ],
     );
   }

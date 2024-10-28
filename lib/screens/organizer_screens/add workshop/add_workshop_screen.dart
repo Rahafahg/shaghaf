@@ -46,7 +46,8 @@ class AddWorkshopScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        textDirection: TextDirection.rtl,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           bloc.currentStep == 1 ? MainButton(text: 'Create',onPressed: ()=> bloc.add(SubmitWorkshopEvent(image: workshopImage!))) // handle me later
                           : MainButton(text: 'Next',onPressed: details.onStepContinue),
@@ -72,15 +73,9 @@ class AddWorkshopScreen extends StatelessWidget {
                       isActive: bloc.currentStep >= 0,
                       title: const Text(
                         "Basic information",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Constants.mainOrange,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500
-                        )
+                        style: TextStyle(fontSize: 18,color: Constants.mainOrange,fontFamily: "Poppins",fontWeight: FontWeight.w500)
                       ),
                       content: Container(
-                        // height: 600,
                         width: context.getWidth(),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -89,6 +84,7 @@ class AddWorkshopScreen extends StatelessWidget {
                           color: Constants.cardColor
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
                               builder: (context, state) {
@@ -127,9 +123,11 @@ class AddWorkshopScreen extends StatelessWidget {
                             );
                           },
                         ),
+                        workshopImage != null ? SizedBox.shrink() : Text("workshop image is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
                         AddField(type: 'Workshop Title', controller: bloc.titleController),
                         AddField(type: 'Workshop Description', controller: bloc.descController),
                         CategoryDropDown(controller: bloc.categoryController),
+                        bloc.categoryController.text == 'Category' ? SizedBox.shrink() : Text("Category is required", style: TextStyle(color: Colors.red, fontSize: 10,)),
                         const AddField(type: 'Audience'),
                       ],
                     ),

@@ -21,7 +21,7 @@ class AddField extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: type == 'Price' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
+            width: type == 'Price in SR' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
             child: Text(
               type,
               style: const TextStyle(fontSize: 16,color: Constants.textColor,fontFamily: "Poppins")
@@ -39,6 +39,13 @@ class AddField extends StatelessWidget {
               child: Stack(
                 children: [
                   TextFormField(
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: (value) {
+                      if(value==null || value.isEmpty) {
+                        return 'bye';
+                      }
+                      return '';
+                    },
                     readOnly: true,
                     maxLines: 5,
                     minLines: 3,
@@ -64,11 +71,12 @@ class AddField extends StatelessWidget {
             ),
           )
           : Container(
-              width: type == 'Price' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
+              width: type == 'Price in SR' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(13.0)), // Circular border radius
                 border: Border.all(color: Constants.mainOrange)),
                 child: TextFormField(
+                  autovalidateMode: AutovalidateMode.always,
                   // onFieldSubmitted: onSaved, // not used ??
                   onChanged: (s)=>log(controller?.text ?? 'kk'),
                   controller: controller,
