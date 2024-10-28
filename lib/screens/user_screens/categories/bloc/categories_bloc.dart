@@ -100,16 +100,12 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   FutureOr<void> handelTypeMethod(
       ChangeTypeEvent event, Emitter<CategoriesState> emit) {
     selectedType = types[event.index];
-    log("Selected Type: $selectedType"); // Log selected type for debugging
-
-    // Start with the full list of workshops and filter based on selected type
+    log("Selected Type: $selectedType");
     List<WorkshopGroupModel> filteredWorkshops = workshops;
 
     if (selectedType != 'All') {
-      // Set `isOnline` to match the filter: true for Online, false for In-Site
       bool isOnline = selectedType == 'Online';
       filteredWorkshops = filteredWorkshops.where((workshopGroup) {
-        // Include only workshop groups that have at least one workshop matching `isOnline`
         bool hasMatchingType =
             workshopGroup.workshops.any((workshop) => workshop.isOnline == isOnline);
         if (!hasMatchingType) {
@@ -118,8 +114,6 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
         return hasMatchingType;
       }).toList();
     }
-
-    // Emit the filtered state with only the type filter applied
     emit(ShowCategoryWorkshopsState(workshops: filteredWorkshops));
   }
 }
