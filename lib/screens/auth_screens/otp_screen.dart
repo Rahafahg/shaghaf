@@ -9,8 +9,8 @@ import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
-import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
+import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:otp_timer_button/otp_timer_button.dart';
@@ -68,6 +68,7 @@ class OtpScreen extends StatelessWidget {
                   screen: role == 'user'
                       ? const SelectCategoriesScreen()
                       : const OrgNavigationScreen());
+                   //   : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
