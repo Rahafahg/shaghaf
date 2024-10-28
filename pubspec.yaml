@@ -35,6 +35,8 @@ dependencies:
   latlong2: ^0.9.1
   shimmer: ^3.0.0
   custom_rating_bar: ^3.0.0
+  onesignal_flutter: ^5.2.6
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

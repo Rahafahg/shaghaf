@@ -4,6 +4,7 @@ import 'dart:math' as mm;
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
@@ -11,13 +12,16 @@ import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
+import 'package:shaghaf/services/notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseLayer {
   final supabase = Supabase.instance.client;
-  Future createAccount({required String email, required String password}) async {
+  Future createAccount(
+      {required String email, required String password}) async {
     try {
-      final AuthResponse response = await supabase.auth.signUp(email: email, password: password);
+      final AuthResponse response =
+          await supabase.auth.signUp(email: email, password: password);
       if (response.user!.userMetadata!.isEmpty) {
         throw Exception('User Already Exists');
       }
@@ -28,16 +32,17 @@ class SupabaseLayer {
   }
 
   Future verifyOtp(
-    {required String email,
-    required String otp,
-    required String firstName,
-    required String lastName,
-    required String phoneNumber,
-    required String externalId}) async {
+      {required String email,
+      required String otp,
+      required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String externalId}) async {
     // try {
     log("verifyOtp 1");
 
-    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
+    final AuthResponse response = await supabase.auth
+        .verifyOTP(email: email, token: otp, type: OtpType.signup);
     log("verifyOtp 2");
     final id = response.user!.id;
     UserModel user = UserModel.fromJson({
@@ -51,6 +56,8 @@ class SupabaseLayer {
     await supabase.from("users").insert(user.toJson());
     GetIt.I.get<AuthLayer>().box.write('user', user.toJson());
     GetIt.I.get<AuthLayer>().user = user;
+    OneSignal.Notifications.requestPermission(true);
+    OneSignal.login(externalId);
     return response;
     // } catch (e) {
     //   return e;
@@ -68,16 +75,26 @@ class SupabaseLayer {
         .verifyOTP(email: email, token: otp, type: OtpType.signup);
     String imageUrl = "";
     if (image != null) {
-        // Upload file to Supabase storage
+      // Upload file to Supabase storage
       try {
-        await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${image.path.split('/').last}', image);
+        await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .upload('public/${image.path.split('/').last}', image);
       } catch (e) {
         log('Error uploading image: $e');
       }
 
       try {
         // read url from Supabase storage
-        imageUrl = GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').getPublicUrl('public/${image.path.split('/').last}');
+        imageUrl = GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .getPublicUrl('public/${image.path.split('/').last}');
       } catch (e) {
         log('Error uploading image: $e');
       }
@@ -119,6 +136,8 @@ class SupabaseLayer {
             .get<AuthLayer>()
             .box
             .write('user', GetIt.I.get<AuthLayer>().user);
+        OneSignal.Notifications.requestPermission(true);
+        OneSignal.login(externalId);
         log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
       }
       if (role == 'organizer') {
@@ -284,28 +303,40 @@ class SupabaseLayer {
     log('add 1');
     String imageUrl = '';
     try {
-        await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${workshopImage.path.split('/').last}', workshopImage);
-      } catch (e) {
-        log('Error uploading image: $e');
-      }
+      await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .upload(
+              'public/${workshopImage.path.split('/').last}', workshopImage);
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
 
-      try {
-        // read url from Supabase storage
-        imageUrl = GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').getPublicUrl('public/${workshopImage.path.split('/').last}');
-      } catch (e) {
-        log('Error uploading image: $e');
-      }
+    try {
+      // read url from Supabase storage
+      imageUrl = GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .getPublicUrl('public/${workshopImage.path.split('/').last}');
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
     try {
       final response = await supabase.from('workshop_group').insert({
-        'title' : title,
-        'image' : imageUrl,
-        'description' : description,
-        'category_id' : categoryId,
-        'targeted_audience' : targetedAudience,
-        'organizer_id' : GetIt.I.get<AuthLayer>().organizer!.organizerId
+        'title': title,
+        'image': imageUrl,
+        'description': description,
+        'category_id': categoryId,
+        'targeted_audience': targetedAudience,
+        'organizer_id': GetIt.I.get<AuthLayer>().organizer!.organizerId
       }).select();
       log(response.first['workshop_group_id']);
       await addSingleWorkshop(response.first['workshop_group_id']);
+      sendNotificationWithCategory(categoryId: categoryId, title: title);
     } catch (e) {
       log('message ${e.toString()}');
     }
@@ -316,17 +347,18 @@ class SupabaseLayer {
     log(workshopGroupId);
     try {
       await supabase.from('workshop').insert({
-        'date' : '2024-11-17',
-        'from_time' : '10:00',
-        'to_time' : '12:00',
-        'price' : 151,
-        'number_of_seats' : 12,
-        'available_seats' : 12,
-        'instructor_name' : 'yso kh',
-        'instructor_image' : 'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
-        'instructor_description' : 'hi hi im inst desc',
-        'is_online' : false,
-        'workshop_group_id' : workshopGroupId
+        'date': '2024-11-17',
+        'from_time': '10:00',
+        'to_time': '12:00',
+        'price': 151,
+        'number_of_seats': 12,
+        'available_seats': 12,
+        'instructor_name': 'yso kh',
+        'instructor_image':
+            'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
+        'instructor_description': 'hi hi im inst desc',
+        'is_online': false,
+        'workshop_group_id': workshopGroupId
       });
       log('$workshopGroupId successfull');
     } catch (e) {
@@ -348,5 +380,18 @@ class SupabaseLayer {
     } catch (e) {
       log("Error submit rating: $e");
     }
+  }
+
+  sendNotificationWithCategory({required String categoryId,String? title}) async {
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == categoryId);
+    log(category.categoryName.toString());
+    List data = await supabase.rpc('get_users_notify',
+        params: {'category': category.categoryName.trim()});
+    final List<String> usersToNotify = data.cast<String>();
+    log(usersToNotify.toString());
+    sendNotification(extrnalId: usersToNotify, category: category.categoryName,title : title);
   }
 }
