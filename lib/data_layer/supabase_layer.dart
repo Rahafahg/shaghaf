@@ -4,6 +4,7 @@ import 'dart:math' as mm;
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
@@ -11,6 +12,7 @@ import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
+import 'package:shaghaf/services/notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseLayer {
@@ -54,6 +56,8 @@ class SupabaseLayer {
     await supabase.from("users").insert(user.toJson());
     GetIt.I.get<AuthLayer>().box.write('user', user.toJson());
     GetIt.I.get<AuthLayer>().user = user;
+    OneSignal.Notifications.requestPermission(true);
+    OneSignal.login(externalId);
     return response;
     // } catch (e) {
     //   return e;
@@ -135,6 +139,8 @@ class SupabaseLayer {
             .get<AuthLayer>()
             .box
             .write('user', GetIt.I.get<AuthLayer>().user);
+        OneSignal.Notifications.requestPermission(true);
+        OneSignal.login(externalId);
         log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
       }
       if (role == 'organizer') {
@@ -352,6 +358,7 @@ class SupabaseLayer {
         instructorName: instructorName,
         instructorDesc: instructorDesc
       );
+      sendNotificationWithCategory(categoryId: categoryId, title: title);
     } catch (e) {
       log('message ${e.toString()}');
     }
@@ -404,5 +411,18 @@ class SupabaseLayer {
     } catch (e) {
       log("Error submit rating: $e");
     }
+  }
+
+  sendNotificationWithCategory({required String categoryId,String? title}) async {
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == categoryId);
+    log(category.categoryName.toString());
+    List data = await supabase.rpc('get_users_notify',
+        params: {'category': category.categoryName.trim()});
+    final List<String> usersToNotify = data.cast<String>();
+    log(usersToNotify.toString());
+    sendNotification(extrnalId: usersToNotify, category: category.categoryName,title : title);
   }
 }
