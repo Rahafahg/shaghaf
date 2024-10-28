@@ -196,7 +196,7 @@ class SupabaseLayer {
     .get<SupabaseLayer>()
     .supabase
     .from('workshop_group')
-    .select('*, workshop!inner(date)')
+    .select('*, workshop!inner(*)')
     .gte('workshop.date', DateTime.now());
     for (var workshopAsJson in response) {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
