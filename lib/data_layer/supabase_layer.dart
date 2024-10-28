@@ -284,7 +284,7 @@ class SupabaseLayer {
           .update({'available_seats': workshop.availableSeats - 1}).eq(
               'workshop_id', workshop.workshopId);
       log(booking.toString());
-      getBookedWorkshops();
+      getBookings();
       return booking.first;
     } catch (e) {
       log('Error saving booking: $e');
