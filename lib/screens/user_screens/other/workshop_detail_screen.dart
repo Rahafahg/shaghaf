@@ -411,8 +411,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       .get<SupabaseLayer>()
                                       .supabase
                                       .from('booking')
-                                      .update({'is_attended': true}).eq(
-                                          "qr_code", result.rawContent);
+                                      .update({'is_attended': true}).match({
+                                    'workshop_id': specific.workshopId,
+                                    'qr_code': result.rawContent,
+                                  });
                                 })
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {
