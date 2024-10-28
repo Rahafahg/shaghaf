@@ -19,48 +19,31 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   String ratingType = 'All';
   double minPrice = 0;
   double maxPrice = 500;
+
   CategoriesBloc() : super(CategoriesInitial()) {
     on<CategorySearchEvent>(categorySearchMethod);
     on<ChangePriceEvent>(handlePriceMethod);
-    // on<FilterEvent>((event, emit) {
-    //   log('filtering');
-    //   if(event.date != null) {
-    //     dateController.text = event.date!;
-    //     log(dateController.text);
-    //   }
-    //   if(event.range != null) {
-    //     minPrice = event.range!.start;
-    //     maxPrice = event.range!.end;
-    //   }
-    //   ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop){
-    //     log('message');
-    //     return workshop.date == dateController.text;
-    //   })).toList());
-    // });
+    on<ChangeTypeEvent>(handelTypeMethod); // Calls handelTypeMethod only once
     on<HandleDateEvent>((event, emit) {
       dateController.text = event.date;
-      emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==event.date && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
+      emit(ShowCategoryWorkshopsState(
+          workshops: workshops
+              .where((workshopGroup) => workshopGroup.workshops.any(
+                  (workshop) =>
+                      workshop.date == event.date &&
+                      workshop.price <= maxPrice &&
+                      workshop.price >= minPrice))
+              .toList()));
     });
     on<ResetFilterEvent>(resetFilterMethod);
-    on<ChangeTypeEvent>((event, emit) {
-      selectedType = types[event.index];
-      if(dateController.text.isNotEmpty) {
-        if(selectedType=='In-Site') {
-          // final List<WorkshopGroupModel> insite 
-        }
-        emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==dateController.text && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
-      }
-      else {
-        emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.price>=minPrice&&workshop.price<=maxPrice)).toList()));
-      }
-    });
     on<ChangeRatingEvent>((event, emit) {
       ratingType = ratingsList[event.index];
       emit(ShowCategoryWorkshopsState(workshops: workshops));
     });
   }
 
-  FutureOr<void> resetFilterMethod(ResetFilterEvent event, Emitter<CategoriesState> emit) {
+  FutureOr<void> resetFilterMethod(
+      ResetFilterEvent event, Emitter<CategoriesState> emit) {
     dateController.value = TextEditingValue.empty;
     minPrice = 0;
     maxPrice = 500;
@@ -68,29 +51,75 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     emit(ShowCategoryWorkshopsState(workshops: workshops));
   }
 
-  FutureOr<void> handlePriceMethod(ChangePriceEvent event, Emitter<CategoriesState> emit) {
+  FutureOr<void> handlePriceMethod(
+      ChangePriceEvent event, Emitter<CategoriesState> emit) {
     minPrice = event.range.start;
     maxPrice = event.range.end;
     log(minPrice.toString());
     log(maxPrice.toString());
-    if(dateController.text.isNotEmpty) {
-      emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.date==dateController.text && workshop.price <= maxPrice && workshop.price >= minPrice)).toList()));
-    }
-    else {
-      emit(ShowCategoryWorkshopsState(workshops: workshops.where((workshopGroup)=>workshopGroup.workshops.any((workshop)=>workshop.price>=minPrice&&workshop.price<=maxPrice)).toList()));
+    if (dateController.text.isNotEmpty) {
+      emit(ShowCategoryWorkshopsState(
+          workshops: workshops
+              .where((workshopGroup) => workshopGroup.workshops.any(
+                  (workshop) =>
+                      workshop.date == dateController.text &&
+                      workshop.price <= maxPrice &&
+                      workshop.price >= minPrice))
+              .toList()));
+    } else {
+      emit(ShowCategoryWorkshopsState(
+          workshops: workshops
+              .where((workshopGroup) => workshopGroup.workshops.any(
+                  (workshop) =>
+                      workshop.price >= minPrice && workshop.price <= maxPrice))
+              .toList()));
     }
   }
 
-  FutureOr<void> categorySearchMethod(CategorySearchEvent event, Emitter<CategoriesState> emit) {
+  FutureOr<void> categorySearchMethod(
+      CategorySearchEvent event, Emitter<CategoriesState> emit) {
     log('here am i');
-    final categoryWorkshops = GetIt.I.get<DataLayer>().workshops.where((workshop) => workshop.categoryId == event.category.categoryId).toList();
-    if(event.searchTerm=='') {
+    final categoryWorkshops = GetIt.I
+        .get<DataLayer>()
+        .workshops
+        .where((workshop) => workshop.categoryId == event.category.categoryId)
+        .toList();
+    if (event.searchTerm == '') {
       workshops = categoryWorkshops;
       emit(ShowCategoryWorkshopsState(workshops: categoryWorkshops));
-    }
-    else {
-      workshops = categoryWorkshops.where((workshop)=>workshop.title.toLowerCase().contains(event.searchTerm.toLowerCase())).toList();
+    } else {
+      workshops = categoryWorkshops
+          .where((workshop) => workshop.title
+              .toLowerCase()
+              .contains(event.searchTerm.toLowerCase()))
+          .toList();
       emit(ShowCategoryWorkshopsState(workshops: workshops));
     }
+  }
+
+  FutureOr<void> handelTypeMethod(
+      ChangeTypeEvent event, Emitter<CategoriesState> emit) {
+    selectedType = types[event.index];
+    log("Selected Type: $selectedType"); // Log selected type for debugging
+
+    // Start with the full list of workshops and filter based on selected type
+    List<WorkshopGroupModel> filteredWorkshops = workshops;
+
+    if (selectedType != 'All') {
+      // Set `isOnline` to match the filter: true for Online, false for In-Site
+      bool isOnline = selectedType == 'Online';
+      filteredWorkshops = filteredWorkshops.where((workshopGroup) {
+        // Include only workshop groups that have at least one workshop matching `isOnline`
+        bool hasMatchingType =
+            workshopGroup.workshops.any((workshop) => workshop.isOnline == isOnline);
+        if (!hasMatchingType) {
+          log("Excluding workshopGroup: No workshops of type $selectedType found in this group.");
+        }
+        return hasMatchingType;
+      }).toList();
+    }
+
+    // Emit the filtered state with only the type filter applied
+    emit(ShowCategoryWorkshopsState(workshops: filteredWorkshops));
   }
 }
