@@ -31,9 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CreateAccountEvent event, Emitter<AuthState> emit) async {
     try {
       emit(LoadingState());
-      await supabaseLayer.createAccount(
-          email: event.email, password: event.password);
-
+      await supabaseLayer.createAccount(email: event.email, password: event.password);
       emit(SuccessState());
     } catch (e) {
       emit(ErrorState(msg: 'User already exists or something went wrong :('));
