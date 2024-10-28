@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -23,17 +24,18 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = GetIt.I.get<AuthLayer>().user;
+    
     List<String> categories = ['All'];
     if (user != null) {
       categories.addAll(user.favoriteCategories.split(','));
     }
 
-    log(categories.toString());
+    print(categories.toString());
     List<Widget> categoriesWidgets =
         categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
     String? selectedCategory = "All";
-    log(selectedCategory);
+    print(selectedCategory);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -88,13 +90,14 @@ class UserHomeScreen extends StatelessWidget {
               }
               if (state is SuccessWorkshopsState) {
                 final workshops = GetIt.I.get<DataLayer>().workshops;
-                log('looook heeere im here now kannn ${workshops.length}');
+                print('looook heeere im here now kannn ${workshops.length}');
                 final groupedworkshops = groupworkshopsByCategory(workshops);
                 WorkshopGroupModel workshopOfTheWeek =
                     GetIt.I.get<DataLayer>().workshopOfTheWeek ??
                         workshops.first;
                 selectedCategory = state.selectedCategory ?? "All";
-
+    var fraction = (workshopOfTheWeek.rating % 1 * pow(10, 2)).floor();
+    String rating = "${workshopOfTheWeek.rating.toString().split(".")[0]}.$fraction";
                 // body
                 return SingleChildScrollView(
                     child: Column(children: [
@@ -231,7 +234,7 @@ class UserHomeScreen extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             Text(
-                                              workshopOfTheWeek.rating
+                                              rating
                                                   .toString(),
                                               style: const TextStyle(
                                                   color:
