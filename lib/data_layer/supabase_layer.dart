@@ -192,11 +192,12 @@ class SupabaseLayer {
   getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
-    final response = await GetIt.I
-        .get<SupabaseLayer>()
-        .supabase
-        .from('workshop_group')
-        .select('*, workshop(*)');
+    final response =await GetIt.I
+    .get<SupabaseLayer>()
+    .supabase
+    .from('workshop_group')
+    .select('*, workshop!inner(date)')
+    .gte('workshop.date', DateTime.now());
     for (var workshopAsJson in response) {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
@@ -265,6 +266,10 @@ class SupabaseLayer {
         'qr_code': qr,
       }).select();
 
+      await supabase
+          .from('workshop')
+          .update({'available_seats': workshop.availableSeats - 1}).eq(
+              'workshop_id', workshop.workshopId);
       log(booking.toString());
       getBookedWorkshops();
       return booking.first;
