@@ -250,6 +250,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       GetIt.I.get<AuthLayer>().user = null;
+                      GetIt.I.get<AuthLayer>().organizer = null;
                       GetIt.I.get<AuthLayer>().box.remove('organizer');
                       context.pushRemove(screen: const LoginScreen());
                     },

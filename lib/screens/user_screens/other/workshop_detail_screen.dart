@@ -14,6 +14,7 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
+import 'package:shaghaf/screens/organizer_screens/add%20workshop/add_workshop_screen.dart';
 import 'package:shaghaf/screens/user_screens/other/bloc/booking_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
@@ -32,11 +33,11 @@ class WorkshopDetailScreen extends StatelessWidget {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
     final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
     final selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
-    
     Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
     return BlocProvider(
       create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
+        log(specific.instructorName);
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
@@ -178,9 +179,58 @@ class WorkshopDetailScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        const Divider(color: Constants.dividerColor,thickness: 1,),
-                        // available days
-                        const Text("Available Days",),
+                        const SizedBox(height: 5),
+                        BlocBuilder<BookingBloc, BookingState>(
+                          builder: (context, state) {
+                            if (state is ChangeQuantityState) {
+                              if (state.specific != null) {
+                                specific = state.specific!;
+                                return Text(
+                                  state.specific!.instructorDescription,
+                                  style: const TextStyle(
+                                      color: Constants.lightTextColor,
+                                      fontSize: 14),
+                                );
+                              }
+                            }
+                            return Text(
+                              specific.instructorDescription,
+                              style: const TextStyle(
+                                  color: Constants.lightTextColor,
+                                  fontSize: 14),
+                            );
+                          },
+                        ),
+                        const Divider(
+                          color: Constants.dividerColor,
+                          thickness: 1,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Available Days",
+                            ),
+                            organizer != null
+                                ? TextButton(
+                                    style: ButtonStyle(
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Constants.lightOrange)),
+                                    onPressed: () => context.push(
+                                            screen: AddWorkshopScreen(
+                                          isSingleWorkShope: true,
+                                          workshop: specific,
+                                        )),
+                                    child: const Row(
+                                      children: [
+                                        Icon(Icons.add),
+                                        Text("Add day"),
+                                      ],
+                                    ))
+                                : const Text("")
+                          ],
+                        ),
                         const SizedBox(height: 10),
                         DateRadioButton(
                           workshop: workshop.workshops,
