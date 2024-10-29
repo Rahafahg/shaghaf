@@ -31,3 +31,5 @@ class UpdateProfileImageEvent extends OrganizerProfileEvent {
 
   UpdateProfileImageEvent(this.imageFile);
 }
+
+final class CloseEditOrgProfileEvent extends OrganizerProfileEvent {}

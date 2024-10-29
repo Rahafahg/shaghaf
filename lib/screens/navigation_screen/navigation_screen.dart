@@ -33,7 +33,7 @@ class NavigationScreen extends StatelessWidget {
           create: (context) => UserProfileBloc(),
         ),
         BlocProvider(
-          create: (context) => BookingBloc(),
+          create: (context) => BookingBloc()..add(GetBookingsEvent()),
         ),
         // other blocs can be added here
       ],

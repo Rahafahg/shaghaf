@@ -13,6 +13,10 @@ part 'booking_state.dart';
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   int quantity = 1;
   BookingBloc() : super(BookingInitial()) {
+    on<GetBookingsEvent>((event, emit) async {
+      log('message getting bookings');
+      await GetIt.I.get<SupabaseLayer>().getBookings();
+    });
     on<AddQuantityEvent>((event, emit) {
       emit(ChangeQuantityState(quantity: quantity = quantity + 1));
     });

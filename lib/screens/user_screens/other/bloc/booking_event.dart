@@ -7,6 +7,8 @@ final class AddQuantityEvent extends BookingEvent {}
 
 final class ReduceQuantityEvent extends BookingEvent {}
 
+final class GetBookingsEvent extends BookingEvent {}
+
 final class UpdateDayEvent extends BookingEvent {
   final Workshop specific;
   final String selectedDate;

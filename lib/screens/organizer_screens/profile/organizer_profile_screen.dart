@@ -10,7 +10,6 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
-import 'package:shaghaf/screens/user_screens/profile/profile_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
@@ -30,7 +29,7 @@ class OrganizerProfileScreen extends StatelessWidget {
     });
 
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onTap: () => bloc.add(ViewOrgProfileEvent()),
       child: Scaffold(
         backgroundColor: Constants.backgroundColor,
         body: SingleChildScrollView(

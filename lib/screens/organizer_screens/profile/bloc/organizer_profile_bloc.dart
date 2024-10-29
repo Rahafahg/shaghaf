@@ -22,6 +22,10 @@ class OrganizerProfileBloc
     on<EditOrqProfileEvent>(onEditOrgProfile);
     on<SubmitOrgProfileEvent>(onSubmitOrgProfile);
     on<UpdateProfileImageEvent>(onUpdateProfileImage);
+    on<CloseEditOrgProfileEvent>((event, emit) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      emit(SuccessOrgProfileState());
+    });
   }
 
   FutureOr<void> onViewOrgProfile(
