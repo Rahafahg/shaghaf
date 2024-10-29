@@ -20,3 +20,5 @@ final class ShowFormState extends AddWorkshopState {}
 final class AddSuccessState extends AddWorkshopState {}
 
 final class ShowWorkshopsState extends AddWorkshopState {}
+
+final class LoadingState extends AddWorkshopState{}
