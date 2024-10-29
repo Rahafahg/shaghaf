@@ -13,9 +13,9 @@ final class ChangeImageEvent extends AddWorkshopEvent {
   ChangeImageEvent({required this.image});
 }
 
-final class ChangeDateEvent extends AddWorkshopEvent {
-  final int index;
-  ChangeDateEvent({required this.index});
+final class ChangeTypeEvent extends AddWorkshopEvent {
+  final String type;
+  ChangeTypeEvent({required this.type});
 }
 
 final class AddDateEvent extends AddWorkshopEvent {
