@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/text_fields/add_date_field.dart';
@@ -14,7 +15,8 @@ import 'package:shaghaf/widgets/text_fields/time_field.dart';
 
 class WorkShopForm extends StatelessWidget {
   final AddWorkshopBloc bloc;
-  const WorkShopForm({super.key, required this.bloc});
+  final Workshop? workshop;
+  const WorkShopForm({super.key, required this.bloc, this.workshop});
 
   @override
   Widget build(BuildContext context) {

@@ -295,7 +295,7 @@ class SupabaseLayer {
 
   Future<void> addWorkshop({
     required String title,
-    required File workshopImage,
+    File? workshopImage,
     required String description,
     required String categoryId,
     required String targetedAudience,
@@ -321,7 +321,7 @@ class SupabaseLayer {
           .storage
           .from('organizer_images')
           .upload(
-              'public/${workshopImage.path.split('/').last}', workshopImage);
+              'public/${workshopImage!.path.split('/').last}', workshopImage);
     } catch (e) {
       log('Error uploading image: $e');
     }
@@ -333,7 +333,7 @@ class SupabaseLayer {
           .supabase
           .storage
           .from('organizer_images')
-          .getPublicUrl('public/${workshopImage.path.split('/').last}');
+          .getPublicUrl('public/${workshopImage!.path.split('/').last}');
     } catch (e) {
       log('Error uploading image: $e');
     }

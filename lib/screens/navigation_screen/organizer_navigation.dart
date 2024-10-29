@@ -33,7 +33,7 @@ class OrgNavigationScreen extends StatelessWidget {
               backgroundColor: Constants.lightOrange,
               foregroundColor: Colors.white,
               shape: const CircleBorder(),
-              onPressed: () => context.push(screen: const AddWorkshopScreen()),
+              onPressed: () => context.push(screen: const AddWorkshopScreen(isSingleWorkShope: false,)),
               child: const Icon(Icons.add),
             ),
           ),

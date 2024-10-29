@@ -15,6 +15,7 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
+import 'package:shaghaf/screens/organizer_screens/add%20workshop/add_workshop_screen.dart';
 import 'package:shaghaf/screens/user_screens/other/bloc/booking_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
@@ -31,12 +32,22 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
-    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty
+        ? date!.split('-').last
+        : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     return BlocProvider(
-      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()
+        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
+        log(specific.instructorName);
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
@@ -241,8 +252,31 @@ class WorkshopDetailScreen extends StatelessWidget {
                           color: Constants.dividerColor,
                           thickness: 1,
                         ),
-                        const Text(
-                          "Available Days",
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Available Days",
+                            ),
+                            organizer != null
+                                ? TextButton(
+                                    style: ButtonStyle(
+                                        foregroundColor:
+                                            WidgetStateProperty.all(
+                                                Constants.lightOrange)),
+                                    onPressed: () => context.push(
+                                            screen: AddWorkshopScreen(
+                                          isSingleWorkShope: true,
+                                          workshop: specific,
+                                        )),
+                                    child: const Row(
+                                      children: [
+                                        Icon(Icons.add),
+                                        Text("Add day"),
+                                      ],
+                                    ))
+                                : const Text("")
+                          ],
                         ),
                         const SizedBox(height: 10),
                         DateRadioButton(
@@ -388,47 +422,56 @@ class WorkshopDetailScreen extends StatelessWidget {
                           height: 30,
                         ),
                         organizer != null
-                            ? DateTime.now().isAfter(DateTime.parse(specific.date)) ? SizedBox.shrink() : MainButton(
-                                text: "Scan Now",
-                                width: context.getWidth(),
-                                onPressed: () async {
-                                  var result = await BarcodeScanner
-                                      .scan(); //barcode scanner
-                                  log(result.type
-                                      .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
-                                  log(result.format
-                                      .toString()); // The barcode format (as enum)
-                                  log(result.rawContent);
-                                  final response = await GetIt.I
-                                      .get<SupabaseLayer>()
-                                      .supabase
-                                      .from('booking')
-                                      .update({'is_attended': true}).match({
-                                    'workshop_id': specific.workshopId,
-                                    'qr_code': result.rawContent,
-                                    'is_attended': false
-                                  }).select();
-                                  if (response.isNotEmpty) {
-                                    log(response.first.toString());
-                                    final booking =
-                                        BookingModel.fromJson(response.first);
-                                    showModalBottomSheet(
-                                      backgroundColor: Constants.ticketCardColor,
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: TicketCard(workshopGroup: workshop, booking: booking, workshop: specific),
-                                          );
-                                        });
-                                  } else {
-                                    log("Error: No response from Supabase.");
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => ErrorDialog(
-                                            msg: "Invalid qr code"));
-                                  }
-                                })
+                            ? DateTime.now()
+                                    .isAfter(DateTime.parse(specific.date))
+                                ? const SizedBox.shrink()
+                                : MainButton(
+                                    text: "Scan Now",
+                                    width: context.getWidth(),
+                                    onPressed: () async {
+                                      var result = await BarcodeScanner
+                                          .scan(); //barcode scanner
+                                      log(result.type
+                                          .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
+                                      log(result.format
+                                          .toString()); // The barcode format (as enum)
+                                      log(result.rawContent);
+                                      final response = await GetIt.I
+                                          .get<SupabaseLayer>()
+                                          .supabase
+                                          .from('booking')
+                                          .update({'is_attended': true}).match({
+                                        'workshop_id': specific.workshopId,
+                                        'qr_code': result.rawContent,
+                                        'is_attended': false
+                                      }).select();
+                                      if (response.isNotEmpty) {
+                                        log(response.first.toString());
+                                        final booking = BookingModel.fromJson(
+                                            response.first);
+                                        showModalBottomSheet(
+                                            backgroundColor:
+                                                Constants.ticketCardColor,
+                                            context: context,
+                                            builder: (context) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: TicketCard(
+                                                    workshopGroup: workshop,
+                                                    booking: booking,
+                                                    workshop: specific),
+                                              );
+                                            });
+                                      } else {
+                                        log("Error: No response from Supabase.");
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                const ErrorDialog(
+                                                    msg: "Invalid qr code"));
+                                      }
+                                    })
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {
                                   if (state is ChangeQuantityState) {
