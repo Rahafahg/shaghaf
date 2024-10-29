@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
-import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
@@ -50,4 +48,3 @@ class UserTicketScreen extends StatelessWidget {
     );
   }
 }
-

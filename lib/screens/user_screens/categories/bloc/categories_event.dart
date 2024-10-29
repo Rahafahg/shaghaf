@@ -37,9 +37,3 @@ final class ChangeRatingEvent extends CategoriesEvent {
   final int index;
   ChangeRatingEvent({required this.index});
 }
-
-final class MyEvent extends CategoriesEvent {
-  final String searchTerm;
-  final CategoriesModel category;
-  MyEvent({this.searchTerm='', required this.category});
-}

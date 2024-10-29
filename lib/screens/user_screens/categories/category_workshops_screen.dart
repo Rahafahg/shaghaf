@@ -56,7 +56,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: context.getWidth(divideBy: 1.3),
-                      child: SearchField(onChanged: (value)=> bloc.add(MyEvent(searchTerm: value,category: category))),
+                      child: SearchField(onChanged: (value)=> bloc.add(CategorySearchEvent(searchTerm: value,category: category))),
                     ),
                     IconButton(
                       icon: const HugeIcon(icon: HugeIcons.strokeRoundedFilterHorizontal,color: Constants.lightGreen),
