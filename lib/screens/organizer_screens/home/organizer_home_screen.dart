@@ -5,6 +5,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
@@ -53,27 +54,47 @@ class OrganizerHomeScreen extends StatelessWidget {
         body: BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
           bloc: context.read<AddWorkshopBloc>(),
           builder: (context, state) {
+            List<WorkshopGroupModel> incoming = [];
+            List<WorkshopGroupModel> previous = [];
+            for (var workshopGroup in GetIt.I.get<DataLayer>().orgWorkshops) {
+              if(workshopGroup.workshops.any((workshop)=>DateTime.now().isBefore(DateTime.parse(workshop.date)))) {
+                incoming.add(workshopGroup);
+              }
+              if(workshopGroup.workshops.any((workshop)=>DateTime.now().isAfter(DateTime.parse(workshop.date)))) {
+                previous.add(workshopGroup);
+              }
+            }
             return TabBarView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: GetIt.I.get<DataLayer>().orgWorkshops.isNotEmpty ? ListView.separated(
-                    itemCount: GetIt.I.get<DataLayer>().orgWorkshops.length,
+                  child: incoming.isNotEmpty ? ListView.separated(
+                    itemCount: incoming.length,
                     separatorBuilder: (context,index) => const SizedBox(height: 20,),
                     itemBuilder: (context,index)=>WorkshopCard(
-                      workshop: GetIt.I.get<DataLayer>().orgWorkshops[index],
+                      workshop: incoming[index],
                       shape: 'rect',
-                      onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: GetIt.I.get<DataLayer>().orgWorkshops[index])),
+                      onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: incoming[index])),
                     ),
                   ) : SizedBox(
                     height: context.getHeight(),
-                    child: const Center(child: Text("No workshops created yet")),
+                    child: const Center(child: Text("No incoming workshops yet")),
                   )
                 ),
-                const Column(
-                  children: [
-                    SizedBox(height: 27),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: previous.isNotEmpty ? ListView.separated(
+                    itemCount: previous.length,
+                    separatorBuilder: (context,index) => const SizedBox(height: 20,),
+                    itemBuilder: (context,index)=>WorkshopCard(
+                      workshop: previous[index],
+                      shape: 'rect',
+                      onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: previous[index])),
+                    ),
+                  ) : SizedBox(
+                    height: context.getHeight(),
+                    child: const Center(child: Text("No previous workshops yet")),
+                  )
                 ),
               ],
             );

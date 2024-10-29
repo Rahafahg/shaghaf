@@ -30,40 +30,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     emit(EditingProfileState());
   }
 
-  // FutureOr<void> submitUserProfile(
-  //     SubmitUserProfileEvent event, Emitter<UserProfileState> emit) async {
-  //   log("submit");
-
-  //   await GetIt.I.get<SupabaseLayer>().supabase.from('users').update({
-  //     'first_name': event.firstName,
-  //     'last_name': event.lastName,
-  //     'phone_number': event.phoneNumber
-  //   }).eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
-  //   log("submit2");
-  //   log(GetIt.I.get<AuthLayer>().user!.firstName);
-  //   UserModel? user = GetIt.I.get<AuthLayer>().user;
-  //   log("submit22");
-
-  //   if (user != null) {
-  //     user.firstName = event.firstName;
-  //     log("submit23");
-
-  //     user.lastName = event.lastName;
-  //     log("submit24");
-
-  //     user.phoneNumber = event.phoneNumber;
-  //     log("submit25");
-  //   }
-
-  //   log("submit3");
-
-  //   // GetIt.I.get<AuthLayer>().box.write('user', user!.toJson());
-  //   log("submit4");
-
-  //   // emit(SuccessProfileState());
-  //   log("submit5");
-  // }
-
 
   Future<void> submitUserProfile(
     SubmitUserProfileEvent event, Emitter<UserProfileState> emit) async {

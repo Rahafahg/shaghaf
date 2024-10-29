@@ -28,20 +28,11 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I
-        .get<DataLayer>()
-        .categories
-        .firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date != null && date!.isNotEmpty
-        ? date!.split('-').last
-        : workshop.workshops.first.date.split('-').last;
-    Workshop specific = workshop.workshops
-        .where((workshop) => workshop.date.contains(selectedDate))
-        .toList()
-        .first;
+    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
     return BlocProvider(
-      create: (context) => BookingBloc()
-        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
@@ -394,7 +385,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           height: 30,
                         ),
                         organizer != null
-                            ? MainButton(
+                            ? DateTime.now().isAfter(DateTime.parse(specific.date)) ? SizedBox.shrink() : MainButton(
                                 text: "Scan Now",
                                 width: context.getWidth(),
                                 onPressed: () async {
