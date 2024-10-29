@@ -22,9 +22,8 @@ class OrganizerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<OrganizerProfileBloc>();
-    final organizer = GetIt.I.get<AuthLayer>().organizer;
-
-    // Initialize organizer data when the screen loads
+    final authLayer = GetIt.I.get<AuthLayer>();
+    final organizer = authLayer.organizer;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.add(ViewOrgProfileEvent());
     });
@@ -65,24 +64,24 @@ class OrganizerProfileScreen extends StatelessWidget {
                                 imageQuality: 85,
                               );
                               if (pickedFile != null) {
-                                bloc.add(UpdateProfileImageEvent(
-                                    File(pickedFile.path)));
+                                                          final imageFile = File(pickedFile.path);
+                                bloc.add(UpdateProfileImageEvent(imageFile));
+                                await authLayer.setProfileImagePath(imageFile.path);
                               }
                             },
                             child: BlocBuilder<OrganizerProfileBloc,
                                 OrganizerProfileState>(
                               builder: (context, state) {
                                 ImageProvider backgroundImage;
-                                if (state is SuccessOrgProfileState &&
-                                    state.imageFile != null) {
+                                 final imagePath = authLayer.getProfileImagePath();
+                                   if (state is SuccessOrgProfileState && state.imageFile != null) {
                                   backgroundImage = FileImage(state.imageFile!);
-                                } else if (organizer?.image != null &&
-                                    organizer!.image.isNotEmpty) {
-                                  backgroundImage =
-                                      NetworkImage(organizer.image);
+                                } else if (imagePath != null) {
+                                  backgroundImage = FileImage(File(imagePath));
+                                } else if (organizer?.image != null && organizer!.image.isNotEmpty) {
+                                  backgroundImage = NetworkImage(organizer.image);
                                 } else {
-                                  backgroundImage = const AssetImage(
-                                      "assets/images/default_organizer_image.png");
+                                  backgroundImage = const AssetImage("assets/images/default_organizer_image.png");
                                 }
 
                                 return CircleAvatar(

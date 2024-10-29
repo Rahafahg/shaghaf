@@ -52,4 +52,12 @@ class AuthLayer {
     didChooseFav = true;
     box.write('fav', true);
   }
+
+  Future<void> setProfileImagePath(String path) async {
+    await box.write('profile_image_path', path);
+  }
+
+  String? getProfileImagePath() {
+    return box.read('profile_image_path');
+  }
 }
