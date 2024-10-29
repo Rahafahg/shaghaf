@@ -23,6 +23,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Constants.backgroundColor,
         appBar: PreferredSize(
           preferredSize: Size(context.getWidth(), context.getHeight(divideBy: 13)),
