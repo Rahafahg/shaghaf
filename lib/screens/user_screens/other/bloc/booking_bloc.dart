@@ -12,6 +12,7 @@ part 'booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
   int quantity = 1;
+  Workshop? chosenWorkshop;
   BookingBloc() : super(BookingInitial()) {
     on<GetBookingsEvent>((event, emit) async {
       log('message getting bookings');
@@ -26,6 +27,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     });
 
     on<UpdateDayEvent>((event, emit) {
+      chosenWorkshop = event.specific;
       emit(ChangeQuantityState(quantity: quantity = 1, specific: event.specific));
     });
 

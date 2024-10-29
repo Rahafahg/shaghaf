@@ -137,8 +137,6 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   );
                                 },
                               ),
-
-                              
                               const SizedBox(height: 16),
                               const Text(
                                 "Ratings",
