@@ -121,42 +121,38 @@ class SupabaseLayer {
       required String password,
       required String role,
       required String externalId}) async {
-    
-      final AuthResponse response = await supabase.auth
-          .signInWithPassword(email: email, password: password);
-      log("-----------------------------------------");
-      log(response.toString());
-      log("-----------------------------------------");
-      if (role == 'user') {
-        await supabase.from('users').update({'external_id': externalId}).eq(
-            'user_id', response.user!.id);
-        final temp = await supabase
-            .from('users')
-            .select()
-            .eq('user_id', response.user!.id);
-        GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-        GetIt.I
-            .get<AuthLayer>()
-            .box
-            .write('user', GetIt.I.get<AuthLayer>().user);
-        OneSignal.Notifications.requestPermission(true);
-        OneSignal.login(externalId);
-        log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
-      }
-      if (role == 'organizer') {
-        final temp = await supabase
-            .from('organizer')
-            .select()
-            .eq('organizer_id', response.user!.id);
-        GetIt.I.get<AuthLayer>().organizer =
-            OrganizerModel.fromJson(temp.first);
-        GetIt.I
-            .get<AuthLayer>()
-            .box
-            .write('organizer', GetIt.I.get<AuthLayer>().organizer);
-        log(GetIt.I.get<AuthLayer>().box.hasData('organizer').toString());
-      }
-      return response;
+    final AuthResponse response = await supabase.auth
+        .signInWithPassword(email: email, password: password);
+    log("-----------------------------------------");
+    log(response.toString());
+    log("-----------------------------------------");
+    if (role == 'user') {
+      await supabase
+          .from('users')
+          .update({'external_id': externalId}).eq('user_id', response.user!.id);
+      final temp = await supabase
+          .from('users')
+          .select()
+          .eq('user_id', response.user!.id);
+      GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
+      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
+      OneSignal.Notifications.requestPermission(true);
+      OneSignal.login(externalId);
+      log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
+    }
+    if (role == 'organizer') {
+      final temp = await supabase
+          .from('organizer')
+          .select()
+          .eq('organizer_id', response.user!.id);
+      GetIt.I.get<AuthLayer>().organizer = OrganizerModel.fromJson(temp.first);
+      GetIt.I
+          .get<AuthLayer>()
+          .box
+          .write('organizer', GetIt.I.get<AuthLayer>().organizer);
+      log(GetIt.I.get<AuthLayer>().box.hasData('organizer').toString());
+    }
+    return response;
   }
 
   Future nativeGoogleSignIn() async {
@@ -311,6 +307,10 @@ class SupabaseLayer {
     required int availableSeats,
     required String instructorName,
     required String instructorDesc,
+    bool? isOnline,
+    String? venueName,
+    String? venueType,
+    String? meetingUrl,
   }) async {
     log('add 1');
     String imageUrl = '';
@@ -348,16 +348,19 @@ class SupabaseLayer {
       }).select();
       log(response.first['workshop_group_id']);
       await addSingleWorkshop(
-        workshopGroupId: response.first['workshop_group_id'],
-        date: date,
-        from: from,
-        to: to,
-        price: price,
-        seats: seats,
-        availableSeats: availableSeats,
-        instructorName: instructorName,
-        instructorDesc: instructorDesc
-      );
+          workshopGroupId: response.first['workshop_group_id'],
+          date: date,
+          from: from,
+          to: to,
+          price: price,
+          seats: seats,
+          availableSeats: availableSeats,
+          instructorName: instructorName,
+          instructorDesc: instructorDesc,
+          isOnline: isOnline,
+          venueName: venueName,
+          venueType: venueType,
+          meetingUrl: meetingUrl);
       sendNotificationWithCategory(categoryId: categoryId, title: title);
     } catch (e) {
       log('message ${e.toString()}');
@@ -374,22 +377,30 @@ class SupabaseLayer {
     required int availableSeats,
     required String instructorName,
     required String instructorDesc,
+    bool? isOnline,
+    String? venueName,
+    String? venueType,
+    String? meetingUrl,
   }) async {
     log('add 2');
     log(workshopGroupId);
     try {
       await supabase.from('workshop').insert({
-        'date' : date,
-        'from_time' : from,
-        'to_time' : to,
-        'price' : price,
-        'number_of_seats' : seats,
-        'available_seats' : availableSeats,
-        'instructor_name' : instructorName,
-        'instructor_image' : 'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
-        'instructor_description' : instructorDesc,
-        'is_online' : false,
-        'workshop_group_id' : workshopGroupId
+        'date': date,
+        'from_time': from,
+        'to_time': to,
+        'price': price,
+        'number_of_seats': seats,
+        'available_seats': availableSeats,
+        'instructor_name': instructorName,
+        'instructor_image':
+            'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
+        'instructor_description': instructorDesc,
+        'is_online': isOnline,
+        'workshop_group_id': workshopGroupId,
+        'venue_name': venueName,
+        'venue_type': venueType,
+        'meeting_url': meetingUrl
       });
       log('$workshopGroupId successfull');
     } catch (e) {
@@ -413,7 +424,8 @@ class SupabaseLayer {
     }
   }
 
-  sendNotificationWithCategory({required String categoryId,String? title}) async {
+  sendNotificationWithCategory(
+      {required String categoryId, String? title}) async {
     final category = GetIt.I
         .get<DataLayer>()
         .categories
@@ -423,6 +435,9 @@ class SupabaseLayer {
         params: {'category': category.categoryName.trim()});
     final List<String> usersToNotify = data.cast<String>();
     log(usersToNotify.toString());
-    sendNotification(extrnalId: usersToNotify, category: category.categoryName,title : title);
+    sendNotification(
+        extrnalId: usersToNotify,
+        category: category.categoryName,
+        title: title);
   }
 }
