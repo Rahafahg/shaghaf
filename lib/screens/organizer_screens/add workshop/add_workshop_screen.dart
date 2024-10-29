@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -41,6 +42,14 @@ class AddWorkshopScreen extends StatelessWidget {
               listener: (context, state) {
                 if (state is AddSuccessState) {
                   context.pushRemove(screen: const OrgNavigationScreen());
+                }
+                if (state is LoadingState) {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => Center(
+                          child: LottieBuilder.asset(
+                              "assets/lottie/loading.json")));
                 }
               },
               builder: (context, state) {

@@ -43,6 +43,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
 
   FutureOr<void> submitWorkshopMethod(
       SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
+          emit(LoadingState());
     await GetIt.I.get<SupabaseLayer>().addWorkshop(
         title: titleController.text,
         workshopImage: event.image,
