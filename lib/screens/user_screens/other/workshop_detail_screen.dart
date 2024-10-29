@@ -13,11 +13,14 @@ import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/other/bloc/booking_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/cards/ticket_card.dart';
+import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
@@ -78,14 +81,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 35,
-                              width: 35,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Image.asset(category.icon),
-                            ),
-                            const SizedBox(width: 5),
                             Text(
                               workshop.title,
                               style: const TextStyle(
@@ -111,6 +106,13 @@ class WorkshopDetailScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
+                                Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Image.asset(category.icon),
+                                ),
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName,
@@ -133,7 +135,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       radius: 50,
                                       backgroundImage: organizer != null
                                           ? NetworkImage(organizer.image)
-                                          : const AssetImage("assets/images/Organizer_image.jpg")),
+                                          : const AssetImage(
+                                              "assets/images/Organizer_image.jpg")),
                                 ),
                                 const SizedBox(width: 5),
                                 const Text("Organizer"),
@@ -396,14 +399,35 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   log(result.format
                                       .toString()); // The barcode format (as enum)
                                   log(result.rawContent);
-                                  await GetIt.I
+                                  final response = await GetIt.I
                                       .get<SupabaseLayer>()
                                       .supabase
                                       .from('booking')
                                       .update({'is_attended': true}).match({
                                     'workshop_id': specific.workshopId,
                                     'qr_code': result.rawContent,
-                                  });
+                                    'is_attended': false
+                                  }).select();
+                                  if (response.isNotEmpty) {
+                                    log(response.first.toString());
+                                    final booking =
+                                        BookingModel.fromJson(response.first);
+                                    showModalBottomSheet(
+                                      backgroundColor: Constants.ticketCardColor,
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: TicketCard(workshopGroup: workshop, booking: booking, workshop: specific),
+                                          );
+                                        });
+                                  } else {
+                                    log("Error: No response from Supabase.");
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => ErrorDialog(
+                                            msg: "Invalid qr code"));
+                                  }
                                 })
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {

@@ -8,6 +8,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
+import 'package:shaghaf/widgets/cards/ticket_card.dart';
 
 class UserTicketScreen extends StatelessWidget {
   final BookingModel booking;
@@ -42,50 +43,11 @@ class UserTicketScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(color: Constants.ticketCardColor,borderRadius: BorderRadius.circular(20)),
-              height: context.getHeight(divideBy: 1.5),
-              width: context.getWidth(),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(workshopGroup.title,style: const TextStyle(fontSize: 20,fontFamily: "Poppins")),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Container(
-                        height: context.getHeight(divideBy: 4),
-                        width: context.getWidth(divideBy: 1.9),
-                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),),
-                        child: Center(child: QrImageView(data: booking.qrCode,version: QrVersions.auto,size: 250,)),
-                      ),
-                    ),
-                    const SizedBox(height: 30,),
-                    Row(
-                      children: [
-                        const Icon(Icons.calendar_today,size: 16, color: Constants.mainOrange),
-                        const SizedBox(width: 5,),
-                        Text("${booking.bookingDate}")
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.watch_later_outlined,size: 16, color: Constants.mainOrange),
-                        const SizedBox(width: 5),
-                        Text("${workshop.fromTime} to ${workshop.toTime}")
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text("Description",style: TextStyle(fontFamily: "Poppins", fontSize: 16),),
-                    ],
-                  ),
-                ),
-              ))
+            child: 
+            TicketCard(workshopGroup: workshopGroup, booking: booking, workshop: workshop))
         ],
       ),
     );
   }
 }
+
