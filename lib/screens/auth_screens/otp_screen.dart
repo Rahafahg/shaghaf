@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
@@ -57,9 +58,9 @@ class OtpScreen extends StatelessWidget {
               showDialog(
                   barrierDismissible: false,
                   context: context,
-                  builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                          color: Constants.mainOrange)));
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               GetIt.I.get<SupabaseLayer>().getAllCategories();
@@ -67,7 +68,7 @@ class OtpScreen extends StatelessWidget {
                   screen: role == 'user'
                       ? const SelectCategoriesScreen()
                       : const OrgNavigationScreen());
-                   //   : const OrgNavigationScreen());
+              //   : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
@@ -154,10 +155,22 @@ class OtpScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text("Didn’t receive code ? ", style: TextStyle(color: Color(0xff666666),fontFamily: "Poppins", fontSize: 12),),
+                                  const Text(
+                                    "Didn’t receive code ? ",
+                                    style: TextStyle(
+                                        color: Color(0xff666666),
+                                        fontFamily: "Poppins",
+                                        fontSize: 12),
+                                  ),
                                   OtpTimerButton(
-                                    onPressed: ()=>log("handle me"),
-                                    text: const Text("Re-send", style: TextStyle(fontFamily: "Poppins", color: Constants.mainOrange, fontSize: 12),),
+                                    onPressed: () => log("handle me"),
+                                    text: const Text(
+                                      "Re-send",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Constants.mainOrange,
+                                          fontSize: 12),
+                                    ),
                                     duration: 60,
                                     buttonType: ButtonType.text_button,
                                   ),

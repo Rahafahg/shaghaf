@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -42,9 +43,9 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
               showDialog(
                   barrierDismissible: false,
                   context: context,
-                  builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                          color: Constants.mainOrange)));
+                  builder: (context) => 
+                 Center(
+                    child: LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
