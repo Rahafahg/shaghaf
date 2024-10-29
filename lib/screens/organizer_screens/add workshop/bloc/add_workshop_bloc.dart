@@ -33,6 +33,10 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<ChangeImageEvent>(changeImage);
     on<ChangeDateEvent>(changeDate);
     on<SubmitWorkshopEvent>(submitWorkshopMethod);
+    on<GetOrgWorkshopsEvent>((event, emit) {
+      getOrgWorkshops();
+      emit(ShowWorkshopsState());
+    });
   }
 
   FutureOr<void> submitWorkshopMethod(SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
