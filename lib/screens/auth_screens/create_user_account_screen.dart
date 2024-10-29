@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -37,9 +38,9 @@ class CreateUserAccountScreen extends StatelessWidget {
               showDialog(
                   barrierDismissible: false,
                   context: context,
-                  builder: (context) => const Center(
-                      child: CircularProgressIndicator(
-                          color: Constants.mainOrange)));
+                  builder: (context) => Center(
+                      child: LottieBuilder.asset("assets/lottie/loading.json"))
+                  );
             }
             if (state is SuccessState) {
               context.pop();
@@ -93,7 +94,8 @@ class CreateUserAccountScreen extends StatelessWidget {
                                       controller: lNameController),
                                   const SizedBox(height: 10),
                                   AuthField(
-                                      type: 'Email', controller: emailController),
+                                      type: 'Email',
+                                      controller: emailController),
                                   const SizedBox(height: 10),
                                   AuthField(
                                       type: 'Password',
@@ -120,15 +122,18 @@ class CreateUserAccountScreen extends StatelessWidget {
                                           screen: const LoginScreen()),
                                       child: SizedBox(
                                           width: context.getWidth(),
-                                          child: const Text("I Already have an account",
+                                          child: const Text(
+                                              "I Already have an account",
                                               textAlign: TextAlign.end,
-                                              style: TextStyle(fontSize: 11, fontFamily: "Poppins", color: Constants.mainOrange,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      decorationColor:
-                                                          Constants.mainOrange,
-                                                      )
-                                              )))
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontFamily: "Poppins",
+                                                color: Constants.mainOrange,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor:
+                                                    Constants.mainOrange,
+                                              ))))
                                 ],
                               ),
                             ),

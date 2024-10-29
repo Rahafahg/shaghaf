@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
@@ -21,9 +22,8 @@ class OrganizerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<OrganizerProfileBloc>();
-    final organizer = GetIt.I.get<AuthLayer>().organizer;
-
-    // Initialize organizer data when the screen loads
+    final authLayer = GetIt.I.get<AuthLayer>();
+    final organizer = authLayer.organizer;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bloc.add(ViewOrgProfileEvent());
     });
@@ -35,8 +35,7 @@ class OrganizerProfileScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight:
-                  MediaQuery.of(context).size.height,
+              minHeight: MediaQuery.of(context).size.height,
             ),
             child: IntrinsicHeight(
               child: Column(
@@ -64,17 +63,23 @@ class OrganizerProfileScreen extends StatelessWidget {
                                 imageQuality: 85,
                               );
                               if (pickedFile != null) {
-                                bloc.add(UpdateProfileImageEvent(
-                                    File(pickedFile.path)));
+                                final imageFile = File(pickedFile.path);
+                                bloc.add(UpdateProfileImageEvent(imageFile));
+                                await authLayer
+                                    .setProfileImagePath(imageFile.path);
                               }
                             },
                             child: BlocBuilder<OrganizerProfileBloc,
                                 OrganizerProfileState>(
                               builder: (context, state) {
                                 ImageProvider backgroundImage;
+                                final imagePath =
+                                    authLayer.getProfileImagePath();
                                 if (state is SuccessOrgProfileState &&
                                     state.imageFile != null) {
                                   backgroundImage = FileImage(state.imageFile!);
+                                } else if (imagePath != null) {
+                                  backgroundImage = FileImage(File(imagePath));
                                 } else if (organizer?.image != null &&
                                     organizer!.image.isNotEmpty) {
                                   backgroundImage =
@@ -108,8 +113,9 @@ class OrganizerProfileScreen extends StatelessWidget {
                   BlocBuilder<OrganizerProfileBloc, OrganizerProfileState>(
                     builder: (context, state) {
                       if (state is LoadingOrgProfileState) {
-                        return const CircularProgressIndicator(
-                            color: Constants.mainOrange);
+                        return Center(
+                            child: LottieBuilder.asset(
+                                "assets/lottie/loading.json"));
                       }
                       if (state is SuccessOrgProfileState) {
                         // Use the current organizer data
