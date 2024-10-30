@@ -204,21 +204,22 @@ class SupabaseLayer {
     }
   }
 
-  getAllWorkshops() async {
+getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
-    List<WorkshopGroupModel> workshops = [];
-    final response = await GetIt.I
-        .get<SupabaseLayer>()
-        .supabase
-        .from('workshop_group')
-        .select('*, workshop(*)');
-    for (var workshopAsJson in response) {
-      workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
-    }
-    GetIt.I.get<DataLayer>().workshops = workshops;
-    GetIt.I.get<DataLayer>().workshopOfTheWeek =
-        workshops[mm.Random().nextInt(workshops.length)];
+  List<WorkshopGroupModel> workshops = [];
+  final response = await GetIt.I
+      .get<SupabaseLayer>()
+      .supabase
+      .from('workshop_group')
+      .select('*, workshop(*), organizer(*)'); // Includes organizer
+
+  for (var workshopAsJson in response) {
+    workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
   }
+  GetIt.I.get<DataLayer>().workshops = workshops;
+  GetIt.I.get<DataLayer>().workshopOfTheWeek =
+      workshops[mm.Random().nextInt(workshops.length)];
+}
 
   getAllCategories() async {
     final categoriesAsMap = await supabase.from('categories').select();

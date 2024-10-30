@@ -1,4 +1,5 @@
-// WorkshopGroup Model
+import 'package:shaghaf/models/organizer_model.dart';
+
 class WorkshopGroupModel {
   final String workshopGroupId;
   final String title;
@@ -9,6 +10,7 @@ class WorkshopGroupModel {
   final double rating;
   final String organizerId;
   final List<Workshop> workshops;
+  final OrganizerModel organizer; // Use OrganizerModel here
 
   WorkshopGroupModel({
     required this.workshopGroupId,
@@ -20,6 +22,7 @@ class WorkshopGroupModel {
     required this.rating,
     required this.organizerId,
     required this.workshops,
+    required this.organizer,
   });
 
   factory WorkshopGroupModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +38,7 @@ class WorkshopGroupModel {
       workshops: (json['workshop'] as List<dynamic>)
           .map((e) => Workshop.fromJson(e))
           .toList(),
+      organizer: OrganizerModel.fromJson(json['organizer']), // Parse OrganizerModel
     );
   }
 
@@ -49,9 +53,12 @@ class WorkshopGroupModel {
       'rating': rating,
       'organizer_id': organizerId,
       'workshop': workshops.map((e) => e.toJson()).toList(),
+      'organizer': organizer.toJson(),
     };
   }
 }
+
+
 
 // Workshop Model
 class Workshop {
