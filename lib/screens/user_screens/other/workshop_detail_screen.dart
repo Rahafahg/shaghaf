@@ -23,6 +23,7 @@ import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:emailjs/emailjs.dart' as emailjs;
+import 'package:url_launcher/url_launcher.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -32,11 +33,21 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
-    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = int.parse(date != null && date!.isNotEmpty
+            ? date!.split('-').last
+            : workshop.workshops.first.date.split('-').last)
+        .toString();
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     return BlocProvider(
-      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()
+        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         log(specific.instructorName);
         final bloc = context.read<BookingBloc>();
@@ -391,15 +402,33 @@ class WorkshopDetailScreen extends StatelessWidget {
                                         state.specific?.latitude == null ||
                                         state.specific!.latitude!.isEmpty
                                     ? const SizedBox.shrink()
-                                    : SizedBox(
-                                        height: context.getHeight(divideBy: 3),
-                                        width: context.getWidth(),
-                                        child: UserMap(
-                                          lat: double.parse(specific.latitude!),
-                                          lng:
-                                              double.parse(specific.longitude!),
+                                    : Stack(children: [
+                                        SizedBox(
+                                          height:
+                                              context.getHeight(divideBy: 3),
+                                          width: context.getWidth(),
+                                          child: UserMap(
+                                            lat: double.parse(
+                                                specific.latitude!),
+                                            lng: double.parse(
+                                                specific.longitude!),
+                                          ),
                                         ),
-                                      );
+                                        Positioned(
+                                                                                    bottom: 7,
+
+                                          left: 10,
+                                            child: MainButton(
+                                                onPressed: () async {
+                                                  final Uri url = Uri.parse(
+                                                    'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
+                                                  if (!await launchUrl(url)) {
+                                                    throw Exception(
+                                                        'Could not launch $url');
+                                                  }
+                                                },
+                                                text: "Open in google maps"))
+                                      ]);
                               }
                             }
                             return specific.isOnline ||
@@ -573,25 +602,46 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                                         .first,
                                                                 quantity: bloc
                                                                     .quantity));
-                                                                    try {
-  await emailjs.send(
-    dotenv.env['EMAILJS_SERVICE_ID']!,
-    dotenv.env['EMAILJS_TEMPLATE_ID']!,
-    {
-      'from_name' : workshop.title,
-      'to_name' : GetIt.I.get<AuthLayer>().user?.firstName,
-      'to_email' : GetIt.I.get<AuthLayer>().user?.email ?? 'yaserkhayyat2017@gmail.com',
-      'message' : 'yes you did it !'
-    },
-    emailjs.Options(
-      publicKey: dotenv.env['EMAILJS_PUBLIC_KEY'],
-      privateKey: dotenv.env['EMAILJS_PRIVATE_KEY'],
-    ),
-  );
-  log('SUCCESS!');
-} catch (error) {
-  log('eroreta : $error');
-}
+                                                            try {
+                                                              await emailjs
+                                                                  .send(
+                                                                dotenv.env[
+                                                                    'EMAILJS_SERVICE_ID']!,
+                                                                dotenv.env[
+                                                                    'EMAILJS_TEMPLATE_ID']!,
+                                                                {
+                                                                  'from_name':
+                                                                      workshop
+                                                                          .title,
+                                                                  'to_name': GetIt
+                                                                      .I
+                                                                      .get<
+                                                                          AuthLayer>()
+                                                                      .user
+                                                                      ?.firstName,
+                                                                  'to_email': GetIt
+                                                                          .I
+                                                                          .get<
+                                                                              AuthLayer>()
+                                                                          .user
+                                                                          ?.email ??
+                                                                      'yaserkhayyat2017@gmail.com',
+                                                                  'message':
+                                                                      'yes you did it !'
+                                                                },
+                                                                emailjs.Options(
+                                                                  publicKey: dotenv
+                                                                          .env[
+                                                                      'EMAILJS_PUBLIC_KEY'],
+                                                                  privateKey: dotenv
+                                                                          .env[
+                                                                      'EMAILJS_PRIVATE_KEY'],
+                                                                ),
+                                                              );
+                                                              log('SUCCESS!');
+                                                            } catch (error) {
+                                                              log('eroreta : $error');
+                                                            }
                                                           } else {}
                                                         },
                                                       ),
@@ -700,24 +750,44 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                                 bloc.quantity,
                                                           ));
                                                           try {
-  await emailjs.send(
-    dotenv.env['EMAILJS_SERVICE_ID']!,
-    dotenv.env['EMAILJS_TEMPLATE_ID']!,
-    {
-      'from_name' : workshop.title,
-      'to_name' : GetIt.I.get<AuthLayer>().user?.firstName,
-      'to_email' : GetIt.I.get<AuthLayer>().user?.email ?? 'yaserkhayyat2017@gmail.com',
-      'message' : 'yes you did it !'
-    },
-    emailjs.Options(
-      publicKey: dotenv.env['EMAILJS_PUBLIC_KEY'],
-      privateKey: dotenv.env['EMAILJS_PRIVATE_KEY'],
-    ),
-  );
-  log('SUCCESS!');
-} catch (error) {
-  log('eroreta : $error');
-}
+                                                            await emailjs.send(
+                                                              dotenv.env[
+                                                                  'EMAILJS_SERVICE_ID']!,
+                                                              dotenv.env[
+                                                                  'EMAILJS_TEMPLATE_ID']!,
+                                                              {
+                                                                'from_name':
+                                                                    workshop
+                                                                        .title,
+                                                                'to_name': GetIt
+                                                                    .I
+                                                                    .get<
+                                                                        AuthLayer>()
+                                                                    .user
+                                                                    ?.firstName,
+                                                                'to_email': GetIt
+                                                                        .I
+                                                                        .get<
+                                                                            AuthLayer>()
+                                                                        .user
+                                                                        ?.email ??
+                                                                    'yaserkhayyat2017@gmail.com',
+                                                                'message':
+                                                                    'yes you did it !'
+                                                              },
+                                                              emailjs.Options(
+                                                                publicKey: dotenv
+                                                                        .env[
+                                                                    'EMAILJS_PUBLIC_KEY'],
+                                                                privateKey: dotenv
+                                                                        .env[
+                                                                    'EMAILJS_PRIVATE_KEY'],
+                                                              ),
+                                                            );
+                                                            log('SUCCESS!');
+                                                          } catch (error) {
+                                                            log('eroreta : $error');
+                                                          }
                                                         } else {}
                                                       },
                                                     ),
