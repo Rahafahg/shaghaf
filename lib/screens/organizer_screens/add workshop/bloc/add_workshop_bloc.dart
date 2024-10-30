@@ -20,16 +20,25 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController audienceController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  late TextEditingController timeFromController = TextEditingController(text: workshop?.fromTime);
-  late TextEditingController timeToController = TextEditingController(text: workshop?.toTime);
+  late TextEditingController timeFromController =
+      TextEditingController(text: workshop?.fromTime);
+  late TextEditingController timeToController =
+      TextEditingController(text: workshop?.toTime);
   File? instructorimage; // handle me later
-  late TextEditingController instructorNameController = TextEditingController(text: workshop?.instructorName);
-  late TextEditingController instructorDescController = TextEditingController(text: workshop?.instructorDescription);
-  late TextEditingController priceController = TextEditingController(text: workshop?.price.toString());
-  late TextEditingController seatsController = TextEditingController(text: workshop?.numberOfSeats.toString());
-  late TextEditingController venueNameController = TextEditingController(text: workshop?.venueName);
-  late TextEditingController venueTypeController = TextEditingController(text: workshop?.venueType);
-  late TextEditingController LinlUrlController = TextEditingController(text: workshop?.meetingUrl);
+  late TextEditingController instructorNameController =
+      TextEditingController(text: workshop?.instructorName);
+  late TextEditingController instructorDescController =
+      TextEditingController(text: workshop?.instructorDescription);
+  late TextEditingController priceController =
+      TextEditingController(text: workshop?.price.toString());
+  late TextEditingController seatsController =
+      TextEditingController(text: workshop?.numberOfSeats.toString());
+  late TextEditingController venueNameController =
+      TextEditingController(text: workshop?.venueName);
+  late TextEditingController venueTypeController =
+      TextEditingController(text: workshop?.venueType);
+  late TextEditingController LinlUrlController =
+      TextEditingController(text: workshop?.meetingUrl);
   AddWorkshopBloc() : super(AddWorkshopInitial()) {
     on<StepContinueEvent>(stepContinue);
     on<StepCancelEvent>(stepCancel);
@@ -40,46 +49,51 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
       getOrgWorkshops();
       emit(ShowWorkshopsState());
     });
+    on<SpecifyLocationEvent>(SpecifyLocation);
   }
 
-  FutureOr<void> submitWorkshopMethod(SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
+  FutureOr<void> submitWorkshopMethod(
+      SubmitWorkshopEvent event, Emitter<AddWorkshopState> emit) async {
     emit(LoadingState());
     if (event.isSingleWorkShope == false) {
       await GetIt.I.get<SupabaseLayer>().addWorkshop(
-        title: titleController.text,
-        workshopImage: event.image,
-        description: descController.text,
-        categoryId: GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryName == categoryController.text).categoryId,
-        targetedAudience: audienceController.text,
-        date: dateController.text,
-        availableSeats: int.parse(seatsController.text),
-        from: timeFromController.text,
-        to: timeToController.text,
-        instructorDesc: instructorDescController.text,
-        instructorName: instructorNameController.text,
-        price: double.parse(priceController.text),
-        seats: int.parse(seatsController.text),
-        venueName: venueNameController.text,
-        venueType: venueTypeController.text,
-        meetingUrl: LinlUrlController.text,
-        isOnline: isOnline
-      );
+          title: titleController.text,
+          workshopImage: event.image,
+          description: descController.text,
+          categoryId: GetIt.I
+              .get<DataLayer>()
+              .categories
+              .firstWhere((category) =>
+                  category.categoryName == categoryController.text)
+              .categoryId,
+          targetedAudience: audienceController.text,
+          date: dateController.text,
+          availableSeats: int.parse(seatsController.text),
+          from: timeFromController.text,
+          to: timeToController.text,
+          instructorDesc: instructorDescController.text,
+          instructorName: instructorNameController.text,
+          price: double.parse(priceController.text),
+          seats: int.parse(seatsController.text),
+          venueName: venueNameController.text,
+          venueType: venueTypeController.text,
+          meetingUrl: LinlUrlController.text,
+          isOnline: isOnline);
     } else {
       await GetIt.I.get<SupabaseLayer>().addSingleWorkshop(
-        workshopGroupId: workshop!.workshopGroupId,
-        date: dateController.text,
-        from: timeFromController.text,
-        to: timeToController.text,
-        price: double.parse(priceController.text),
-        seats: int.parse(seatsController.text),
-        availableSeats: int.parse(seatsController.text),
-        instructorName: instructorNameController.text,
-        instructorDesc: instructorDescController.text,
-        venueName: venueNameController.text,
-        venueType: venueTypeController.text,
-        meetingUrl: LinlUrlController.text,
-        isOnline: isOnline
-      );
+          workshopGroupId: workshop!.workshopGroupId,
+          date: dateController.text,
+          from: timeFromController.text,
+          to: timeToController.text,
+          price: double.parse(priceController.text),
+          seats: int.parse(seatsController.text),
+          availableSeats: int.parse(seatsController.text),
+          instructorName: instructorNameController.text,
+          instructorDesc: instructorDescController.text,
+          venueName: venueNameController.text,
+          venueType: venueTypeController.text,
+          meetingUrl: LinlUrlController.text,
+          isOnline: isOnline);
     }
     await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
     await getOrgWorkshops();
@@ -87,28 +101,37 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     emit(AddSuccessState());
   }
 
-  FutureOr<void> stepContinue(StepContinueEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> stepContinue(
+      StepContinueEvent event, Emitter<AddWorkshopState> emit) {
     if (currentStep < 1) {
       currentStep += 1;
       emit(ChangeStepState());
     }
   }
 
-  FutureOr<void> stepCancel(StepCancelEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> stepCancel(
+      StepCancelEvent event, Emitter<AddWorkshopState> emit) {
     if (currentStep > 0) {
       currentStep -= 1;
       emit(ChangeStepState());
     }
   }
 
-  FutureOr<void> changeImage(ChangeImageEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> changeImage(
+      ChangeImageEvent event, Emitter<AddWorkshopState> emit) {
     log("-----------------aaaaaaaaaaaaaaa1");
     emit(ChangeImageState(image: event.image));
   }
 
-  FutureOr<void> changeType(ChangeTypeEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> changeType(
+      ChangeTypeEvent event, Emitter<AddWorkshopState> emit) {
     type = event.type;
     isOnline = !isOnline;
     emit(ChangeDateState());
+  }
+
+  FutureOr<void> SpecifyLocation(
+      SpecifyLocationEvent event, Emitter<AddWorkshopState> emit) {
+    emit(SpecifyLocationState(point: event.point));
   }
 }

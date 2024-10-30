@@ -8,6 +8,8 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
+import 'package:shaghaf/widgets/maps/organizer_map.dart';
+import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/text_fields/add_date_field.dart';
 import 'package:shaghaf/widgets/text_fields/add_field.dart';
@@ -109,6 +111,27 @@ class WorkShopForm extends StatelessWidget {
             onTap: (index) => bloc.add(ChangeTypeEvent(type: types[index]))),
         BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
           builder: (context, state) {
+            if (state is SpecifyLocationState) {
+              return Column(
+                children: [
+                  AddField(
+                      type: 'Venue name', controller: bloc.venueNameController),
+                  AddField(
+                      type: 'Venue type', controller: bloc.venueTypeController),
+                  SizedBox(
+                      height: 150,
+                      width: 350,
+                      child: OrganizerMap(
+                        onTap: (tapPosition, point) {
+                          log("${point.latitude}, ${point.longitude}");
+
+                          bloc.add(SpecifyLocationEvent(point: point));
+                        },
+                        markerPosition: state.point,
+                      ))
+                ],
+              );
+            }
             return bloc.type == "InSite"
                 ? Column(
                     children: [
@@ -118,6 +141,16 @@ class WorkShopForm extends StatelessWidget {
                       AddField(
                           type: 'Venue type',
                           controller: bloc.venueTypeController),
+                      SizedBox(
+                          height: 150,
+                          width: 350,
+                          child: OrganizerMap(
+                            onTap: (tapPosition, point) {
+                              log("${point.latitude}, ${point.longitude}");
+
+                              bloc.add(SpecifyLocationEvent(point: point));
+                            },
+                          ))
                     ],
                   )
                 : Column(

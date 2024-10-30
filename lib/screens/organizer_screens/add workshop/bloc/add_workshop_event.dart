@@ -26,7 +26,12 @@ final class AddDateEvent extends AddWorkshopEvent {
 final class SubmitWorkshopEvent extends AddWorkshopEvent {
   final File? image;
   final bool isSingleWorkShope;
-  SubmitWorkshopEvent({required this.isSingleWorkShope,  this.image});
+  SubmitWorkshopEvent({required this.isSingleWorkShope, this.image});
 }
 
 final class GetOrgWorkshopsEvent extends AddWorkshopEvent {}
+
+final class SpecifyLocationEvent extends AddWorkshopEvent {
+  final point;
+  SpecifyLocationEvent({required this.point});
+}

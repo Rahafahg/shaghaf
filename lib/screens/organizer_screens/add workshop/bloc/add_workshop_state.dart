@@ -21,4 +21,9 @@ final class AddSuccessState extends AddWorkshopState {}
 
 final class ShowWorkshopsState extends AddWorkshopState {}
 
-final class LoadingState extends AddWorkshopState{}
+final class LoadingState extends AddWorkshopState {}
+
+final class SpecifyLocationState extends AddWorkshopState {
+  final point;
+  SpecifyLocationState({required this.point});
+}
