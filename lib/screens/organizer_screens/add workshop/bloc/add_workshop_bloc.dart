@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
@@ -14,6 +15,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   int currentStep = 0;
   late String type = workshop?.isOnline == true ? "Online" : "InSite";
   late bool isOnline = workshop?.isOnline ?? false;
+  double? latitude;
+  double? longitude;
   Workshop? workshop;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -24,7 +27,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
       TextEditingController(text: workshop?.fromTime);
   late TextEditingController timeToController =
       TextEditingController(text: workshop?.toTime);
-  File? instructorimage; // handle me later
+  File? instructorimage;
   late TextEditingController instructorNameController =
       TextEditingController(text: workshop?.instructorName);
   late TextEditingController instructorDescController =
@@ -49,7 +52,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
       getOrgWorkshops();
       emit(ShowWorkshopsState());
     });
-    on<SpecifyLocationEvent>(SpecifyLocation);
+    on<SpecifyLocationEvent>(specifyLocation);
   }
 
   FutureOr<void> submitWorkshopMethod(
@@ -73,18 +76,23 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
           to: timeToController.text,
           instructorDesc: instructorDescController.text,
           instructorName: instructorNameController.text,
+          instructorImage: instructorimage,
           price: double.parse(priceController.text),
           seats: int.parse(seatsController.text),
           venueName: venueNameController.text,
           venueType: venueTypeController.text,
           meetingUrl: LinlUrlController.text,
-          isOnline: isOnline);
+          isOnline: isOnline,
+          longitude: longitude.toString(),
+          latitude: latitude.toString()
+        );
     } else {
       await GetIt.I.get<SupabaseLayer>().addSingleWorkshop(
           workshopGroupId: workshop!.workshopGroupId,
           date: dateController.text,
           from: timeFromController.text,
           to: timeToController.text,
+          instructorImage: instructorimage,
           price: double.parse(priceController.text),
           seats: int.parse(seatsController.text),
           availableSeats: int.parse(seatsController.text),
@@ -93,6 +101,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
           venueName: venueNameController.text,
           venueType: venueTypeController.text,
           meetingUrl: LinlUrlController.text,
+          longitude: longitude.toString(),
+          latitude: latitude.toString(),
           isOnline: isOnline);
     }
     await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
@@ -130,8 +140,9 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     emit(ChangeDateState());
   }
 
-  FutureOr<void> SpecifyLocation(
-      SpecifyLocationEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> specifyLocation(SpecifyLocationEvent event, Emitter<AddWorkshopState> emit) {
+    latitude = event.point.latitude;
+    longitude = event.point.longitude;
     emit(SpecifyLocationState(point: event.point));
   }
 }

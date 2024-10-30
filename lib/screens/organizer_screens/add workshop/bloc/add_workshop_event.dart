@@ -32,6 +32,6 @@ final class SubmitWorkshopEvent extends AddWorkshopEvent {
 final class GetOrgWorkshopsEvent extends AddWorkshopEvent {}
 
 final class SpecifyLocationEvent extends AddWorkshopEvent {
-  final point;
+  final LatLng point;
   SpecifyLocationEvent({required this.point});
 }

@@ -308,6 +308,7 @@ class SupabaseLayer {
   Future<void> addWorkshop({
     required String title,
     File? workshopImage,
+    File? instructorImage,
     required String description,
     required String categoryId,
     required String targetedAudience,
@@ -323,6 +324,8 @@ class SupabaseLayer {
     String? venueName,
     String? venueType,
     String? meetingUrl,
+    String? latitude,
+    String? longitude
   }) async {
     log('add 1');
     String imageUrl = '';
@@ -369,9 +372,12 @@ class SupabaseLayer {
           availableSeats: availableSeats,
           instructorName: instructorName,
           instructorDesc: instructorDesc,
+          instructorImage: instructorImage,
           isOnline: isOnline,
           venueName: venueName,
           venueType: venueType,
+          latitude: latitude,
+          longitude: longitude,
           meetingUrl: meetingUrl);
       sendNotificationWithCategory(categoryId: categoryId, title: title);
     } catch (e) {
@@ -387,15 +393,42 @@ class SupabaseLayer {
     required double price,
     required int seats,
     required int availableSeats,
+    required File? instructorImage,
     required String instructorName,
     required String instructorDesc,
     bool? isOnline,
     String? venueName,
     String? venueType,
+    String? latitude,
+    String? longitude,
     String? meetingUrl,
   }) async {
     log('add 2');
     log(workshopGroupId);
+    String imageUrl = '';
+    try {
+      await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .upload(
+              'public/${instructorImage!.path.split('/').last}', instructorImage);
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
+
+    try {
+      // read url from Supabase storage
+      imageUrl = GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .getPublicUrl('public/${instructorImage!.path.split('/').last}');
+    } catch (e) {
+      log('Error uploading image: $e');
+    }
     try {
       await supabase.from('workshop').insert({
         'date': date,
@@ -405,14 +438,15 @@ class SupabaseLayer {
         'number_of_seats': seats,
         'available_seats': availableSeats,
         'instructor_name': instructorName,
-        'instructor_image':
-            'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
+        'instructor_image': imageUrl,
         'instructor_description': instructorDesc,
         'is_online': isOnline,
         'workshop_group_id': workshopGroupId,
         'venue_name': venueName,
         'venue_type': venueType,
-        'meeting_url': meetingUrl
+        'meeting_url': meetingUrl,
+        'latitude' : latitude,
+        'longitude' : longitude
       });
       log('$workshopGroupId successfull');
     } catch (e) {
