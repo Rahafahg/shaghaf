@@ -211,7 +211,7 @@ class SupabaseLayer {
         .get<SupabaseLayer>()
         .supabase
         .from('workshop_group')
-        .select(', workshop()');
+        .select('*, workshop(*)');
     for (var workshopAsJson in response) {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
