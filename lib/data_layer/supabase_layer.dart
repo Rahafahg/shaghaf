@@ -212,12 +212,24 @@ class SupabaseLayer {
         .supabase
         .from('workshop_group')
         .select('*, workshop(*)');
+    List<WorkshopGroupModel> result = [];
     for (var workshopAsJson in response) {
-      workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
+      WorkshopGroupModel workshopGroup = WorkshopGroupModel.fromJson(workshopAsJson);
+      List<Workshop> filtered = [];
+      for (var workshop in workshopGroup.workshops) {
+        if(DateTime.now().isBefore(DateTime.parse(workshop.date)) && workshop.availableSeats >= 1) {
+          filtered.add(workshop);
+        }
+      }
+      workshopGroup.workshops = filtered;
+      if(workshopGroup.workshops.isNotEmpty && workshopGroup.workshops != null) {
+        result.add(workshopGroup);
+      }
+      // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
-    GetIt.I.get<DataLayer>().workshops = workshops;
+    GetIt.I.get<DataLayer>().workshops = result;
     GetIt.I.get<DataLayer>().workshopOfTheWeek =
-        workshops[mm.Random().nextInt(workshops.length)];
+        result[mm.Random().nextInt(result.length)];
   }
 
   getAllCategories() async {
@@ -280,9 +292,10 @@ class SupabaseLayer {
         'qr_code': qr,
       }).select();
 
-      await supabase.from('workshop').update({
-        'available_seats': workshop.availableSeats - numberOfTickets
-      }).eq('workshop_id', workshop.workshopId);
+      await supabase
+          .from('workshop')
+          .update({'available_seats': workshop.availableSeats - 1}).eq(
+              'workshop_id', workshop.workshopId);
       log(booking.toString());
       getBookings();
       return booking.first;
@@ -306,10 +319,10 @@ class SupabaseLayer {
     required int availableSeats,
     required String instructorName,
     required String instructorDesc,
-    required String venueName,
-    required String venueType,
-    required String meetingUrl,
-    required bool isOnline,
+    bool? isOnline,
+    String? venueName,
+    String? venueType,
+    String? meetingUrl,
   }) async {
     log('add 1');
     String imageUrl = '';
@@ -356,11 +369,10 @@ class SupabaseLayer {
           availableSeats: availableSeats,
           instructorName: instructorName,
           instructorDesc: instructorDesc,
+          isOnline: isOnline,
           venueName: venueName,
           venueType: venueType,
-          meetingUrl: meetingUrl,
-          isOnline: isOnline
-        );
+          meetingUrl: meetingUrl);
       sendNotificationWithCategory(categoryId: categoryId, title: title);
     } catch (e) {
       log('message ${e.toString()}');
@@ -377,10 +389,10 @@ class SupabaseLayer {
     required int availableSeats,
     required String instructorName,
     required String instructorDesc,
-    required String venueName,
-    required String venueType,
-    required String meetingUrl,
-    required bool isOnline,
+    bool? isOnline,
+    String? venueName,
+    String? venueType,
+    String? meetingUrl,
   }) async {
     log('add 2');
     log(workshopGroupId);
@@ -396,8 +408,11 @@ class SupabaseLayer {
         'instructor_image':
             'https://zedjjijsfzjenhezfxlt.supabase.co/storage/v1/object/public/organizer_images/public/pasta%20making.png',
         'instructor_description': instructorDesc,
-        'is_online': false,
-        'workshop_group_id': workshopGroupId
+        'is_online': isOnline,
+        'workshop_group_id': workshopGroupId,
+        'venue_name': venueName,
+        'venue_type': venueType,
+        'meeting_url': meetingUrl
       });
       log('$workshopGroupId successfull');
     } catch (e) {

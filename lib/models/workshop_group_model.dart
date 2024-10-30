@@ -8,7 +8,7 @@ class WorkshopGroupModel {
   final String targetedAudience;
   final double rating;
   final String organizerId;
-  final List<Workshop> workshops;
+  List<Workshop> workshops;
 
   WorkshopGroupModel({
     required this.workshopGroupId,
