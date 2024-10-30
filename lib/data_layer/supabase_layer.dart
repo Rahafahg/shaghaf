@@ -204,14 +204,14 @@ class SupabaseLayer {
     }
   }
 
-  getAllWorkshops() async {
+getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
     final response = await GetIt.I
         .get<SupabaseLayer>()
         .supabase
         .from('workshop_group')
-        .select('*, workshop(*)');
+        .select('*, workshop(*), organizer(*)');
     List<WorkshopGroupModel> result = [];
     for (var workshopAsJson in response) {
       WorkshopGroupModel workshopGroup = WorkshopGroupModel.fromJson(workshopAsJson);
