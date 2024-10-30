@@ -22,6 +22,7 @@ import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
+import 'package:emailjs/emailjs.dart' as emailjs;
 
 class WorkshopDetailScreen extends StatelessWidget {
   final WorkshopGroupModel workshop;
@@ -572,6 +573,25 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                                         .first,
                                                                 quantity: bloc
                                                                     .quantity));
+                                                                    try {
+  await emailjs.send(
+    dotenv.env['EMAILJS_SERVICE_ID']!,
+    dotenv.env['EMAILJS_TEMPLATE_ID']!,
+    {
+      'from_name' : workshop.title,
+      'to_name' : GetIt.I.get<AuthLayer>().user?.firstName,
+      'to_email' : GetIt.I.get<AuthLayer>().user?.email ?? 'yaserkhayyat2017@gmail.com',
+      'message' : 'yes you did it !'
+    },
+    emailjs.Options(
+      publicKey: dotenv.env['EMAILJS_PUBLIC_KEY'],
+      privateKey: dotenv.env['EMAILJS_PRIVATE_KEY'],
+    ),
+  );
+  log('SUCCESS!');
+} catch (error) {
+  log('eroreta : $error');
+}
                                                           } else {}
                                                         },
                                                       ),
@@ -679,6 +699,25 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                             quantity:
                                                                 bloc.quantity,
                                                           ));
+                                                          try {
+  await emailjs.send(
+    dotenv.env['EMAILJS_SERVICE_ID']!,
+    dotenv.env['EMAILJS_TEMPLATE_ID']!,
+    {
+      'from_name' : workshop.title,
+      'to_name' : GetIt.I.get<AuthLayer>().user?.firstName,
+      'to_email' : GetIt.I.get<AuthLayer>().user?.email ?? 'yaserkhayyat2017@gmail.com',
+      'message' : 'yes you did it !'
+    },
+    emailjs.Options(
+      publicKey: dotenv.env['EMAILJS_PUBLIC_KEY'],
+      privateKey: dotenv.env['EMAILJS_PRIVATE_KEY'],
+    ),
+  );
+  log('SUCCESS!');
+} catch (error) {
+  log('eroreta : $error');
+}
                                                         } else {}
                                                       },
                                                     ),

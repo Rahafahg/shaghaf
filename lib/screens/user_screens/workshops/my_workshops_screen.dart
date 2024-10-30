@@ -17,48 +17,43 @@ class MyWorkshopsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Workshop> attendedWorkshops = [];
-    List<Workshop> notAttendedWorkshops = [];
-    List<Workshop> bookedWorkshops = getBookedWorkshops();
-    log('message3');
-    log(bookedWorkshops.length.toString());
+    List<Workshop> previousWorkshops = [];
+    List<Workshop> incomingWorkshops = [];
     for (var booking in GetIt.I.get<DataLayer>().bookings) {
       final workshopId = booking.workshopId;
-      for (var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+      for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
         for (var workshop in workshopGroup.workshops) {
-          if (workshop.workshopId == workshopId && booking.isAttended == true) {
-            attendedWorkshops.add(workshop);
+          if (workshop.workshopId == workshopId && DateTime.now().isAfter(DateTime.parse(workshop.date))) {
+            previousWorkshops.add(workshop);
           }
-          if (workshop.workshopId == workshopId &&
-              booking.isAttended == false) {
-            notAttendedWorkshops.add(workshop);
+          if (workshop.workshopId == workshopId && DateTime.now().isBefore(DateTime.parse(workshop.date))) {
+            incomingWorkshops.add(workshop);
           }
         }
       }
     }
-    log(attendedWorkshops.length.toString());
-    log(notAttendedWorkshops.length.toString());
+    log(previousWorkshops.length.toString());
+    log(incomingWorkshops.length.toString());
     return BlocConsumer<BookingBloc, BookingState>(
       bloc: context.read<BookingBloc>(),
       listener: (context, state) {
         if(state is SuccessState) {
           log('message3');
-          log(bookedWorkshops.length.toString());
           for (var booking in GetIt.I.get<DataLayer>().bookings) {
             final workshopId = booking.workshopId;
-            for (var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+            for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
               for (var workshop in workshopGroup.workshops) {
                 if (workshop.workshopId == workshopId && booking.isAttended == true) {
-                  attendedWorkshops.add(workshop);
+                  previousWorkshops.add(workshop);
                 }
                 if (workshop.workshopId == workshopId && booking.isAttended == false) {
-                  notAttendedWorkshops.add(workshop);
+                  incomingWorkshops.add(workshop);
                 }
               }
             }
           }
-          log(attendedWorkshops.length.toString());
-          log(notAttendedWorkshops.length.toString());
+          log(previousWorkshops.length.toString());
+          log(incomingWorkshops.length.toString());
         }
       },
       builder: (context, index)=> DefaultTabController(
@@ -100,17 +95,17 @@ class MyWorkshopsScreen extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: notAttendedWorkshops.isNotEmpty ? ListView.separated(
-                  itemCount: notAttendedWorkshops.length,
+                child: incomingWorkshops.isNotEmpty ? ListView.separated(
+                  itemCount: incomingWorkshops.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 20),
                   itemBuilder: (context, index) => WorkshopCard(
-                  price: notAttendedWorkshops[index].price,
+                  price: incomingWorkshops[index].price,
                   shape: 'rect',
-                    workshop: GetIt.I.get<DataLayer>().workshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == notAttendedWorkshops[index].workshopGroupId),
-                    date: notAttendedWorkshops[index].date,
+                    workshop: GetIt.I.get<DataLayer>().allWorkshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == incomingWorkshops[index].workshopGroupId),
+                    date: incomingWorkshops[index].date,
                     onTap: () => context.push(
                       screen: UserTicketScreen(
-                        workshop: notAttendedWorkshops[index],
+                        workshop: incomingWorkshops[index],
                         booking: GetIt.I.get<DataLayer>().bookings[index],
                         onBack: () => context.pop()
                       )
@@ -120,18 +115,18 @@ class MyWorkshopsScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: attendedWorkshops.isNotEmpty ? ListView.separated(
-                  itemCount: attendedWorkshops.length,
+                child: previousWorkshops.isNotEmpty ? ListView.separated(
+                  itemCount: previousWorkshops.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 20),
                   itemBuilder: (context, index) => WorkshopCard(
-                    workshop: GetIt.I.get<DataLayer>().workshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == attendedWorkshops[index].workshopGroupId),
-                    date: attendedWorkshops[index].date,
-                    price: attendedWorkshops[index].price,
+                    workshop: GetIt.I.get<DataLayer>().allWorkshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == previousWorkshops[index].workshopGroupId),
+                    date: previousWorkshops[index].date,
+                    price: previousWorkshops[index].price,
                     isAttended: true,
                     shape: 'rect',
                     onTap: () => context.push(
                       screen: UserTicketScreen(
-                        workshop: attendedWorkshops[index],
+                        workshop: previousWorkshops[index],
                         booking: GetIt.I.get<DataLayer>().bookings[index],
                         onBack: () => context.pop()
                       )

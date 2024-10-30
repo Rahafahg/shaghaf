@@ -18,7 +18,6 @@ Future<void> setup() async {
   await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
   if (GetIt.I.get<AuthLayer>().user != null) {
     await GetIt.I.get<SupabaseLayer>().getBookings();
-    getBookedWorkshops();
   }
   if (GetIt.I.get<AuthLayer>().organizer != null) {
     getOrgWorkshops();

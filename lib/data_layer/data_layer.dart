@@ -8,6 +8,7 @@ import 'package:shaghaf/models/workshop_group_model.dart';
 class DataLayer {
   List<CategoriesModel> categories = [];
   List<WorkshopGroupModel> workshops = [];
+  List<WorkshopGroupModel> allWorkshops = [];
   WorkshopGroupModel? workshopOfTheWeek;
   Map<String, List<WorkshopGroupModel>> workshopsByCategory = {};
   List<BookingModel> bookings = [];
@@ -17,7 +18,7 @@ class DataLayer {
 
 getOrgWorkshops() {
   List<WorkshopGroupModel> temp = [];
-  for (var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+  for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
     if(workshopGroup.organizerId == GetIt.I.get<AuthLayer>().organizer!.organizerId) {
       temp.add(workshopGroup);
     }
@@ -29,7 +30,7 @@ getOrgWorkshops() {
 List<Workshop> getBookedWorkshops() {
   List<Workshop> bookedWorkshops = [];
     for(var booking in GetIt.I.get<DataLayer>().bookings) {
-      for (var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+      for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
         for (var workshop in workshopGroup.workshops) {
           if(workshop.workshopId == booking.workshopId) {
             bookedWorkshops.add(workshop);

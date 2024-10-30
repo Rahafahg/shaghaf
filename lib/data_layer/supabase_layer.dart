@@ -214,6 +214,9 @@ getAllWorkshops() async {
         .select('*, workshop(*), organizer(*)');
     List<WorkshopGroupModel> result = [];
     for (var workshopAsJson in response) {
+      workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
+    }
+    for (var workshopAsJson in response) {
       WorkshopGroupModel workshopGroup = WorkshopGroupModel.fromJson(workshopAsJson);
       List<Workshop> filtered = [];
       for (var workshop in workshopGroup.workshops) {
@@ -227,6 +230,9 @@ getAllWorkshops() async {
       }
       // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
+    log("length of all : ${workshops.length}");
+    log("length of filtered : ${result.length}");
+    GetIt.I.get<DataLayer>().allWorkshops = workshops;
     GetIt.I.get<DataLayer>().workshops = result;
     GetIt.I.get<DataLayer>().workshopOfTheWeek =
         result[mm.Random().nextInt(result.length)];
@@ -273,7 +279,9 @@ getAllWorkshops() async {
         bookingAsMap.map<BookingModel>((booking) {
       return BookingModel.fromJson(booking);
     }).toList();
-    log(GetIt.I.get<DataLayer>().bookings.toString());
+    log('bookings are : ');
+    log(GetIt.I.get<DataLayer>().bookings.length.toString());
+    getBookedWorkshops();
   }
 
   Future<dynamic> saveBooking({
