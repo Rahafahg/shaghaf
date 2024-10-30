@@ -31,11 +31,20 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last;
-    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    final selectedDate = date != null && date!.isNotEmpty
+        ? date!.split('-').last
+        : workshop.workshops.first.date.split('-').last;
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     return BlocProvider(
-      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()
+        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
@@ -388,47 +397,56 @@ class WorkshopDetailScreen extends StatelessWidget {
                           height: 30,
                         ),
                         organizer != null
-                            ? DateTime.now().isAfter(DateTime.parse(specific.date)) ? SizedBox.shrink() : MainButton(
-                                text: "Scan Now",
-                                width: context.getWidth(),
-                                onPressed: () async {
-                                  var result = await BarcodeScanner
-                                      .scan(); //barcode scanner
-                                  log(result.type
-                                      .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
-                                  log(result.format
-                                      .toString()); // The barcode format (as enum)
-                                  log(result.rawContent);
-                                  final response = await GetIt.I
-                                      .get<SupabaseLayer>()
-                                      .supabase
-                                      .from('booking')
-                                      .update({'is_attended': true}).match({
-                                    'workshop_id': specific.workshopId,
-                                    'qr_code': result.rawContent,
-                                    'is_attended': false
-                                  }).select();
-                                  if (response.isNotEmpty) {
-                                    log(response.first.toString());
-                                    final booking =
-                                        BookingModel.fromJson(response.first);
-                                    showModalBottomSheet(
-                                      backgroundColor: Constants.ticketCardColor,
-                                        context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: TicketCard(workshopGroup: workshop, booking: booking, workshop: specific),
-                                          );
-                                        });
-                                  } else {
-                                    log("Error: No response from Supabase.");
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => ErrorDialog(
-                                            msg: "Invalid qr code"));
-                                  }
-                                })
+                            ? DateTime.now()
+                                    .isAfter(DateTime.parse(specific.date))
+                                ? SizedBox.shrink()
+                                : MainButton(
+                                    text: "Scan Now",
+                                    width: context.getWidth(),
+                                    onPressed: () async {
+                                      log(organizer.email.toString());
+                                      var result = await BarcodeScanner
+                                          .scan(); //barcode scanner
+                                      log(result.type
+                                          .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
+                                      log(result.format
+                                          .toString()); // The barcode format (as enum)
+                                      log(result.rawContent);
+                                      final response = await GetIt.I
+                                          .get<SupabaseLayer>()
+                                          .supabase
+                                          .from('booking')
+                                          .update({'is_attended': true}).match({
+                                        'workshop_id': specific.workshopId,
+                                        'qr_code': result.rawContent,
+                                        'is_attended': false
+                                      }).select();
+                                      if (response.isNotEmpty) {
+                                        log(response.first.toString());
+                                        final booking = BookingModel.fromJson(
+                                            response.first);
+                                        showModalBottomSheet(
+                                            backgroundColor:
+                                                Constants.ticketCardColor,
+                                            context: context,
+                                            builder: (context) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: TicketCard(
+                                                    workshopGroup: workshop,
+                                                    booking: booking,
+                                                    workshop: specific),
+                                              );
+                                            });
+                                      } else {
+                                        log("Error: No response from Supabase.");
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => ErrorDialog(
+                                                msg: "Invalid qr code"));
+                                      }
+                                    })
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {
                                   if (state is ChangeQuantityState) {
@@ -465,77 +483,95 @@ class WorkshopDetailScreen extends StatelessWidget {
                                         MainButton(
                                           text:
                                               "Pay ${specific.price * state.quantity} SR",
-                                          onPressed: () => showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            builder: (context) {
-                                              return Container(
-                                                padding:
-                                                    const EdgeInsets.all(24),
-                                                width: context.getWidth(),
-                                                height: context.getHeight(
-                                                    divideBy: 1.35),
-                                                decoration: const BoxDecoration(
-                                                  color:
-                                                      Constants.backgroundColor,
-                                                  borderRadius:
-                                                      BorderRadius.vertical(
-                                                          top: Radius.circular(
-                                                              20)),
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    const Text("Fill Card Info",
-                                                        style: TextStyle(
-                                                            fontSize: 20)),
-                                                    Theme(
-                                                      data: ThemeData(
-                                                          textTheme:
-                                                              const TextTheme()),
-                                                      child: CreditCard(
-                                                        config: PaymentConfig(
-                                                          creditCard:
-                                                              CreditCardConfig(
-                                                                  saveCard:
-                                                                      false,
-                                                                  manual:
-                                                                      false),
-                                                          publishableApiKey:
-                                                              dotenv.env[
-                                                                  'MOYASAR_KEY']!,
-                                                          amount: ((specific
-                                                                      .price *
-                                                                  bloc.quantity *
-                                                                  100))
-                                                              .toInt(),
-                                                          description:
-                                                              "description",
-                                                        ),
-                                                        onPaymentResult:
-                                                            (PaymentResponse
-                                                                result) async {
-                                                          if (result.status ==
-                                                              PaymentStatus
-                                                                  .paid) {
-                                                            log("Payment is donnee ${result.status}");
-                                                            bloc.add(
-                                                                SaveBookingEvent(
-                                                              workshop: workshop
-                                                                  .workshops
-                                                                  .first,
-                                                              quantity:
-                                                                  bloc.quantity,
-                                                            ));
-                                                          } else {}
-                                                        },
+                                          onPressed: () => state.quantity >
+                                                  specific.availableSeats
+                                              ? showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return const ErrorDialog(
+                                                        msg:
+                                                            "No available seats");
+                                                  })
+                                              : showModalBottomSheet(
+                                                  context: context,
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  builder: (context) {
+                                                    return Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              24),
+                                                      width: context.getWidth(),
+                                                      height: context.getHeight(
+                                                          divideBy: 1.35),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Constants
+                                                            .backgroundColor,
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                        20)),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      child: Column(
+                                                        children: [
+                                                          const Text(
+                                                              "Fill Card Info",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      20)),
+                                                          Theme(
+                                                            data: ThemeData(
+                                                                textTheme:
+                                                                    const TextTheme()),
+                                                            child: CreditCard(
+                                                              config:
+                                                                  PaymentConfig(
+                                                                creditCard:
+                                                                    CreditCardConfig(
+                                                                        saveCard:
+                                                                            false,
+                                                                        manual:
+                                                                            false),
+                                                                publishableApiKey:
+                                                                    dotenv.env[
+                                                                        'MOYASAR_KEY']!,
+                                                                amount: ((specific
+                                                                            .price *
+                                                                        bloc.quantity *
+                                                                        100))
+                                                                    .toInt(),
+                                                                description:
+                                                                    "description",
+                                                              ),
+                                                              onPaymentResult:
+                                                                  (PaymentResponse
+                                                                      result) async {
+                                                                if (result
+                                                                        .status ==
+                                                                    PaymentStatus
+                                                                        .paid) {
+                                                                  log("Payment is donnee ${result.status}");
+                                                                  specific.availableSeats -
+                                                                      bloc.quantity;
+                                                                  bloc.add(
+                                                                      SaveBookingEvent(
+                                                                    workshop:
+                                                                        specific,
+                                                                    quantity: bloc
+                                                                        .quantity,
+                                                                  ));
+                                                                } else {}
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
-                                          ),
                                         )
                                       ],
                                     );

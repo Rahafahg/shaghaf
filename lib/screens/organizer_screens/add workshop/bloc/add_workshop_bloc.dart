@@ -61,11 +61,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
         instructorDesc: instructorDescController.text,
         instructorName: instructorNameController.text,
         price: double.parse(priceController.text),
-        seats: int.parse(seatsController.text),
-        venueName: venueNameController.text,
-        venueType: venueTypeController.text,
-        meetingUrl: LinlUrlController.text,
-        isOnline: isOnline);
+        seats: int.parse(seatsController.text),);
     await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
     await getOrgWorkshops();
     log(GetIt.I.get<DataLayer>().orgWorkshops.length.toString());
