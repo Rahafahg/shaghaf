@@ -33,7 +33,7 @@ class WorkshopDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
     final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    final selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
+    String selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
     Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
     return BlocProvider(
       create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
@@ -276,14 +276,18 @@ class WorkshopDetailScreen extends StatelessWidget {
                         DateRadioButton(
                           workshop: workshop.workshops,
                           selectedDate: selectedDate,
-                          onTap: (chosenDay) => bloc.add(UpdateDayEvent(
+                          onTap: (chosenDay) {
+                            selectedDate = chosenDay.split(' ')[1];
+                            bloc.add(UpdateDayEvent(
                             selectedDate: chosenDay.split(' ')[1],
                             specific: workshop.workshops
                                 .where((workshop) => workshop.date
-                                    .contains(chosenDay.split(' ')[1]))
+                                    .contains(selectedDate))
                                 .toList()
-                                .first,
-                          )),
+                                .last,
+                          ));
+                          log(selectedDate);
+                          }
                         ),
                         const SizedBox(
                           height: 20,
