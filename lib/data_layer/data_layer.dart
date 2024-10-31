@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
+import 'package:shaghaf/models/user_review_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 
 class DataLayer {
@@ -14,6 +15,7 @@ class DataLayer {
   List<BookingModel> bookings = [];
   List<Workshop> bookedWorkshops = [];
   List<WorkshopGroupModel> orgWorkshops = [];
+  List<UserReviewModel> reviews = [];
 }
 
 getOrgWorkshops() {
