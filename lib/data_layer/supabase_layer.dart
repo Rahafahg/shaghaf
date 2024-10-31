@@ -299,7 +299,7 @@ getAllWorkshops() async {
         'total_price': totalPrice,
         'qr_code': qr,
       }).select();
-
+      
       await supabase
           .from('workshop')
           .update({'available_seats': workshop.availableSeats - 1}).eq(

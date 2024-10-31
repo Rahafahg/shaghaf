@@ -16,7 +16,7 @@ class UserTicketScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final workshopGroup = GetIt.I.get<DataLayer>().workshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==workshop.workshopGroupId);
+    final workshopGroup = GetIt.I.get<DataLayer>().allWorkshops.firstWhere((workshopGroup)=>workshopGroup.workshopGroupId==workshop.workshopGroupId);
     
     return Scaffold(
       backgroundColor: Constants.backgroundColor,

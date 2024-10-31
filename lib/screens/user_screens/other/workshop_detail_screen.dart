@@ -427,6 +427,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                         'Could not launch $url');
                                                   }
                                                 },
+                                                fontSize: 12,
                                                 text: "Open in google maps"))
                                       ]);
                               }
