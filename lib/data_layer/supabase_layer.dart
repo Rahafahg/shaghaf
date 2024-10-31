@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as mm;
 
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
@@ -204,7 +205,7 @@ class SupabaseLayer {
     }
   }
 
-getAllWorkshops() async {
+  getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
     final response = await GetIt.I
@@ -217,15 +218,18 @@ getAllWorkshops() async {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
     for (var workshopAsJson in response) {
-      WorkshopGroupModel workshopGroup = WorkshopGroupModel.fromJson(workshopAsJson);
+      WorkshopGroupModel workshopGroup =
+          WorkshopGroupModel.fromJson(workshopAsJson);
       List<Workshop> filtered = [];
       for (var workshop in workshopGroup.workshops) {
-        if(DateTime.now().isBefore(DateTime.parse(workshop.date)) && workshop.availableSeats >= 1) {
+        if (DateTime.now().isBefore(DateTime.parse(workshop.date)) &&
+            workshop.availableSeats >= 1) {
           filtered.add(workshop);
         }
       }
       workshopGroup.workshops = filtered;
-      if(workshopGroup.workshops.isNotEmpty && workshopGroup.workshops != null) {
+      if (workshopGroup.workshops.isNotEmpty &&
+          workshopGroup.workshops != null) {
         result.add(workshopGroup);
       }
       // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
@@ -299,12 +303,12 @@ getAllWorkshops() async {
         'total_price': totalPrice,
         'qr_code': qr,
       }).select();
-      
+      checkFavCategories(workshopId: booking.first['workshop_id']);
       await supabase
           .from('workshop')
           .update({'available_seats': workshop.availableSeats - 1}).eq(
               'workshop_id', workshop.workshopId);
-      log(booking.toString());
+      // log(booking.toString());
       getBookings();
       return booking.first;
     } catch (e) {
@@ -313,28 +317,88 @@ getAllWorkshops() async {
     }
   }
 
-  Future<void> addWorkshop({
-    required String title,
-    File? workshopImage,
-    File? instructorImage,
-    required String description,
-    required String categoryId,
-    required String targetedAudience,
-    required String date,
-    required String from,
-    required String to,
-    required double price,
-    required int seats,
-    required int availableSeats,
-    required String instructorName,
-    required String instructorDesc,
-    bool? isOnline,
-    String? venueName,
-    String? venueType,
-    String? meetingUrl,
-    String? latitude,
-    String? longitude
-  }) async {
+  Future<dynamic> checkFavCategories({required String workshopId}) async {
+    final res = await GetIt.I
+        .get<SupabaseLayer>()
+        .supabase
+        .from('workshop')
+        .select('*, workshop_group(*, categories(category_name))')
+        .eq('workshop_id', workshopId);
+
+    log('----------------------------------');
+    log("---------------------- ${res.first['workshop_group']['categories']['category_name'].toString()}");
+    log('----------------------------------');
+    log("---------------------- ${GetIt.I.get<AuthLayer>().user!.favoriteCategories}");
+
+    // Fetch bookings
+    final booking = await GetIt.I
+        .get<SupabaseLayer>()
+        .supabase
+        .from('booking')
+        .select('*, workshop(*, workshop_group(*, categories(category_name)))')
+        .eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
+
+// Initialize a map to store category counts
+    final Map<String, int> categoryCounts = {};
+
+// Loop through each booking and count occurrences of each category
+    for (var item in booking) {
+      final categoryName =
+          item['workshop']['workshop_group']['categories']['category_name'];
+
+      // Update the count for this category
+      if (categoryName != null) {
+        categoryCounts.update(categoryName, (count) => count + 1,
+            ifAbsent: () => 1);
+      }
+    }
+
+    log("\n\n\n\n-----------------------------------------------------------------------");
+    log("-----------categoryCounts----------- $categoryCounts");
+    log("-----------------------------------------------------------------------\n\n\n\n");
+
+    for (var category in categoryCounts.keys) {
+      if (categoryCounts[category]! > 1) {
+        log("category: $category");
+        if (!GetIt.I
+            .get<AuthLayer>()
+            .user!
+            .favoriteCategories
+            .contains(category)) {
+          GetIt.I.get<AuthLayer>().user!.favoriteCategories =
+              "${GetIt.I.get<AuthLayer>().user!.favoriteCategories},$category";
+          GetStorage().write('user', GetIt.I.get<AuthLayer>().user!.toJson());
+
+          await supabase.from('users').update({
+            'favorite_categories':
+                GetIt.I.get<AuthLayer>().user!.favoriteCategories
+          }).eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
+        }
+      }
+    }
+  }
+
+  Future<void> addWorkshop(
+      {required String title,
+      File? workshopImage,
+      File? instructorImage,
+      required String description,
+      required String categoryId,
+      required String targetedAudience,
+      required String date,
+      required String from,
+      required String to,
+      required double price,
+      required int seats,
+      required int availableSeats,
+      required String instructorName,
+      required String instructorDesc,
+      bool? isOnline,
+      String? venueName,
+      String? venueType,
+      String? meetingUrl,
+      String? latitude,
+      String? longitude}) async {
     log('add 1');
     String imageUrl = '';
     try {
@@ -420,8 +484,8 @@ getAllWorkshops() async {
           .supabase
           .storage
           .from('organizer_images')
-          .upload(
-              'public/${instructorImage!.path.split('/').last}', instructorImage);
+          .upload('public/${instructorImage!.path.split('/').last}',
+              instructorImage);
     } catch (e) {
       log('Error uploading image: $e');
     }
@@ -453,8 +517,8 @@ getAllWorkshops() async {
         'venue_name': venueName,
         'venue_type': venueType,
         'meeting_url': meetingUrl,
-        'latitude' : latitude,
-        'longitude' : longitude
+        'latitude': latitude,
+        'longitude': longitude
       });
       log('$workshopGroupId successfull');
     } catch (e) {
