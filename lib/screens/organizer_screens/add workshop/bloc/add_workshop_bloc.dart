@@ -88,6 +88,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
         );
     } else {
       await GetIt.I.get<SupabaseLayer>().addSingleWorkshop(
+          isEdit: event.isEdit,
+          workshopId: event.workshopId,
           workshopGroupId: workshop!.workshopGroupId,
           date: dateController.text,
           from: timeFromController.text,

@@ -17,9 +17,10 @@ import 'package:shaghaf/widgets/text_fields/workshop_form.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
   const AddWorkshopScreen(
-      {super.key, required this.isSingleWorkShope, this.workshop});
+      {super.key, required this.isSingleWorkShope, this.workshop, this.isEdit=false});
   final bool isSingleWorkShope;
   final Workshop? workshop;
+  final bool? isEdit;
   @override
   Widget build(BuildContext context) {
     File? workshopImage;
@@ -259,10 +260,12 @@ class AddWorkshopScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 MainButton(
-                                    text: 'Create',
+                                    text: isEdit==true ? 'Submit Changes' : 'Create',
                                     onPressed: () {
                                       bloc.add(SubmitWorkshopEvent(
                                         isSingleWorkShope: isSingleWorkShope,
+                                        isEdit: isEdit,
+                                        workshopId: workshop?.workshopId
                                       ));
                                     })
                               ]),

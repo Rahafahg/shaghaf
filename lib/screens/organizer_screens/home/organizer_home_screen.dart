@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -64,6 +66,8 @@ class OrganizerHomeScreen extends StatelessWidget {
                 previous.add(workshopGroup);
               }
             }
+            log(incoming.length.toString());
+            log(previous.length.toString());
             return TabBarView(
               children: [
                 Padding(

@@ -394,6 +394,8 @@ getAllWorkshops() async {
   }
 
   Future<void> addSingleWorkshop({
+    String? workshopId,
+    bool? isEdit=false,
     required String workshopGroupId,
     required String date,
     required String from,
@@ -437,7 +439,8 @@ getAllWorkshops() async {
     } catch (e) {
       log('Error uploading image: $e');
     }
-    try {
+    if(isEdit==false) {
+      try {
       await supabase.from('workshop').insert({
         'date': date,
         'from_time': from,
@@ -459,6 +462,32 @@ getAllWorkshops() async {
       log('$workshopGroupId successfull');
     } catch (e) {
       log(e.toString());
+    }
+    }
+    if(isEdit==true) {
+      try {
+      await supabase.from('workshop').update({
+        'date': date,
+        'from_time': from,
+        'to_time': to,
+        'price': price,
+        'number_of_seats': seats,
+        'available_seats': availableSeats,
+        'instructor_name': instructorName,
+        'instructor_image': imageUrl,
+        'instructor_description': instructorDesc,
+        'is_online': isOnline,
+        'workshop_group_id': workshopGroupId,
+        'venue_name': venueName,
+        'venue_type': venueType,
+        'meeting_url': meetingUrl,
+        'latitude' : latitude,
+        'longitude' : longitude
+      }).eq('workshop_id', workshopId!);
+      log('$workshopGroupId successfull');
+    } catch (e) {
+      log(e.toString());
+    }
     }
   }
 

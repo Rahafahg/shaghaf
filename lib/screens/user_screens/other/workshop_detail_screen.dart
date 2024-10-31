@@ -64,18 +64,30 @@ class WorkshopDetailScreen extends StatelessWidget {
                         height: context.getHeight(divideBy: 3),
                         fit: BoxFit.cover,
                       ),
-                      Positioned(
-                        top: 40.0,
-                        left: 16.0,
-                        child: GestureDetector(
-                          onTap: () => context.pop(),
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            color: Constants.lightGreen,
-                            size: 28.0,
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(onPressed: ()=>context.pop(), icon: Icon(Icons.arrow_back_ios, color: Colors.lightGreen, size: 28,)),
+                            IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
+                              isSingleWorkShope: true, workshop: specific, isEdit: true
+                              )), icon: Icon(Icons.edit, color: Colors.lightGreen, size: 28,))
+                          ],
                         ),
-                      ),
+                      )
+                      // Positioned(
+                      //   top: 40.0,
+                      //   left: 16.0,
+                      //   child: GestureDetector(
+                      //     onTap: () => context.pop(),
+                      //     child: const Icon(
+                      //       Icons.arrow_back_ios,
+                      //       color: Constants.lightGreen,
+                      //       size: 28.0,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   // workshop details
