@@ -106,8 +106,9 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     if (selectedType != 'All') {
       bool isOnline = selectedType == 'Online';
       filteredWorkshops = filteredWorkshops.where((workshopGroup) {
-        bool hasMatchingType =
-            workshopGroup.workshops.any((workshop) => workshop.isOnline == isOnline && workshop.date == dateController.text);
+        bool hasMatchingType = workshopGroup.workshops.any((workshop) =>
+            workshop.isOnline == isOnline &&
+            workshop.date == dateController.text);
         if (!hasMatchingType) {
           log("Excluding workshopGroup: No workshops of type $selectedType found in this group.");
         }

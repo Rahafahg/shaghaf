@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -23,10 +24,12 @@ class MyWorkshopsScreen extends StatelessWidget {
       final workshopId = booking.workshopId;
       for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
         for (var workshop in workshopGroup.workshops) {
-          if (workshop.workshopId == workshopId && DateTime.now().isAfter(DateTime.parse(workshop.date))) {
+          if (workshop.workshopId == workshopId &&
+              DateTime.now().isAfter(DateTime.parse(workshop.date))) {
             previousWorkshops.add(workshop);
           }
-          if (workshop.workshopId == workshopId && DateTime.now().isBefore(DateTime.parse(workshop.date))) {
+          if (workshop.workshopId == workshopId &&
+              DateTime.now().isBefore(DateTime.parse(workshop.date))) {
             incomingWorkshops.add(workshop);
           }
         }
@@ -37,16 +40,18 @@ class MyWorkshopsScreen extends StatelessWidget {
     return BlocConsumer<BookingBloc, BookingState>(
       bloc: context.read<BookingBloc>(),
       listener: (context, state) {
-        if(state is SuccessState) {
+        if (state is SuccessState) {
           log('message3');
           for (var booking in GetIt.I.get<DataLayer>().bookings) {
             final workshopId = booking.workshopId;
             for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
               for (var workshop in workshopGroup.workshops) {
-                if (workshop.workshopId == workshopId && booking.isAttended == true) {
+                if (workshop.workshopId == workshopId &&
+                    booking.isAttended == true) {
                   previousWorkshops.add(workshop);
                 }
-                if (workshop.workshopId == workshopId && booking.isAttended == false) {
+                if (workshop.workshopId == workshopId &&
+                    booking.isAttended == false) {
                   incomingWorkshops.add(workshop);
                 }
               }
@@ -56,87 +61,108 @@ class MyWorkshopsScreen extends StatelessWidget {
           log(incomingWorkshops.length.toString());
         }
       },
-      builder: (context, index)=> DefaultTabController(
+      builder: (context, index) => DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Constants.backgroundColor,
-          appBar: AppBar(
-            forceMaterialTransparency: true,
-            centerTitle: true,
-            title: const Text(
-              "My Workshops",
-              style: TextStyle(fontSize: 20,fontFamily: "Poppins",color: Constants.textColor),
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size(double.infinity, 60),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    TabBar(
-                      overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                      labelColor: Constants.backgroundColor,
-                      splashBorderRadius: const BorderRadius.all(Radius.circular(10)),
-                      indicator: BoxDecoration(
-                        color: const Color.fromARGB(165, 222, 101, 49),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      indicatorPadding: const EdgeInsets.symmetric(vertical: 1),
-                      tabs: const [TapCustomStyle(title: "Incoming"),TapCustomStyle(title: "Previous")],
-                    ),
-                  ],
-                ),
-              )
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: incomingWorkshops.isNotEmpty ? ListView.separated(
-                  itemCount: incomingWorkshops.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 20),
-                  itemBuilder: (context, index) => WorkshopCard(
-                  price: incomingWorkshops[index].price,
-                  shape: 'rect',
-                    workshop: GetIt.I.get<DataLayer>().allWorkshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == incomingWorkshops[index].workshopGroupId),
-                    date: incomingWorkshops[index].date,
-                    onTap: () => context.push(
-                      screen: UserTicketScreen(
-                        workshop: incomingWorkshops[index],
-                        booking: GetIt.I.get<DataLayer>().bookings[index],
-                        onBack: () => context.pop()
-                      )
-                    ),
-                  ),
-                ) : SizedBox(height: context.getHeight(), child: const Center(child: Text("No workshops booked yet")))
+            backgroundColor: Constants.backgroundColor,
+            appBar: AppBar(
+              forceMaterialTransparency: true,
+              centerTitle: true,
+              title: Text(
+                "My Workshops".tr(),
+                style:
+                    const TextStyle(fontSize: 20, color: Constants.textColor),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: previousWorkshops.isNotEmpty ? ListView.separated(
-                  itemCount: previousWorkshops.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 20),
-                  itemBuilder: (context, index) => WorkshopCard(
-                    workshop: GetIt.I.get<DataLayer>().allWorkshops.firstWhere((workshopGroup) => workshopGroup.workshopGroupId == previousWorkshops[index].workshopGroupId),
-                    date: previousWorkshops[index].date,
-                    price: previousWorkshops[index].price,
-                    isAttended: true,
-                    shape: 'rect',
-                    onTap: () => context.push(
-                      screen: UserTicketScreen(
-                        workshop: previousWorkshops[index],
-                        booking: GetIt.I.get<DataLayer>().bookings[index],
-                        onBack: () => context.pop()
-                      )
+              bottom: PreferredSize(
+                  preferredSize: const Size(double.infinity, 60),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        const Divider(),
+                        const SizedBox(height: 10),
+                        TabBar(
+                          overlayColor:
+                              const WidgetStatePropertyAll(Colors.transparent),
+                          labelColor: Constants.backgroundColor,
+                          splashBorderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          indicator: BoxDecoration(
+                            color: const Color.fromARGB(165, 222, 101, 49),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          indicatorPadding:
+                              const EdgeInsets.symmetric(vertical: 1),
+                          tabs: [
+                            TapCustomStyle(title: "Incoming".tr()),
+                            TapCustomStyle(title: "Previous".tr())
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                ) : SizedBox(height: context.getHeight(), child: const Center(child: Text("No booked workshops done yet")))
-              ),
-            ]
-          )
-        ),
+                  )),
+            ),
+            body: TabBarView(children: [
+              Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: incomingWorkshops.isNotEmpty
+                      ? ListView.separated(
+                          itemCount: incomingWorkshops.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 20),
+                          itemBuilder: (context, index) => WorkshopCard(
+                            price: incomingWorkshops[index].price,
+                            shape: 'rect',
+                            workshop: GetIt.I
+                                .get<DataLayer>()
+                                .allWorkshops
+                                .firstWhere((workshopGroup) =>
+                                    workshopGroup.workshopGroupId ==
+                                    incomingWorkshops[index].workshopGroupId),
+                            date: incomingWorkshops[index].date,
+                            onTap: () => context.push(
+                                screen: UserTicketScreen(
+                                    workshop: incomingWorkshops[index],
+                                    booking: GetIt.I
+                                        .get<DataLayer>()
+                                        .bookings[index],
+                                    onBack: () => context.pop())),
+                          ),
+                        )
+                      : SizedBox(
+                          height: context.getHeight(),
+                          child: Center(child: Text("No booked".tr())))),
+              Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: previousWorkshops.isNotEmpty
+                      ? ListView.separated(
+                          itemCount: previousWorkshops.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 20),
+                          itemBuilder: (context, index) => WorkshopCard(
+                            workshop: GetIt.I
+                                .get<DataLayer>()
+                                .allWorkshops
+                                .firstWhere((workshopGroup) =>
+                                    workshopGroup.workshopGroupId ==
+                                    previousWorkshops[index].workshopGroupId),
+                            date: previousWorkshops[index].date,
+                            price: previousWorkshops[index].price,
+                            isAttended: true,
+                            shape: 'rect',
+                            onTap: () => context.push(
+                                screen: UserTicketScreen(
+                                    workshop: previousWorkshops[index],
+                                    booking: GetIt.I
+                                        .get<DataLayer>()
+                                        .bookings[index],
+                                    onBack: () => context.pop())),
+                          ),
+                        )
+                      : SizedBox(
+                          height: context.getHeight(),
+                          child: Center(child: Text("No booked".tr())))),
+            ])),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -23,7 +24,7 @@ class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = GetIt.I.get<AuthLayer>().user;
-    
+
     List<String> categories = ['All'];
     if (user != null) {
       categories.addAll(user.favoriteCategories.split(','));
@@ -62,13 +63,22 @@ class UserHomeScreen extends StatelessWidget {
               leading: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hello ${user?.firstName ?? 'guest'}",
-                      style: const TextStyle(
-                          fontSize: 16, color: Constants.lightOrange)),
-                  const Text(
-                    "Welcome to Shaghaf",
-                    style: TextStyle(fontSize: 16, color: Constants.mainOrange),
+                  Row(
+                    children: [
+                      const Text("Hello",
+                              style: TextStyle(
+                                  fontSize: 16, color: Constants.lightOrange))
+                          .tr(),
+                      const SizedBox(width: 5),
+                      Text(user?.firstName ?? 'guest',
+                          style: const TextStyle(
+                              fontSize: 16, color: Constants.lightOrange))
+                    ],
                   ),
+                  const Text(
+                    "Welcome",
+                    style: TextStyle(fontSize: 16, color: Constants.mainOrange),
+                  ).tr(),
                 ],
               ),
             ),
@@ -95,8 +105,10 @@ class UserHomeScreen extends StatelessWidget {
                     GetIt.I.get<DataLayer>().workshopOfTheWeek ??
                         workshops.first;
                 selectedCategory = state.selectedCategory ?? "All";
-    var fraction = (workshopOfTheWeek.rating % 1 * pow(10, 2)).floor();
-    String rating = "${workshopOfTheWeek.rating.toString().split(".")[0]}.$fraction";
+                var fraction =
+                    (workshopOfTheWeek.rating % 1 * pow(10, 2)).floor();
+                String rating =
+                    "${workshopOfTheWeek.rating.toString().split(".")[0]}.$fraction";
                 // body
                 return SingleChildScrollView(
                     child: Column(children: [
@@ -115,17 +127,25 @@ class UserHomeScreen extends StatelessWidget {
                             Container(
                                 padding: const EdgeInsets.all(16),
                                 width: context.getWidth(),
-                                child: Text(
-                                    "Search results for '${state.searchTerm}'",
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Constants.textColor,
-                                        fontFamily: "Poppins"))),
+                                child: Row(
+                                  children: [
+                                    Text("Search results".tr(),
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Constants.textColor,
+                                        )),
+                                    Text('${state.searchTerm}',
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Constants.textColor,
+                                        ))
+                                  ],
+                                )),
                             SizedBox(
                                 height: context.getHeight(divideBy: 2),
-                                child: const Center(
-                                    child: Text("No workshops found"))),
+                                child: Center(child: Text("No results".tr()))),
                           ],
                         )
                       : state.workshops.isNotEmpty && state.search == true
@@ -136,13 +156,22 @@ class UserHomeScreen extends StatelessWidget {
                                   Container(
                                       padding: const EdgeInsets.all(16),
                                       width: context.getWidth(),
-                                      child: Text(
-                                          "Search results for '${state.searchTerm}'",
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Constants.textColor,
-                                              fontFamily: "Poppins"))),
+                                      child: Row(
+                                        children: [
+                                          Text("Search results".tr(),
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Constants.textColor,
+                                              )),
+                                          Text('${state.searchTerm}',
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Constants.textColor,
+                                              ))
+                                        ],
+                                      )),
                                   ListView.separated(
                                     shrinkWrap: true,
                                     itemCount: state.workshops.length,
@@ -167,24 +196,26 @@ class UserHomeScreen extends StatelessWidget {
                           : Column(children: [
                               // workshop of the week
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 0, 16, 0),
                                 child: Container(
                                     padding: const EdgeInsets.only(
                                         top: 15, bottom: 12),
                                     width: context.getWidth(),
-                                    child: const Text("Workshop of the week",
+                                    child: Text("week Workshop".tr(),
                                         textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Constants.textColor,
-                                            fontFamily: "Poppins"))),
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Constants.textColor,
+                                        ))),
                               ),
                               InkWell(
                                 onTap: () => context.push(
                                     screen: WorkshopDetailScreen(
                                         workshop: workshopOfTheWeek)),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
@@ -233,8 +264,7 @@ class UserHomeScreen extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             Text(
-                                              rating
-                                                  .toString(),
+                                              rating.toString(),
                                               style: const TextStyle(
                                                   color:
                                                       Constants.backgroundColor,
@@ -255,14 +285,15 @@ class UserHomeScreen extends StatelessWidget {
                                 height: 20,
                               ),
                               Container(
-                                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   width: context.getWidth(),
-                                  child: const Text("Suggested For You",
+                                  child: Text("Suggested".tr(),
                                       textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Constants.textColor,
-                                          fontFamily: "Poppins"))),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.textColor,
+                                      ))),
                               ContainersTabBar(
                                 tabs: categories,
                                 selectedTab: selectedCategory,
