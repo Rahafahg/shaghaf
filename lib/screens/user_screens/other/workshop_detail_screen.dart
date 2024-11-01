@@ -296,21 +296,20 @@ class WorkshopDetailScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         DateRadioButton(
-                          workshop: workshop.workshops,
-                          selectedDate: selectedDate,
-                          onTap: (chosenDay) {
-                            selectedDate = chosenDay.split(' ')[1];
-                            bloc.add(UpdateDayEvent(
-                            selectedDate: chosenDay.split(' ')[1],
-                            specific: workshop.workshops
-                                .where((workshop) => workshop.date
-                                    .contains(selectedDate))
-                                .toList()
-                                .last,
-                          ));
-                          log(selectedDate);
-                          }
-                        ),
+                            workshop: workshop.workshops,
+                            selectedDate: selectedDate,
+                            onTap: (chosenDay) {
+                              selectedDate = chosenDay.split(' ')[1];
+                              bloc.add(UpdateDayEvent(
+                                selectedDate: chosenDay.split(' ')[1],
+                                specific: workshop.workshops
+                                    .where((workshop) =>
+                                        workshop.date.contains(selectedDate))
+                                    .toList()
+                                    .last,
+                              ));
+                              log(selectedDate);
+                            }),
                         const SizedBox(
                           height: 20,
                         ),
@@ -413,6 +412,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             if (state is ChangeQuantityState) {
                               if (state.specific != null) {
                                 specific = state.specific!;
+                                log(specific.date);
                                 return state.specific!.isOnline ||
                                         state.specific?.latitude == null ||
                                         state.specific!.latitude!.isEmpty
@@ -430,13 +430,12 @@ class WorkshopDetailScreen extends StatelessWidget {
                                           ),
                                         ),
                                         Positioned(
-                                                                                    bottom: 7,
-
-                                          left: 10,
+                                            bottom: 7,
+                                            left: 10,
                                             child: MainButton(
                                                 onPressed: () async {
                                                   final Uri url = Uri.parse(
-                                                    'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
+                                                      'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
                                                   if (!await launchUrl(url)) {
                                                     throw Exception(
                                                         'Could not launch $url');
@@ -451,14 +450,30 @@ class WorkshopDetailScreen extends StatelessWidget {
                                     specific.latitude == null ||
                                     specific.latitude!.isEmpty
                                 ? const SizedBox.shrink()
-                                : SizedBox(
-                                    height: context.getHeight(divideBy: 4),
-                                    width: context.getWidth(),
-                                    child: UserMap(
-                                      lat: double.parse(specific.latitude!),
-                                      lng: double.parse(specific.longitude!),
+                                : Stack(children: [
+                                    SizedBox(
+                                      height: context.getHeight(divideBy: 3),
+                                      width: context.getWidth(),
+                                      child: UserMap(
+                                        lat: double.parse(specific.latitude!),
+                                        lng: double.parse(specific.longitude!),
+                                      ),
                                     ),
-                                  );
+                                    Positioned(
+                                        bottom: 7,
+                                        left: 10,
+                                        child: MainButton(
+                                            onPressed: () async {
+                                              final Uri url = Uri.parse(
+                                                  'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
+                                              if (!await launchUrl(url)) {
+                                                throw Exception(
+                                                    'Could not launch $url');
+                                              }
+                                            },
+                                            fontSize: 12,
+                                            text: "Open in google maps"))
+                                  ]);
                           },
                         ),
                         const SizedBox(
