@@ -39,13 +39,6 @@ class AddField extends StatelessWidget {
               child: Stack(
                 children: [
                   TextFormField(
-                    autovalidateMode: AutovalidateMode.always,
-                    validator: (value) {
-                      if(value==null || value.isEmpty) {
-                        return 'bye';
-                      }
-                      return '';
-                    },
                     readOnly: true,
                     maxLines: 5,
                     minLines: 3,
@@ -72,11 +65,17 @@ class AddField extends StatelessWidget {
           )
           : Container(
               width: type == 'Price in SR' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(13.0)), // Circular border radius
-                border: Border.all(color: Constants.mainOrange)),
+              // decoration: BoxDecoration(
+                // borderRadius: const BorderRadius.all(Radius.circular(13.0)), // Circular border radius
+                // border: Border.all(color: Constants.mainOrange)),
                 child: TextFormField(
-                  autovalidateMode: AutovalidateMode.always,
+                  validator: (text) {
+                    if (text!.isEmpty) {
+                      return "$type is required";
+                    }
+                    return null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUnfocus,
                   // onFieldSubmitted: onSaved, // not used ??
                   onChanged: (s)=>log(controller?.text ?? 'kk'),
                   controller: controller,
@@ -93,19 +92,13 @@ class AddField extends StatelessWidget {
                     filled: true,
                     fillColor: Colors.white70,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0), // Reducing height
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(13.0)), // Circular border radius
-                    ),
-                  ),
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return "$type is required";
-                    }
-                    return null;
-                  },
+                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Constants.mainOrange),borderRadius: BorderRadius.all(Radius.circular(13.0))),
+                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Constants.mainOrange),borderRadius: BorderRadius.all(Radius.circular(13.0))),
+                    errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Constants.mainOrange),borderRadius: BorderRadius.all(Radius.circular(13.0))),
+                    focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Constants.mainOrange),borderRadius: BorderRadius.all(Radius.circular(13.0))),
                 ),
             ),
+          )
         ],
       ),
     );

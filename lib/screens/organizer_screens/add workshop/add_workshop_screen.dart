@@ -16,14 +16,14 @@ import 'package:shaghaf/widgets/text_fields/add_field.dart';
 import 'package:shaghaf/widgets/text_fields/workshop_form.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
-  const AddWorkshopScreen(
-      {super.key, required this.isSingleWorkShope, this.workshop, this.isEdit=false});
+  const AddWorkshopScreen({super.key, required this.isSingleWorkShope, this.workshop, this.isEdit=false});
   final bool isSingleWorkShope;
   final Workshop? workshop;
   final bool? isEdit;
   @override
   Widget build(BuildContext context) {
     File? workshopImage;
+    final basicInfoKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => AddWorkshopBloc(),
       child: Builder(builder: (context) {
@@ -84,7 +84,14 @@ class AddWorkshopScreen extends StatelessWidget {
                                         }) // handle me later
                                     : MainButton(
                                         text: 'Next',
-                                        onPressed: details.onStepContinue),
+                                        onPressed: (){
+                                          if(basicInfoKey.currentState!.validate() && workshopImage!=null && bloc.categoryController.text.isNotEmpty) {
+                                            details.onStepContinue;
+                                          }
+                                          else {
+                                            log("handle me later");
+                                          }
+                                        }),
                                 const SizedBox(width: 8),
                                 bloc.currentStep == 0
                                     ? const SizedBox.shrink()
@@ -118,25 +125,51 @@ class AddWorkshopScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: kElevationToShadow[1],
                                       color: Constants.cardColor),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      BlocBuilder<AddWorkshopBloc,
-                                          AddWorkshopState>(
-                                        builder: (context, state) {
-                                          if (state is ChangeImageState) {
+                                  child: Form(
+                                    key: basicInfoKey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        BlocBuilder<AddWorkshopBloc,
+                                            AddWorkshopState>(
+                                          builder: (context, state) {
+                                            if (state is ChangeImageState) {
+                                              return AddField(
+                                                  image: state.image,
+                                                  type: 'Add Photo',
+                                                  onUploadImg: () async {
+                                                    // Pick image from gallery
+                                                    final photoAsFile =
+                                                        await ImagePicker()
+                                                            .pickImage(
+                                                                source:
+                                                                    ImageSource
+                                                                        .gallery);
+                                                    if (photoAsFile != null) {
+                                                      workshopImage =
+                                                          File(photoAsFile.path);
+                                                      String fileName =
+                                                          workshopImage!.path
+                                                              .split('/')
+                                                              .last;
+                                                      log("img name: $fileName");
+                                                      bloc.add(ChangeImageEvent(
+                                                          image: workshopImage));
+                                                    } else {
+                                                      log('No image selected');
+                                                    }
+                                                  });
+                                            }
                                             return AddField(
-                                                image: state.image,
+                                                image: workshopImage,
                                                 type: 'Add Photo',
                                                 onUploadImg: () async {
-                                                  // Pick image from gallery
                                                   final photoAsFile =
                                                       await ImagePicker()
                                                           .pickImage(
-                                                              source:
-                                                                  ImageSource
-                                                                      .gallery);
+                                                              source: ImageSource
+                                                                  .gallery);
                                                   if (photoAsFile != null) {
                                                     workshopImage =
                                                         File(photoAsFile.path);
@@ -151,60 +184,37 @@ class AddWorkshopScreen extends StatelessWidget {
                                                     log('No image selected');
                                                   }
                                                 });
-                                          }
-                                          return AddField(
-                                              image: workshopImage,
-                                              type: 'Add Photo',
-                                              onUploadImg: () async {
-                                                final photoAsFile =
-                                                    await ImagePicker()
-                                                        .pickImage(
-                                                            source: ImageSource
-                                                                .gallery);
-                                                if (photoAsFile != null) {
-                                                  workshopImage =
-                                                      File(photoAsFile.path);
-                                                  String fileName =
-                                                      workshopImage!.path
-                                                          .split('/')
-                                                          .last;
-                                                  log("img name: $fileName");
-                                                  bloc.add(ChangeImageEvent(
-                                                      image: workshopImage));
-                                                } else {
-                                                  log('No image selected');
-                                                }
-                                              });
-                                        },
-                                      ),
-                                      workshopImage != null
-                                          ? const SizedBox.shrink()
-                                          : const Text(
-                                              "workshop image is required",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 10,
-                                              )),
-                                      AddField(
-                                          type: 'Workshop Title',
-                                          controller: bloc.titleController),
-                                      AddField(
-                                          type: 'Workshop Description',
-                                          controller: bloc.descController),
-                                      CategoryDropDown(
-                                          controller: bloc.categoryController),
-                                      bloc.categoryController.text == 'Category'
-                                          ? const SizedBox.shrink()
-                                          : const Text("Category is required",
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 10,
-                                              )),
-                                      AddField(
-                                        type: 'Audience',
-                                        controller: bloc.audienceController,
-                                      ),
-                                    ],
+                                          },
+                                        ),
+                                        workshopImage != null
+                                            ? const SizedBox.shrink()
+                                            : const Text(
+                                                "workshop image is required",
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 10,
+                                                )),
+                                        AddField(
+                                            type: 'Workshop Title',
+                                            controller: bloc.titleController),
+                                        AddField(
+                                            type: 'Workshop Description',
+                                            controller: bloc.descController),
+                                        CategoryDropDown(
+                                            controller: bloc.categoryController),
+                                        bloc.categoryController.text == 'Category'
+                                            ? const SizedBox.shrink()
+                                            : const Text("Category is required",
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 10,
+                                                )),
+                                        AddField(
+                                          type: 'Audience',
+                                          controller: bloc.audienceController,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )),
                             //2-detail

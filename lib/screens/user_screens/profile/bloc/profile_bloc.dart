@@ -17,8 +17,10 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     on<EditUserProfileEvent>(editUserProfile);
     on<SubmitUserProfileEvent>(submitUserProfile);
     on<ViewUserProfileEvent>((event, emit) {
-      FocusManager.instance.primaryFocus?.unfocus();
-      emit(SuccessProfileState());
+      if(GetIt.I.get<AuthLayer>().user != null) {
+        FocusManager.instance.primaryFocus?.unfocus();
+        emit(SuccessProfileState());
+      }
     });
   }
 

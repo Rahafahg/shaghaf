@@ -173,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
                           user==null ? const SizedBox.shrink() : IconButton(
                               onPressed: () {
                                 bloc.add(EditUserProfileEvent(
-                                    firstName: user!.firstName,
+                                    firstName: user.firstName,
                                     lastName: user.lastName,
                                     phoneNumber: user.phoneNumber));
                               },
