@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'dart:math' as mm;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
+import 'package:emailjs/emailjs.dart' as emailjs;
 
 part 'booking_event.dart';
 part 'booking_state.dart';
@@ -44,6 +47,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         if (bookingAsMap != null) {
           final booking = BookingModel.fromJson(bookingAsMap);
           GetIt.I.get<SupabaseLayer>().getBookings();
+          await sendTicketToEmail(booking: booking, group: event.group, specific: event.workshop);
           emit(SuccessState(booking: booking));
         } else {
           log('Failed to save booking. Please try again.');
@@ -52,5 +56,55 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         log('Error saving booking: $e');
       }
     });
+  }
+  
+  sendTicketToEmail({
+    required BookingModel booking,
+    required WorkshopGroupModel group,
+    required Workshop specific
+  }) async {
+    try {
+                                                            emailjs.send(
+                                                              dotenv.env[
+                                                                  'EMAILJS_SERVICE_ID']!,
+                                                              dotenv.env[
+                                                                  'EMAILJS_TEMPLATE_ID']!,
+                                                              {
+                                                                'booking_id' : booking.bookingId,
+                                                                'booking_date' : booking.bookingDate.toString(),
+                                                                'tickets' : booking.numberOfTickets,
+                                                                'workshop_name':
+                                                                    group
+                                                                        .title,
+                                                                'workshop_date' : specific.date,
+                                                                'from' : specific.fromTime,
+                                                                'to' : specific.toTime,
+                                                                'to_name': GetIt
+                                                                    .I
+                                                                    .get<
+                                                                        AuthLayer>()
+                                                                    .user
+                                                                    ?.firstName,
+                                                                'to_email': GetIt
+                                                                        .I
+                                                                        .get<
+                                                                            AuthLayer>()
+                                                                        .user
+                                                                        ?.email ??
+                                                                    'yaserkhayyat2017@gmail.com',
+                                                              },
+                                                              emailjs.Options(
+                                                                publicKey: dotenv
+                                                                        .env[
+                                                                    'EMAILJS_PUBLIC_KEY'],
+                                                                privateKey: dotenv
+                                                                        .env[
+                                                                    'EMAILJS_PRIVATE_KEY'],
+                                                              ),
+                                                            );
+                                                            log('SUCCESS!');
+                                                          } catch (error) {
+                                                            log('eroreta : $error');
+                                                          }
   }
 }

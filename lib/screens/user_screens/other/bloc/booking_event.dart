@@ -18,5 +18,6 @@ final class UpdateDayEvent extends BookingEvent {
 final class SaveBookingEvent extends BookingEvent {
   final Workshop workshop;
   final int quantity;
-  SaveBookingEvent({required this.workshop,required this.quantity});
+  final WorkshopGroupModel group;
+  SaveBookingEvent({required this.group, required this.workshop,required this.quantity});
 }

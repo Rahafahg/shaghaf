@@ -70,7 +70,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(onPressed: ()=>context.pop(), icon: Icon(Icons.arrow_back_ios, color: Colors.lightGreen, size: 28,)),
-                            IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
+                            organizer==null ? SizedBox.shrink() : IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
                               isSingleWorkShope: true, workshop: specific, isEdit: true
                               )), icon: Icon(Icons.edit, color: Colors.lightGreen, size: 28,))
                           ],
@@ -603,53 +603,14 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                                   .paid) {
                                                             log("Payment is donnee ${result.status}");
                                                             bloc.add(SaveBookingEvent(
+                                                              group: workshop,
                                                                 workshop: bloc
                                                                         .chosenWorkshop ??
                                                                     workshop
                                                                         .workshops
                                                                         .first,
                                                                 quantity: bloc
-                                                                    .quantity));
-                                                            try {
-                                                              await emailjs
-                                                                  .send(
-                                                                dotenv.env[
-                                                                    'EMAILJS_SERVICE_ID']!,
-                                                                dotenv.env[
-                                                                    'EMAILJS_TEMPLATE_ID']!,
-                                                                {
-                                                                  'from_name':
-                                                                      workshop
-                                                                          .title,
-                                                                  'to_name': GetIt
-                                                                      .I
-                                                                      .get<
-                                                                          AuthLayer>()
-                                                                      .user
-                                                                      ?.firstName,
-                                                                  'to_email': GetIt
-                                                                          .I
-                                                                          .get<
-                                                                              AuthLayer>()
-                                                                          .user
-                                                                          ?.email ??
-                                                                      'yaserkhayyat2017@gmail.com',
-                                                                  'message':
-                                                                      'yes you did it !'
-                                                                },
-                                                                emailjs.Options(
-                                                                  publicKey: dotenv
-                                                                          .env[
-                                                                      'EMAILJS_PUBLIC_KEY'],
-                                                                  privateKey: dotenv
-                                                                          .env[
-                                                                      'EMAILJS_PRIVATE_KEY'],
-                                                                ),
-                                                              );
-                                                              log('SUCCESS!');
-                                                            } catch (error) {
-                                                              log('eroreta : $error');
-                                                            }
+                                                                      .quantity));                                                            
                                                           } else {}
                                                         },
                                                       ),
@@ -749,6 +710,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                           log("Payment is donnee ${result.status}");
                                                           bloc.add(
                                                               SaveBookingEvent(
+                                                                group: workshop,
                                                             workshop: bloc
                                                                     .chosenWorkshop ??
                                                                 workshop
@@ -757,45 +719,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                             quantity:
                                                                 bloc.quantity,
                                                           ));
-                                                          try {
-                                                            await emailjs.send(
-                                                              dotenv.env[
-                                                                  'EMAILJS_SERVICE_ID']!,
-                                                              dotenv.env[
-                                                                  'EMAILJS_TEMPLATE_ID']!,
-                                                              {
-                                                                'from_name':
-                                                                    workshop
-                                                                        .title,
-                                                                'to_name': GetIt
-                                                                    .I
-                                                                    .get<
-                                                                        AuthLayer>()
-                                                                    .user
-                                                                    ?.firstName,
-                                                                'to_email': GetIt
-                                                                        .I
-                                                                        .get<
-                                                                            AuthLayer>()
-                                                                        .user
-                                                                        ?.email ??
-                                                                    'yaserkhayyat2017@gmail.com',
-                                                                'message':
-                                                                    'yes you did it !'
-                                                              },
-                                                              emailjs.Options(
-                                                                publicKey: dotenv
-                                                                        .env[
-                                                                    'EMAILJS_PUBLIC_KEY'],
-                                                                privateKey: dotenv
-                                                                        .env[
-                                                                    'EMAILJS_PRIVATE_KEY'],
-                                                              ),
-                                                            );
-                                                            log('SUCCESS!');
-                                                          } catch (error) {
-                                                            log('eroreta : $error');
-                                                          }
                                                         } else {}
                                                       },
                                                     ),

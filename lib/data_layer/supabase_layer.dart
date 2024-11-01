@@ -514,8 +514,12 @@ getAllWorkshops() async {
         .categories
         .firstWhere((category) => category.categoryId == categoryId);
     log(category.categoryName.toString());
-    List data = await supabase.rpc('get_users_notify',
+    List? data = await supabase.rpc('get_users_notify',
         params: {'category': category.categoryName.trim()});
+    if(data==null) {
+      log('no users added this category');
+      return;
+    }
     final List<String> usersToNotify = data.cast<String>();
     log(usersToNotify.toString());
     sendNotification(
