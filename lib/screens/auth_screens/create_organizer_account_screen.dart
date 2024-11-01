@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,112 +35,145 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is ErrorState) {
               context.pop();
-              showDialog(context: context,builder: (context) => ErrorDialog(msg: state.msg));
+              showDialog(
+                  context: context,
+                  builder: (context) => ErrorDialog(msg: state.msg));
             }
             if (state is LoadingState) {
-              showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child: LottieBuilder.asset("assets/lottie/loading.json")));
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
               context.pushReplacement(
-                screen: OtpScreen(
-                  email: emailController.text,
-                  role: 'organizer',
-                  name: nameController.text,
-                  image: state.image,
-                  contactNumber: contactNumberController.text,
-                  description: descriptionController.text,
-                  licenseNumber: 'asdf'
-                )
-              );
+                  screen: OtpScreen(
+                      email: emailController.text,
+                      role: 'organizer',
+                      name: nameController.text,
+                      image: state.image,
+                      contactNumber: contactNumberController.text,
+                      description: descriptionController.text,
+                      licenseNumber: 'asdf'));
             }
           },
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  width: context.getWidth(),
-                  height: context.getHeight(),
-                  decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_bg.png'),fit: BoxFit.cover)),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // logo
-                        Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
-                        // form
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 44),
-                          child: Container(
-                            width: context.getWidth(),
-                            decoration: BoxDecoration(color: const Color(0xC9D9D9D9),borderRadius: BorderRadius.circular(20)),
-                            child: Form(
-                              key: formKey,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  children: [
-                                    AuthField(type: 'Name', controller: nameController),
-                                    const SizedBox(height: 10),
-                                    AuthField(type: 'Email',controller: emailController),
-                                    const SizedBox(height: 10),
-                                    AuthField(type: 'Password',controller: passwordController),
-                                    const SizedBox(height: 10),
-                                    AuthField(type: 'Contact Number',controller: contactNumberController),
-                                    const SizedBox(height: 10),
-                                    BlocBuilder<AuthBloc, AuthState>(
-                                      builder: (context, state) {
-                                        File? image;
-                                        if (state is AddingImageState) {
-                                          image = state.image;
-                                        } else if (state is SuccessState) {
-                                          image = state.image;
-                                        }
-                                        return AuthField(
-                                          type: 'Photo (optional)',
-                                          image: image, // Pass the selected image
-                                          onUploadImg: () async {
-                                            final photoAsFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                            if (photoAsFile != null) {
-                                              final image = File(photoAsFile.path);
-                                              bloc.add(AddingImageEvent(image: image));
-                                            } else {
-                                              log('No image selected');
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    AuthField(type: 'Description',controller: descriptionController,),
-                                    const SizedBox(height: 20),
-                                    MainButton(
-                                      text: "Sign Up",
-                                      width: context.getWidth(),
-                                      onPressed: () {
-                                        if (formKey.currentState!.validate()) {
-                                          log("valid");
-                                          bloc.add(CreateAccountEvent(email: emailController.text,password: passwordController.text));
-                                        } else {
-                                          log("invalid");
-                                        }
-                                      },
-                                    ),
-                                    const SizedBox(height: 4),
-                                    AuthTextButton(text: "I Already have an account",onPressed: () => context.pushReplacement(screen: const LoginScreen()))
-                                  ],
-                                ),
+                body: SingleChildScrollView(
+              child: Container(
+                width: context.getWidth(),
+                height: context.getHeight(),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/auth_bg.png'),
+                        fit: BoxFit.cover)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // logo
+                      Container(
+                          padding: const EdgeInsets.only(top: 61, left: 92),
+                          child: Image.asset('assets/images/logo.png')),
+                      // form
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 44),
+                        child: Container(
+                          width: context.getWidth(),
+                          decoration: BoxDecoration(
+                              color: const Color(0xC9D9D9D9),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Form(
+                            key: formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                children: [
+                                  AuthField(
+                                      type: 'Name'.tr(),
+                                      controller: nameController),
+                                  const SizedBox(height: 10),
+                                  AuthField(
+                                      type: 'Email'.tr(),
+                                      controller: emailController),
+                                  const SizedBox(height: 10),
+                                  AuthField(
+                                      type: 'Password'.tr(),
+                                      controller: passwordController),
+                                  const SizedBox(height: 10),
+                                  AuthField(
+                                      type: 'Number'.tr(),
+                                      controller: contactNumberController),
+                                  const SizedBox(height: 10),
+                                  BlocBuilder<AuthBloc, AuthState>(
+                                    builder: (context, state) {
+                                      File? image;
+                                      if (state is AddingImageState) {
+                                        image = state.image;
+                                      } else if (state is SuccessState) {
+                                        image = state.image;
+                                      }
+                                      return AuthField(
+                                        type: 'photo'.tr(),
+                                        image: image, // Pass the selected image
+                                        onUploadImg: () async {
+                                          final photoAsFile =
+                                              await ImagePicker().pickImage(
+                                                  source: ImageSource.gallery);
+                                          if (photoAsFile != null) {
+                                            final image =
+                                                File(photoAsFile.path);
+                                            bloc.add(
+                                                AddingImageEvent(image: image));
+                                          } else {
+                                            log('No image selected');
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  AuthField(
+                                    type: 'Description'.tr(),
+                                    controller: descriptionController,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  MainButton(
+                                    text: "Sign Up".tr(),
+                                    width: context.getWidth(),
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        log("valid");
+                                        bloc.add(CreateAccountEvent(
+                                            email: emailController.text,
+                                            password: passwordController.text));
+                                      } else {
+                                        log("invalid");
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 4),
+                                  AuthTextButton(
+                                      text: "I Already have an account".tr(),
+                                      onPressed: () => context.pushReplacement(
+                                          screen: const LoginScreen()))
+                                ],
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40,),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ),
+              ),
+            )),
           ),
         );
       }),

@@ -11,6 +11,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -201,58 +202,16 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     user==null ? const SizedBox.shrink() : ProfileCard(text: user.email, icon: Icons.mail),
                     const SizedBox(height: 10),
-                    const Text("settings").tr(),
+                    // Text("settings").tr(),
+                    Text("settings".tr(),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Color(0xff666666),
+                          fontFamily: "Poppins",
+                        )),
                     const SizedBox(height: 30),
-                    // const ProfileCardpress(
-                    //     text: "Switch to Arabic", icon: Icons.translate),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: InkWell(
-                        // onTap: onTap,
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                      offset: Offset(0, 4),
-                                      blurRadius: 8,
-                                      color: Color.fromARGB(104, 222, 101, 49),
-                                      spreadRadius: 0)
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                backgroundColor: Constants.profileColor,
-                                child: IconButton(
-                                  onPressed: () {
-                                    //context.setLocale(Locale("en"));
-                                    // Locale currentLocale = context.locale;
-                                    if (context.locale == const Locale("en")) {
-                                      context.setLocale(const Locale("ar"));
-                                      print("tran to ar");
-                                    } else {
-                                      context.setLocale(const Locale("en"));
-                                      print("trans to en");
-                                    }
-                                  },
-                                  icon: const Icon(Icons.translate),
-                                  color: Constants.mainOrange,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Text("Switch".tr(),
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  color: Constants.textColor,
-                                  fontFamily: "Poppins",
-                                ))
-                          ],
-                        ),
-                      ),
-                    ),
-                    const ProfileCard(text: "Mode", icon: Icons.dark_mode),
+                    const switchingLanguage(),
+                    ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
                   ],
                 ),
               ),
@@ -275,11 +234,11 @@ class ProfileScreen extends StatelessWidget {
                     GetIt.I.get<AuthLayer>().box.remove('organizer');
                     context.pushRemove(screen: const LoginScreen());
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(HugeIcons.strokeRoundedLogout01),
-                      SizedBox(width: 5),
-                      Text("Logout"),
+                      const Icon(HugeIcons.strokeRoundedLogout01),
+                      const SizedBox(width: 5),
+                      Text("Logout".tr()),
                     ],
                   ))
             ],

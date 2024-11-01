@@ -15,10 +15,10 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await setup();
   runApp(EasyLocalization(
-          supportedLocales: [Locale('en'), Locale('ar')],
+          supportedLocales: const [Locale('en'), Locale('ar')],
           path: 'assets/translations',
-          fallbackLocale: Locale('ar', 'SA'),
-          child: MainApp())
+          fallbackLocale: const Locale('ar', 'SA'),
+          child: const MainApp())
       //   DevicePreview(
       //   enabled: false,
       //   builder: (context) => const MainApp(),

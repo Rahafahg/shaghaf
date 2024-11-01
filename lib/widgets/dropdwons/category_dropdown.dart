@@ -18,7 +18,7 @@ class CategoryDropDown extends StatelessWidget {
           "Workshop Category",
           style: TextStyle(color: Color(0xff313131), fontSize: 16, fontFamily: "Lato"),
         ),
-        SizedBox(height: 8,),
+        const SizedBox(height: 8,),
         DropdownMenu(
           controller: controller,
           hintText: "Category",

@@ -1,20 +1,17 @@
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 
-class ProfileCard extends StatelessWidget {
-  const ProfileCard(
-      {super.key, required this.text, required this.icon, this.onTap});
-
-  final String text;
-  final IconData icon;
-  final Function()? onTap;
+class switchingLanguage extends StatelessWidget {
+  const switchingLanguage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
-        onTap: onTap,
+        // onTap: onTap,
         child: Row(
           children: [
             Container(
@@ -30,14 +27,25 @@ class ProfileCard extends StatelessWidget {
               ),
               child: CircleAvatar(
                 backgroundColor: Constants.profileColor,
-                child: Icon(
-                  icon,
+                child: IconButton(
+                  onPressed: () {
+                    //context.setLocale(Locale("en"));
+                    // Locale currentLocale = context.locale;
+                    if (context.locale == const Locale("en")) {
+                      context.setLocale(const Locale("ar"));
+                      print("tran to ar");
+                    } else {
+                      context.setLocale(const Locale("en"));
+                      print("trans to en");
+                    }
+                  },
+                  icon: const Icon(Icons.translate),
                   color: Constants.mainOrange,
                 ),
               ),
             ),
             const SizedBox(width: 15),
-            Text(text,
+            Text("Switch".tr(),
                 style: const TextStyle(
                   fontSize: 17,
                   color: Constants.textColor,
@@ -49,4 +57,3 @@ class ProfileCard extends StatelessWidget {
     );
   }
 }
-

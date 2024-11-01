@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -40,10 +41,17 @@ class OtpScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is ErrorState) {
               context.pop();
-              showDialog(context: context,builder: (context) => ErrorDialog(msg: state.msg));
+              showDialog(
+                  context: context,
+                  builder: (context) => ErrorDialog(msg: state.msg));
             }
             if (state is LoadingState) {
-              showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child:LottieBuilder.asset("assets/lottie/loading.json")));
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               if(isReset == true) {
@@ -52,22 +60,32 @@ class OtpScreen extends StatelessWidget {
                 return;
               }
               GetIt.I.get<SupabaseLayer>().getAllCategories();
-              context.pushRemove(screen: role == 'user' ? const SelectCategoriesScreen() : const OrgNavigationScreen());
+              context.pushRemove(
+                  screen: role == 'user'
+                      ? const SelectCategoriesScreen()
+                      : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
-              body: SingleChildScrollView(
+                body: SingleChildScrollView(
               child: Container(
                 width: context.getWidth(),
                 height: context.getHeight(),
-                decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_bg.png'),fit: BoxFit.cover)),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/auth_bg.png'),
+                        fit: BoxFit.cover)),
                 child: Column(
                   children: [
                     // logo
-                    Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
-                    const SizedBox(height: 116,),
+                    Container(
+                        padding: const EdgeInsets.only(top: 61, left: 92),
+                        child: Image.asset('assets/images/logo.png')),
+                    const SizedBox(
+                      height: 116,
+                    ),
                     // otp
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 31),
@@ -77,9 +95,9 @@ class OtpScreen extends StatelessWidget {
                         decoration: BoxDecoration(color: const Color(0xC9D9D9D9),borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           children: [
-                            const Text(
-                              "Confirm your Email",
-                              style: TextStyle(
+                            Text(
+                              "Confirm your Email".tr(),
+                              style: const TextStyle(
                                 fontSize: 18,
                                 color: Constants.mainOrange,
                                 fontFamily: "Poppins",
@@ -88,7 +106,8 @@ class OtpScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 7,),
                             Text(
-                              "We have sent to : $email\na one-time-password (OTP) to confirm your email",
+                              "We have sent to : $email\na one-time-password (OTP) to confirm your email"
+                                    .tr(),
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
                             ),
@@ -102,36 +121,44 @@ class OtpScreen extends StatelessWidget {
                               ? bloc.add(VerifyOtpEvent(email: email,firstName: firstName!,lastName: lastName!,otp: value,phoneNumber: phoneNumber!))
                               : bloc.add(VerifyOrganizerOtpEvent(email: email,otp: value,contactNumber: contactNumber!,description: description!,image: image,licenseNumber: licenseNumber!,name: name!)),
                                 defaultPinTheme: const PinTheme(
-                                  textStyle: TextStyle(fontSize: 16, fontFamily: "Poppins"),
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(color: Colors.white70,borderRadius: BorderRadius.all(Radius.circular(5)))
-                                ),
+                                    textStyle: TextStyle(
+                                        fontSize: 16, fontFamily: "Poppins"),
+                                    height: 45,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white70,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)))),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
-                                    "Didn’t receive code ? ",
-                                    style: TextStyle(color: Color(0xff666666),fontFamily: "Poppins",fontSize: 12),
+                                  Text(
+                                    "Didn’tReceive".tr(),
+                                    style: const TextStyle(
+                                        color: Color(0xff666666),
+                                        fontFamily: "Poppins",
+                                        fontSize: 12),
                                   ),
                                   OtpTimerButton(
                                     onPressed: () => log("handle me"),
-                                    text: const Text("Re-send",style: TextStyle(fontFamily: "Poppins",color: Constants.mainOrange,fontSize: 12)),
+                                    text: Text("Re-send".tr(),
+                                        style: const TextStyle(
+                                            fontFamily: "Poppins",
+                                            color: Constants.mainOrange,
+                                            fontSize: 12)),
                                     duration: 60,
                                     buttonType: ButtonType.text_button,
                                   ),
                                 ],
                               ),
                             ],
-                          )
-                        ),
-                      ),
-                    ],
-                  ),
+                          )),
+                    ),
+                  ],
                 ),
-              )
-            ),
+              ),
+            )),
           ),
         );
       }),
