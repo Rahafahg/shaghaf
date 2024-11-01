@@ -22,7 +22,6 @@ import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
-import 'package:emailjs/emailjs.dart' as emailjs;
 import 'package:url_launcher/url_launcher.dart';
 
 class WorkshopDetailScreen extends StatelessWidget {
@@ -69,10 +68,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(onPressed: ()=>context.pop(), icon: Icon(Icons.arrow_back_ios, color: Colors.lightGreen, size: 28,)),
-                            organizer==null ? SizedBox.shrink() : IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
+                            IconButton(onPressed: ()=>context.pop(), icon: const Icon(Icons.arrow_back_ios, color: Colors.lightGreen, size: 28,)),
+                            organizer==null ? const SizedBox.shrink() : IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
                               isSingleWorkShope: true, workshop: specific, isEdit: true
-                              )), icon: Icon(Icons.edit, color: Colors.lightGreen, size: 28,))
+                              )), icon: const Icon(Icons.edit, color: Colors.lightGreen, size: 28,))
                           ],
                         ),
                       )
@@ -461,7 +460,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             ? (specific.isOnline == true ||
                                     DateTime.now()
                                         .isAfter(DateTime.parse(specific.date)))
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : MainButton(
                                     text: "Scan Now",
                                     width: context.getWidth(),

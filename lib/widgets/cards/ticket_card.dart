@@ -71,7 +71,7 @@ class TicketCard extends StatelessWidget {
                     "Booked at: ${booking.bookingDate.toString().split(".").first}")
               ],
             ),
-            Divider(),
+            const Divider(),
             Text(workshopGroup.title,
                 style: const TextStyle(fontSize: 20, fontFamily: "Poppins")),
             Row(

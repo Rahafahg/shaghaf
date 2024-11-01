@@ -9,7 +9,6 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_workshop_bloc.dart';
 import 'package:shaghaf/widgets/maps/organizer_map.dart';
-import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/text_fields/add_date_field.dart';
 import 'package:shaghaf/widgets/text_fields/add_field.dart';
