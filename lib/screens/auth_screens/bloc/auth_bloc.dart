@@ -23,6 +23,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyOtpEvent>(verifyOtpMethod);
     on<VerifyOrganizerOtpEvent>(verifyOrganizerOtpMethod);
     on<LoginEvent>(loginMethod);
+    on<RequestResetPasswordEvent>((event, emit) async {
+      try {
+        emit(LoadingState());
+        await supabaseLayer.supabase.auth.resetPasswordForEmail(event.email);
+        emit(SuccessState());
+      } catch (e) {
+        emit(ErrorState(msg: 'Something went wrong :('));
+      }
+    });
+    on<UpdatePasswordEvent>((event, emit) async {
+      try {
+        emit(LoadingState());
+        await supabaseLayer.supabase.auth.updateUser(UserAttributes(email: event.email, password: event.newPassword));
+        emit(SuccessState());
+      } catch (e) {
+        emit(ErrorState(msg: 'Something went wrong :('));
+      }
+    });
     on<LoginWithEmailEvent>(loginWithEmailMethod);
     on<AddingImageEvent>(AddingImageMethod);
   }

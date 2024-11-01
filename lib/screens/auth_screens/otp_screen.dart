@@ -10,6 +10,7 @@ import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
+import 'package:shaghaf/screens/auth_screens/reset_password_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
@@ -17,7 +18,7 @@ import 'package:otp_timer_button/otp_timer_button.dart';
 
 class OtpScreen extends StatelessWidget {
   final String email;
-  final String role;
+  final String? role;
   final String? firstName;
   final String? lastName;
   final String? phoneNumber;
@@ -26,7 +27,8 @@ class OtpScreen extends StatelessWidget {
   final File? image;
   final String? description;
   final String? licenseNumber;
-  const OtpScreen({super.key,required this.email,required this.role,this.firstName,this.lastName,this.phoneNumber,this.contactNumber,this.description,this.image,this.licenseNumber,this.name});
+  final bool? isReset;
+  const OtpScreen({super.key,required this.email,this.role,this.firstName,this.lastName,this.phoneNumber,this.contactNumber,this.description,this.image,this.licenseNumber,this.name, this.isReset=false});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,11 @@ class OtpScreen extends StatelessWidget {
               showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child:LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
+              if(isReset == true) {
+                log('yes it is reset');
+                context.pushRemove(screen: ResetPasswordScreen(email: email));
+                return;
+              }
               GetIt.I.get<SupabaseLayer>().getAllCategories();
               context.pushRemove(screen: role == 'user' ? const SelectCategoriesScreen() : const OrgNavigationScreen());
             }
@@ -90,6 +97,7 @@ class OtpScreen extends StatelessWidget {
                               length: 6,
                               keyboardType: TextInputType.number,
                               onCompleted: (value) =>
+                              role == null ? bloc.add(VerifyOtpEvent(email: email, otp:value)) :
                               role == "user"
                               ? bloc.add(VerifyOtpEvent(email: email,firstName: firstName!,lastName: lastName!,otp: value,phoneNumber: phoneNumber!))
                               : bloc.add(VerifyOrganizerOtpEvent(email: email,otp: value,contactNumber: contactNumber!,description: description!,image: image,licenseNumber: licenseNumber!,name: name!)),

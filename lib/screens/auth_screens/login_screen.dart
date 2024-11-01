@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +6,7 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
+import 'package:shaghaf/screens/auth_screens/email_for_reset_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                                       ),
                                       AuthTextButton(
                                         text: "Forgot Password ?",
-                                        onPressed: () => log("handle me later !!"),
+                                        onPressed: () => context.push(screen: const EmailForResetScreen()),
                                       )
                                     ],
                                   ),

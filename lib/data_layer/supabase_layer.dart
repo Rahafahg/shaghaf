@@ -30,11 +30,15 @@ class SupabaseLayer {
     }
   }
 
-  Future verifyOtp({required String email,required String otp,required String firstName,required String lastName,required String phoneNumber,required String externalId}) async {
+  Future verifyOtp({required String email,required String otp,String? firstName,String? lastName,String? phoneNumber,required String externalId}) async {
     // try {
     log("verifyOtp 1");
-    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
+    if(firstName == null && lastName == null && phoneNumber == null) {
+    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.recovery);
+      return response;
+    }
     log("verifyOtp 2");
+    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
     final id = response.user!.id;
     UserModel user = UserModel.fromJson({
       'user_id': id,
@@ -50,9 +54,6 @@ class SupabaseLayer {
     OneSignal.Notifications.requestPermission(true);
     OneSignal.login(externalId);
     return response;
-    // } catch (e) {
-    //   return e;
-    // }
   }
 
   Future verifyOrganizerOtp(
@@ -92,6 +93,15 @@ class SupabaseLayer {
     GetIt.I.get<AuthLayer>().box.write('organizer', organizer.toJson());
     GetIt.I.get<AuthLayer>().organizer = organizer;
     return response;
+  }
+
+  Future resetPassword({required String email}) async {
+    try {
+      final response = await supabase.auth.resetPasswordForEmail(email);
+      return response;
+    } catch (e) {
+      log('Error in reset password');
+    }
   }
 
   Future login(
