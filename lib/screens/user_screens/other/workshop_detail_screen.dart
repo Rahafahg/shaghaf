@@ -13,6 +13,7 @@ import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/booking_model.dart';
+import 'package:shaghaf/models/user_review_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/organizer_screens/add%20workshop/add_workshop_screen.dart';
 import 'package:shaghaf/screens/user_screens/other/bloc/booking_bloc.dart';
@@ -20,6 +21,7 @@ import 'package:shaghaf/screens/user_screens/other/user_ticket_screen.dart';
 import 'package:shaghaf/widgets/buttons/date_radio_button.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/ticket_card.dart';
+import 'package:shaghaf/widgets/cards/user_review_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,6 +37,13 @@ class WorkshopDetailScreen extends StatelessWidget {
     final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
     String selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
     Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    List<UserReviewModel> workshopReview = [];
+    for (UserReviewModel userReview in GetIt.I.get<DataLayer>().reviews) {
+      if (userReview.workshopGroupId == workshop.workshopGroupId) {
+        workshopReview.add(userReview);
+        log(userReview.toJson().toString());
+      }
+    }
     return BlocProvider(
       create: (context) => BookingBloc()
         ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
@@ -455,6 +464,24 @@ class WorkshopDetailScreen extends StatelessWidget {
                         const SizedBox(
                           height: 30,
                         ),
+                        workshopReview.isNotEmpty
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Users Review"),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: List.generate(
+                                          workshopReview.length,
+                                          (index) => UserReviewCard(
+                                              index: index,
+                                              workshopReview: workshopReview)),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(""),
                         // scan for organizers "if exist"
                         organizer != null
                             ? (specific.isOnline == true ||

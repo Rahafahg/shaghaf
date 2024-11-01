@@ -63,7 +63,7 @@ class OrgNavigationScreen extends StatelessWidget {
                     icon: HugeIcon(
                       size: 24.0,
                       icon: tabsIcons[index],
-                      color: context.read<NavigationBloc>().currentScreen == 0 ? Constants.mainOrange : Colors.grey,
+                      color: context.read<NavigationBloc>().currentScreen == index ? Constants.mainOrange : Colors.grey,
                     ),
                   );
                 })

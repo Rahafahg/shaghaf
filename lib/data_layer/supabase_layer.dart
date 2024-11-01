@@ -10,6 +10,7 @@ import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
+import 'package:shaghaf/models/user_review_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/services/notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -148,7 +149,7 @@ class SupabaseLayer {
     }
   }
 
-getAllWorkshops() async {
+  getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
     final response = await GetIt.I.get<SupabaseLayer>().supabase.from('workshop_group').select('*, workshop(*), organizer(*)');
@@ -157,10 +158,13 @@ getAllWorkshops() async {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
     for (var workshopAsJson in response) {
-      WorkshopGroupModel workshopGroup = WorkshopGroupModel.fromJson(workshopAsJson);
+      WorkshopGroupModel workshopGroup =
+          WorkshopGroupModel.fromJson(workshopAsJson);
+
       List<Workshop> filtered = [];
       for (var workshop in workshopGroup.workshops) {
-        if(DateTime.now().isBefore(DateTime.parse(workshop.date)) && workshop.availableSeats >= 1) {
+        if (DateTime.now().isBefore(DateTime.parse(workshop.date)) &&
+            workshop.availableSeats >= 1) {
           filtered.add(workshop);
         }
       }
@@ -170,6 +174,7 @@ getAllWorkshops() async {
       }
       // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
+
     log("length of all : ${workshops.length}");
     log("length of filtered : ${result.length}");
     GetIt.I.get<DataLayer>().allWorkshops = workshops;
@@ -235,28 +240,27 @@ getAllWorkshops() async {
     }
   }
 
-  Future<void> addWorkshop({
-    required String title,
-    File? workshopImage,
-    File? instructorImage,
-    required String description,
-    required String categoryId,
-    required String targetedAudience,
-    required String date,
-    required String from,
-    required String to,
-    required double price,
-    required int seats,
-    required int availableSeats,
-    required String instructorName,
-    required String instructorDesc,
-    bool? isOnline,
-    String? venueName,
-    String? venueType,
-    String? meetingUrl,
-    String? latitude,
-    String? longitude
-  }) async {
+  Future<void> addWorkshop(
+      {required String title,
+      File? workshopImage,
+      File? instructorImage,
+      required String description,
+      required String categoryId,
+      required String targetedAudience,
+      required String date,
+      required String from,
+      required String to,
+      required double price,
+      required int seats,
+      required int availableSeats,
+      required String instructorName,
+      required String instructorDesc,
+      bool? isOnline,
+      String? venueName,
+      String? venueType,
+      String? meetingUrl,
+      String? latitude,
+      String? longitude}) async {
     log('add 1');
     String imageUrl = '';
     try {
@@ -328,7 +332,7 @@ getAllWorkshops() async {
     String imageUrl = '';
     try {
       await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${instructorImage!.path.split('/').last}', instructorImage);
-    } catch (e) {
+      } catch (e) {
       log('Error uploading image: $e');
     }
 
@@ -414,5 +418,14 @@ getAllWorkshops() async {
     final List<String> usersToNotify = data.cast<String>();
     log(usersToNotify.toString());
     sendNotification(extrnalId: usersToNotify,category: category.categoryName,title: title);
+  }
+
+  getAllReviews() async {
+    final reviewResponse =
+        await supabase.from('review').select('*, users(first_name,last_name)');
+
+    for (var element in reviewResponse) {
+      GetIt.I.get<DataLayer>().reviews.add(UserReviewModel.fromJson(element));
+    }
   }
 }

@@ -11,19 +11,27 @@ part 'user_home_state.dart';
 class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
   final supabaseLayer = GetIt.I.get<SupabaseLayer>();
   final dataLayer = GetIt.I.get<DataLayer>();
-  bool changedCategory =false;
+  bool changedCategory = false;
   UserHomeBloc() : super(UserHomeInitial()) {
     on<GetWorkshopsEvent>(getWorkshopsMethod);
     on<HomeSearchEvent>(searchMethod);
     on<ChangeCategoryEvent>(changeCategory);
   }
 
-  FutureOr<void> searchMethod(HomeSearchEvent event, Emitter<UserHomeState> emit) {
-    if(event.search.isEmpty) {
-      emit(SuccessWorkshopsState(search: false, workshops: dataLayer.workshops));
-    }
-    else {
-      emit(SuccessWorkshopsState(search: true,searchTerm: event.search, workshops: dataLayer.workshops.where((workshop)=>workshop.title.toLowerCase().contains(event.search.toLowerCase())).toList()));
+  FutureOr<void> searchMethod(
+      HomeSearchEvent event, Emitter<UserHomeState> emit) {
+    if (event.search.isEmpty) {
+      emit(
+          SuccessWorkshopsState(search: false, workshops: dataLayer.workshops));
+    } else {
+      emit(SuccessWorkshopsState(
+          search: true,
+          searchTerm: event.search,
+          workshops: dataLayer.workshops
+              .where((workshop) => workshop.title
+                  .toLowerCase()
+                  .contains(event.search.toLowerCase()))
+              .toList()));
     }
   }
 
@@ -32,8 +40,10 @@ class UserHomeBloc extends Bloc<UserHomeEvent, UserHomeState> {
     try {
       emit(LoadingWorkshopsState());
       await supabaseLayer.getAllWorkshops();
+      await supabaseLayer.getAllReviews();
       getBookedWorkshops();
-      emit(SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
+      emit(
+          SuccessWorkshopsState(workshops: dataLayer.workshops, search: false));
     } catch (e) {
       emit(ErrorWorkshopsState(msg: 'Bad Internet Connection :('));
     }
