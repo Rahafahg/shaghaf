@@ -23,6 +23,7 @@ import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/cards/user_review_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
+import 'package:shaghaf/widgets/dialogs/show_user_review.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,9 +35,18 @@ class WorkshopDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
-    String selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
-    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
+    final category = GetIt.I
+        .get<DataLayer>()
+        .categories
+        .firstWhere((category) => category.categoryId == workshop.categoryId);
+    String selectedDate = int.parse(date != null && date!.isNotEmpty
+            ? date!.split('-').last
+            : workshop.workshops.first.date.split('-').last)
+        .toString();
+    Workshop specific = workshop.workshops
+        .where((workshop) => workshop.date.contains(selectedDate))
+        .toList()
+        .first;
     List<UserReviewModel> workshopReview = [];
     for (UserReviewModel userReview in GetIt.I.get<DataLayer>().reviews) {
       if (userReview.workshopGroupId == workshop.workshopGroupId) {
@@ -73,14 +83,31 @@ class WorkshopDetailScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 32),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            IconButton(onPressed: ()=>context.pop(), icon: const Icon(Icons.arrow_back_ios, color: Colors.lightGreen, size: 28,)),
-                            organizer==null ? const SizedBox.shrink() : IconButton(onPressed: ()=>context.push(screen: AddWorkshopScreen(
-                              isSingleWorkShope: true, workshop: specific, isEdit: true
-                              )), icon: const Icon(Icons.edit, color: Colors.lightGreen, size: 28,))
+                            IconButton(
+                                onPressed: () => context.pop(),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.lightGreen,
+                                  size: 28,
+                                )),
+                            organizer == null
+                                ? const SizedBox.shrink()
+                                : IconButton(
+                                    onPressed: () => context.push(
+                                        screen: AddWorkshopScreen(
+                                            isSingleWorkShope: true,
+                                            workshop: specific,
+                                            isEdit: true)),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.lightGreen,
+                                      size: 28,
+                                    ))
                           ],
                         ),
                       )
@@ -489,14 +516,27 @@ class WorkshopDetailScreen extends StatelessWidget {
                                     child: Row(
                                       children: List.generate(
                                           workshopReview.length,
-                                          (index) => UserReviewCard(
-                                              index: index,
-                                              workshopReview: workshopReview)),
+                                          (index) => GestureDetector(
+                                                onTap: () {
+                                                  UserReviewModel review =
+                                                      workshopReview[index];
+
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return ShowUserReview(review: review);
+                                                      });
+                                                },
+                                                child: UserReviewCard(
+                                                    index: index,
+                                                    workshopReview:
+                                                        workshopReview),
+                                              )),
                                     ),
                                   ),
                                 ],
                               )
-                            : Text(""),
+                            : const Text(""),
                         // scan for organizers "if exist"
                         organizer != null
                             ? (specific.isOnline == true ||
@@ -644,14 +684,14 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                                   .paid) {
                                                             log("Payment is donnee ${result.status}");
                                                             bloc.add(SaveBookingEvent(
-                                                              group: workshop,
+                                                                group: workshop,
                                                                 workshop: bloc
                                                                         .chosenWorkshop ??
                                                                     workshop
                                                                         .workshops
                                                                         .first,
                                                                 quantity: bloc
-                                                                      .quantity));                                                            
+                                                                    .quantity));
                                                           } else {}
                                                         },
                                                       ),
@@ -751,7 +791,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                           log("Payment is donnee ${result.status}");
                                                           bloc.add(
                                                               SaveBookingEvent(
-                                                                group: workshop,
+                                                            group: workshop,
                                                             workshop: bloc
                                                                     .chosenWorkshop ??
                                                                 workshop
@@ -786,3 +826,4 @@ class WorkshopDetailScreen extends StatelessWidget {
     );
   }
 }
+
