@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as mm;
-
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -17,11 +16,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseLayer {
   final supabase = Supabase.instance.client;
-  Future createAccount(
-      {required String email, required String password}) async {
+  Future createAccount({required String email, required String password}) async {
     try {
-      final AuthResponse response =
-          await supabase.auth.signUp(email: email, password: password);
+      final AuthResponse response = await supabase.auth.signUp(email: email, password: password);
       if (response.user!.userMetadata!.isEmpty) {
         throw Exception('User Already Exists');
       }
@@ -31,18 +28,10 @@ class SupabaseLayer {
     }
   }
 
-  Future verifyOtp(
-      {required String email,
-      required String otp,
-      required String firstName,
-      required String lastName,
-      required String phoneNumber,
-      required String externalId}) async {
+  Future verifyOtp({required String email,required String otp,required String firstName,required String lastName,required String phoneNumber,required String externalId}) async {
     // try {
     log("verifyOtp 1");
-
-    final AuthResponse response = await supabase.auth
-        .verifyOTP(email: email, token: otp, type: OtpType.signup);
+    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
     log("verifyOtp 2");
     final id = response.user!.id;
     UserModel user = UserModel.fromJson({
@@ -71,35 +60,22 @@ class SupabaseLayer {
       required String description,
       required String contactNumber,
       required File? image}) async {
-    final AuthResponse response = await supabase.auth
-        .verifyOTP(email: email, token: otp, type: OtpType.signup);
+    final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
     String imageUrl = "";
     if (image != null) {
       // Upload file to Supabase storage
       try {
-        await GetIt.I
-            .get<SupabaseLayer>()
-            .supabase
-            .storage
-            .from('organizer_images')
-            .upload('public/${image.path.split('/').last}', image);
+        await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${image.path.split('/').last}', image);
       } catch (e) {
         log('Error uploading image: $e');
       }
-
       try {
         // read url from Supabase storage
-        imageUrl = GetIt.I
-            .get<SupabaseLayer>()
-            .supabase
-            .storage
-            .from('organizer_images')
-            .getPublicUrl('public/${image.path.split('/').last}');
+        imageUrl = GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').getPublicUrl('public/${image.path.split('/').last}');
       } catch (e) {
         log('Error uploading image: $e');
       }
     }
-
     final id = response.user!.id;
     OrganizerModel organizer = OrganizerModel.fromJson({
       'organizer_id': id,
@@ -121,19 +97,13 @@ class SupabaseLayer {
       required String password,
       required String role,
       required String externalId}) async {
-    final AuthResponse response = await supabase.auth
-        .signInWithPassword(email: email, password: password);
+    final AuthResponse response = await supabase.auth.signInWithPassword(email: email, password: password);
     log("-----------------------------------------");
     log(response.toString());
     log("-----------------------------------------");
     if (role == 'user') {
-      await supabase
-          .from('users')
-          .update({'external_id': externalId}).eq('user_id', response.user!.id);
-      final temp = await supabase
-          .from('users')
-          .select()
-          .eq('user_id', response.user!.id);
+      await supabase.from('users').update({'external_id': externalId}).eq('user_id', response.user!.id);
+      final temp = await supabase.from('users').select().eq('user_id', response.user!.id);
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
       GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
       OneSignal.Notifications.requestPermission(true);
@@ -141,62 +111,36 @@ class SupabaseLayer {
       log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
     }
     if (role == 'organizer') {
-      final temp = await supabase
-          .from('organizer')
-          .select()
-          .eq('organizer_id', response.user!.id);
+      final temp = await supabase.from('organizer').select().eq('organizer_id', response.user!.id);
       GetIt.I.get<AuthLayer>().organizer = OrganizerModel.fromJson(temp.first);
-      GetIt.I
-          .get<AuthLayer>()
-          .box
-          .write('organizer', GetIt.I.get<AuthLayer>().organizer);
+      GetIt.I.get<AuthLayer>().box.write('organizer', GetIt.I.get<AuthLayer>().organizer);
       log(GetIt.I.get<AuthLayer>().box.hasData('organizer').toString());
     }
     return response;
   }
 
   Future nativeGoogleSignIn() async {
-    const webClientId =
-        '597665796791-ckkteirgascldjib553shdoc8b91p814.apps.googleusercontent.com';
-
-    const iosClientId =
-        '597665796791-gbqm8tukgrgf5b874icenmtrtr2b4rsl.apps.googleusercontent.com';
-
+    const webClientId = '597665796791-ckkteirgascldjib553shdoc8b91p814.apps.googleusercontent.com';
+    const iosClientId = '597665796791-gbqm8tukgrgf5b874icenmtrtr2b4rsl.apps.googleusercontent.com';
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: iosClientId,
-        serverClientId: webClientId,
-      );
+      final GoogleSignIn googleSignIn = GoogleSignIn(clientId: iosClientId,serverClientId: webClientId,);
       final googleUser = await googleSignIn.signIn();
       final googleAuth = await googleUser!.authentication;
       final accessToken = googleAuth.accessToken;
       final idToken = googleAuth.idToken;
-
       if (accessToken == null) {
         throw 'No Access Token found.';
       }
       if (idToken == null) {
         throw 'No ID Token found.';
       }
-
-      final response = await supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
-      );
+      final response = await supabase.auth.signInWithIdToken(provider: OAuthProvider.google,idToken: idToken,accessToken: accessToken,);
       log("you are logeed!");
       log(response.session!.accessToken);
-      await supabase.from('users').update({'external_id': 1111111111111}).eq(
-          'user_id', response.user!.id);
-      final temp = await supabase
-          .from('users')
-          .select()
-          .eq('user_id', response.user!.id);
+      await supabase.from('users').update({'external_id': 1111111111111}).eq('user_id', response.user!.id);
+      final temp = await supabase.from('users').select().eq('user_id', response.user!.id);
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
-      GetIt.I
-          .get<AuthLayer>()
-          .box
-          .write('user', GetIt.I.get<AuthLayer>().user!.toJson());
+      GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user!.toJson());
       log(GetIt.I.get<AuthLayer>().user!.email);
       return response;
     } catch (e) {
@@ -207,11 +151,7 @@ class SupabaseLayer {
 getAllWorkshops() async {
     log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
-    final response = await GetIt.I
-        .get<SupabaseLayer>()
-        .supabase
-        .from('workshop_group')
-        .select('*, workshop(*), organizer(*)');
+    final response = await GetIt.I.get<SupabaseLayer>().supabase.from('workshop_group').select('*, workshop(*), organizer(*)');
     List<WorkshopGroupModel> result = [];
     for (var workshopAsJson in response) {
       workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
@@ -225,7 +165,7 @@ getAllWorkshops() async {
         }
       }
       workshopGroup.workshops = filtered;
-      if(workshopGroup.workshops.isNotEmpty && workshopGroup.workshops != null) {
+      if(workshopGroup.workshops.isNotEmpty) {
         result.add(workshopGroup);
       }
       // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
@@ -234,49 +174,34 @@ getAllWorkshops() async {
     log("length of filtered : ${result.length}");
     GetIt.I.get<DataLayer>().allWorkshops = workshops;
     GetIt.I.get<DataLayer>().workshops = result;
-    GetIt.I.get<DataLayer>().workshopOfTheWeek =
-        result[mm.Random().nextInt(result.length)];
+    GetIt.I.get<DataLayer>().workshopOfTheWeek = result[mm.Random().nextInt(result.length)];
   }
 
   getAllCategories() async {
     final categoriesAsMap = await supabase.from('categories').select();
     log(categoriesAsMap.toString());
-
     // Convert the map into a list of CategoriesModel
-    final List<CategoriesModel> categories =
-        categoriesAsMap.map<CategoriesModel>((category) {
+    final List<CategoriesModel> categories = categoriesAsMap.map<CategoriesModel>((category) {
       return CategoriesModel.fromJson(category);
     }).toList();
 
     // Separate the 'Others' category from the list
-    final List<CategoriesModel> othersCategory = categories
-        .where((category) => category.categoryName == 'Others')
-        .toList();
-    final List<CategoriesModel> otherCategories = categories
-        .where((category) => category.categoryName != 'Others')
-        .toList();
+    final List<CategoriesModel> othersCategory = categories.where((category) => category.categoryName == 'Others').toList();
+    final List<CategoriesModel> otherCategories = categories.where((category) => category.categoryName != 'Others').toList();
 
     // Add 'Others' at the end of the list
-    final List<CategoriesModel> orderedCategories = [
-      ...otherCategories,
-      ...othersCategory
-    ];
+    final List<CategoriesModel> orderedCategories = [...otherCategories,...othersCategory];
 
     // Assign the ordered categories to the DataLayer
     GetIt.I.get<DataLayer>().categories = orderedCategories;
-
     log(GetIt.I.get<DataLayer>().categories.toString());
   }
 
   getBookings() async {
-    final bookingAsMap = await supabase
-        .from('booking')
-        .select()
-        .eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
+    final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
-    GetIt.I.get<DataLayer>().bookings =
-        bookingAsMap.map<BookingModel>((booking) {
+    GetIt.I.get<DataLayer>().bookings = bookingAsMap.map<BookingModel>((booking) {
       return BookingModel.fromJson(booking);
     }).toList();
     log('bookings are : ');
@@ -300,10 +225,7 @@ getAllWorkshops() async {
         'qr_code': qr,
       }).select();
       
-      await supabase
-          .from('workshop')
-          .update({'available_seats': workshop.availableSeats - 1}).eq(
-              'workshop_id', workshop.workshopId);
+      await supabase.from('workshop').update({'available_seats': workshop.availableSeats - 1}).eq('workshop_id', workshop.workshopId);
       log(booking.toString());
       getBookings();
       return booking.first;
@@ -338,25 +260,13 @@ getAllWorkshops() async {
     log('add 1');
     String imageUrl = '';
     try {
-      await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .upload(
-              'public/${workshopImage!.path.split('/').last}', workshopImage);
+      await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${workshopImage!.path.split('/').last}', workshopImage);
     } catch (e) {
       log('Error uploading image: $e');
     }
-
     try {
       // read url from Supabase storage
-      imageUrl = GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .getPublicUrl('public/${workshopImage!.path.split('/').last}');
+      imageUrl = GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').getPublicUrl('public/${workshopImage!.path.split('/').last}');
     } catch (e) {
       log('Error uploading image: $e');
     }
@@ -417,84 +327,70 @@ getAllWorkshops() async {
     log(workshopGroupId);
     String imageUrl = '';
     try {
-      await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .upload(
-              'public/${instructorImage!.path.split('/').last}', instructorImage);
+      await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${instructorImage!.path.split('/').last}', instructorImage);
     } catch (e) {
       log('Error uploading image: $e');
     }
 
     try {
       // read url from Supabase storage
-      imageUrl = GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .getPublicUrl('public/${instructorImage!.path.split('/').last}');
+      imageUrl = GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').getPublicUrl('public/${instructorImage!.path.split('/').last}');
     } catch (e) {
       log('Error uploading image: $e');
     }
     if(isEdit==false) {
       try {
-      await supabase.from('workshop').insert({
-        'date': date,
-        'from_time': from,
-        'to_time': to,
-        'price': price,
-        'number_of_seats': seats,
-        'available_seats': availableSeats,
-        'instructor_name': instructorName,
-        'instructor_image': imageUrl,
-        'instructor_description': instructorDesc,
-        'is_online': isOnline,
-        'workshop_group_id': workshopGroupId,
-        'venue_name': venueName,
-        'venue_type': venueType,
-        'meeting_url': meetingUrl,
-        'latitude' : latitude,
-        'longitude' : longitude
-      });
-      log('$workshopGroupId successfull');
-    } catch (e) {
-      log(e.toString());
-    }
+        await supabase.from('workshop').insert({
+          'date': date,
+          'from_time': from,
+          'to_time': to,
+          'price': price,
+          'number_of_seats': seats,
+          'available_seats': availableSeats,
+          'instructor_name': instructorName,
+          'instructor_image': imageUrl,
+          'instructor_description': instructorDesc,
+          'is_online': isOnline,
+          'workshop_group_id': workshopGroupId,
+          'venue_name': venueName,
+          'venue_type': venueType,
+          'meeting_url': meetingUrl,
+          'latitude' : latitude,
+          'longitude' : longitude
+        });
+        log('$workshopGroupId successfull');
+      } catch (e) {
+        log(e.toString());
+      }
     }
     if(isEdit==true) {
       try {
-      await supabase.from('workshop').update({
-        'date': date,
-        'from_time': from,
-        'to_time': to,
-        'price': price,
-        'number_of_seats': seats,
-        'available_seats': availableSeats,
-        'instructor_name': instructorName,
-        'instructor_image': imageUrl,
-        'instructor_description': instructorDesc,
-        'is_online': isOnline,
-        'workshop_group_id': workshopGroupId,
-        'venue_name': venueName,
-        'venue_type': venueType,
-        'meeting_url': meetingUrl,
-        'latitude' : latitude,
-        'longitude' : longitude
-      }).eq('workshop_id', workshopId!);
-      log('$workshopGroupId successfull');
-    } catch (e) {
-      log(e.toString());
-    }
+        await supabase.from('workshop').update({
+          'date': date,
+          'from_time': from,
+          'to_time': to,
+          'price': price,
+          'number_of_seats': seats,
+          'available_seats': availableSeats,
+          'instructor_name': instructorName,
+          'instructor_image': imageUrl,
+          'instructor_description': instructorDesc,
+          'is_online': isOnline,
+          'workshop_group_id': workshopGroupId,
+          'venue_name': venueName,
+          'venue_type': venueType,
+          'meeting_url': meetingUrl,
+          'latitude' : latitude,
+          'longitude' : longitude
+        }).eq('workshop_id', workshopId!);
+        log('$workshopGroupId successfull');
+      } catch (e) {
+        log(e.toString());
+      }
     }
   }
 
-  submitRating(
-      {required String workshopGroupId,
-      required double rating,
-      String? comment}) async {
+  submitRating({required String workshopGroupId,required double rating,String? comment}) async {
     try {
       await supabase.from('review').insert({
         'rating': rating,
@@ -507,24 +403,16 @@ getAllWorkshops() async {
     }
   }
 
-  sendNotificationWithCategory(
-      {required String categoryId, String? title}) async {
-    final category = GetIt.I
-        .get<DataLayer>()
-        .categories
-        .firstWhere((category) => category.categoryId == categoryId);
+  sendNotificationWithCategory({required String categoryId, String? title}) async {
+    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == categoryId);
     log(category.categoryName.toString());
-    List? data = await supabase.rpc('get_users_notify',
-        params: {'category': category.categoryName.trim()});
+    List? data = await supabase.rpc('get_users_notify',params: {'category': category.categoryName.trim()});
     if(data==null) {
       log('no users added this category');
       return;
     }
     final List<String> usersToNotify = data.cast<String>();
     log(usersToNotify.toString());
-    sendNotification(
-        extrnalId: usersToNotify,
-        category: category.categoryName,
-        title: title);
+    sendNotification(extrnalId: usersToNotify,category: category.categoryName,title: title);
   }
 }

@@ -31,175 +31,141 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is ErrorState) {
               context.pop();
-              showDialog(
-                  context: context,
-                  builder: (context) => ErrorDialog(msg: state.msg));
+              showDialog(context: context,builder: (context) => ErrorDialog(msg: state.msg));
             }
             if (state is LoadingState) {
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => Center(
-                      child:
-                          LottieBuilder.asset("assets/lottie/loading.json")));
+              showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child:LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
-              state.role == 'user'
-                  ? context.pushRemove(screen: const NavigationScreen())
-                  : context.pushRemove(screen:  const OrgNavigationScreen());
+              context.pushRemove(screen: state.role == 'user' ? const NavigationScreen() : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Scaffold(
-                body: SingleChildScrollView(
-              child: Container(
-                width: context.getWidth(),
-                height: context.getHeight(),
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/auth_bg.png'),
-                        fit: BoxFit.cover)),
-                child: Column(
-                  children: [
-                    // logo
-                    Container(
-                        padding: const EdgeInsets.only(top: 61, left: 92),
-                        child: Image.asset('assets/images/logo.png')),
-                    // form
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 44),
-                      child: Container(
-                        width: context.getWidth(),
-                        decoration: BoxDecoration(
-                            color: const Color(0xC9D9D9D9),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Form(
-                          key: formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              children: [
-                                AuthField(
-                                    type: 'Email', controller: emailController),
-                                const SizedBox(height: 10),
-                                AuthField(
-                                    type: 'Password',
-                                    controller: passwordController),
-                                const SizedBox(height: 20),
-                                MainButton(
-                                  text: "Sign In",
-                                  width: context.getWidth(),
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      bloc.add(LoginEvent(
-                                          email: emailController.text,
-                                          password: passwordController.text));
-                                    }
-                                  },
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AuthTextButton(
-                                      text: "Create Account",
-                                      onPressed: () => context.pushReplacement(
-                                          screen: const SelectRoleScreen()),
-                                    ),
-                                    AuthTextButton(
-                                      text: "Forgot Password ?",
-                                      onPressed: () =>
-                                          log("handle me later !!"),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        height: 1,
-                                        width: 100,
-                                        color: Constants.mainOrange),
-                                    const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text("or",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: "Poppins",
-                                              color: Constants.mainOrange)),
-                                    ),
-                                    Container(
-                                        height: 1,
-                                        width: 100,
-                                        color: Constants.mainOrange),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                // MainButton(text: "Sign in as particepant with gmail", fontSize: 12,),
-                                GestureDetector(
-                                  onTap: () => bloc.add(LoginWithEmailEvent()),
-                                  child: Container(
+              body: SingleChildScrollView(
+                child: Container(
+                  width: context.getWidth(),
+                  height: context.getHeight(),
+                  decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/auth_bg.png'),fit: BoxFit.cover)),
+                  child: Column(
+                    children: [
+                      // logo
+                      Container(padding: const EdgeInsets.only(top: 61, left: 92),child: Image.asset('assets/images/logo.png')),
+                      // form
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 44),
+                        child: Container(
+                          width: context.getWidth(),
+                          decoration: BoxDecoration(color: const Color(0xC9D9D9D9),borderRadius: BorderRadius.circular(20)),
+                          child: Form(
+                            key: formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                children: [
+                                  AuthField(type: 'Email', controller: emailController),
+                                  const SizedBox(height: 10),
+                                  AuthField(type: 'Password',controller: passwordController),
+                                  const SizedBox(height: 20),
+                                  MainButton(
+                                    text: "Sign In",
                                     width: context.getWidth(),
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        color: Constants.mainOrange,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: const Center(
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        bloc.add(LoginEvent(email: emailController.text,password: passwordController.text));
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AuthTextButton(
+                                        text: "Create Account",
+                                        onPressed: () => context.pushReplacement(screen: const SelectRoleScreen()),
+                                      ),
+                                      AuthTextButton(
+                                        text: "Forgot Password ?",
+                                        onPressed: () => log("handle me later !!"),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(height: 1,width: 100,color: Constants.mainOrange),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text("or",style: TextStyle(fontSize: 14,fontFamily: "Poppins",color: Constants.mainOrange)),
+                                      ),
+                                      Container(height: 1,width: 100,color: Constants.mainOrange),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  // MainButton(text: "Sign in as particepant with gmail", fontSize: 12,),
+                                  GestureDetector(
+                                    onTap: () => bloc.add(LoginWithEmailEvent()),
+                                    child: Container(
+                                      width: context.getWidth(),
+                                      height: 45,
+                                      decoration: BoxDecoration(color: Constants.mainOrange,borderRadius:BorderRadius.circular(25)),
+                                      child: const Center(
                                         child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                            "Sign in as particepant with gmail",
-                                            style: TextStyle(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Sign in as particepant with gmail",
+                                              style: TextStyle(
                                                 fontSize: 12,
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.white)),
-                                        SizedBox(width: 8),
-                                        FaIcon(FontAwesomeIcons.google,
-                                            color: Color(0xffffffff))
-                                      ],
-                                    )),
+                                                color: Colors.white
+                                              )
+                                            ),
+                                            SizedBox(width: 8),
+                                            FaIcon(FontAwesomeIcons.google,color: Color(0xffffffff))
+                                          ],
+                                        )
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                GestureDetector(
-                                  onTap: () => context.pushRemove(
-                                      screen: const NavigationScreen()),
-                                  child: Container(
-                                    width: context.getWidth(),
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: const Center(
-                                        child: Text("Continue as a guest",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Constants.mainOrange,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: "Poppins"))),
+                                  const SizedBox(height: 20),
+                                  GestureDetector(
+                                    onTap: () => context.pushRemove(screen: const NavigationScreen()),
+                                    child: Container(
+                                      width: context.getWidth(),
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(255, 255, 255, 255),
+                                        borderRadius: BorderRadius.circular(25)
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Continue as a guest",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Constants.mainOrange,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Poppins"
+                                          )
+                                        )
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              )
+            ),
           ),
         );
       }),

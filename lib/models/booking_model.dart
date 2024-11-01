@@ -25,8 +25,7 @@ class BookingModel {
       'booking_id': bookingId,
       'user_id': userId,
       'workshop_id': workshopId,
-      'booking_date':
-          bookingDate.toIso8601String(), // Converts to ISO 8601 with time zone
+      'booking_date': bookingDate.toIso8601String(), // Converts to ISO 8601 with time zone
       'number_of_tickets': numberOfTickets,
       'total_price': totalPrice,
       'is_attended': isAttended,
@@ -40,8 +39,7 @@ class BookingModel {
       bookingId: json['booking_id'],
       userId: json['user_id'],
       workshopId: json['workshop_id'],
-      bookingDate: DateTime.parse(
-          json['booking_date']), // Parses ISO 8601 format with time zone
+      bookingDate: DateTime.parse(json['booking_date']), // Parses ISO 8601 format with time zone
       numberOfTickets: json['number_of_tickets'],
       totalPrice: json['total_price'],
       isAttended: json['is_attended'] ?? false,

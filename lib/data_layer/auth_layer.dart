@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get_storage/get_storage.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';
@@ -30,9 +29,9 @@ class AuthLayer {
     } else if (box.hasData('organizer')) {
       Map<String, dynamic> organizerAsMap = box.read('organizer');
       organizer = OrganizerModel.fromJson(organizerAsMap);
-      log('user found ${organizer!.name}');
+      log('organizer found ${organizer!.name}');
     } else {
-      log('user not found');
+      log('no account found');
     }
   }
 

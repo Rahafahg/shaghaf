@@ -10,13 +10,11 @@ extension ScreenNav on BuildContext {
   }
 
   pushReplacement({required Widget screen}) {
-    Navigator.pushReplacement(
-        this, MaterialPageRoute(builder: (context) => screen));
+    Navigator.pushReplacement(this, MaterialPageRoute(builder: (context) => screen));
   }
 
   pushRemove({required Widget screen}) {
-    Navigator.pushAndRemoveUntil(this,
-        MaterialPageRoute(builder: (context) => screen), (predicate) => false);
+    Navigator.pushAndRemoveUntil(this,MaterialPageRoute(builder: (context) => screen), (predicate) => false);
   }
 
   pop() {

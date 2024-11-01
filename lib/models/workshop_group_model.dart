@@ -11,7 +11,7 @@ class WorkshopGroupModel {
   final String organizerId;
   List<Workshop> workshops;
   final OrganizerModel organizer; // Use OrganizerModel here
-  
+
   WorkshopGroupModel({
     required this.workshopGroupId,
     required this.title,
@@ -35,9 +35,7 @@ class WorkshopGroupModel {
       targetedAudience: json['targeted_audience'],
       rating: (json['rating'] as num).toDouble(),
       organizerId: json['organizer_id'],
-      workshops: (json['workshop'] as List<dynamic>)
-          .map((e) => Workshop.fromJson(e))
-          .toList(),
+      workshops: (json['workshop'] as List<dynamic>).map((e) => Workshop.fromJson(e)).toList(),
       organizer: OrganizerModel.fromJson(json['organizer']), // Parse OrganizerModel
     );
   }
@@ -57,8 +55,6 @@ class WorkshopGroupModel {
     };
   }
 }
-
-
 
 // Workshop Model
 class Workshop {
