@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -12,6 +13,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:shaghaf/widgets/text_fields/edit_org_text_field.dart';
@@ -223,16 +225,16 @@ class OrganizerProfileScreen extends StatelessWidget {
                         ProfileCard(
                             text: organizer?.email ?? "", icon: Icons.mail),
                         const SizedBox(height: 10),
-                        const Text("Settings",
+                        Text("settings".tr(),
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff666666),
                               fontFamily: "Poppins",
                             )),
                         const SizedBox(height: 30),
-                        const ProfileCard(
-                            text: "Switch to Arabic", icon: Icons.translate),
-                        const ProfileCard(text: "Mode", icon: Icons.dark_mode),
+                        switchingLanguage(),
+                       // ProfileCard(text: "Switch".tr(), icon: Icons.translate),
+                        ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
                       ],
                     ),
                   ),
@@ -254,11 +256,11 @@ class OrganizerProfileScreen extends StatelessWidget {
                       GetIt.I.get<AuthLayer>().box.remove('organizer');
                       context.pushRemove(screen: const LoginScreen());
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(HugeIcons.strokeRoundedLogout01),
                         SizedBox(width: 5),
-                        Text("Logout"),
+                        Text("Logout".tr()),
                       ],
                     ),
                   ),

@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/main.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/auth_screens/otp_screen.dart';
@@ -73,18 +75,18 @@ class CreateUserAccountScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
                                   children: [
-                                    AuthField(type: 'First Name',controller: fNameController),
+                                    AuthField(type: 'First Name'.tr(),controller: fNameController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Last Name',controller: lNameController),
+                                    AuthField(type: 'Last Name'.tr(),controller: lNameController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Email',controller: emailController),
+                                    AuthField(type: 'Email'.tr(),controller: emailController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Password',controller: passwordController),
+                                    AuthField(type: 'Password'.tr(),controller: passwordController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Phone Number',controller: phoneNumberController),
+                                    AuthField(type: 'Number'.tr(),controller: phoneNumberController),
                                     const SizedBox(height: 20),
                                     MainButton(
-                                      text: "Sign Up",
+                                      text: "Sign Up".tr(),
                                       width: context.getWidth(),
                                       onPressed: () {
                                       if (formKey.currentState!.validate()) {
@@ -97,8 +99,8 @@ class CreateUserAccountScreen extends StatelessWidget {
                                     onTap: () => context.pushReplacement(screen: const LoginScreen()),
                                     child: SizedBox(
                                       width: context.getWidth(),
-                                      child: const Text(
-                                        "I Already have an account",
+                                      child:  Text(
+                                        "I Already have an account".tr(),
                                         textAlign: TextAlign.end,
                                         style: TextStyle(
                                           fontSize: 11,
