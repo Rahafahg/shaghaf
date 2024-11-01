@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
@@ -12,11 +13,18 @@ import 'package:shaghaf/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await setup();
-  runApp(DevicePreview(
-    enabled: false,
-    builder: (context) => const MainApp(),
-  ));
+  runApp(EasyLocalization(
+          supportedLocales: [Locale('en'), Locale('ar')],
+          path: 'assets/translations',
+          fallbackLocale: Locale('ar', 'SA'),
+          child: MainApp())
+      //   DevicePreview(
+      //   enabled: false,
+      //   builder: (context) => const MainApp(),
+      // )
+      );
 }
 
 class MainApp extends StatelessWidget {
@@ -25,6 +33,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         theme: myappTheme,
         debugShowCheckedModeBanner: false,
         home: GetIt.I.get<AuthLayer>().organizer != null
