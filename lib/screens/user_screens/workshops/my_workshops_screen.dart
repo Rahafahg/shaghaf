@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -56,7 +57,18 @@ class MyWorkshopsScreen extends StatelessWidget {
           log(incomingWorkshops.length.toString());
         }
       },
-      builder: (context, index)=> DefaultTabController(
+      builder: (context, index)=> GetIt.I.get<AuthLayer>().user == null ? Scaffold(
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            height: context.getHeight(),
+            child:
+              const Center(
+                child: Text("You need to have an account to browse your bookings",textAlign: TextAlign.center, style: TextStyle(fontFamily: "Poppins"),),
+              ),
+          ),
+        ),
+      ) : DefaultTabController(
         length: 2,
         child: Scaffold(
           backgroundColor: Constants.backgroundColor,

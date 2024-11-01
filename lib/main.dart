@@ -8,7 +8,6 @@ import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
 import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/services/setup.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:shaghaf/theme/app_theme.dart';
 
 Future<void> main() async {

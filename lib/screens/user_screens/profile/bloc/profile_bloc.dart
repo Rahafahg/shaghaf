@@ -38,7 +38,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   try {
     // Supabase update operation
     emit(LoadingProfileState());
-    final response = await GetIt.I.get<SupabaseLayer>().supabase.from('users').update({
+    await GetIt.I.get<SupabaseLayer>().supabase.from('users').update({
       'first_name': event.firstName,
       'last_name': event.lastName,
       'phone_number': event.phoneNumber
@@ -48,7 +48,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
     // Check for null AuthLayer or user
     var authLayer = GetIt.I.get<AuthLayer>();
-    if (authLayer == null || authLayer.user == null) {
+    if (authLayer.user == null) {
       log("AuthLayer or user is null!");
       return;
     }

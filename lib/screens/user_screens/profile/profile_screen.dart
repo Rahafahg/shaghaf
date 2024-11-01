@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -15,6 +13,7 @@ import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -40,21 +39,6 @@ class ProfileScreen extends StatelessWidget {
                       size: Size(context.getWidth(), 200),
                       painter: RPSCustomPainter(width: context.getWidth()),
                     ),
-                    //--> profile image Avatar for orgnazire
-                    // Positioned(
-                    //     bottom: 0,
-                    //     left: 10,
-                    //     right: 10,
-                    //     child: CircleAvatar(
-                    //         backgroundColor: Colors.black,
-                    //         radius: 46,
-                    //         child: Image.asset(
-                    //             "assets/images/default_organizer_image.png")))
-
-                    // Positioned(
-                    //     top: 50,
-                    //     right: 16,
-                    //     child: ),
                   ],
                 ),
               ),
@@ -178,7 +162,7 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "${user?.firstName} ${user?.lastName}",
+                            user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
@@ -186,7 +170,7 @@ class ProfileScreen extends StatelessWidget {
                               fontFamily: "Poppins",
                             ),
                           ),
-                          IconButton(
+                          user==null ? const SizedBox.shrink() : IconButton(
                               onPressed: () {
                                 bloc.add(EditUserProfileEvent(
                                     firstName: user!.firstName,
@@ -201,10 +185,10 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Padding(
+                      user == null ? const SizedBox.shrink() : Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                         child: ProfileCard(
-                            text: user?.phoneNumber ?? "", icon: Icons.phone),
+                            text: user.phoneNumber, icon: Icons.phone),
                       ),
                     ],
                   );
@@ -215,9 +199,9 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProfileCard(text: user?.email ?? "", icon: Icons.mail),
+                    user==null ? const SizedBox.shrink() : ProfileCard(text: user.email, icon: Icons.mail),
                     const SizedBox(height: 10),
-                    Text("settings").tr(),
+                    const Text("settings").tr(),
                     const SizedBox(height: 30),
                     // const ProfileCardpress(
                     //     text: "Switch to Arabic", icon: Icons.translate),
@@ -244,15 +228,15 @@ class ProfileScreen extends StatelessWidget {
                                   onPressed: () {
                                     //context.setLocale(Locale("en"));
                                     // Locale currentLocale = context.locale;
-                                    if (context.locale == Locale("en")) {
-                                      context.setLocale(Locale("ar"));
+                                    if (context.locale == const Locale("en")) {
+                                      context.setLocale(const Locale("ar"));
                                       print("tran to ar");
                                     } else {
-                                      context.setLocale(Locale("en"));
+                                      context.setLocale(const Locale("en"));
                                       print("trans to en");
                                     }
                                   },
-                                  icon: Icon(Icons.translate),
+                                  icon: const Icon(Icons.translate),
                                   color: Constants.mainOrange,
                                 ),
                               ),
@@ -273,7 +257,9 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
+              user == null ?
+              MainButton(text: 'Login', onPressed: ()=>context.pushRemove(screen: const LoginScreen()),)
+              : ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),

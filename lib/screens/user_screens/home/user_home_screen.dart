@@ -89,7 +89,6 @@ class UserHomeScreen extends StatelessWidget {
               }
               if (state is SuccessWorkshopsState) {
                 final workshops = GetIt.I.get<DataLayer>().workshops;
-                print('looook heeere im here now kannn ${workshops.length}');
                 final groupedworkshops = groupworkshopsByCategory(workshops);
                 WorkshopGroupModel workshopOfTheWeek =
                     GetIt.I.get<DataLayer>().workshopOfTheWeek ??
@@ -263,7 +262,7 @@ class UserHomeScreen extends StatelessWidget {
                                           fontSize: 18,
                                           color: Constants.textColor,
                                           fontFamily: "Poppins"))),
-                              ContainersTabBar(
+                              user==null ? const SizedBox.shrink() : ContainersTabBar(
                                 tabs: categories,
                                 selectedTab: selectedCategory,
                                 onTap: (index) => bloc.add(ChangeCategoryEvent(

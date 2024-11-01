@@ -594,7 +594,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {
                                   if (state is ChangeQuantityState) {
-                                    return Row(
+                                    return GetIt.I.get<AuthLayer>().user==null ? const SizedBox.shrink() : Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
@@ -706,7 +706,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                     );
                                   }
                                   // pay for users
-                                  return Row(
+                                  return GetIt.I.get<AuthLayer>().user==null ? const SizedBox.shrink() : Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [

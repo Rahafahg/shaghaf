@@ -18,8 +18,10 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   Workshop? chosenWorkshop;
   BookingBloc() : super(BookingInitial()) {
     on<GetBookingsEvent>((event, emit) async {
-      log('message getting bookings');
-      await GetIt.I.get<SupabaseLayer>().getBookings();
+      if(GetIt.I.get<AuthLayer>().user != null) {
+        log('message getting bookings');
+        await GetIt.I.get<SupabaseLayer>().getBookings();
+      }
     });
     on<AddQuantityEvent>((event, emit) {
       emit(ChangeQuantityState(quantity: quantity = quantity + 1));
