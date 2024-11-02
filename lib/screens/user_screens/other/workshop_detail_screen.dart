@@ -1,11 +1,10 @@
 import 'dart:developer';
 import 'package:barcode_scan2/platform_wrapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
-import 'package:moyasar/moyasar.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
@@ -24,6 +23,7 @@ import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/cards/user_review_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
 import 'package:shaghaf/widgets/dialogs/show_user_review.dart';
+import 'package:shaghaf/widgets/dialogs/moyasar.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -111,18 +111,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                           ],
                         ),
                       )
-                      // Positioned(
-                      //   top: 40.0,
-                      //   left: 16.0,
-                      //   child: GestureDetector(
-                      //     onTap: () => context.pop(),
-                      //     child: const Icon(
-                      //       Icons.arrow_back_ios,
-                      //       color: Constants.lightGreen,
-                      //       size: 28.0,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   // workshop details
@@ -203,7 +191,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         const Divider(
                             color: Constants.dividerColor, thickness: 1),
                         // desc
-                        const Text("Description"),
+                        Text("Description".tr()),
                         const SizedBox(height: 5),
                         Text(workshop.description,
                             style: const TextStyle(
@@ -211,8 +199,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                         const Divider(
                             color: Constants.dividerColor, thickness: 1),
                         // instructor
-                        const Text(
-                          "Instructor",
+                        Text(
+                          "Instructor".tr(),
                         ),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
@@ -298,8 +286,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Available Days",
+                            Text(
+                              "Available Days".tr(),
                             ),
                             organizer != null
                                 ? TextButton(
@@ -312,10 +300,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                           isSingleWorkShope: true,
                                           workshop: specific,
                                         )),
-                                    child: const Row(
+                                    child: Row(
                                       children: [
-                                        Icon(Icons.add),
-                                        Text("Add day"),
+                                        const Icon(Icons.add),
+                                        Text("Add day".tr()),
                                       ],
                                     ))
                                 : const Text("")
@@ -341,8 +329,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                           height: 20,
                         ),
                         // available seats
-                        const Text(
-                          "Available Seats",
+                        Text(
+                          "Available Seats".tr(),
                         ),
                         const SizedBox(
                           height: 10,
@@ -375,8 +363,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                           thickness: 1,
                         ),
                         // location
-                        const Text(
-                          "Location",
+                        Text(
+                          "Location".tr(),
                         ),
                         Row(
                           children: [
@@ -469,7 +457,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                   }
                                                 },
                                                 fontSize: 12,
-                                                text: "Open in google maps"))
+                                                text: "Open maps".tr()))
                                       ]);
                               }
                             }
@@ -499,7 +487,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                               }
                                             },
                                             fontSize: 12,
-                                            text: "Open in google maps"))
+                                            text: "Open maps".tr()))
                                   ]);
                           },
                         ),
@@ -510,7 +498,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text("Users Review"),
+                                  Text("Users Review".tr()),
                                   SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
@@ -544,7 +532,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                         .isAfter(DateTime.parse(specific.date)))
                                 ? const SizedBox.shrink()
                                 : MainButton(
-                                    text: "Scan Now",
+                                    text: "Scan Now".tr(),
                                     width: context.getWidth(),
                                     onPressed: () async {
                                       var result = await BarcodeScanner
@@ -585,9 +573,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                         log("Error: No response from Supabase.");
                                         showDialog(
                                             context: context,
-                                            builder: (context) =>
-                                                const ErrorDialog(
-                                                    msg: "Invalid qr code"));
+                                            builder: (context) => ErrorDialog(
+                                                msg: "Invalid qr code".tr()));
                                       }
                                     })
                             // pay for users
@@ -629,78 +616,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                         MainButton(
                                           text:
                                               "Pay ${specific.price * state.quantity} SR",
-                                          onPressed: () => showModalBottomSheet(
-                                            context: context,
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            builder: (context) {
-                                              return Container(
-                                                padding:
-                                                    const EdgeInsets.all(24),
-                                                width: context.getWidth(),
-                                                height: context.getHeight(
-                                                    divideBy: 1.35),
-                                                decoration: const BoxDecoration(
-                                                  color:
-                                                      Constants.backgroundColor,
-                                                  borderRadius:
-                                                      BorderRadius.vertical(
-                                                          top: Radius.circular(
-                                                              20)),
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    const Text("Fill Card Info",
-                                                        style: TextStyle(
-                                                            fontSize: 20)),
-                                                    Theme(
-                                                      data: ThemeData(
-                                                          textTheme:
-                                                              const TextTheme()),
-                                                      child: CreditCard(
-                                                        config: PaymentConfig(
-                                                          creditCard:
-                                                              CreditCardConfig(
-                                                                  saveCard:
-                                                                      false,
-                                                                  manual:
-                                                                      false),
-                                                          publishableApiKey:
-                                                              dotenv.env[
-                                                                  'MOYASAR_KEY']!,
-                                                          amount: ((specific
-                                                                      .price *
-                                                                  bloc.quantity *
-                                                                  100))
-                                                              .toInt(),
-                                                          description:
-                                                              "description",
-                                                        ),
-                                                        onPaymentResult:
-                                                            (PaymentResponse
-                                                                result) async {
-                                                          if (result.status ==
-                                                              PaymentStatus
-                                                                  .paid) {
-                                                            log("Payment is donnee ${result.status}");
-                                                            bloc.add(SaveBookingEvent(
-                                                                group: workshop,
-                                                                workshop: bloc
-                                                                        .chosenWorkshop ??
-                                                                    workshop
-                                                                        .workshops
-                                                                        .first,
-                                                                quantity: bloc
-                                                                    .quantity));
-                                                          } else {}
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                          onPressed: () => moyasar(context,
+                                              specific, bloc, workshop),
                                         )
                                       ],
                                     );
@@ -736,80 +653,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       ),
                                       // pay button with moyasar
                                       MainButton(
-                                        text:
-                                            "Pay ${specific.price * bloc.quantity} SR",
-                                        onPressed: () => showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return Container(
-                                              padding: const EdgeInsets.all(24),
-                                              width: context.getWidth(),
-                                              height: context.getHeight(
-                                                  divideBy: 1.35),
-                                              decoration: const BoxDecoration(
-                                                color:
-                                                    Constants.backgroundColor,
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                        top: Radius.circular(
-                                                            20)),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  const Text("Fill Card Info",
-                                                      style: TextStyle(
-                                                          fontSize: 20)),
-                                                  Theme(
-                                                    data: ThemeData(
-                                                        textTheme:
-                                                            const TextTheme()),
-                                                    child: CreditCard(
-                                                      config: PaymentConfig(
-                                                        creditCard:
-                                                            CreditCardConfig(
-                                                                saveCard: false,
-                                                                manual: false),
-                                                        publishableApiKey:
-                                                            dotenv.env[
-                                                                'MOYASAR_KEY']!,
-                                                        amount: ((specific
-                                                                    .price *
-                                                                bloc.quantity *
-                                                                100))
-                                                            .toInt(),
-                                                        description:
-                                                            "description",
-                                                      ),
-                                                      onPaymentResult:
-                                                          (PaymentResponse
-                                                              result) async {
-                                                        if (result.status ==
-                                                            PaymentStatus
-                                                                .paid) {
-                                                          log("Payment is donnee ${result.status}");
-                                                          bloc.add(
-                                                              SaveBookingEvent(
-                                                            group: workshop,
-                                                            workshop: bloc
-                                                                    .chosenWorkshop ??
-                                                                workshop
-                                                                    .workshops
-                                                                    .first,
-                                                            quantity:
-                                                                bloc.quantity,
-                                                          ));
-                                                        } else {}
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      )
+                                          text:
+                                              "Pay ${specific.price * bloc.quantity} SR",
+                                          onPressed: () => moyasar(context,
+                                              specific, bloc, workshop))
                                     ],
                                   );
                                 },

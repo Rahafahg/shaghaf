@@ -1,4 +1,5 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -46,11 +47,20 @@ Future<dynamic> ratingDialog(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("How do you rate ${workshop.title} ?",
-                          style: const TextStyle(
-                              fontSize: 18,
-                              color: Constants.textColor,
-                              fontFamily: "Poppins")),
+                      Row(
+                        children: [
+                          Text("RateQ".tr(),
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Constants.textColor,
+                                  fontFamily: "Poppins")),
+                          Text(" ${workshop.title}",
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Constants.textColor,
+                                  fontFamily: "Poppins")),
+                        ],
+                      ),
                       const SizedBox(height: 16),
                       RatingBar(
                         alignment: Alignment.center,
@@ -61,7 +71,7 @@ Future<dynamic> ratingDialog(
                         maxRating: 5,
                       ),
                       const SizedBox(height: 16),
-                      const Text("Leave a comment"),
+                      Text("Rate comment".tr()),
                     ],
                   ),
                 ),
@@ -80,7 +90,7 @@ Future<dynamic> ratingDialog(
                 ),
                 const SizedBox(height: 16),
                 MainButton(
-                  text: "Submit",
+                  text: "Submit".tr(),
                   width: context.getWidth(divideBy: 2),
                   onPressed: () {
                     if (rating != null) {
@@ -90,10 +100,10 @@ Future<dynamic> ratingDialog(
                           comment: commentController.text);
                       context.pop();
                       successfullyDialog(
-                          context: context, title: "Thank you for rating");
+                          context: context, title: "Rate Thank".tr());
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("You should rate before to submit")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Rate msg".tr())));
                     }
                   },
                 ),

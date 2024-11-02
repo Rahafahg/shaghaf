@@ -155,6 +155,15 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       //   }
       //   return hasMatchingType;
       // }).toList();
+      // filteredWorkshops = filteredWorkshops.where((workshopGroup) {
+      //   bool hasMatchingType = workshopGroup.workshops.any((workshop) =>
+      //       workshop.isOnline == isOnline &&
+      //       workshop.date == dateController.text);
+      //   if (!hasMatchingType) {
+      //     log("Excluding workshopGroup: No workshops of type $selectedType found in this group.");
+      //   }
+      //   return hasMatchingType;
+      // }).toList();
     }
     emit(ShowCategoryWorkshopsState(workshops: filteredWorkshops));
   }

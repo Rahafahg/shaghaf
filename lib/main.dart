@@ -35,7 +35,7 @@ class MainApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        theme: myappTheme,
+        theme: myappTheme(context),
         debugShowCheckedModeBanner: false,
         home: GetIt.I.get<AuthLayer>().organizer != null
             ? const OrgNavigationScreen()

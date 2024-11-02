@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hugeicons/hugeicons.dart';
@@ -50,9 +51,9 @@ void successfullyDialog(
                     const SizedBox(
                       height: 40,
                     ),
-                    const Text(
-                      'The process completed Successfully',
-                      style: TextStyle(color: Colors.black),
+                     Text(
+                      "Process completed".tr(),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ],
                 ),

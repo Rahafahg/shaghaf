@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -36,16 +37,16 @@ class UserNotificationScreen extends StatelessWidget {
       ),
       backgroundColor: Constants.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment
               .start, // Align content horizontally to the left
           children: [
             const SizedBox(height: 20),
             Text(
-              "Notifications",
+              "Notifications".tr(),
               style: Theme.of(context).textTheme.titleMedium,
-            ),
+            ), 
             Column(
               children: List.generate(
                 notifications?.length ?? 0,

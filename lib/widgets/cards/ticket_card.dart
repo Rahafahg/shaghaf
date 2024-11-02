@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -57,7 +58,12 @@ class TicketCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Text("Number of tickets: ${booking.numberOfTickets}")
+                Row(
+                  children: [
+                    Text("Tickets num".tr()),
+                    Text(" ${booking.numberOfTickets}")
+                  ],
+                )
               ],
             ),
             Row(
@@ -67,15 +73,19 @@ class TicketCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Text(
-                    "Booked at: ${booking.bookingDate.toString().split(".").first}")
+                Row(
+                  children: [
+                    Text("Booked at".tr()),
+                    Text(" ${booking.bookingDate.toString().split(".").first}")
+                  ],
+                )
               ],
             ),
             const Divider(),
             Text(workshopGroup.title,
                 style: const TextStyle(fontSize: 20, fontFamily: "Poppins")),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
@@ -90,7 +100,15 @@ class TicketCard extends StatelessWidget {
                     const Icon(Icons.watch_later_outlined,
                         size: 16, color: Constants.mainOrange),
                     const SizedBox(width: 5),
-                    Text("${workshop.fromTime} to ${workshop.toTime}")
+                    Row(
+                      children: [
+                        Text("From".tr()),
+                        Text(workshop.fromTime),
+                        const SizedBox(width: 5),
+                        Text("To".tr()),
+                        Text(workshop.toTime),
+                      ],
+                    )
                   ],
                 ),
               ],

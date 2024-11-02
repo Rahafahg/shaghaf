@@ -66,9 +66,7 @@ flutter:
         - asset: assets/fonts/Poppins-ExtraLight.ttf
         - asset: assets/fonts/Poppins-Light.ttf
   
-    - family: Mirza
+    - family: ReadexPro
       fonts:
-        - asset: assets/fonts/Mirza-Bold.ttf
-        - asset: assets/fonts/Mirza-SemiBold.ttf
-        - asset: assets/fonts/Mirza-Medium.ttf
-        - asset: assets/fonts/Mirza-Regular.ttf
+        - asset: assets/fonts/ReadexPro-Bold.ttf
+        - asset: assets/fonts/ReadexPro-Regular.ttf
