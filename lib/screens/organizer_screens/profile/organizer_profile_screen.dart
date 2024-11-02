@@ -14,6 +14,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:shaghaf/widgets/text_fields/edit_org_text_field.dart';
@@ -233,6 +234,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                             )),
                         const SizedBox(height: 30),
                         const switchingLanguage(),
+                       // ProfileCard(text: "Switch".tr(), icon: Icons.translate),
                         ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
                       ],
                     ),

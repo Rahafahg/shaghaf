@@ -35,24 +35,29 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is ErrorState) {
               context.pop();
-              showDialog(context: context,builder: (context) => ErrorDialog(msg: state.msg));
+              showDialog(
+                  context: context,
+                  builder: (context) => ErrorDialog(msg: state.msg));
             }
             if (state is LoadingState) {
-              showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child: LottieBuilder.asset("assets/lottie/loading.json")));
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
               context.pushReplacement(
-                screen: OtpScreen(
-                  email: emailController.text,
-                  role: 'organizer',
-                  name: nameController.text,
-                  image: state.image,
-                  contactNumber: contactNumberController.text,
-                  description: descriptionController.text,
-                  licenseNumber: 'asdf'
-                )
-              );
+                  screen: OtpScreen(
+                      email: emailController.text,
+                      role: 'organizer',
+                      name: nameController.text,
+                      image: state.image,
+                      contactNumber: contactNumberController.text,
+                      description: descriptionController.text,
+                      licenseNumber: 'asdf'));
             }
           },
           child: GestureDetector(
@@ -134,13 +139,14 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40,),
-                      ],
-                    ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ),
+              ),
+            )),
           ),
         );
       }),

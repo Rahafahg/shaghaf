@@ -202,6 +202,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     user==null ? const SizedBox.shrink() : ProfileCard(text: user.email, icon: Icons.mail),
                     const SizedBox(height: 10),
+                    // Text("settings").tr(),
                     Text("settings".tr(),
                         style: const TextStyle(
                           fontSize: 18,
@@ -209,17 +210,7 @@ class ProfileScreen extends StatelessWidget {
                           fontFamily: "Poppins",
                         )),
                     const SizedBox(height: 30),
-                    // const ProfileCardpress(
-                    //     text: "Switch to Arabic", icon: Icons.translate),
-                    switchingLanguage(onChangeLang: () {
-                        if (context.locale == const Locale("en")) {
-                        context.setLocale(const Locale("ar"));
-                        print("tran to ar");
-                      } else {
-                        context.setLocale(const Locale("en"));
-                        print("trans to en");
-                      }
-                    }),
+                    const switchingLanguage(),
                     ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
                   ],
                 ),

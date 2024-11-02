@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,14 +33,24 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is ErrorState) {
               context.pop();
-              showDialog(context: context,builder: (context) => ErrorDialog(msg: state.msg));
+              showDialog(
+                  context: context,
+                  builder: (context) => ErrorDialog(msg: state.msg));
             }
             if (state is LoadingState) {
-              showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child:LottieBuilder.asset("assets/lottie/loading.json")));
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => Center(
+                      child:
+                          LottieBuilder.asset("assets/lottie/loading.json")));
             }
             if (state is SuccessState) {
               context.pop();
-              context.pushRemove(screen: state.role == 'user' ? const NavigationScreen() : const OrgNavigationScreen());
+              context.pushRemove(
+                  screen: state.role == 'user'
+                      ? const NavigationScreen()
+                      : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(

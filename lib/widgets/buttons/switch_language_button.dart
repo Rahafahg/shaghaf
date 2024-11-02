@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 
 class switchingLanguage extends StatelessWidget {
-  final Function()? onChangeLang;
-  const switchingLanguage({super.key, this.onChangeLang});
+  const switchingLanguage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,17 @@ class switchingLanguage extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Constants.profileColor,
                 child: IconButton(
-                  onPressed: onChangeLang,
+                  onPressed: () {
+                    //context.setLocale(Locale("en"));
+                    // Locale currentLocale = context.locale;
+                    if (context.locale == const Locale("en")) {
+                      context.setLocale(const Locale("ar"));
+                      print("tran to ar");
+                    } else {
+                      context.setLocale(const Locale("en"));
+                      print("trans to en");
+                    }
+                  },
                   icon: const Icon(Icons.translate),
                   color: Constants.mainOrange,
                 ),
