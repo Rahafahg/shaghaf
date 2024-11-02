@@ -224,6 +224,15 @@ class SupabaseLayer {
     getBookedWorkshops();
   }
 
+  getAllBookings() async {
+    List<BookingModel> temp = [];
+    final bookingsAsMap = await supabase.from('booking').select();
+    for (var book in bookingsAsMap) {
+      temp.add(BookingModel.fromJson(book));
+    }
+    GetIt.I.get<DataLayer>().bookings = temp;
+  }
+
   Future<dynamic> saveBooking({
     required Workshop workshop,
     required String qr,

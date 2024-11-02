@@ -57,5 +57,6 @@ Map<String, List<WorkshopGroupModel>> groupworkshopsByCategory(List<WorkshopGrou
     }
     groupedItems[category]!.add(workshop);
   }
+  GetIt.I.get<DataLayer>().workshopsByCategory = groupedItems;
   return groupedItems;
 }

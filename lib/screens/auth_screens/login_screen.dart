@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +6,10 @@ import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/screens/admin_screens/admin_org_screen.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/auth_screens/email_for_reset_screen.dart';
+import 'package:shaghaf/screens/navigation_screen/admin_navigation_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
@@ -50,7 +51,7 @@ class LoginScreen extends StatelessWidget {
               context.pushRemove(
                   screen: state.role == 'user'
                       ? const NavigationScreen()
-                      : const OrgNavigationScreen());
+                      : state.role=='admin' ? const AdminNavigationScreen() : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
