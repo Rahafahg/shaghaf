@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
@@ -77,9 +78,9 @@ class OtpScreen extends StatelessWidget {
                         decoration: BoxDecoration(color: const Color(0xC9D9D9D9),borderRadius: BorderRadius.circular(20)),
                         child: Column(
                           children: [
-                            const Text(
-                              "Confirm your Email",
-                              style: TextStyle(
+                            Text(
+                              "Confirm your Email".tr(),
+                              style: const TextStyle(
                                 fontSize: 18,
                                 color: Constants.mainOrange,
                                 fontFamily: "Poppins",
@@ -88,7 +89,7 @@ class OtpScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 7,),
                             Text(
-                              "We have sent to : $email\na one-time-password (OTP) to confirm your email",
+                              "We have sent to : $email\na one-time-password (OTP) to confirm your email".tr(),
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
                             ),
@@ -111,13 +112,13 @@ class OtpScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
-                                    "Didn’t receive code ? ",
-                                    style: TextStyle(color: Color(0xff666666),fontFamily: "Poppins",fontSize: 12),
+                                  Text(
+                                    "Didn’tReceive".tr(),
+                                    style: const TextStyle(color: Color(0xff666666),fontFamily: "Poppins",fontSize: 12),
                                   ),
                                   OtpTimerButton(
                                     onPressed: () => log("handle me"),
-                                    text: const Text("Re-send",style: TextStyle(fontFamily: "Poppins",color: Constants.mainOrange,fontSize: 12)),
+                                    text: Text("Re-send".tr(),style: const TextStyle(fontFamily: "Poppins",color: Constants.mainOrange,fontSize: 12)),
                                     duration: 60,
                                     buttonType: ButtonType.text_button,
                                   ),

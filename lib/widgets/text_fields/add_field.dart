@@ -63,7 +63,7 @@ class AddField extends StatelessWidget {
               ),
             ),
           )
-          : Container(
+          : SizedBox(
               width: type == 'Price in SR' || type == 'Seats' ? context.getWidth(divideBy: 3) : context.getWidth(),
               // decoration: BoxDecoration(
                 // borderRadius: const BorderRadius.all(Radius.circular(13.0)), // Circular border radius

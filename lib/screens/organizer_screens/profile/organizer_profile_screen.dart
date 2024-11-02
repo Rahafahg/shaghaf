@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
@@ -223,16 +225,15 @@ class OrganizerProfileScreen extends StatelessWidget {
                         ProfileCard(
                             text: organizer?.email ?? "", icon: Icons.mail),
                         const SizedBox(height: 10),
-                        const Text("Settings",
-                            style: TextStyle(
+                        Text("settings".tr(),
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Color(0xff666666),
                               fontFamily: "Poppins",
                             )),
                         const SizedBox(height: 30),
-                        const ProfileCard(
-                            text: "Switch to Arabic", icon: Icons.translate),
-                        const ProfileCard(text: "Mode", icon: Icons.dark_mode),
+                        const switchingLanguage(),
+                        ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
                       ],
                     ),
                   ),
@@ -254,11 +255,11 @@ class OrganizerProfileScreen extends StatelessWidget {
                       GetIt.I.get<AuthLayer>().box.remove('organizer');
                       context.pushRemove(screen: const LoginScreen());
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(HugeIcons.strokeRoundedLogout01),
-                        SizedBox(width: 5),
-                        Text("Logout"),
+                        const Icon(HugeIcons.strokeRoundedLogout01),
+                        const SizedBox(width: 5),
+                        Text("Logout".tr()),
                       ],
                     ),
                   ),

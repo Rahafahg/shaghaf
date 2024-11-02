@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -79,13 +80,13 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
                                   children: [
-                                    AuthField(type: 'Name', controller: nameController),
+                                    AuthField(type: 'Name'.tr(), controller: nameController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Email',controller: emailController),
+                                    AuthField(type: 'Email'.tr(),controller: emailController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Password',controller: passwordController),
+                                    AuthField(type: 'Password'.tr(),controller: passwordController),
                                     const SizedBox(height: 10),
-                                    AuthField(type: 'Contact Number',controller: contactNumberController),
+                                    AuthField(type: 'Number'.tr(),controller: contactNumberController),
                                     const SizedBox(height: 10),
                                     BlocBuilder<AuthBloc, AuthState>(
                                       builder: (context, state) {
@@ -96,7 +97,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                           image = state.image;
                                         }
                                         return AuthField(
-                                          type: 'Photo (optional)',
+                                          type: 'photo'.tr(),
                                           image: image, // Pass the selected image
                                           onUploadImg: () async {
                                             final photoAsFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -111,10 +112,10 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       },
                                     ),
                                     const SizedBox(height: 20),
-                                    AuthField(type: 'Description',controller: descriptionController,),
+                                    AuthField(type: 'Description'.tr(),controller: descriptionController,),
                                     const SizedBox(height: 20),
                                     MainButton(
-                                      text: "Sign Up",
+                                      text: "Sign Up".tr(),
                                       width: context.getWidth(),
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {
@@ -126,7 +127,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       },
                                     ),
                                     const SizedBox(height: 4),
-                                    AuthTextButton(text: "I Already have an account",onPressed: () => context.pushReplacement(screen: const LoginScreen()))
+                                    AuthTextButton(text: "I Already have an account".tr(),onPressed: () => context.pushReplacement(screen: const LoginScreen()))
                                   ],
                                 ),
                               ),

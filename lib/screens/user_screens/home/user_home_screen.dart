@@ -9,6 +9,7 @@ import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_notification_screen.dart';
@@ -65,8 +66,8 @@ class UserHomeScreen extends StatelessWidget {
                   Text("Hello ${user?.firstName ?? 'guest'}",
                       style: const TextStyle(
                           fontSize: 16, color: Constants.lightOrange)),
-                  const Text(
-                    "Welcome to Shaghaf",
+                  Text(
+                    "Welcome to Shaghaf".tr(context: context),
                     style: TextStyle(fontSize: 16, color: Constants.mainOrange),
                   ),
                 ],

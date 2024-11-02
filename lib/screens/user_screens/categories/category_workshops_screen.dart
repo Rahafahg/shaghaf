@@ -15,8 +15,7 @@ import 'package:shaghaf/widgets/text_fields/search_field.dart';
 class CategoryWorkshopsScreen extends StatelessWidget {
   final CategoriesModel category;
   final CategoriesBloc bloc;
-  const CategoryWorkshopsScreen(
-      {super.key, required this.category, required this.bloc});
+  const CategoryWorkshopsScreen({super.key, required this.category, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +26,22 @@ class CategoryWorkshopsScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: Constants.backgroundColor,
         appBar: PreferredSize(
-          preferredSize:
-              Size(context.getWidth(), context.getHeight(divideBy: 13)),
+          preferredSize:Size(context.getWidth(), context.getHeight(divideBy: 13)),
           child: AppBar(
             leading: IconButton(
               onPressed: () => context.pop(),
-              icon:
-                  const Icon(Icons.arrow_back_ios, color: Constants.lightGreen),
+              icon: const Icon(Icons.arrow_back_ios, color: Constants.lightGreen),
             ),
             forceMaterialTransparency: true,
             centerTitle: true,
             title: Text(
               category.categoryName,
-              style: const TextStyle(
-                fontSize: 20,
-                fontFamily: "Poppins",
-                color: Constants.textColor,
-              ),
+              style: const TextStyle(fontSize: 20,fontFamily: "Poppins",color: Constants.textColor,),
             ),
             bottom: const PreferredSize(
               preferredSize: Size.fromHeight(1),
               child: Padding(
-                padding:
-                    EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 6),
+                padding: EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 6),
                 child: Divider(height: 1),
               ),
             ),
@@ -66,9 +58,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: context.getWidth(divideBy: 1.3),
-                        child: SearchField(
-                            onChanged: (value) => bloc.add(CategorySearchEvent(
-                                searchTerm: value, category: category))),
+                        child: SearchField(onChanged: (value) => bloc.add(CategorySearchEvent(searchTerm: value, category: category))),
                       ),
                       IconButton(
                           icon: const HugeIcon(

@@ -3,6 +3,16 @@ part of 'categories_bloc.dart';
 @immutable
 sealed class CategoriesEvent {}
 
+final class FilterCategoryWorkshopsEvent extends CategoriesEvent {
+  final CategoriesModel? category;
+  final String? searchTerm;
+  final String? date;
+  final int? type;
+  final int? ratingType;
+  final RangeValues? range;
+  FilterCategoryWorkshopsEvent({this.category, this.searchTerm, this.date, this.range, this.ratingType, this.type});
+}
+
 final class CategorySearchEvent extends CategoriesEvent {
   // final List<WorkshopGroupModel> workshops;
   final String searchTerm;
@@ -22,11 +32,11 @@ final class HandleDateEvent extends CategoriesEvent {
   HandleDateEvent({required this.date});
 }
 
-final class FilterEvent extends CategoriesEvent {
-  final String? date;
-  final RangeValues? range;
-  FilterEvent({this.date, this.range});
-}
+// final class FilterEvent extends CategoriesEvent {
+//   final String? date;
+//   final RangeValues? range;
+//   FilterEvent({this.date, this.range});
+// }
 
 final class ChangeTypeEvent extends CategoriesEvent {
   final int index;

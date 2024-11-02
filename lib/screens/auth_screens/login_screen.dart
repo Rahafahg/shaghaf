@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,12 +66,12 @@ class LoginScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(16),
                               child: Column(
                                 children: [
-                                  AuthField(type: 'Email', controller: emailController),
+                                  AuthField(type: 'Email'.tr(), controller: emailController),
                                   const SizedBox(height: 10),
-                                  AuthField(type: 'Password',controller: passwordController),
+                                  AuthField(type: 'Password'.tr(),controller: passwordController),
                                   const SizedBox(height: 20),
                                   MainButton(
-                                    text: "Sign In",
+                                    text: "Sign In".tr(),
                                     width: context.getWidth(),
                                     onPressed: () {
                                       if (formKey.currentState!.validate()) {
@@ -83,11 +84,11 @@ class LoginScreen extends StatelessWidget {
                                     mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                     children: [
                                       AuthTextButton(
-                                        text: "Create Account",
+                                        text: "Create Account".tr(),
                                         onPressed: () => context.pushReplacement(screen: const SelectRoleScreen()),
                                       ),
                                       AuthTextButton(
-                                        text: "Forgot Password ?",
+                                        text: "Forgot Password ?".tr(),
                                         onPressed: () => context.push(screen: const EmailForResetScreen()),
                                       )
                                     ],
@@ -97,9 +98,9 @@ class LoginScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(height: 1,width: 100,color: Constants.mainOrange),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Text("or",style: TextStyle(fontSize: 14,fontFamily: "Poppins",color: Constants.mainOrange)),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text("or".tr(),style: const TextStyle(fontSize: 14,fontFamily: "Poppins",color: Constants.mainOrange)),
                                       ),
                                       Container(height: 1,width: 100,color: Constants.mainOrange),
                                     ],
@@ -112,21 +113,21 @@ class LoginScreen extends StatelessWidget {
                                       width: context.getWidth(),
                                       height: 45,
                                       decoration: BoxDecoration(color: Constants.mainOrange,borderRadius:BorderRadius.circular(25)),
-                                      child: const Center(
+                                      child: Center(
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "Sign in as particepant with gmail",
-                                              style: TextStyle(
+                                              "Sign in as particepant with gmail".tr(),
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.white
                                               )
                                             ),
-                                            SizedBox(width: 8),
-                                            FaIcon(FontAwesomeIcons.google,color: Color(0xffffffff))
+                                            const SizedBox(width: 8),
+                                            const FaIcon(FontAwesomeIcons.google,color: Color(0xffffffff))
                                           ],
                                         )
                                       ),
@@ -142,10 +143,10 @@ class LoginScreen extends StatelessWidget {
                                         color: const Color.fromARGB(255, 255, 255, 255),
                                         borderRadius: BorderRadius.circular(25)
                                       ),
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
-                                          "Continue as a guest",
-                                          style: TextStyle(
+                                          "Continue as a guest".tr(),
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             color: Constants.mainOrange,
                                             fontWeight: FontWeight.w600,

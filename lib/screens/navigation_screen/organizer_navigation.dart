@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -16,7 +17,7 @@ class OrgNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> tabs = ['Home', 'Profile'];
+    List<String> tabs = ['Home'.tr(), 'Profile'.tr()];
     List<IconData> tabsIcons = [HugeIcons.strokeRoundedHome09, HugeIcons.strokeRoundedUser];
     return MultiBlocProvider(
       providers: [

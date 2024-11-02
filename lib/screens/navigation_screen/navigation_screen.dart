@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -18,7 +19,6 @@ class NavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> tabs = ["Home", "Categories", "Workshops", "Profile"];
     List<IconData> tabsIcons = [HugeIcons.strokeRoundedHome09, HugeIcons.strokeRoundedMenuSquare, HugeIcons.strokeRoundedFile02, HugeIcons.strokeRoundedUser];
     return MultiBlocProvider(
       providers: [
@@ -40,6 +40,8 @@ class NavigationScreen extends StatelessWidget {
         ),
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
+            context.locale;
+            List<String> tabs = ["Home".tr(), "Categories".tr(), "Workshops".tr(), "Profile".tr()];
             return Container(
               padding: const EdgeInsets.only(top: 0.3, bottom: 4),
               decoration: const BoxDecoration(border: Border(top: BorderSide(color: Constants.lightOrange, width: 0.5))),

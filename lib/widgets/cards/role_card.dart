@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
@@ -29,7 +30,7 @@ class RoleCard extends StatelessWidget {
             )
           ),
           child: Text(
-            isOrganizer!=null ? "Organizer" : "Participant",
+            isOrganizer!=null ? "Organizer".tr() : "Participant".tr(),
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
