@@ -51,14 +51,19 @@ Future<dynamic> ratingDialog(
                         children: [
                           Text("RateQ".tr(),
                               style: const TextStyle(
+                                fontSize: 18,
+                                color: Constants.textColor,
+                              )),
+                          SizedBox(
+                            width: context.getWidth(divideBy: 3.1),
+                            child: Text(" ${workshop.title}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
                                   fontSize: 18,
                                   color: Constants.textColor,
-                                  fontFamily: "Poppins")),
-                          Text(" ${workshop.title}",
-                              style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Constants.textColor,
-                                  fontFamily: "Poppins")),
+                                )),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),

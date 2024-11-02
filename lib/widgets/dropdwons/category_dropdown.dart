@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -14,28 +15,37 @@ class CategoryDropDown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Workshop Category",
-          style: TextStyle(color: Color(0xff313131), fontSize: 16, fontFamily: "Lato"),
-        ),
-        const SizedBox(height: 8,),
-        DropdownMenu(
-          controller: controller,
-          hintText: "Category",
-          textStyle: const TextStyle(fontSize: 15,fontFamily: "Poppins",color: Constants.textColor),
-          inputDecorationTheme: const InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.white,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(13.0)),
-              borderSide: BorderSide(color: Constants.mainOrange)
-            ),
+        Text(
+          "Workshop Category".tr(context: context),
+          style: const TextStyle(
+            color: Color(0xff313131),
+            fontSize: 16,
           ),
-          width: context.getWidth(divideBy: 1.1),
-          menuHeight: 150,
-          menuStyle: MenuStyle(backgroundColor: WidgetStateProperty.all(Colors.white)),
-          dropdownMenuEntries: List.generate(categories.length, (index)=>DropdownMenuEntry(value: categories[index].categoryName, label: categories[index].categoryName))
         ),
+        const SizedBox(
+          height: 8,
+        ),
+        DropdownMenu(
+            controller: controller,
+            hintText: "Category".tr(context: context),
+            textStyle:
+                const TextStyle(fontSize: 15, color: Constants.textColor),
+            inputDecorationTheme: const InputDecorationTheme(
+              filled: true,
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(13.0)),
+                  borderSide: BorderSide(color: Constants.mainOrange)),
+            ),
+            width: context.getWidth(divideBy: 1.1),
+            menuHeight: 150,
+            menuStyle: MenuStyle(
+                backgroundColor: WidgetStateProperty.all(Colors.white)),
+            dropdownMenuEntries: List.generate(
+                categories.length,
+                (index) => DropdownMenuEntry(
+                    value: categories[index].categoryName,
+                    label: categories[index].categoryName))),
       ],
     );
   }

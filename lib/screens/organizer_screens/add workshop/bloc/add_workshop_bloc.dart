@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +14,7 @@ part 'add_workshop_state.dart';
 
 class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   int currentStep = 0;
-  late String type = workshop?.isOnline == true ? "Online" : "InSite";
+  late String type = workshop?.isOnline == true ? "Online".tr() : "InSite".tr();
   late bool isOnline = workshop?.isOnline ?? false;
   double? latitude;
   double? longitude;
@@ -50,6 +51,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     on<SubmitWorkshopEvent>(submitWorkshopMethod);
     on<GetOrgWorkshopsEvent>((event, emit) {
       getOrgWorkshops();
+      GetIt.I.get<SupabaseLayer>().getAllReviews();
       emit(ShowWorkshopsState());
     });
     on<SpecifyLocationEvent>(specifyLocation);
@@ -84,8 +86,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
           meetingUrl: LinlUrlController.text,
           isOnline: isOnline,
           longitude: longitude.toString(),
-          latitude: latitude.toString()
-        );
+          latitude: latitude.toString());
     } else {
       await GetIt.I.get<SupabaseLayer>().addSingleWorkshop(
           isEdit: event.isEdit,
@@ -142,7 +143,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     emit(ChangeDateState());
   }
 
-  FutureOr<void> specifyLocation(SpecifyLocationEvent event, Emitter<AddWorkshopState> emit) {
+  FutureOr<void> specifyLocation(
+      SpecifyLocationEvent event, Emitter<AddWorkshopState> emit) {
     latitude = event.point.latitude;
     longitude = event.point.longitude;
     emit(SpecifyLocationState(point: event.point));

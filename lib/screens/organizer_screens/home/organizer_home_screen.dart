@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -46,7 +47,10 @@ class OrganizerHomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     indicatorPadding: const EdgeInsets.symmetric(vertical: 1),
-                    tabs: const [TapCustomStyle(title: "Incoming"),TapCustomStyle(title: "Previous")],
+                    tabs: [
+                      TapCustomStyle(title: "Incoming".tr(context: context)),
+                      TapCustomStyle(title: "Previous".tr(context: context))
+                    ],
                   ),
                 ],
               ),
@@ -54,56 +58,73 @@ class OrganizerHomeScreen extends StatelessWidget {
           ),
         ),
         body: BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-          bloc: context.read<AddWorkshopBloc>(),
-          builder: (context, state) {
-            List<WorkshopGroupModel> incoming = [];
-            List<WorkshopGroupModel> previous = [];
-            for (var workshopGroup in GetIt.I.get<DataLayer>().orgWorkshops) {
-              if(workshopGroup.workshops.any((workshop)=>DateTime.now().isBefore(DateTime.parse(workshop.date)))) {
-                incoming.add(workshopGroup);
+            bloc: context.read<AddWorkshopBloc>(),
+            builder: (context, state) {
+              List<WorkshopGroupModel> incoming = [];
+              List<WorkshopGroupModel> previous = [];
+              for (var workshopGroup in GetIt.I.get<DataLayer>().orgWorkshops) {
+                if (workshopGroup.workshops.any((workshop) =>
+                    DateTime.now().isBefore(DateTime.parse(workshop.date)))) {
+                  incoming.add(workshopGroup);
+                }
+                if (workshopGroup.workshops.any((workshop) =>
+                    DateTime.now().isAfter(DateTime.parse(workshop.date)))) {
+                  previous.add(workshopGroup);
+                }
               }
-              if(workshopGroup.workshops.any((workshop)=>DateTime.now().isAfter(DateTime.parse(workshop.date)))) {
-                previous.add(workshopGroup);
-              }
-            }
-            log(incoming.length.toString());
-            log(previous.length.toString());
-            return TabBarView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: incoming.isNotEmpty ? ListView.separated(
-                    itemCount: incoming.length,
-                    separatorBuilder: (context,index) => const SizedBox(height: 20,),
-                    itemBuilder: (context,index)=>WorkshopCard(
-                      workshop: incoming[index],
-                      shape: 'rect',
-                      onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: incoming[index])),
-                    ),
-                  ) : SizedBox(
-                    height: context.getHeight(),
-                    child: const Center(child: Text("No incoming workshops yet")),
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: previous.isNotEmpty ? ListView.separated(
-                    itemCount: previous.length,
-                    separatorBuilder: (context,index) => const SizedBox(height: 20,),
-                    itemBuilder: (context,index)=>WorkshopCard(
-                      workshop: previous[index],
-                      shape: 'rect',
-                      onTap: ()=>context.push(screen: WorkshopDetailScreen(workshop: previous[index])),
-                    ),
-                  ) : SizedBox(
-                    height: context.getHeight(),
-                    child: const Center(child: Text("No previous workshops yet")),
-                  )
-                ),
-              ],
-            );
-          }
-        ),
+              log(incoming.length.toString());
+              log(previous.length.toString());
+              return TabBarView(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: incoming.isNotEmpty
+                          ? ListView.separated(
+                              itemCount: incoming.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                height: 20,
+                              ),
+                              itemBuilder: (context, index) => WorkshopCard(
+                                workshop: incoming[index],
+                                shape: 'rect',
+                                onTap: () => context.push(
+                                    screen: WorkshopDetailScreen(
+                                        workshop: incoming[index])),
+                              ),
+                            )
+                          : SizedBox(
+                              height: context.getHeight(),
+                              child: Center(
+                                  child:
+                                      Text("No incoming".tr(context: context))),
+                            )),
+                  Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: previous.isNotEmpty
+                          ? ListView.separated(
+                              itemCount: previous.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                height: 20,
+                              ),
+                              itemBuilder: (context, index) => WorkshopCard(
+                                workshop: previous[index],
+                                shape: 'rect',
+                                onTap: () => context.push(
+                                    screen: WorkshopDetailScreen(
+                                        workshop: previous[index])),
+                              ),
+                            )
+                          : SizedBox(
+                              height: context.getHeight(),
+                              child: Center(
+                                  child:
+                                      Text("No previous".tr(context: context))),
+                            )),
+                ],
+              );
+            }),
       ),
     );
   }

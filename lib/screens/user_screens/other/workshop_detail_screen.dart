@@ -34,6 +34,8 @@ class WorkshopDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String pay = "Pay".tr(context: context);
+    String sr = "SR".tr(context: context);
     final organizer = GetIt.I.get<AuthLayer>().organizer;
     final category = GetIt.I
         .get<DataLayer>()
@@ -403,12 +405,12 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   child: ListTile(
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(specific.isOnline
-                                        ? 'Online'
+                                        ? 'Online'.tr(context: context)
                                         : specific.venueName ??
                                             "To be determained later"),
                                     subtitle: Text(
                                       specific.isOnline
-                                          ? 'Online'
+                                          ? 'Online'.tr(context: context)
                                           : specific.venueType ??
                                               "To be determained later",
                                       style: const TextStyle(
@@ -512,7 +514,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                                   showDialog(
                                                       context: context,
                                                       builder: (context) {
-                                                        return ShowUserReview(review: review);
+                                                        return ShowUserReview(
+                                                            review: review);
                                                       });
                                                 },
                                                 child: UserReviewCard(
@@ -581,84 +584,103 @@ class WorkshopDetailScreen extends StatelessWidget {
                             : BlocBuilder<BookingBloc, BookingState>(
                                 builder: (context, state) {
                                   if (state is ChangeQuantityState) {
-                                    return GetIt.I.get<AuthLayer>().user==null ? const SizedBox.shrink() : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        // plus or minus
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  bloc.add(AddQuantityEvent());
-                                                  log(bloc.quantity.toString());
-                                                },
-                                                icon: const HugeIcon(
-                                                    icon: HugeIcons
-                                                        .strokeRoundedPlusSignSquare,
-                                                    color:
-                                                        Constants.mainOrange)),
-                                            Text("${state.quantity}"),
-                                            IconButton(
-                                                onPressed: () {
-                                                  bloc.add(
-                                                      ReduceQuantityEvent());
-                                                  log(bloc.quantity.toString());
-                                                },
-                                                icon: const HugeIcon(
-                                                    icon: HugeIcons
-                                                        .strokeRoundedMinusSignSquare,
-                                                    color:
-                                                        Constants.mainOrange))
-                                          ],
-                                        ),
-                                        // pay button with moyasar
-                                        MainButton(
-                                          text:
-                                              "Pay ${specific.price * state.quantity} SR",
-                                          onPressed: () => moyasar(context,
-                                              specific, bloc, workshop),
-                                        )
-                                      ],
-                                    );
+                                    return GetIt.I.get<AuthLayer>().user == null
+                                        ? const SizedBox.shrink()
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              // plus or minus
+                                              Row(
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        bloc.add(
+                                                            AddQuantityEvent());
+                                                        log(bloc.quantity
+                                                            .toString());
+                                                      },
+                                                      icon: const HugeIcon(
+                                                          icon: HugeIcons
+                                                              .strokeRoundedPlusSignSquare,
+                                                          color: Constants
+                                                              .mainOrange)),
+                                                  Text("${state.quantity}"),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        bloc.add(
+                                                            ReduceQuantityEvent());
+                                                        log(bloc.quantity
+                                                            .toString());
+                                                      },
+                                                      icon: const HugeIcon(
+                                                          icon: HugeIcons
+                                                              .strokeRoundedMinusSignSquare,
+                                                          color: Constants
+                                                              .mainOrange))
+                                                ],
+                                              ),
+                                              // pay button with moyasar
+                                              MainButton(
+                                                text:
+                                                    "$pay ${specific.price * state.quantity} $sr",
+                                                onPressed: () => moyasar(
+                                                    context,
+                                                    specific,
+                                                    bloc,
+                                                    workshop),
+                                              )
+                                            ],
+                                          );
                                   }
                                   // pay for users
-                                  return GetIt.I.get<AuthLayer>().user==null ? const SizedBox.shrink() : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // plus or minus
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                bloc.add(AddQuantityEvent());
-                                                log(bloc.quantity.toString());
-                                              },
-                                              icon: const HugeIcon(
-                                                  icon: HugeIcons
-                                                      .strokeRoundedPlusSignSquare,
-                                                  color: Constants.mainOrange)),
-                                          Text("${bloc.quantity}"),
-                                          IconButton(
-                                              onPressed: () {
-                                                bloc.add(ReduceQuantityEvent());
-                                                log(bloc.quantity.toString());
-                                              },
-                                              icon: const HugeIcon(
-                                                  icon: HugeIcons
-                                                      .strokeRoundedMinusSignSquare,
-                                                  color: Constants.mainOrange))
-                                        ],
-                                      ),
-                                      // pay button with moyasar
-                                      MainButton(
-                                          text:
-                                              "Pay ${specific.price * bloc.quantity} SR",
-                                          onPressed: () => moyasar(context,
-                                              specific, bloc, workshop))
-                                    ],
-                                  );
+                                  return GetIt.I.get<AuthLayer>().user == null
+                                      ? const SizedBox.shrink()
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // plus or minus
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      bloc.add(
+                                                          AddQuantityEvent());
+                                                      log(bloc.quantity
+                                                          .toString());
+                                                    },
+                                                    icon: const HugeIcon(
+                                                        icon: HugeIcons
+                                                            .strokeRoundedPlusSignSquare,
+                                                        color: Constants
+                                                            .mainOrange)),
+                                                Text("${bloc.quantity}"),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      bloc.add(
+                                                          ReduceQuantityEvent());
+                                                      log(bloc.quantity
+                                                          .toString());
+                                                    },
+                                                    icon: const HugeIcon(
+                                                        icon: HugeIcons
+                                                            .strokeRoundedMinusSignSquare,
+                                                        color: Constants
+                                                            .mainOrange))
+                                              ],
+                                            ),
+                                            // pay button with moyasar
+                                            MainButton(
+                                                text:
+                                                    "Pay ${specific.price * bloc.quantity} SR",
+                                                onPressed: () => moyasar(
+                                                    context,
+                                                    specific,
+                                                    bloc,
+                                                    workshop))
+                                          ],
+                                        );
                                 },
                               )
                       ],
@@ -673,4 +695,3 @@ class WorkshopDetailScreen extends StatelessWidget {
     );
   }
 }
-

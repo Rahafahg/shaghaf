@@ -69,7 +69,7 @@ class UserHomeScreen extends StatelessWidget {
                       const Text("Hello",
                               style: TextStyle(
                                   fontSize: 16, color: Constants.lightOrange))
-                          .tr(),
+                          .tr(context: context),
                       const SizedBox(width: 5),
                       Text(user?.firstName ?? 'guest',
                           style: const TextStyle(
@@ -79,7 +79,7 @@ class UserHomeScreen extends StatelessWidget {
                   const Text(
                     "Welcome",
                     style: TextStyle(fontSize: 16, color: Constants.mainOrange),
-                  ).tr(),
+                  ).tr(context: context),
                 ],
               ),
             ),
@@ -129,7 +129,7 @@ class UserHomeScreen extends StatelessWidget {
                                 width: context.getWidth(),
                                 child: Row(
                                   children: [
-                                    Text("Search results".tr(),
+                                    Text("Search results".tr(context: context),
                                         textAlign: TextAlign.start,
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -145,7 +145,9 @@ class UserHomeScreen extends StatelessWidget {
                                 )),
                             SizedBox(
                                 height: context.getHeight(divideBy: 2),
-                                child: Center(child: Text("No results".tr()))),
+                                child: Center(
+                                    child: Text(
+                                        "No results".tr(context: context)))),
                           ],
                         )
                       : state.workshops.isNotEmpty && state.search == true
@@ -158,7 +160,9 @@ class UserHomeScreen extends StatelessWidget {
                                       width: context.getWidth(),
                                       child: Row(
                                         children: [
-                                          Text("Search results".tr(),
+                                          Text(
+                                              "Search results"
+                                                  .tr(context: context),
                                               textAlign: TextAlign.start,
                                               style: const TextStyle(
                                                 fontSize: 18,
@@ -202,7 +206,8 @@ class UserHomeScreen extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         top: 15, bottom: 12),
                                     width: context.getWidth(),
-                                    child: Text("week Workshop".tr(),
+                                    child: Text(
+                                        "week Workshop".tr(context: context),
                                         textAlign: TextAlign.start,
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -288,18 +293,21 @@ class UserHomeScreen extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.fromLTRB(16, 0, 16, 8),
                                   width: context.getWidth(),
-                                  child: Text("Suggested".tr(),
+                                  child: Text("Suggested".tr(context: context),
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          color: Constants.textColor,
-                                          ))),
-                              user==null ? const SizedBox.shrink() : ContainersTabBar(
-                                tabs: categories,
-                                selectedTab: selectedCategory,
-                                onTap: (index) => bloc.add(ChangeCategoryEvent(
-                                    category: categories[index])),
-                              ),
+                                        fontSize: 18,
+                                        color: Constants.textColor,
+                                      ))),
+                              user == null
+                                  ? const SizedBox.shrink()
+                                  : ContainersTabBar(
+                                      tabs: categories,
+                                      selectedTab: selectedCategory,
+                                      onTap: (index) => bloc.add(
+                                          ChangeCategoryEvent(
+                                              category: categories[index])),
+                                    ),
                               // suggested for you
                               selectedCategory == "All"
                                   ? GridView.builder(
