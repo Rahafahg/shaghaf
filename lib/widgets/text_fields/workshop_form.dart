@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +22,10 @@ class WorkShopForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> types = ["InSite", "Online"];
+    List<String> types = [
+      "InSite".tr(context: context),
+      "Online".tr(context: context)
+    ];
     return Column(
       children: [
         AddDateField(
@@ -37,7 +41,7 @@ class WorkShopForm extends StatelessWidget {
               if (state is ChangeImageState) {
                 return AddField(
                   image: state.image,
-                  type: 'Instructor photo',
+                  type: 'Instructor photo'.tr(context: context),
                   onUploadImg: () async {
                     // Pick image from gallery
                     final photoAsFile = await ImagePicker()
@@ -56,7 +60,7 @@ class WorkShopForm extends StatelessWidget {
               }
               return AddField(
                 image: bloc.instructorimage,
-                type: 'Instructor photo',
+                type: 'Instructor photo'.tr(context: context),
                 onUploadImg: () async {
                   // Pick image from gallery
                   final photoAsFile = await ImagePicker()
@@ -74,36 +78,36 @@ class WorkShopForm extends StatelessWidget {
               );
             }),
         AddField(
-          type: 'Instructor name',
+          type: 'Instructor name'.tr(context: context),
           controller: bloc.instructorNameController,
         ),
         AddField(
-          type: 'Instructor description',
+          type: "Instructor des".tr(context: context),
           controller: bloc.instructorDescController,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AddField(
-              type: "Price in SR",
+              type: "Price in SR".tr(context: context),
               controller: bloc.priceController,
             ),
             const SizedBox(
               width: 5,
             ),
             AddField(
-              type: "Seats",
+              type: "Seats".tr(context: context),
               controller: bloc.seatsController,
             ),
           ],
         ),
         SizedBox(
             width: context.getWidth(),
-            child: const Text("type",
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Constants.textColor,
-                    fontFamily: "Poppins"))),
+            child: Text("Type".tr(context: context),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Constants.textColor,
+                ))),
         ContainersTabBar(
             tabs: types,
             selectedTab: bloc.type,
@@ -114,9 +118,11 @@ class WorkShopForm extends StatelessWidget {
               return Column(
                 children: [
                   AddField(
-                      type: 'Venue name', controller: bloc.venueNameController),
+                      type: 'Venue name'.tr(context: context),
+                      controller: bloc.venueNameController),
                   AddField(
-                      type: 'Venue type', controller: bloc.venueTypeController),
+                      type: 'Venue type'.tr(context: context),
+                      controller: bloc.venueTypeController),
                   SizedBox(
                       height: 150,
                       width: 350,
@@ -131,14 +137,14 @@ class WorkShopForm extends StatelessWidget {
                 ],
               );
             }
-            return bloc.type == "InSite"
+            return bloc.type == "InSite".tr(context: context)
                 ? Column(
                     children: [
                       AddField(
-                          type: 'Venue name',
+                          type: 'Venue name'.tr(context: context),
                           controller: bloc.venueNameController),
                       AddField(
-                          type: 'Venue type',
+                          type: 'Venue type'.tr(context: context),
                           controller: bloc.venueTypeController),
                       SizedBox(
                           height: 150,
@@ -155,7 +161,7 @@ class WorkShopForm extends StatelessWidget {
                 : Column(
                     children: [
                       AddField(
-                        type: 'Link URL',
+                        type: "Meeting Link".tr(context: context),
                         controller: bloc.LinlUrlController,
                       ),
                     ],

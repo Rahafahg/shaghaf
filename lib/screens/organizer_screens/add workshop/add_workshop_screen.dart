@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +17,11 @@ import 'package:shaghaf/widgets/text_fields/add_field.dart';
 import 'package:shaghaf/widgets/text_fields/workshop_form.dart';
 
 class AddWorkshopScreen extends StatelessWidget {
-  const AddWorkshopScreen({super.key, required this.isSingleWorkShope, this.workshop, this.isEdit=false});
+  const AddWorkshopScreen(
+      {super.key,
+      required this.isSingleWorkShope,
+      this.workshop,
+      this.isEdit = false});
   final bool isSingleWorkShope;
   final Workshop? workshop;
   final bool? isEdit;
@@ -24,6 +29,7 @@ class AddWorkshopScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     File? workshopImage;
     final basicInfoKey = GlobalKey<FormState>();
+    final detalsInfoKey = GlobalKey<FormState>();
     return BlocProvider(
       create: (context) => AddWorkshopBloc(),
       child: Builder(builder: (context) {
@@ -40,7 +46,9 @@ class AddWorkshopScreen extends StatelessWidget {
                     color: Constants.textColor),
               ),
               forceMaterialTransparency: true,
-              title: const Text("Add workshop"),
+              title: Text(isEdit == false
+                  ? "Add workshop".tr(context: context)
+                  : "Edit workshop".tr(context: context)),
               centerTitle: true,
             ),
             body: BlocConsumer<AddWorkshopBloc, AddWorkshopState>(
@@ -70,25 +78,35 @@ class AddWorkshopScreen extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Row(
-                              textDirection: TextDirection.rtl,
+                              // textDirection: TextDirection.rtl,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 bloc.currentStep == 1
                                     ? MainButton(
-                                        text: 'Create',
+                                        text: 'Create'.tr(context: context),
                                         onPressed: () {
-                                          bloc.add(SubmitWorkshopEvent(
-                                              isSingleWorkShope:
-                                                  isSingleWorkShope,
-                                              image: workshopImage!));
+                                          if (detalsInfoKey.currentState!
+                                                  .validate() &&
+                                              bloc.instructorimage != null) {
+                                            bloc.add(SubmitWorkshopEvent(
+                                                isSingleWorkShope:
+                                                    isSingleWorkShope,
+                                                image: workshopImage!));
+                                          } else {
+                                            log("handle me later");
+                                          }
                                         }) // handle me later
                                     : MainButton(
-                                        text: 'Next',
-                                        onPressed: (){
-                                          if(basicInfoKey.currentState!.validate() && workshopImage!=null && bloc.categoryController.text.isNotEmpty) {
+                                        text: 'Next'.tr(context: context),
+                                        onPressed: () {
+                                          if (basicInfoKey.currentState!
+                                                  .validate() &&
+                                              workshopImage != null &&
+                                              bloc.categoryController.text
+                                                  .isNotEmpty) {
+                                            log("Neext");
                                             details.onStepContinue;
-                                          }
-                                          else {
+                                          } else {
                                             log("handle me later");
                                           }
                                         }),
@@ -97,11 +115,10 @@ class AddWorkshopScreen extends StatelessWidget {
                                     ? const SizedBox.shrink()
                                     : TextButton(
                                         onPressed: details.onStepCancel,
-                                        child: const Text('Back',
-                                            style: TextStyle(
+                                        child: Text('Back'.tr(context: context),
+                                            style: const TextStyle(
                                               fontSize: 15,
                                               color: Constants.mainOrange,
-                                              fontFamily: "Poppins",
                                             )),
                                       )
                               ],
@@ -112,11 +129,10 @@ class AddWorkshopScreen extends StatelessWidget {
                             //1-basic information
                             Step(
                                 isActive: bloc.currentStep >= 0,
-                                title: const Text("Basic information",
-                                    style: TextStyle(
+                                title: Text("Basic info".tr(context: context),
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         color: Constants.mainOrange,
-                                        fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500)),
                                 content: Container(
                                   width: context.getWidth(),
@@ -137,7 +153,8 @@ class AddWorkshopScreen extends StatelessWidget {
                                             if (state is ChangeImageState) {
                                               return AddField(
                                                   image: state.image,
-                                                  type: 'Add Photo',
+                                                  type: 'Add Photo'
+                                                      .tr(context: context),
                                                   onUploadImg: () async {
                                                     // Pick image from gallery
                                                     final photoAsFile =
@@ -147,15 +164,16 @@ class AddWorkshopScreen extends StatelessWidget {
                                                                     ImageSource
                                                                         .gallery);
                                                     if (photoAsFile != null) {
-                                                      workshopImage =
-                                                          File(photoAsFile.path);
+                                                      workshopImage = File(
+                                                          photoAsFile.path);
                                                       String fileName =
                                                           workshopImage!.path
                                                               .split('/')
                                                               .last;
                                                       log("img name: $fileName");
                                                       bloc.add(ChangeImageEvent(
-                                                          image: workshopImage));
+                                                          image:
+                                                              workshopImage));
                                                     } else {
                                                       log('No image selected');
                                                     }
@@ -163,13 +181,15 @@ class AddWorkshopScreen extends StatelessWidget {
                                             }
                                             return AddField(
                                                 image: workshopImage,
-                                                type: 'Add Photo',
+                                                type: 'Add Photo'
+                                                    .tr(context: context),
                                                 onUploadImg: () async {
                                                   final photoAsFile =
                                                       await ImagePicker()
                                                           .pickImage(
-                                                              source: ImageSource
-                                                                  .gallery);
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
                                                   if (photoAsFile != null) {
                                                     workshopImage =
                                                         File(photoAsFile.path);
@@ -188,29 +208,36 @@ class AddWorkshopScreen extends StatelessWidget {
                                         ),
                                         workshopImage != null
                                             ? const SizedBox.shrink()
-                                            : const Text(
-                                                "workshop image is required",
-                                                style: TextStyle(
+                                            : Text(
+                                                "img required"
+                                                    .tr(context: context),
+                                                style: const TextStyle(
                                                   color: Colors.red,
                                                   fontSize: 10,
                                                 )),
                                         AddField(
-                                            type: 'Workshop Title',
+                                            type: 'Workshop Title'
+                                                .tr(context: context),
                                             controller: bloc.titleController),
                                         AddField(
-                                            type: 'Workshop Description',
+                                            type: "Workshop Des"
+                                                .tr(context: context),
                                             controller: bloc.descController),
                                         CategoryDropDown(
-                                            controller: bloc.categoryController),
-                                        bloc.categoryController.text == 'Category'
+                                            controller:
+                                                bloc.categoryController),
+                                        bloc.categoryController.text ==
+                                                "Category".tr(context: context)
                                             ? const SizedBox.shrink()
-                                            : const Text("Category is required",
-                                                style: TextStyle(
+                                            : Text(
+                                                "Category required"
+                                                    .tr(context: context),
+                                                style: const TextStyle(
                                                   color: Colors.red,
                                                   fontSize: 10,
                                                 )),
                                         AddField(
-                                          type: 'Audience',
+                                          type: 'Audience'.tr(context: context),
                                           controller: bloc.audienceController,
                                         ),
                                       ],
@@ -220,12 +247,11 @@ class AddWorkshopScreen extends StatelessWidget {
                             //2-detail
                             Step(
                                 isActive: bloc.currentStep >= 1,
-                                title: const Text(
-                                  "Details",
-                                  style: TextStyle(
+                                title: Text(
+                                  "Details".tr(context: context),
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       color: Constants.mainOrange,
-                                      fontFamily: "Poppins",
                                       fontWeight: FontWeight.w500),
                                 ),
                                 content: Container(
@@ -247,12 +273,11 @@ class AddWorkshopScreen extends StatelessWidget {
                               children: [
                                 SizedBox(
                                   width: context.getWidth(),
-                                  child: const Text(
-                                    "Details",
-                                    style: TextStyle(
+                                  child: Text(
+                                    "Details".tr(context: context),
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         color: Constants.mainOrange,
-                                        fontFamily: "Poppins",
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -265,18 +290,29 @@ class AddWorkshopScreen extends StatelessWidget {
                                     boxShadow: kElevationToShadow[1],
                                     color: Constants.cardColor,
                                   ),
-                                  child: WorkShopForm(
-                                      bloc: bloc, workshop: workshop),
+                                  child: Form(
+                                    key: detalsInfoKey,
+                                    child: WorkShopForm(
+                                        bloc: bloc, workshop: workshop),
+                                  ),
                                 ),
                                 const SizedBox(height: 16),
                                 MainButton(
-                                    text: isEdit==true ? 'Submit Changes' : 'Create',
+                                    text: isEdit == true
+                                        ? 'Submit Changes'.tr(context: context)
+                                        : 'Create'.tr(context: context),
                                     onPressed: () {
-                                      bloc.add(SubmitWorkshopEvent(
-                                        isSingleWorkShope: isSingleWorkShope,
-                                        isEdit: isEdit,
-                                        workshopId: workshop?.workshopId
-                                      ));
+                                      if (detalsInfoKey.currentState!
+                                              .validate() &&
+                                          bloc.instructorimage != null) {
+                                        bloc.add(SubmitWorkshopEvent(
+                                            isSingleWorkShope:
+                                                isSingleWorkShope,
+                                            isEdit: isEdit,
+                                            workshopId: workshop?.workshopId));
+                                      } else {
+                                        log("handle me later");
+                                      }
                                     })
                               ]),
                         ),

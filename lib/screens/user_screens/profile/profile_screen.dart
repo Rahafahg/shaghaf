@@ -57,7 +57,9 @@ class ProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
+                              user == null
+                                  ? "Hello, Guest"
+                                  : "${user.firstName} ${user.lastName}",
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
@@ -65,18 +67,20 @@ class ProfileScreen extends StatelessWidget {
                                 fontFamily: "Poppins",
                               ),
                             ),
-                            user==null ? const SizedBox.shrink() : IconButton(
-                                onPressed: () {
-                                  bloc.add(EditUserProfileEvent(
-                                      firstName: user!.firstName,
-                                      lastName: user.lastName,
-                                      phoneNumber: user.phoneNumber));
-                                },
-                                icon: const Icon(
-                                  Icons.mode_edit_outline_outlined,
-                                  size: 30,
-                                  color: Colors.black,
-                                ))
+                            user == null
+                                ? const SizedBox.shrink()
+                                : IconButton(
+                                    onPressed: () {
+                                      bloc.add(EditUserProfileEvent(
+                                          firstName: user.firstName,
+                                          lastName: user.lastName,
+                                          phoneNumber: user.phoneNumber));
+                                    },
+                                    icon: const Icon(
+                                      Icons.mode_edit_outline_outlined,
+                                      size: 30,
+                                      color: Colors.black,
+                                    ))
                           ],
                         ),
                         const SizedBox(height: 10),
@@ -148,7 +152,7 @@ class ProfileScreen extends StatelessWidget {
                                             bloc.phoneNumberController.text));
                                     log("message222");
                                   },
-                                  text: "Submit",
+                                  text: "Submit".tr(context: context),
                                 )
                               ],
                             ),
@@ -163,34 +167,40 @@ class ProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
+                            user == null
+                                ? "Hello, Guest"
+                                : "${user.firstName} ${user.lastName}",
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
                               color: Constants.textColor,
-                              fontFamily: "Poppins",
                             ),
                           ),
-                          user==null ? const SizedBox.shrink() : IconButton(
-                              onPressed: () {
-                                bloc.add(EditUserProfileEvent(
-                                    firstName: user.firstName,
-                                    lastName: user.lastName,
-                                    phoneNumber: user.phoneNumber));
-                              },
-                              icon: const Icon(
-                                Icons.mode_edit_outline_outlined,
-                                size: 30,
-                                color: Colors.black,
-                              ))
+                          user == null
+                              ? const SizedBox.shrink()
+                              : IconButton(
+                                  onPressed: () {
+                                    bloc.add(EditUserProfileEvent(
+                                        firstName: user.firstName,
+                                        lastName: user.lastName,
+                                        phoneNumber: user.phoneNumber));
+                                  },
+                                  icon: const Icon(
+                                    Icons.mode_edit_outline_outlined,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ))
                         ],
                       ),
                       const SizedBox(height: 10),
-                      user == null ? const SizedBox.shrink() : Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                        child: ProfileCard(
-                            text: user.phoneNumber, icon: Icons.phone),
-                      ),
+                      user == null
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 16.0, 16.0, 0),
+                              child: ProfileCard(
+                                  text: user.phoneNumber, icon: Icons.phone),
+                            ),
                     ],
                   );
                 },
@@ -200,14 +210,15 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    user==null ? const SizedBox.shrink() : ProfileCard(text: user.email, icon: Icons.mail),
+                    user == null
+                        ? const SizedBox.shrink()
+                        : ProfileCard(text: user.email, icon: Icons.mail),
                     const SizedBox(height: 10),
                     // Text("settings").tr(),
-                    Text("settings".tr(),
+                    Text("settings".tr(context: context),
                         style: const TextStyle(
                           fontSize: 18,
                           color: Color(0xff666666),
-                          fontFamily: "Poppins",
                         )),
                     const SizedBox(height: 30),
                     const switchingLanguage(),
@@ -216,31 +227,35 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              user == null ?
-              MainButton(text: 'Login'.tr(), onPressed: ()=>context.pushRemove(screen: const LoginScreen()),)
-              : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      shadowColor: const Color.fromARGB(104, 222, 101, 49),
-                      foregroundColor: Constants.appRedColor,
-                      backgroundColor: Constants.profileColor,
-                      elevation: 8,
-                      fixedSize: const Size(130, 34)),
-                  onPressed: () {
-                    GetIt.I.get<AuthLayer>().user = null;
-                    GetIt.I.get<AuthLayer>().box.remove('user');
-                    GetIt.I.get<AuthLayer>().box.remove('notifications');
-                    GetIt.I.get<AuthLayer>().box.remove('organizer');
-                    context.pushRemove(screen: const LoginScreen());
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(HugeIcons.strokeRoundedLogout01),
-                      const SizedBox(width: 5),
-                      Text("Logout".tr()),
-                    ],
-                  ))
+              user == null
+                  ? MainButton(
+                      text: 'Login'.tr(),
+                      onPressed: () =>
+                          context.pushRemove(screen: const LoginScreen()),
+                    )
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          shadowColor: const Color.fromARGB(104, 222, 101, 49),
+                          foregroundColor: Constants.appRedColor,
+                          backgroundColor: Constants.profileColor,
+                          elevation: 8,
+                          fixedSize: const Size(130, 34)),
+                      onPressed: () {
+                        GetIt.I.get<AuthLayer>().user = null;
+                        GetIt.I.get<AuthLayer>().box.remove('user');
+                        GetIt.I.get<AuthLayer>().box.remove('notifications');
+                        GetIt.I.get<AuthLayer>().box.remove('organizer');
+                        context.pushRemove(screen: const LoginScreen());
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(HugeIcons.strokeRoundedLogout01),
+                          const SizedBox(width: 5),
+                          Text("Logout".tr()),
+                        ],
+                      ))
             ],
           ),
         ),
