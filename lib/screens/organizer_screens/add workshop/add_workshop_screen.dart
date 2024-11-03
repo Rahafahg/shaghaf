@@ -20,7 +20,11 @@ class AddWorkshopScreen extends StatelessWidget {
   final bool isSingleWorkShope;
   final Workshop? workshop;
   final bool? isEdit;
-  const AddWorkshopScreen({super.key,required this.isSingleWorkShope,this.workshop,this.isEdit = false});
+  const AddWorkshopScreen(
+      {super.key,
+      required this.isSingleWorkShope,
+      this.workshop,
+      this.isEdit = false});
   @override
   Widget build(BuildContext context) {
     File? workshopImage;
@@ -36,9 +40,15 @@ class AddWorkshopScreen extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Constants.backgroundColor,
             appBar: AppBar(
-              leading: IconButton(onPressed: () => context.pop(),icon: const Icon(Icons.arrow_back_ios,color: Constants.textColor),),
+              leading: IconButton(
+                onPressed: () => context.pop(),
+                icon: const Icon(Icons.arrow_back_ios,
+                    color: Constants.textColor),
+              ),
               forceMaterialTransparency: true,
-              title: Text(isEdit == false ? "Add workshop".tr(context: context) : "Edit workshop".tr(context: context)),
+              title: Text(isEdit == false
+                  ? "Add workshop".tr(context: context)
+                  : "Edit workshop".tr(context: context)),
               centerTitle: true,
             ),
             body: BlocConsumer<AddWorkshopBloc, AddWorkshopState>(
@@ -47,174 +57,294 @@ class AddWorkshopScreen extends StatelessWidget {
                   context.pushRemove(screen: const OrgNavigationScreen());
                 }
                 if (state is LoadingState) {
-                  showDialog(barrierDismissible: false,context: context,builder: (context) => Center(child: LottieBuilder.asset("assets/lottie/loading.json")));
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => Center(
+                          child: LottieBuilder.asset(
+                              "assets/lottie/loading.json")));
                 }
               },
               builder: (context, state) {
                 return isSingleWorkShope == false
-                ? Stepper(
-                    onStepContinue: () => bloc.add(StepContinueEvent()),
-                    onStepCancel: () => bloc.add(StepCancelEvent()),
-                    currentStep: bloc.currentStep,
-                    connectorColor: WidgetStateProperty.all(Constants.mainOrange),
-                    controlsBuilder: (BuildContext context, ControlsDetails details) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            bloc.currentStep == 1 ?
-                            MainButton(
-                              text: 'Create'.tr(context: context),
-                              onPressed: () {
-                                if (detalsInfoKey.currentState!.validate() && bloc.instructorimage != null) {
-                                  bloc.add(SubmitWorkshopEvent(isSingleWorkShope:isSingleWorkShope,image: workshopImage!));
-                                }
-                                else {
-                                  log("handle me later");
-                                }
-                              }
-                            ) // han
-                            : MainButton(
-                                text: 'Next'.tr(context: context),
-                                onPressed: () {
-                                  if (basicInfoKey.currentState!.validate() && workshopImage != null && bloc.categoryController.text.isNotEmpty) {
-                                    details.onStepContinue!();
-                                  }
-                                }
-                            ),
-                            const SizedBox(width: 8),
-                            bloc.currentStep == 0 ? const SizedBox.shrink()
-                            : TextButton(
-                              onPressed: details.onStepCancel,
-                              child: Text('Back'.tr(context: context),style: const TextStyle(fontSize: 15,color: Constants.mainOrange,)),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    steps: [
-                      //1-basic information
-                      Step(
-                        isActive: bloc.currentStep >= 0,
-                        title: Text("Basic info".tr(context: context),style: const TextStyle(fontSize: 18,color: Constants.mainOrange,fontWeight: FontWeight.w500)),
-                        content: Container(
-                          width: context.getWidth(),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),boxShadow: kElevationToShadow[1],color: Constants.cardColor),
-                          child: Form(
-                            key: basicInfoKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    ? Stepper(
+                        onStepContinue: () => bloc.add(StepContinueEvent()),
+                        onStepCancel: () => bloc.add(StepCancelEvent()),
+                        currentStep: bloc.currentStep,
+                        connectorColor:
+                            WidgetStateProperty.all(Constants.mainOrange),
+                        controlsBuilder:
+                            (BuildContext context, ControlsDetails details) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                BlocBuilder<AddWorkshopBloc,AddWorkshopState>(
-                                  builder: (context, state) {
-                                    if (state is ChangeImageState) {
-                                      return AddField(
-                                        image: state.image,
-                                        type: 'Add Photo'.tr(context: context),
-                                        onUploadImg: () async {
-                                        // Pick image from gallery
-                                          final photoAsFile = await ImagePicker().pickImage(source:ImageSource.gallery);
-                                          if (photoAsFile != null) {
-                                            workshopImage = File(photoAsFile.path);
-                                            String fileName = workshopImage!.path.split('/').last;
-                                            log("img name: $fileName");
-                                            bloc.add(ChangeImageEvent(image:workshopImage));
+                                bloc.currentStep == 1
+                                    ? MainButton(
+                                        text: 'Create'.tr(context: context),
+                                        onPressed: () {
+                                          if (detalsInfoKey.currentState!
+                                                  .validate() &&
+                                              bloc.instructorimage != null) {
+                                            bloc.isOnline == true
+                                                ? bloc.add(SubmitWorkshopEvent(
+                                                    isSingleWorkShope:
+                                                        isSingleWorkShope,
+                                                    image: workshopImage!))
+                                                : bloc.longitude != null &&
+                                                        bloc.latitude != null
+                                                    ? bloc.add(
+                                                        SubmitWorkshopEvent(
+                                                            isSingleWorkShope:
+                                                                isSingleWorkShope,
+                                                            image:
+                                                                workshopImage!))
+                                                    : ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                            content: Text(
+                                                                "map required".tr(
+                                                                    context:
+                                                                        context))));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "field not empty".tr(
+                                                            context:
+                                                                context))));
                                           }
-                                          else {
-                                            log('No image selected');
+                                        }) // han
+                                    : MainButton(
+                                        text: 'Next'.tr(context: context),
+                                        onPressed: () {
+                                          if (basicInfoKey.currentState!
+                                                  .validate() &&
+                                              workshopImage != null &&
+                                              bloc.categoryController.text
+                                                  .isNotEmpty) {
+                                            details.onStepContinue!();
                                           }
-                                        }
-                                      );
-                                    }
-                                    return AddField(
-                                      image: workshopImage,
-                                      type: 'Add Photo'.tr(context: context),
-                                      onUploadImg: () async {
-                                        final photoAsFile = await ImagePicker().pickImage(source:ImageSource.gallery);
-                                        if (photoAsFile != null) {
-                                          workshopImage = File(photoAsFile.path);
-                                          String fileName = workshopImage!.path.split('/').last;
-                                          log("img name: $fileName");
-                                          bloc.add(ChangeImageEvent(image: workshopImage));
-                                        }
-                                        else {
-                                          log('No image selected');
-                                        }
-                                      }
-                                    );
-                                  },
-                                ),
-                                workshopImage != null ? const SizedBox.shrink() : Text("img required".tr(context: context),style: const TextStyle(color: Colors.red,fontSize: 10,)),
-                                AddField(type: 'Workshop Title'.tr(context: context),controller: bloc.titleController),
-                                AddField(type: "Workshop Des".tr(context: context),controller: bloc.descController),
-                                CategoryDropDown(controller:bloc.categoryController),
-                                bloc.categoryController.text == "Category".tr(context: context) ? const SizedBox.shrink()
-                                : Text("Category required".tr(context: context),style: const TextStyle(color: Colors.red,fontSize: 10,)),
-                                AddField(type: 'Audience'.tr(context: context),controller: bloc.audienceController,),
+                                        }),
+                                const SizedBox(width: 8),
+                                bloc.currentStep == 0
+                                    ? const SizedBox.shrink()
+                                    : TextButton(
+                                        onPressed: details.onStepCancel,
+                                        child: Text('Back'.tr(context: context),
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Constants.mainOrange,
+                                            )),
+                                      )
                               ],
                             ),
-                          ),
-                        )
-                      ),
-                      //2-detail
-                      Step(
-                        isActive: bloc.currentStep >= 1,
-                        title: Text("Details".tr(context: context),style: const TextStyle(fontSize: 18,color: Constants.mainOrange,fontWeight: FontWeight.w500)),
-                        content: Container(
-                          width: context.getWidth(),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: kElevationToShadow[1],
-                            color: Constants.cardColor,
-                          ),
-                          child: Form(key: detalsInfoKey,child: WorkShopForm(bloc: bloc)),
-                        )
-                      ),
-                    ]
-                  )
-                : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: context.getWidth(),
-                          child: Text("Details".tr(context: context),style: const TextStyle(fontSize: 18,color: Constants.mainOrange,fontWeight: FontWeight.w500)),
+                          );
+                        },
+                        steps: [
+                            //1-basic information
+                            Step(
+                                isActive: bloc.currentStep >= 0,
+                                title: Text("Basic info".tr(context: context),
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.mainOrange,
+                                        fontWeight: FontWeight.w500)),
+                                content: Container(
+                                  width: context.getWidth(),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: kElevationToShadow[1],
+                                      color: Constants.cardColor),
+                                  child: Form(
+                                    key: basicInfoKey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        BlocBuilder<AddWorkshopBloc,
+                                            AddWorkshopState>(
+                                          builder: (context, state) {
+                                            if (state is ChangeImageState) {
+                                              return AddField(
+                                                  image: state.image,
+                                                  type: 'Add Photo'
+                                                      .tr(context: context),
+                                                  onUploadImg: () async {
+                                                    // Pick image from gallery
+                                                    final photoAsFile =
+                                                        await ImagePicker()
+                                                            .pickImage(
+                                                                source:
+                                                                    ImageSource
+                                                                        .gallery);
+                                                    if (photoAsFile != null) {
+                                                      workshopImage = File(
+                                                          photoAsFile.path);
+                                                      String fileName =
+                                                          workshopImage!.path
+                                                              .split('/')
+                                                              .last;
+                                                      log("img name: $fileName");
+                                                      bloc.add(ChangeImageEvent(
+                                                          image:
+                                                              workshopImage));
+                                                    } else {
+                                                      log('No image selected');
+                                                    }
+                                                  });
+                                            }
+                                            return AddField(
+                                                image: workshopImage,
+                                                type: 'Add Photo'
+                                                    .tr(context: context),
+                                                onUploadImg: () async {
+                                                  final photoAsFile =
+                                                      await ImagePicker()
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
+                                                  if (photoAsFile != null) {
+                                                    workshopImage =
+                                                        File(photoAsFile.path);
+                                                    String fileName =
+                                                        workshopImage!.path
+                                                            .split('/')
+                                                            .last;
+                                                    log("img name: $fileName");
+                                                    bloc.add(ChangeImageEvent(
+                                                        image: workshopImage));
+                                                  } else {
+                                                    log('No image selected');
+                                                  }
+                                                });
+                                          },
+                                        ),
+                                        workshopImage != null
+                                            ? const SizedBox.shrink()
+                                            : Text(
+                                                "img required"
+                                                    .tr(context: context),
+                                                style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 10,
+                                                )),
+                                        AddField(
+                                            type: 'Workshop Title'
+                                                .tr(context: context),
+                                            controller: bloc.titleController),
+                                        AddField(
+                                            type: "Workshop Des"
+                                                .tr(context: context),
+                                            controller: bloc.descController),
+                                        CategoryDropDown(
+                                            controller:
+                                                bloc.categoryController),
+                                        bloc.categoryController.text ==
+                                                "Category".tr(context: context)
+                                            ? const SizedBox.shrink()
+                                            : Text(
+                                                "Category required"
+                                                    .tr(context: context),
+                                                style: const TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 10,
+                                                )),
+                                        AddField(
+                                          type: 'Audience'.tr(context: context),
+                                          controller: bloc.audienceController,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                            //2-detail
+                            Step(
+                                isActive: bloc.currentStep >= 1,
+                                title: Text("Details".tr(context: context),
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Constants.mainOrange,
+                                        fontWeight: FontWeight.w500)),
+                                content: Container(
+                                  width: context.getWidth(),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: kElevationToShadow[1],
+                                    color: Constants.cardColor,
+                                  ),
+                                  child: Form(
+                                      key: detalsInfoKey,
+                                      child: WorkShopForm(bloc: bloc)),
+                                )),
+                          ])
+                    : SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  width: context.getWidth(),
+                                  child: Text("Details".tr(context: context),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Constants.mainOrange,
+                                          fontWeight: FontWeight.w500)),
+                                ),
+                                const SizedBox(height: 16),
+                                Container(
+                                  width: context.getWidth(),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: kElevationToShadow[1],
+                                    color: Constants.cardColor,
+                                  ),
+                                  child: Form(
+                                    key: detalsInfoKey,
+                                    child: WorkShopForm(
+                                        bloc: bloc, workshop: workshop),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                MainButton(
+                                    text: isEdit == true
+                                        ? 'Submit Changes'.tr(context: context)
+                                        : 'Create'.tr(context: context),
+                                    onPressed: () {
+                                      if (detalsInfoKey.currentState!
+                                              .validate() &&
+                                          bloc.instructorimage != null) {
+                                        bloc.isOnline == true
+                                            ? bloc.add(SubmitWorkshopEvent(
+                                                isSingleWorkShope:
+                                                    isSingleWorkShope,
+                                              ))
+                                            : bloc.longitude != null &&
+                                                    bloc.latitude != null
+                                                ? bloc.add(SubmitWorkshopEvent(
+                                                    isSingleWorkShope:
+                                                        isSingleWorkShope,
+                                                    image: workshopImage!))
+                                                : ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            "You must locate address on the map first")));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "All field must not be empty")));
+                                      }
+                                    })
+                              ]),
                         ),
-                        const SizedBox(height: 16),
-                        Container(
-                          width: context.getWidth(),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: kElevationToShadow[1],
-                            color: Constants.cardColor,
-                          ),
-                          child: Form(
-                            key: detalsInfoKey,
-                            child: WorkShopForm(bloc: bloc, workshop: workshop),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        MainButton(
-                          text: isEdit == true ? 'Submit Changes'.tr(context: context) : 'Create'.tr(context: context),
-                          onPressed: () {
-                            if (detalsInfoKey.currentState!.validate() && bloc.instructorimage != null) {
-                              bloc.add(SubmitWorkshopEvent(isSingleWorkShope:isSingleWorkShope,isEdit: isEdit,workshopId: workshop?.workshopId));
-                            }
-                            else {
-                              log("handle me later");
-                            }
-                          }
-                        )
-                      ]
-                    ),
-                  ),
-                );
+                      );
               },
             ),
           ),

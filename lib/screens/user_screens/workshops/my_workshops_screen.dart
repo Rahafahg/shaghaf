@@ -64,7 +64,7 @@ class MyWorkshopsScreen extends StatelessWidget {
       },
       builder: (context, index) => GetIt.I.get<AuthLayer>().user == null
           ? Scaffold(
-            backgroundColor: Constants.backgroundColor,
+              backgroundColor: Constants.backgroundColor,
               body: SafeArea(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -84,7 +84,7 @@ class MyWorkshopsScreen extends StatelessWidget {
                     forceMaterialTransparency: true,
                     centerTitle: true,
                     title: Text(
-                      "guest bookings".tr(context: context),
+                      "My Workshops".tr(context: context),
                       style: const TextStyle(
                           fontSize: 20, color: Constants.textColor),
                     ),

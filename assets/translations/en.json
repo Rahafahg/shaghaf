@@ -120,5 +120,15 @@
     "Enter a valid phone number" : "Enter a valid phone number",
     "password" : "password",
     "Password is too short" : "Password is too short",
-    "Send OTP" : "Send OTP"
+    "Send OTP" : "Send OTP",
+    "Art":"Art",
+    "Cook":"Cook",
+    "Handicrafts":"Handicrafts",
+    "Fashion":"Fashion",
+    "Pottery":"Pottery",
+    "Photography":"Photography",
+    "Social skills":"Social skills",
+    "Others":"Others",
+    "map required":"You must locate address on the map first",
+    "field not empty":"All field must not be empty"
 }

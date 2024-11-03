@@ -122,5 +122,15 @@
     "Number of workshops by category" : "عدد ورش العمل لكل فئة",
     "Most Booked Categories" : "الفئات الأكثر طلباً",
     "(optional)" : "(اختياري)",
-    "Photo " : "صورة"
+    "Photo " : "صورة",
+    "Art":"فنون",
+    "Cook":"طبخ",
+    "Handicrafts":"حرف يدوية",
+    "Fashion":"أزياء",
+    "Pottery":"فخار",
+    "Photography":"تصوير",
+    "Social skills":"مهارات إجتماعية",
+    "Others":"اخرى",
+    "map required":"يجب ان تحدد موقع على الخريطة اولا",
+    "field not empty":"يجب تعبئة جميع المتطلبات"
 }

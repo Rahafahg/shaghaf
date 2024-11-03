@@ -28,10 +28,10 @@ class AddField extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-              width:
-                  type == "Price in SR".tr(context: context) || type == 'Seats'.tr(context: context)
-                      ? context.getWidth(divideBy: 3)
-                      : context.getWidth(),
+              width: type == "Price in SR".tr(context: context) ||
+                      type == 'Seats'.tr(context: context)
+                  ? context.getWidth(divideBy: 3)
+                  : context.getWidth(),
               child: Text(type,
                   style: const TextStyle(
                     fontSize: 16,
@@ -115,7 +115,10 @@ class AddField extends StatelessWidget {
                     keyboardType:
                         type.toLowerCase() == 'email'.tr(context: context)
                             ? TextInputType.emailAddress
-                            : null,
+                            : type == "Price in SR".tr(context: context) ||
+                                    type == 'Seats'.tr(context: context)
+                                ? TextInputType.number
+                                : null,
                     decoration: InputDecoration(
                       hoverColor: Constants.mainOrange,
                       errorStyle:
