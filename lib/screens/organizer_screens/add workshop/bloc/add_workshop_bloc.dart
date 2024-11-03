@@ -19,11 +19,13 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
   double? latitude;
   double? longitude;
   Workshop? workshop;
+  bool? isEdit = false;
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   TextEditingController audienceController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  late TextEditingController dateController =
+      TextEditingController(text: isEdit == true ? workshop?.date : null);
   late TextEditingController timeFromController =
       TextEditingController(text: workshop?.fromTime);
   late TextEditingController timeToController =
@@ -90,7 +92,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     } else {
       await GetIt.I.get<SupabaseLayer>().addSingleWorkshop(
           isEdit: event.isEdit,
-          workshopId: event.workshopId,
+          workshopId: workshop!.workshopId,
           workshopGroupId: workshop!.workshopGroupId,
           date: dateController.text,
           from: timeFromController.text,
@@ -107,6 +109,7 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
           longitude: longitude.toString(),
           latitude: latitude.toString(),
           isOnline: isOnline);
+      log("\n\n\n\n---------------------------------${workshop!.workshopId}------------------------------------#2");
     }
     await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
     await getOrgWorkshops();
