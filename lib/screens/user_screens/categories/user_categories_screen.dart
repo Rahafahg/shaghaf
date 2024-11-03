@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -67,11 +68,12 @@ class UserCategoriesScreen extends StatelessWidget {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
                             color: Colors.black.withOpacity(0.35)),
-                        child: Text(categories[index].categoryName,
+                        child: Text(
+                            categories[index].categoryName.tr(context: context),
                             style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: "Poppins")),
+                              color: Colors.white,
+                              fontSize: 18,
+                            )),
                       ),
                     ),
                   ]),

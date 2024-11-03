@@ -130,5 +130,15 @@
     "Learn":"Learn",
     "and improve your skills in many fields":"and improve your skills in many fields",
     "Follow":"Follow",
-    "your passion wherever it might be":"your passion wherever it might be"
+    "your passion wherever it might be":"your passion wherever it might be",
+    "Art":"Art",
+    "Cook":"Cook",
+    "Handicrafts":"Handicrafts",
+    "Fashion":"Fashion",
+    "Pottery":"Pottery",
+    "Photography":"Photography",
+    "Social skills":"Social skills",
+    "Others":"Others",
+    "map required":"You must locate address on the map first",
+    "field not empty":"All field must not be empty"
 }

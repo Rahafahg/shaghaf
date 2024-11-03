@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
@@ -12,7 +11,6 @@ import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
-import 'package:shaghaf/screens/user_screens/other/user_notification_screen.dart';
 import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
@@ -49,16 +47,6 @@ class UserHomeScreen extends StatelessWidget {
             child: AppBar(
               forceMaterialTransparency: true,
               backgroundColor: Constants.backgroundColor,
-              actions: [
-                IconButton(
-                  onPressed: () =>
-                      context.push(screen: const UserNotificationScreen()),
-                  icon: const HugeIcon(
-                    icon: HugeIcons.strokeRoundedNotification01,
-                    color: Constants.lightGreen,
-                  ),
-                ),
-              ],
               leadingWidth: context.getWidth(),
               leading: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

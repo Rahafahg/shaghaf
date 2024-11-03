@@ -132,5 +132,15 @@
     "Learn":"تعلم",
     "and improve your skills in many fields":"طوّر مهاراتك في مختلف المجالات",
     "Follow":"تابع شغفك",
-    "your passion wherever it might be":"واتبعه أينما كان"
+    "your passion wherever it might be":"واتبعه أينما كان",
+    "Art":"فنون",
+    "Cook":"طبخ",
+    "Handicrafts":"حرف يدوية",
+    "Fashion":"أزياء",
+    "Pottery":"فخار",
+    "Photography":"تصوير",
+    "Social skills":"مهارات إجتماعية",
+    "Others":"اخرى",
+    "map required":"يجب ان تحدد موقع على الخريطة اولا",
+    "field not empty":"يجب تعبئة جميع المتطلبات"
 }

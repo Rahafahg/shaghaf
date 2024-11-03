@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 
@@ -14,7 +15,7 @@ class ContainersTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(selectedTab?? "no cat");
+    log(selectedTab ?? "no cat");
     // tabs.contains(selectedTab) ? selectedTab : "All";
     return DefaultTabController(
       length: tabs.length,
@@ -45,7 +46,7 @@ class ContainersTabBar extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Text(category,
+                  Text(category.tr(context: context),
                       style: TextStyle(
                         color: isSelected
                             ? const Color.fromARGB(255, 255, 255, 255)
