@@ -128,8 +128,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                             Text(workshop.title,
                                 style: const TextStyle(
                                     color: Constants.textColor,
-                                    fontSize: 20,
-                                    fontFamily: "Poppins")),
+                                    fontSize: 18)),
                             Row(
                               children: [
                                 const HugeIcon(

@@ -132,7 +132,6 @@ class OrganizerProfileScreen extends StatelessWidget {
                                     fontSize: 24,
                                     fontWeight: FontWeight.w500,
                                     color: Constants.textColor,
-                                    fontFamily: "Poppins",
                                   ),
                                 ),
                                 IconButton(
@@ -228,7 +227,6 @@ class OrganizerProfileScreen extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 18,
                               color: Color(0xff666666),
-                              fontFamily: "Poppins",
                             )),
                         const SizedBox(height: 30),
                         const switchingLanguage(),

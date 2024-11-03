@@ -47,9 +47,8 @@ class switchingLanguage extends StatelessWidget {
             const SizedBox(width: 15),
             Text("Switch".tr(),
                 style: const TextStyle(
-                  fontSize: 17,
+                  fontSize: 16,
                   color: Constants.textColor,
-                  fontFamily: "Poppins",
                 ))
           ],
         ),

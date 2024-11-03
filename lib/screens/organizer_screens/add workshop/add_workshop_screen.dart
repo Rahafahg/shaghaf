@@ -35,6 +35,7 @@ class AddWorkshopScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final bloc = context.read<AddWorkshopBloc>();
         bloc.workshop = workshop;
+        bloc.isEdit = isEdit;
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
@@ -320,20 +321,21 @@ class AddWorkshopScreen extends StatelessWidget {
                                       log(isEdit.toString());
                                       if (detalsInfoKey.currentState!
                                               .validate() &&
-                                          bloc.instructorimage != null) {
+                                          bloc.instructorimage != null &&
+                                          bloc.dateController.text != "") {
                                         bloc.isOnline == true
                                             ? bloc.add(SubmitWorkshopEvent(
-                                              isEdit: isEdit,
-                                                isSingleWorkShope:
+                                              isSingleWorkShope:
                                                     isSingleWorkShope,
-                                              ))
+                                                isEdit: isEdit))
                                             : bloc.longitude != null &&
-                                                    bloc.latitude != null
+                                                    bloc.latitude != null &&
+                                                    bloc.dateController.text !=
+                                                        ""
                                                 ? bloc.add(SubmitWorkshopEvent(
                                                     isSingleWorkShope:
                                                         isSingleWorkShope,
-                                                        isEdit: isEdit
-                                                    ))
+                                                    isEdit: isEdit))
                                                 : ScaffoldMessenger.of(context)
                                                     .showSnackBar(const SnackBar(
                                                         content: Text(
@@ -344,6 +346,7 @@ class AddWorkshopScreen extends StatelessWidget {
                                                 content: Text(
                                                     "All field must not be empty")));
                                       }
+                                      log("\n\n\n\n---------------------------------${bloc.workshop?.workshopId}------------------------------------#1");
                                     })
                               ]),
                         ),
