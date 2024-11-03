@@ -106,7 +106,18 @@ class OtpScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 7,),
                             Text(
-                              "We have sent to : $email\na one-time-password (OTP) to confirm your email".tr(),
+                              "We have sent to :".tr(),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
+                            ),
+                              Text(
+                              "$email",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
+                            ),
+                              Text(
+                              "one-time-password (OTP) to confirm your email".tr(),
+                              
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
                             ),
