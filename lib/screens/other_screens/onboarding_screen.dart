@@ -4,7 +4,6 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/main.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/chapes/onboarding_chape.dart';

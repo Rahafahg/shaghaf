@@ -185,7 +185,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> AddingImageMethod(
       AddingImageEvent event, Emitter<AuthState> emit) {
-    print("---------------image added----------");
     selectedImage = event.image;
     emit(AddingImageState(image: event.image));
   }

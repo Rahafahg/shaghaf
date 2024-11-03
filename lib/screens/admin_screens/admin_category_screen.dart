@@ -18,6 +18,7 @@ class AdminCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // handle me later
     List<Color> colors = [Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.lime, Colors.blueGrey, Colors.brown, Colors.purple];
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
@@ -80,29 +81,13 @@ class AdminCategoryScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            // GridView.builder(
-                            //   shrinkWrap: true,
-                            //   itemCount: categories.length,
-                            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 0),
-                            //   itemBuilder: (context, index) {
-                            //     return Row(
-                            //       children: [
-                            //         Container(width: 5,height: 5,color: colors[index],),
-                            //         const SizedBox(width: 10,),
-                            //         Text(categories[index].categoryName)
-                            //       ],
-                            //     );
-                            //   }
-                            // )
                             Column(
-                              // spacing: 15,
-                              // overflowAlignment: OverflowBarAlignment.center,
                               children: List.generate(categories.length, (index){
                                 return Row(
                                   children: [
                                     Container(width: 5,height: 5,color: colors[index],),
                                     const SizedBox(width: 10,),
-                                    Text(categories[index].categoryName)
+                                    Text(categories[index].categoryName.tr())
                                   ],
                                 );
                               }),
@@ -132,13 +117,7 @@ class AdminCategoryScreen extends StatelessWidget {
                                   alignment: BarChartAlignment.spaceAround,
                                   titlesData: const FlTitlesData(
                                     topTitles: AxisTitles(),
-                                    bottomTitles: AxisTitles(
-                                      sideTitles: SideTitles(
-                                        reservedSize: 80,
-                                        showTitles: true,
-                                        getTitlesWidget: bottomTitles,
-                                      )
-                                    )
+                                    bottomTitles: AxisTitles(sideTitles: SideTitles(reservedSize: 80,showTitles: true,getTitlesWidget: bottomTitles))
                                   ),
                                   backgroundColor: Constants.categoryColor_1.withOpacity(.3),
                                   barTouchData: BarTouchData(
@@ -149,17 +128,12 @@ class AdminCategoryScreen extends StatelessWidget {
                                       getTooltipColor: (group) => Colors.white,
                                     )
                                   ),
-                                  barGroups: List.generate(bookedCategories.length, (index){
+                                  barGroups: List.generate(bookedCategories.length, (index) {
+                                    final categoryName = bookedCategories.keys.toList()[index];
+                                    final categoryValue = bookedCategories[categoryName]!;
                                     return BarChartGroupData(
-                                      x: bookedCategories[categoriesMap.keys.toList()[index]]!,
-                                      barRods: [
-                                        BarChartRodData(
-                                          width: 10,
-                                          borderRadius: const BorderRadius.all(Radius.zero),
-                                          toY: bookedCategories[categoriesMap.keys.toList()[index]]!.toDouble(),
-                                          color: Constants.mainOrange
-                                        )
-                                      ]
+                                      x: index, // this is index not value
+                                      barRods: [BarChartRodData(width: 10,borderRadius: const BorderRadius.all(Radius.zero),toY: categoryValue.toDouble(),color: Constants.mainOrange)]
                                     );
                                   })
                                 )
@@ -183,43 +157,10 @@ class AdminCategoryScreen extends StatelessWidget {
 }
 
 Widget bottomTitles(double value, TitleMeta meta) {
-  const style = TextStyle(fontSize: 10);
   String text = '';
-  switch(value.toInt()){
-    case 0:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[0];
-      break;
-    case 1:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[1];
-      break;
-    case 2:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[2];
-      break;
-    case 3:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[3];
-      break;
-    case 4:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[4];
-      break;
-    case 5:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[5];
-      break;
-    case 6:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[6];
-      break;
-    case 7:
-      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[7];
-      break;
-  }
-  // for (var key in GetIt.I.get<DataLayer>().bookedCategories.keys) {
-  //   List<String> appeared = [];
-  //   if(GetIt.I.get<DataLayer>().bookedCategories[key]!.toDouble() == value) {
-  //     text = key;
-  //     appeared.add(key);
-  //   }
-  // }
+  text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[value.toInt()];
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    child: RotatedBox(quarterTurns: 3,child: Text(text, style: style)),
+    child: RotatedBox(quarterTurns: 3, child: Text(text, style: const TextStyle(fontSize: 10))),
   );
 }

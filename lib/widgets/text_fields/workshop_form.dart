@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,12 +41,7 @@ class WorkShopForm extends StatelessWidget {
                         .pickImage(source: ImageSource.gallery);
                     if (photoAsFile != null) {
                       bloc.instructorimage = File(photoAsFile.path);
-                      String fileName =
-                          bloc.instructorimage!.path.split('/').last;
-                      log("img name: $fileName");
                       bloc.add(ChangeImageEvent(image: bloc.instructorimage));
-                    } else {
-                      log('No image selected');
                     }
                   },
                 );
@@ -62,12 +55,7 @@ class WorkShopForm extends StatelessWidget {
                       .pickImage(source: ImageSource.gallery);
                   if (photoAsFile != null) {
                     bloc.instructorimage = File(photoAsFile.path);
-                    String fileName =
-                        bloc.instructorimage!.path.split('/').last;
-                    log("img name: $fileName");
                     bloc.add(ChangeImageEvent(image: bloc.instructorimage));
-                  } else {
-                    log('No image selected');
                   }
                 },
               );
@@ -123,8 +111,6 @@ class WorkShopForm extends StatelessWidget {
                       width: 350,
                       child: OrganizerMap(
                         onTap: (tapPosition, point) {
-                          log("${point.latitude}, ${point.longitude}");
-
                           bloc.add(SpecifyLocationEvent(point: point));
                         },
                         markerPosition: state.point,
@@ -146,8 +132,6 @@ class WorkShopForm extends StatelessWidget {
                           width: 350,
                           child: OrganizerMap(
                             onTap: (tapPosition, point) {
-                              log("${point.latitude}, ${point.longitude}");
-
                               bloc.add(SpecifyLocationEvent(point: point));
                             },
                           ))

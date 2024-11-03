@@ -33,10 +33,8 @@ class switchingLanguage extends StatelessWidget {
                     // Locale currentLocale = context.locale;
                     if (context.locale == const Locale("en")) {
                       context.setLocale(const Locale("ar"));
-                      print("tran to ar");
                     } else {
                       context.setLocale(const Locale("en"));
-                      print("trans to en");
                     }
                   },
                   icon: const Icon(Icons.translate),

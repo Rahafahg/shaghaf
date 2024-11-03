@@ -124,10 +124,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       width: context.getWidth(),
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {
-                                          log("valid");
                                           bloc.add(CreateAccountEvent(email: emailController.text,password: passwordController.text));
-                                        } else {
-                                          log("invalid");
                                         }
                                       },
                                     ),

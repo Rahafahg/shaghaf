@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +7,6 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/models/booking_model.dart';
-import 'package:shaghaf/models/categories_model.dart';
-import 'package:shaghaf/models/organizer_model.dart';
-import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/admin_screens/bloc/admin_bloc.dart';
 
 class AdminOrgScreen extends StatelessWidget {
@@ -19,7 +14,6 @@ class AdminOrgScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Color> colors = [Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.lime, Colors.blueGrey, Colors.brown, Colors.purple];
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       body: SafeArea(
@@ -32,9 +26,11 @@ class AdminOrgScreen extends StatelessWidget {
               return Center(child: LottieBuilder.asset("assets/lottie/loading.json"));
             }
             if (state is SuccessState) {
-              List<OrganizerModel> organizers = GetIt.I.get<DataLayer>().organizers;
               Map<String, int> organizersRating = GetIt.I.get<DataLayer>().organizersRating;
-              log(organizersRating.toString());
+              List<int> vals = organizersRating.values.toList();
+              vals.sort((v1,v2)=>v1.compareTo(v2));
+              int maxY = vals.last + 2;
+              getOrgProfit();
               return Padding(
                 padding: const EdgeInsets.all(16),
                 child: SingleChildScrollView(
@@ -60,32 +56,25 @@ class AdminOrgScreen extends StatelessWidget {
                               width: context.getWidth(),
                               child: BarChart(
                                 BarChartData(
+                                  maxY: maxY.toDouble(),
+                                  barTouchData: BarTouchData(
+                                    touchTooltipData: BarTouchTooltipData(
+                                      tooltipBorder: const BorderSide(color: Colors.black45),
+                                      tooltipPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                                      tooltipRoundedRadius: 20,
+                                      getTooltipColor: (group) => Colors.white,
+                                    )
+                                  ),
                                   alignment: BarChartAlignment.spaceAround,
                                   titlesData: const FlTitlesData(
                                     topTitles: AxisTitles(),
-                                    bottomTitles: AxisTitles(
-                                      sideTitles: SideTitles(
-                                        reservedSize: 80,
-                                        showTitles: true,
-                                        getTitlesWidget: bottomTitles,
-                                      )
-                                    )
+                                    bottomTitles: AxisTitles(sideTitles: SideTitles(reservedSize: 80,showTitles: true,getTitlesWidget: bottomTitles,))
                                   ),
                                   backgroundColor: Constants.categoryColor_1.withOpacity(.3),
                                   barGroups: List.generate(organizersRating.length, (index){
-                                    log('message heeeeeeeeeeeeeeeeeere');
-                                    log(organizersRating.keys.toList()[index]);
-                                    log(organizersRating[organizersRating.keys.toList()[index]].toString());
                                     return BarChartGroupData(
-                                      x: organizersRating[organizersRating.keys.toList()[index]]!,
-                                      barRods: [
-                                        BarChartRodData(
-                                          width: 10,
-                                          borderRadius: const BorderRadius.all(Radius.zero),
-                                          toY: organizersRating[organizersRating.keys.toList()[index]]!.toDouble(),
-                                          color: Constants.mainOrange
-                                        )
-                                      ]
+                                      x: index,
+                                      barRods: [BarChartRodData(width: 10,borderRadius: const BorderRadius.all(Radius.zero),toY: organizersRating[organizersRating.keys.toList()[index]]!.toDouble(),color: Constants.mainOrange)]
                                     );
                                   })
                                 )
@@ -94,7 +83,87 @@ class AdminOrgScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 50,),
+                      Container(
+                        width: context.getWidth(),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        decoration: BoxDecoration(
+                          color: Constants.backgroundColor,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [BoxShadow(color: Colors.black45, offset: Offset(2, 2), blurRadius: 10)]
+                        ),
+                        margin: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Text("Most Profit Organizers".tr(context: context)),
+                            const SizedBox(height: 20,),
+                            SizedBox(
+                              height: 300,
+                              width: context.getWidth(),
+                              child: LineChart(
+                                LineChartData(
+                                  minX: 0,
+                                  minY: 0,
+                                  titlesData: const FlTitlesData(
+                                    topTitles: AxisTitles(),
+                                    // bottomTitles: AxisTitles()
+                                  ),
+                                  // lineTouchData: LineTouchData(
+                                  //   touchTooltipData: LineTouchTooltipData(
+                                  //     tooltipBorder: const BorderSide(color: Colors.black45),
+                                  //     tooltipPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                                  //     tooltipRoundedRadius: 20,
+                                  //     getTooltipColor: (group) => Colors.white,
+                                  //   )
+                                  // ),
+                                  backgroundColor: Constants.categoryColor_1.withOpacity(.3),
+                                  lineBarsData: [
+                                    LineChartBarData(
+                                      color: Constants.mainOrange,
+                                      spots: [
+                                        const FlSpot(0, 1),
+                                        const FlSpot(1, 4),
+                                        const FlSpot(2, 6),
+                                        const FlSpot(3, 3),
+                                        const FlSpot(4, 4),
+                                      ]
+                                    ),
+                                    LineChartBarData(
+                                      spots: [
+                                        const FlSpot(0, 2),
+                                        const FlSpot(1, 3),
+                                        const FlSpot(2, 1),
+                                        const FlSpot(3, 2),
+                                        const FlSpot(4, 6),
+                                      ]
+                                    )
+                                  ]
+                                )
+                              )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(width: 5,height: 5,color: Constants.mainOrange,),
+                                      const SizedBox(width: 10,),
+                                      const Text("nn")
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(width: 5,height: 5,color: Colors.blue,),
+                                      const SizedBox(width: 10,),
+                                      const Text("nn2")
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -109,20 +178,10 @@ class AdminOrgScreen extends StatelessWidget {
 }
 
 Widget bottomTitles(double value, TitleMeta meta) {
-  const style = TextStyle(fontSize: 10);
-  log(value.toString());
-  log(GetIt.I.get<DataLayer>().organizersRating.toString());
   String text = '';
-  for (var key in GetIt.I.get<DataLayer>().organizersRating.keys) {
-    List<String> appeared = [];
-    if(GetIt.I.get<DataLayer>().organizersRating[key]!.toDouble() == value && appeared.contains(key)==false) {
-      log('found $key');
-      text = key;
-      appeared.add(key);
-    }
-  }
+  text = GetIt.I.get<DataLayer>().organizersRating.keys.toList()[value.toInt()];
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    child: RotatedBox(quarterTurns: 3,child: Text(text, style: style)),
+    child: RotatedBox(quarterTurns: 3, child: Text(text, style: const TextStyle(fontSize: 10))),
   );
 }

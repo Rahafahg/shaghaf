@@ -31,13 +31,10 @@ class SupabaseLayer {
   }
 
   Future verifyOtp({required String email,required String otp,String? firstName,String? lastName,String? phoneNumber,required String externalId}) async {
-    // try {
-    log("verifyOtp 1");
     if(firstName == null && lastName == null && phoneNumber == null) {
     final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.recovery);
       return response;
     }
-    log("verifyOtp 2");
     final AuthResponse response = await supabase.auth.verifyOTP(email: email, token: otp, type: OtpType.signup);
     final id = response.user!.id;
     UserModel user = UserModel.fromJson({
@@ -110,9 +107,6 @@ class SupabaseLayer {
       required String role,
       required String externalId}) async {
     final AuthResponse response = await supabase.auth.signInWithPassword(email: email, password: password);
-    log("-----------------------------------------");
-    log(response.toString());
-    log("-----------------------------------------");
     if (role == 'user') {
       await supabase.from('users').update({'external_id': externalId}).eq('user_id', response.user!.id);
       final temp = await supabase.from('users').select().eq('user_id', response.user!.id);
@@ -147,21 +141,15 @@ class SupabaseLayer {
         throw 'No ID Token found.';
       }
       final response = await supabase.auth.signInWithIdToken(provider: OAuthProvider.google,idToken: idToken,accessToken: accessToken,);
-      log("you are logeed!");
-      log(response.session!.accessToken);
       await supabase.from('users').update({'external_id': 1111111111111}).eq('user_id', response.user!.id);
       final temp = await supabase.from('users').select().eq('user_id', response.user!.id);
       GetIt.I.get<AuthLayer>().user = UserModel.fromJson(temp.first);
       GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user!.toJson());
-      log(GetIt.I.get<AuthLayer>().user!.email);
       return response;
-    } catch (e) {
-      log(e.toString());
-    }
+    } catch (_) {}
   }
 
   getAllWorkshops() async {
-    log('hello yaser im getting data right now ---------------');
     List<WorkshopGroupModel> workshops = [];
     final response = await GetIt.I.get<SupabaseLayer>().supabase.from('workshop_group').select('*, workshop(*), organizer(*)');
     List<WorkshopGroupModel> result = [];
@@ -182,11 +170,7 @@ class SupabaseLayer {
       if(workshopGroup.workshops.isNotEmpty) {
         result.add(workshopGroup);
       }
-      // workshops.add(WorkshopGroupModel.fromJson(workshopAsJson));
     }
-
-    log("length of all : ${workshops.length}");
-    log("length of filtered : ${result.length}");
     GetIt.I.get<DataLayer>().allWorkshops = workshops;
     GetIt.I.get<DataLayer>().workshops = result;
     GetIt.I.get<DataLayer>().workshopOfTheWeek = result[mm.Random().nextInt(result.length)];
@@ -269,60 +253,23 @@ class SupabaseLayer {
   }
 
   Future<dynamic> checkFavCategories({required String workshopId}) async {
-    final res = await GetIt.I
-        .get<SupabaseLayer>()
-        .supabase
-        .from('workshop')
-        .select('*, workshop_group(*, categories(category_name))')
-        .eq('workshop_id', workshopId);
-
-    log('----------------------------------');
-    log("---------------------- ${res.first['workshop_group']['categories']['category_name'].toString()}");
-    log('----------------------------------');
-    log("---------------------- ${GetIt.I.get<AuthLayer>().user!.favoriteCategories}");
-
-    // Fetch bookings
-    final booking = await GetIt.I
-        .get<SupabaseLayer>()
-        .supabase
-        .from('booking')
-        .select('*, workshop(*, workshop_group(*, categories(category_name)))')
-        .eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
-
-// Initialize a map to store category counts
+    await GetIt.I.get<SupabaseLayer>().supabase.from('workshop').select('*, workshop_group(*, categories(category_name))').eq('workshop_id', workshopId);
+    final booking = await GetIt.I.get<SupabaseLayer>().supabase.from('booking').select('*, workshop(*, workshop_group(*, categories(category_name)))').eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     final Map<String, int> categoryCounts = {};
-
-// Loop through each booking and count occurrences of each category
     for (var item in booking) {
-      final categoryName =
-          item['workshop']['workshop_group']['categories']['category_name'];
-
-      // Update the count for this category
+      final categoryName = item['workshop']['workshop_group']['categories']['category_name'];
       if (categoryName != null) {
-        categoryCounts.update(categoryName, (count) => count + 1,
-            ifAbsent: () => 1);
+        categoryCounts.update(categoryName, (count) => count + 1,ifAbsent: () => 1);
       }
     }
 
-    log("\n\n\n\n-----------------------------------------------------------------------");
-    log("-----------categoryCounts----------- $categoryCounts");
-    log("-----------------------------------------------------------------------\n\n\n\n");
-
     for (var category in categoryCounts.keys) {
       if (categoryCounts[category]! > 1) {
-        log("category: $category");
-        if (!GetIt.I
-            .get<AuthLayer>()
-            .user!
-            .favoriteCategories
-            .contains(category)) {
-          GetIt.I.get<AuthLayer>().user!.favoriteCategories =
-              "${GetIt.I.get<AuthLayer>().user!.favoriteCategories},$category";
+        if (!GetIt.I.get<AuthLayer>().user!.favoriteCategories.contains(category)) {
+          GetIt.I.get<AuthLayer>().user!.favoriteCategories = "${GetIt.I.get<AuthLayer>().user!.favoriteCategories},$category";
           GetStorage().write('user', GetIt.I.get<AuthLayer>().user!.toJson());
-
           await supabase.from('users').update({
-            'favorite_categories':
-                GetIt.I.get<AuthLayer>().user!.favoriteCategories
+            'favorite_categories': GetIt.I.get<AuthLayer>().user!.favoriteCategories
           }).eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
         }
       }
@@ -491,9 +438,7 @@ class SupabaseLayer {
         'workshop_group_id': workshopGroupId,
         'user_id': GetIt.I.get<AuthLayer>().user!.userId,
       }).select();
-    } catch (e) {
-      log("Error submit rating: $e");
-    }
+    } catch (_) {}
   }
 
   sendNotificationWithCategory({required String categoryId, String? title}) async {

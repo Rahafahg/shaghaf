@@ -572,7 +572,6 @@ class WorkshopDetailScreen extends StatelessWidget {
                                               );
                                             });
                                       } else {
-                                        log("Error: No response from Supabase.");
                                         showDialog(
                                             context: context,
                                             builder: (context) => ErrorDialog(

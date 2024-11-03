@@ -111,7 +111,7 @@ class OtpScreen extends StatelessWidget {
                               style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
                             ),
                               Text(
-                              "$email",
+                              email,
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 12,color: Color(0xff666666),fontWeight: FontWeight.w500),
                             ),

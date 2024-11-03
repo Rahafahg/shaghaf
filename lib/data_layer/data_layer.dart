@@ -112,3 +112,10 @@ getAllOrgRatings() {
   }
   GetIt.I.get<DataLayer>().organizersRating = temp;
 }
+
+getOrgProfit() {
+  Map<String, double> temp = {};
+  for (var book in GetIt.I.get<DataLayer>().bookings.where((book)=>book.bookingDate.month==11)) {
+    log(book.toJson().toString());
+  }
+}

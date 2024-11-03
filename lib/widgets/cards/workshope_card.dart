@@ -96,10 +96,7 @@ class WorkshopCard extends StatelessWidget {
                                   const Icon(Icons.calendar_today,
                                       size: 16, color: Colors.grey),
                                   const SizedBox(width: 4),
-                                  Text(
-                                    workshop.workshops.isEmpty
-                                        ? 'handle me later'
-                                        : workshop.workshops.first.date,
+                                  Text(workshop.workshops.first.date,
                                     style: const TextStyle(
                                         fontFamily: "Poppins",
                                         fontSize: 8,

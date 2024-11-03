@@ -27,13 +27,8 @@ class UserHomeScreen extends StatelessWidget {
     if (user != null) {
       categories.addAll(user.favoriteCategories.split(','));
     }
-
-    print(categories.toString());
-    List<Widget> categoriesWidgets =
-        categories.map((category) => Text(category)).toList();
     final bloc = context.read<UserHomeBloc>();
     String? selectedCategory = "All";
-    print(selectedCategory);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(

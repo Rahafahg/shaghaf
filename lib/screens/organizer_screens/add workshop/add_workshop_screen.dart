@@ -184,16 +184,9 @@ class AddWorkshopScreen extends StatelessWidget {
                                                     if (photoAsFile != null) {
                                                       workshopImage = File(
                                                           photoAsFile.path);
-                                                      String fileName =
-                                                          workshopImage!.path
-                                                              .split('/')
-                                                              .last;
-                                                      log("img name: $fileName");
                                                       bloc.add(ChangeImageEvent(
                                                           image:
                                                               workshopImage));
-                                                    } else {
-                                                      log('No image selected');
                                                     }
                                                   });
                                             }
@@ -211,15 +204,8 @@ class AddWorkshopScreen extends StatelessWidget {
                                                   if (photoAsFile != null) {
                                                     workshopImage =
                                                         File(photoAsFile.path);
-                                                    String fileName =
-                                                        workshopImage!.path
-                                                            .split('/')
-                                                            .last;
-                                                    log("img name: $fileName");
                                                     bloc.add(ChangeImageEvent(
                                                         image: workshopImage));
-                                                  } else {
-                                                    log('No image selected');
                                                   }
                                                 });
                                           },
@@ -346,7 +332,6 @@ class AddWorkshopScreen extends StatelessWidget {
                                                 content: Text(
                                                     "All field must not be empty")));
                                       }
-                                      log("\n\n\n\n---------------------------------${bloc.workshop?.workshopId}------------------------------------#1");
                                     })
                               ]),
                         ),

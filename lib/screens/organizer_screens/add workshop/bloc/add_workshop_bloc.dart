@@ -109,7 +109,6 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
           longitude: longitude.toString(),
           latitude: latitude.toString(),
           isOnline: isOnline);
-      log("\n\n\n\n---------------------------------${workshop!.workshopId}------------------------------------#2");
     }
     await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
     await getOrgWorkshops();
@@ -135,7 +134,6 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
 
   FutureOr<void> changeImage(
       ChangeImageEvent event, Emitter<AddWorkshopState> emit) {
-    log("-----------------aaaaaaaaaaaaaaa1");
     emit(ChangeImageState(image: event.image));
   }
 

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -35,7 +34,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
 
   Future<void> submitUserProfile(
     SubmitUserProfileEvent event, Emitter<UserProfileState> emit) async {
-  log("submit");
 
   try {
     // Supabase update operation
@@ -46,40 +44,28 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       'phone_number': event.phoneNumber
     }).eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
 
-    log("submit2");
-
     // Check for null AuthLayer or user
     var authLayer = GetIt.I.get<AuthLayer>();
     if (authLayer.user == null) {
-      log("AuthLayer or user is null!");
       return;
     }
 
     // Update local user info
-    log("Updating user info");
     authLayer.user!.firstName = event.firstName;
     authLayer.user!.lastName = event.lastName;
     authLayer.user!.phoneNumber = event.phoneNumber;
-    log("submit3");
 
     // Write user data to storage
     try {
-      log("Writing user to storage");
       authLayer.box.write('user', authLayer.user!.toJson());
-      log("submit4");
     } catch (e) {
-      log("Error writing to storage: $e");
       return;
     }
 
     // Emit success state
     emit(SuccessProfileState());
-    log("submit5");
 
-  } catch (e) {
-    log("Exception occurred: $e");
-    // emit(ErrorProfileState(e.toString()));
-  }
+  } catch (_) {}
 }
 
 }

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -143,14 +142,12 @@ class ProfileScreen extends StatelessWidget {
                                 const SizedBox(width: 15),
                                 MainButton(
                                   onPressed: () {
-                                    log("message");
                                     bloc.add(SubmitUserProfileEvent(
                                         firstName:
                                             bloc.firstNameController.text,
                                         lastName: bloc.lastNameController.text,
                                         phoneNumber:
                                             bloc.phoneNumberController.text));
-                                    log("message222");
                                   },
                                   text: "Submit".tr(context: context),
                                 )

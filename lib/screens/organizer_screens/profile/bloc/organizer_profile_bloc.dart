@@ -36,8 +36,6 @@ class OrganizerProfileBloc
       phoneNumberController.text = organizer.contactNumber;
       descriptionController.text = organizer.description;
       emit(SuccessOrgProfileState(imageFile: selectedImageFile));
-    } else {
-      print("-----there is somthing 1----");
     }
   }
 
@@ -72,9 +70,7 @@ class OrganizerProfileBloc
       
       authLayer.box.write('organizer', authLayer.organizer!.toJson());
       emit(SuccessOrgProfileState(imageFile: selectedImageFile));
-    } catch (e) {
-      print("----there is something here 2---");
-    }
+    } catch (_) {}
   }
 
   FutureOr<void> onUpdateProfileImage(
