@@ -120,5 +120,14 @@
     "Enter a valid phone number" : "Enter a valid phone number",
     "password" : "password",
     "Password is too short" : "Password is too short",
-    "Send OTP" : "Send OTP"
+    "Send OTP" : "Send OTP",
+    "We have sent to :":"We have sent to :",
+    "one-time-password (OTP) to confirm your email":"one-time-password (OTP) to confirm your email",
+    "Discover":"Discover",
+    "the innovative community around you":"the innovative community around you",
+    "Learn":"Learn",
+    "and improve your skills in many fields":"and improve your skills in many fields",
+    "Follow":"Follow",
+    "your passion wherever it might be":"your passion wherever it might be"
+
 }

@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
+import 'package:shaghaf/main.dart';
 import 'package:shaghaf/screens/other_screens/select_role_screen.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/chapes/onboarding_chape.dart';
@@ -14,9 +16,9 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final List<List<String>> phrases = [
-      ["Discover", "the innovative community around you"],
-      ["Learn", "and improve your skills in many fields"],
-      ["Follow", "your passion wherever it might be"]
+      ["Discover".tr(), "the innovative community around you".tr()],
+      ["Learn".tr(), "and improve your skills in many fields".tr()],
+      ["Follow".tr(), "your passion wherever it might be".tr()]
     ];
     final key =
         GlobalKey<IntroductionScreenState>(); // to switch onboarding screen
