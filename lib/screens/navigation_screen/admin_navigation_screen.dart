@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/admin_screens/admin_org_screen.dart';
@@ -30,7 +32,7 @@ class AdminNavigationScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Constants.backgroundColor,
         appBar: AppBar(
-          leading: IconButton(onPressed: ()=>context.pushRemove(screen: const LoginScreen()), icon: const Icon(HugeIcons.strokeRoundedLogout01)),
+          leading: IconButton(onPressed: (){GetIt.I.get<AuthLayer>().box.remove('admin');context.pushRemove(screen: const LoginScreen());}, icon: const Icon(HugeIcons.strokeRoundedLogout01)),
           actions: [IconButton(onPressed: ()=> context.setLocale(Locale(context.locale == const Locale("en") ? "ar" : "en")), icon: const Icon(Icons.translate))],
           backgroundColor: Constants.backgroundColor,
           centerTitle: true,

@@ -8,6 +8,7 @@ class AuthLayer {
   OrganizerModel? organizer;
   bool didChooseFav = false;
   bool onboarding = false;
+  bool admin = false;
   final box = GetStorage();
 
   AuthLayer() {
@@ -21,6 +22,9 @@ class AuthLayer {
         didChooseFav = true;
         log('user already chose fav ... moving to home');
       }
+    }
+    if (box.hasData('admin')) {
+      admin = true;
     }
     if (box.hasData('user')) {
       Map<String, dynamic> userAsMap = box.read('user');

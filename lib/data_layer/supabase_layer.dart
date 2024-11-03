@@ -212,6 +212,15 @@ class SupabaseLayer {
     log(GetIt.I.get<DataLayer>().categories.toString());
   }
 
+  getAllOrganizers() async {
+    List<OrganizerModel> temp = [];
+    final organizersAsMap = await supabase.from('organizer').select();
+    for (var organizerAsMap in organizersAsMap) {
+      temp.add(OrganizerModel.fromJson(organizerAsMap));
+    }
+    GetIt.I.get<DataLayer>().organizers = temp;
+  }
+
   getBookings() async {
     final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
     log(bookingAsMap.toString());

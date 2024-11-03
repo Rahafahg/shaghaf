@@ -119,8 +119,10 @@
     "Pay":"دفع",
     "guest bookings":"يجب ان يكون لديك حساب لتصفح الحجوزات",
     "Categories Statistics" : "إحصائيات الفئات",
+    "Organizers Statistics" : "إحصائيات المنظمين",
     "Number of workshops by category" : "عدد ورش العمل لكل فئة",
     "Most Booked Categories" : "الفئات الأكثر طلباً",
     "(optional)" : "(اختياري)",
-    "Photo " : "صورة"
+    "Photo " : "صورة",
+    "Most Rated Organizers" : "المنظمين الأعلى تقييمًا"
 }

@@ -5,6 +5,8 @@ import 'dart:math' as mm;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -77,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(LoadingState());
       if(event.email.toLowerCase() == "admin@admin.com" && event.password == 'admin123') {
+        GetIt.I.get<AuthLayer>().box.write('admin', true);
         emit(SuccessState(role: 'admin'));
         return;
       }

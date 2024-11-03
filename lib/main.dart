@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
+import 'package:shaghaf/screens/navigation_screen/admin_navigation_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/navigation_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/organizer_navigation.dart';
 import 'package:shaghaf/screens/other_screens/onboarding_screen.dart';
@@ -37,14 +38,16 @@ class MainApp extends StatelessWidget {
         locale: context.locale,
         theme: myappTheme(context),
         debugShowCheckedModeBanner: false,
-        home: GetIt.I.get<AuthLayer>().organizer != null
-            ? const OrgNavigationScreen()
-            : GetIt.I.get<AuthLayer>().user != null
-                ? GetIt.I.get<AuthLayer>().didChooseFav
-                    ? const NavigationScreen()
-                    : const SelectCategoriesScreen()
-                : GetIt.I.get<AuthLayer>().onboarding
-                    ? const LoginScreen()
-                    : const OnboardingScreen());
+        home: GetIt.I.get<AuthLayer>().admin == true
+            ? const AdminNavigationScreen()
+            : GetIt.I.get<AuthLayer>().organizer != null
+                ? const OrgNavigationScreen()
+                : GetIt.I.get<AuthLayer>().user != null
+                    ? GetIt.I.get<AuthLayer>().didChooseFav
+                        ? const NavigationScreen()
+                        : const SelectCategoriesScreen()
+                    : GetIt.I.get<AuthLayer>().onboarding
+                        ? const LoginScreen()
+                        : const OnboardingScreen());
   }
 }

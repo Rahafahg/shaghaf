@@ -111,6 +111,7 @@
     "Pay":"Pay",
     "guest bookings":"You need to have an account to browse your bookings",
     "Categories Statistics" : "Categories Statistics",
+    "Organizers Statistics" : "Organizers Statistics",
     "Number of workshops by category" : "Number of workshops by category",
     "Most Booked Categories" : "Most Booked Categories",
     "Organizers" : "Organizers",
@@ -120,5 +121,6 @@
     "Enter a valid phone number" : "Enter a valid phone number",
     "password" : "password",
     "Password is too short" : "Password is too short",
-    "Send OTP" : "Send OTP"
+    "Send OTP" : "Send OTP",
+    "Most Rated Organizers" : "Most Rated Organizers"
 }

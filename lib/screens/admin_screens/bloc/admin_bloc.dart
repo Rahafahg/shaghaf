@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -13,6 +15,9 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       try {
         await GetIt.I.get<SupabaseLayer>().getAllCategories();
         await GetIt.I.get<SupabaseLayer>().getAllWorkshops();
+        await GetIt.I.get<SupabaseLayer>().getAllOrganizers();
+        getAllOrgWorkshops();
+        getAllOrgRatings();
         await GetIt.I.get<SupabaseLayer>().getAllBookings();
         groupworkshopsByCategory(GetIt.I.get<DataLayer>().allWorkshops);
         emit(SuccessState());
