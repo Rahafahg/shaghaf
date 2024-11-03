@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -61,14 +62,14 @@ class EmailForResetScreen extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  AuthField(type: 'Email', controller: emailResetController),
+                                  AuthField(type: 'Email'.tr(), controller: emailResetController),
                                   const SizedBox(height: 10,),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextButton(onPressed: ()=>context.pop(), child: const Text("Back", style: TextStyle(color: Constants.mainOrange, fontFamily: "Poppins"))),
+                                      TextButton(onPressed: ()=>context.pop(), child: Text("Back".tr(), style: const TextStyle(color: Constants.mainOrange, fontFamily: "Poppins"))),
                                       MainButton(
-                                        text: 'Send OTP',
+                                        text: 'Send OTP'.tr(),
                                         onPressed: () {
                                           if (formKey.currentState!.validate()) {
                                             bloc.add(RequestResetPasswordEvent(email: emailResetController.text));

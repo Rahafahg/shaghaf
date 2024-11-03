@@ -109,6 +109,16 @@
     "Edit workshop":"Edit workshop",
     "Submit Changes":"Submit Changes",
     "Pay":"Pay",
-    "guest bookings":"You need to have an account to browse your bookings"
-
+    "guest bookings":"You need to have an account to browse your bookings",
+    "Categories Statistics" : "Categories Statistics",
+    "Number of workshops by category" : "Number of workshops by category",
+    "Most Booked Categories" : "Most Booked Categories",
+    "Organizers" : "Organizers",
+    "Photo " : "صورة",
+    "(optional)" : "اختياري",
+    "Enter a valid email" : "Enter a valid email",
+    "Enter a valid phone number" : "Enter a valid phone number",
+    "password" : "password",
+    "Password is too short" : "Password is too short",
+    "Send OTP" : "Send OTP"
 }

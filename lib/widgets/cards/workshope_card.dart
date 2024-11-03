@@ -17,15 +17,7 @@ class WorkshopCard extends StatelessWidget {
   final String? date;
   final double? price;
   final bool? isAttended;
-  const WorkshopCard({
-    super.key,
-    required this.workshop,
-    this.shape = 'square',
-    this.onTap,
-    this.date,
-    this.price,
-    this.isAttended,
-  });
+  const WorkshopCard({super.key,required this.workshop,this.shape = 'square',this.onTap,this.date,this.price,this.isAttended,});
 
   @override
   Widget build(BuildContext context) {
@@ -142,33 +134,22 @@ class WorkshopCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                   color: Constants.cardColor,
                   border: Border.all(color: Constants.appGreyColor),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade300,
-                        blurRadius: 4,
-                        offset: const Offset(4, 8))
-                  ],
+                  boxShadow: [BoxShadow(color: Colors.grey.shade300,blurRadius: 4,offset: const Offset(4, 8))],
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                      child: SizedBox(
+                        width: context.getWidth(divideBy: 3.5),
                         child: SizedBox(
-                          width: context.getWidth(divideBy: 3.5),
-                          child: SizedBox(
-                              width: context.getWidth(),
-                              height: context.getHeight(),
-                              child: Image.network(workshop.image,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) =>
-                                          loadingProgress == null
-                                              ? child
-                                              : const ShimmerEffect())),
-                        )),
+                          width: context.getWidth(),
+                          height: context.getHeight(),
+                          child: Image.network(workshop.image,fit: BoxFit.cover,loadingBuilder:(context, child, loadingProgress) =>loadingProgress == null? child: const ShimmerEffect())
+                        ),
+                      )
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -185,53 +166,35 @@ class WorkshopCard extends StatelessWidget {
                                   workshop.title,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400,),
                                 ),
                               ),
                               Row(
                                 children: [
-                                  const Icon(Icons.star,
-                                      size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,size: 16, color: Colors.orange),
                                   const SizedBox(width: 4),
-                                  Text(rating,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
+                                  Text(rating,style: Theme.of(context).textTheme.bodySmall),
                                 ],
                               ),
                             ],
                           ),
                         ),
                         Text(
-                          GetIt.I
-                              .get<DataLayer>()
-                              .categories
-                              .firstWhere((category) =>
-                                  category.categoryId == workshop.categoryId)
-                              .categoryName,
-                          style: const TextStyle(
-                              fontSize: 14, color: Constants.mainOrange),
+                          GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryId == workshop.categoryId).categoryName,
+                          style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
                         ),
                         Row(
                           children: [
                             CircleAvatar(
-                                radius: 12,
-                                child: Image.network(
-                                    workshop.workshops.first.instructorImage,
-                                    loadingBuilder: (context, child,
-                                            loadingProgress) =>
-                                        loadingProgress == null
-                                            ? child
-                                            : Image.asset(
-                                                "assets/images/default_organizer_image.png"))),
-                            const SizedBox(width: 4),
-                            Text(
-                              workshop.workshops.first.instructorName,
-                              style: Theme.of(context).textTheme.bodySmall,
+                              radius: 12,
+                              backgroundImage: Image.network(
+                                fit: BoxFit.cover,
+                                workshop.workshops.first.instructorImage,
+                                loadingBuilder: (context, child,loadingProgress) =>loadingProgress == null? child: Image.asset("assets/images/default_organizer_image.png")
+                              ).image
                             ),
+                            const SizedBox(width: 4),
+                            Text(workshop.workshops.first.instructorName,style: Theme.of(context).textTheme.bodySmall,),
                           ],
                         ),
                         SizedBox(
@@ -241,15 +204,11 @@ class WorkshopCard extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.calendar_today,
-                                      size: 16, color: Colors.grey),
+                                  const Icon(Icons.calendar_today,size: 16, color: Colors.grey),
                                   const SizedBox(width: 4),
                                   Text(
-                                    date != null && date!.isNotEmpty
-                                        ? date!
-                                        : workshop.workshops.first.date,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    date != null && date!.isNotEmpty ? date! : workshop.workshops.first.date,
+                                    style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),

@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/screens/admin_screens/admin_org_screen.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
 import 'package:shaghaf/screens/auth_screens/email_for_reset_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/admin_navigation_screen.dart';

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/screens/admin_screens/admin_category_screen.dart';
 import 'package:shaghaf/screens/admin_screens/admin_org_screen.dart';
-import 'package:shaghaf/screens/admin_screens/admin_user_screen.dart';
+import 'package:shaghaf/screens/admin_screens/admin_category_screen.dart';
 import 'package:shaghaf/screens/admin_screens/bloc/admin_bloc.dart';
+import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
 
 class AdminNavigationScreen extends StatelessWidget {
@@ -16,9 +17,9 @@ class AdminNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<IconData> tabsIcons = [
-      HugeIcons.strokeRoundedHome09,
-      HugeIcons.strokeRoundedUser,
-      HugeIcons.strokeRoundedUser
+      // HugeIcons.strokeRoundedUser,
+      HugeIcons.strokeRoundedMenuSquare,
+      HugeIcons.strokeRoundedManager,
     ];
     return MultiBlocProvider(
       providers: [
@@ -27,14 +28,26 @@ class AdminNavigationScreen extends StatelessWidget {
         //other blocs can be added here
       ],
       child: Scaffold(
+        backgroundColor: Constants.backgroundColor,
+        appBar: AppBar(
+          leading: IconButton(onPressed: ()=>context.pushRemove(screen: const LoginScreen()), icon: const Icon(HugeIcons.strokeRoundedLogout01)),
+          actions: [IconButton(onPressed: ()=> context.setLocale(Locale(context.locale == const Locale("en") ? "ar" : "en")), icon: const Icon(Icons.translate))],
+          backgroundColor: Constants.backgroundColor,
+          centerTitle: true,
+          forceMaterialTransparency: true,
+          title: Image.asset(
+            'assets/images/logo.png',
+            height: 60,
+            alignment: Alignment.centerLeft, // Align logo to the left
+          ),),
         body: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             return IndexedStack(
               index: context.read<NavigationBloc>().currentScreen,
               children: const [
-                AdminOrgScreen(),
                 AdminCategoryScreen(),
-                AdminUserScreen(),
+                AdminOrgScreen(),
+                // AdminUserScreen(),
               ],
             );
           },
@@ -42,7 +55,7 @@ class AdminNavigationScreen extends StatelessWidget {
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             context.locale;
-            List<String> tabs = ['Home'.tr(), 'Profile'.tr(), 'Profile'.tr()];
+            List<String> tabs = ['Categories'.tr(context: context), 'Organizers'.tr(context: context)];
             return Container(
               padding: const EdgeInsets.only(top: 0.3, bottom: 4),
               decoration: const BoxDecoration(

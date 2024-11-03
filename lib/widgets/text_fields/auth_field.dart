@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:shaghaf/constants/constants.dart';
@@ -10,45 +10,38 @@ class AuthField extends StatelessWidget {
   final TextEditingController? controller;
   final void Function()? onUploadImg;
   final File? image;
-  const AuthField(
-      {super.key,
-      required this.type,
-      this.controller,
-      this.onUploadImg,
-      this.image});
+  const AuthField({super.key,required this.type,this.controller,this.onUploadImg,this.image});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        type == 'Photo (optional)'
-            ? SizedBox(
-                width: context.getWidth(),
-                child: RichText(
-                    text: const TextSpan(children: [
-                  TextSpan(
-                      text: "Photo ",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Constants.mainOrange,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600)),
-                  TextSpan(
-                      text: "(optional)",
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFamily: "Poppins",
-                          color: Constants.mainOrange))
-                ])))
-            : SizedBox(
-                width: context.getWidth(),
-                child: Text(type,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        color: Constants.mainOrange,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w600))),
-        type == 'Photo (optional)'
+        type == 'photo'.tr()
+          ? SizedBox(
+              width: context.getWidth(),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Photo ".tr(),
+                      style: const TextStyle(fontSize: 18,color: Constants.mainOrange,fontFamily: "Poppins",fontWeight: FontWeight.w600)
+                    ),
+                    TextSpan(
+                      text: "(optional)".tr(),
+                      style: const TextStyle(fontSize: 10,fontFamily: "Poppins",color: Constants.mainOrange)
+                    )
+                  ]
+                )
+              )
+            )
+          : SizedBox(
+              width: context.getWidth(),
+              child: Text(
+                type,
+                style: const TextStyle(fontSize: 18,color: Constants.mainOrange,fontFamily: "Poppins",fontWeight: FontWeight.w600)
+              )
+            ),
+          type == 'photo'.tr()
             ? GestureDetector(
                 onTap: onUploadImg,
                 child: Container(
@@ -86,15 +79,15 @@ class AuthField extends StatelessWidget {
               )
             : TextFormField(
                 controller: controller,
-                obscureText: type == 'Password',
-                minLines: type == 'Description'
+                obscureText: type == 'Password'.tr(),
+                minLines: type == 'Description'.tr()
                     ? 3
                     : 1, // Minimum lines for Description
-                maxLines: type == 'Description'
+                maxLines: type == 'Description'.tr()
                     ? 5
                     : 1, // Max lines for Description, can adjust if needed
                 style: const TextStyle(fontSize: 14, fontFamily: "Poppins"),
-                keyboardType: type.toLowerCase() == 'email'
+                keyboardType: type.toLowerCase() == 'email'.tr()
                     ? TextInputType.emailAddress
                     : null,
                 decoration: InputDecoration(
@@ -117,18 +110,16 @@ class AuthField extends StatelessWidget {
                 ),
                 validator: (text) {
                   if (text!.isEmpty) {
-                    return "$type is required";
+                    return "$type ${"is required".tr()}";
                   }
-                  if (type.toLowerCase() == 'email' &&
-                      !Constants.emailRegex.hasMatch(text)) {
-                    return "Enter a valid email";
+                  if (type.toLowerCase() == 'email'.tr() && !Constants.emailRegex.hasMatch(text)) {
+                    return "Enter a valid email".tr();
                   }
-                  if (type.toLowerCase() == 'phone number' &&
-                      (text.substring(0, 2) != "05" || text.length != 10)) {
-                    return "Enter a valid phone number";
+                  if (type.toLowerCase() == 'phone number'.tr() && (text.substring(0, 2) != "05" || text.length != 10)) {
+                    return "Enter a valid phone number".tr();
                   }
-                  if (type.toLowerCase() == 'password' && text.length < 6) {
-                    return "Password is too short";
+                  if (type.toLowerCase() == 'password'.tr() && text.length < 6) {
+                    return "Password is too short".tr();
                   }
                   return null;
                 },

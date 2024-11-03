@@ -3,10 +3,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class OrganizerMap extends StatelessWidget {
-  LatLng? markerPosition;
-  void Function(TapPosition, LatLng)? onTap;
+  final LatLng? markerPosition;
+  final void Function(TapPosition, LatLng)? onTap;
 
-  OrganizerMap({super.key, required this.onTap,  this.markerPosition});
+  const OrganizerMap({super.key, required this.onTap,  this.markerPosition});
 
   @override
   Widget build(BuildContext context) {

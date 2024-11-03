@@ -28,16 +28,11 @@ class WorkShopForm extends StatelessWidget {
     ];
     return Column(
       children: [
-        AddDateField(
-            controller: bloc.dateController, date: bloc.dateController.text),
-        TimeField(
-          timeFromController: bloc.timeFromController,
-          timeToController: bloc.timeToController,
-        ),
-        // map here
+        AddDateField(controller: bloc.dateController, date: bloc.dateController.text),
+        TimeField(timeFromController: bloc.timeFromController,timeToController: bloc.timeToController,),
         BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-            bloc: bloc,
-            builder: (context, state) {
+          bloc: bloc,
+          builder: (context, state) {
               if (state is ChangeImageState) {
                 return AddField(
                   image: state.image,

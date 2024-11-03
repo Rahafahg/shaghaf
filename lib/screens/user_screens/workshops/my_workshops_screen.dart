@@ -64,6 +64,7 @@ class MyWorkshopsScreen extends StatelessWidget {
       },
       builder: (context, index) => GetIt.I.get<AuthLayer>().user == null
           ? Scaffold(
+            backgroundColor: Constants.backgroundColor,
               body: SafeArea(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

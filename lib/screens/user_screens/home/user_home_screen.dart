@@ -10,7 +10,6 @@ import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/user_screens/home/bloc/user_home_bloc.dart';
 import 'package:shaghaf/screens/user_screens/other/user_notification_screen.dart';
@@ -295,7 +294,7 @@ class UserHomeScreen extends StatelessWidget {
                                   width: context.getWidth(),
                                   child: Text("Suggested".tr(context: context),
                                       textAlign: TextAlign.start,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         color: Constants.textColor,
                                       ))),

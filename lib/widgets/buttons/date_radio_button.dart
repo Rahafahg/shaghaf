@@ -4,6 +4,7 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 
 class DateRadioButton extends StatelessWidget {
@@ -45,7 +46,7 @@ class DateRadioButton extends StatelessWidget {
       selectedBorderColor: Colors.grey, // Set the selected border color to grey
       unSelectedBorderColor:
           Colors.grey, // Set the unselected border color to grey
-      width: 140,
+      width: context.getWidth(divideBy: 2),
     );
   }
 }

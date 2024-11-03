@@ -1,10 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/data_layer/supabase_layer.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 part 'admin_event.dart';
 part 'admin_state.dart';
 

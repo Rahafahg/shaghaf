@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -60,7 +61,7 @@ class ResetPasswordScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(16),
                               child: Column(
                                 children: [
-                                  AuthField(type: 'Password', controller: newPassword),
+                                  AuthField(type: 'Password'.tr(), controller: newPassword),
                                   const SizedBox(height: 10),
                                   MainButton(
                                     text: 'Submit New Password',

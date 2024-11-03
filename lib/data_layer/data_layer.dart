@@ -16,6 +16,7 @@ class DataLayer {
   List<Workshop> bookedWorkshops = [];                               // all workshops being booked by user
   List<WorkshopGroupModel> orgWorkshops = [];                        // all organizer workshops
   List<UserReviewModel> reviews = [];
+  Map<String, int> bookedCategories = {};
 }
 
 // function to get organizer workshops
@@ -59,4 +60,18 @@ Map<String, List<WorkshopGroupModel>> groupworkshopsByCategory(List<WorkshopGrou
   }
   GetIt.I.get<DataLayer>().workshopsByCategory = groupedItems;
   return groupedItems;
+}
+
+getBookedCategories() {
+  GetIt.I.get<DataLayer>().bookedCategories = Map<String,int>.fromIterable(GetIt.I.get<DataLayer>().categories.map((category)=>category.categoryName), key: (category) => category, value: (element) => 0,);
+  log(GetIt.I.get<DataLayer>().bookedCategories.toString());
+  for (var book in GetIt.I.get<DataLayer>().bookings) {
+    for(var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
+      if(workshopGroup.workshops.any((workshop)=>workshop.workshopId==book.workshopId)) {
+        String categoryName = GetIt.I.get<DataLayer>().categories.where((category)=>category.categoryId==workshopGroup.categoryId).first.categoryName;
+        GetIt.I.get<DataLayer>().bookedCategories[categoryName] = GetIt.I.get<DataLayer>().bookedCategories[categoryName]!+1;
+      }
+    }
+  }
+  log(GetIt.I.get<DataLayer>().bookedCategories.toString());
 }
