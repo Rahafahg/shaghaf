@@ -317,11 +317,13 @@ class AddWorkshopScreen extends StatelessWidget {
                                         ? 'Submit Changes'.tr(context: context)
                                         : 'Create'.tr(context: context),
                                     onPressed: () {
+                                      log(isEdit.toString());
                                       if (detalsInfoKey.currentState!
                                               .validate() &&
                                           bloc.instructorimage != null) {
                                         bloc.isOnline == true
                                             ? bloc.add(SubmitWorkshopEvent(
+                                              isEdit: isEdit,
                                                 isSingleWorkShope:
                                                     isSingleWorkShope,
                                               ))
@@ -330,7 +332,8 @@ class AddWorkshopScreen extends StatelessWidget {
                                                 ? bloc.add(SubmitWorkshopEvent(
                                                     isSingleWorkShope:
                                                         isSingleWorkShope,
-                                                    image: workshopImage!))
+                                                        isEdit: isEdit
+                                                    ))
                                                 : ScaffoldMessenger.of(context)
                                                     .showSnackBar(const SnackBar(
                                                         content: Text(

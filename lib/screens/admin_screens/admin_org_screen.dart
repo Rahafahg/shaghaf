@@ -110,20 +110,17 @@ class AdminOrgScreen extends StatelessWidget {
 
 Widget bottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(fontSize: 10);
+  log(value.toString());
+  log(GetIt.I.get<DataLayer>().organizersRating.toString());
   String text = '';
-  log('start');
   for (var key in GetIt.I.get<DataLayer>().organizersRating.keys) {
-    log(key);
     List<String> appeared = [];
-    log(GetIt.I.get<DataLayer>().organizersRating[key].toString());
-    log(value.toString());
-    if(GetIt.I.get<DataLayer>().organizersRating[key]! == value) {
+    if(GetIt.I.get<DataLayer>().organizersRating[key]!.toDouble() == value && appeared.contains(key)==false) {
+      log('found $key');
       text = key;
       appeared.add(key);
     }
   }
-  log('end');
-  log('--------');
   return SideTitleWidget(
     axisSide: meta.axisSide,
     child: RotatedBox(quarterTurns: 3,child: Text(text, style: style)),

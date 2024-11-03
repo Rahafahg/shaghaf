@@ -185,13 +185,39 @@ class AdminCategoryScreen extends StatelessWidget {
 Widget bottomTitles(double value, TitleMeta meta) {
   const style = TextStyle(fontSize: 10);
   String text = '';
-  for (var key in GetIt.I.get<DataLayer>().bookedCategories.keys) {
-    List<String> appeared = [];
-    if(GetIt.I.get<DataLayer>().bookedCategories[key]!.toDouble() == value) {
-      text = key;
-      appeared.add(key);
-    }
+  switch(value.toInt()){
+    case 0:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[0];
+      break;
+    case 1:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[1];
+      break;
+    case 2:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[2];
+      break;
+    case 3:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[3];
+      break;
+    case 4:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[4];
+      break;
+    case 5:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[5];
+      break;
+    case 6:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[6];
+      break;
+    case 7:
+      text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[7];
+      break;
   }
+  // for (var key in GetIt.I.get<DataLayer>().bookedCategories.keys) {
+  //   List<String> appeared = [];
+  //   if(GetIt.I.get<DataLayer>().bookedCategories[key]!.toDouble() == value) {
+  //     text = key;
+  //     appeared.add(key);
+  //   }
+  // }
   return SideTitleWidget(
     axisSide: meta.axisSide,
     child: RotatedBox(quarterTurns: 3,child: Text(text, style: style)),

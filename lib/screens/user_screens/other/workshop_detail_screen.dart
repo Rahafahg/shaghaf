@@ -385,12 +385,12 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(state.specific!.isOnline
-                                            ? 'Online'
+                                            ? 'Online'.tr(context: context)
                                             : state.specific!.venueName ??
                                                 "To be determained later"),
                                         subtitle: Text(
                                           specific.isOnline
-                                              ? 'Online'
+                                              ? 'Online'.tr(context: context)
                                               : specific.venueType ??
                                                   "To be determained later",
                                           style: const TextStyle(
