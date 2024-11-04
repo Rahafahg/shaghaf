@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,8 @@ class OrganizerProfileBloc
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   File? selectedImageFile;
-  File? tempImageFile; // Temporary image to hold new selected image
+  File? tempImageFile;
+  String? imageUrl;
 
   OrganizerProfileBloc() : super(OrganizerProfileInitial()) {
     on<ViewOrgProfileEvent>(onViewOrgProfile);
@@ -47,7 +49,6 @@ class OrganizerProfileBloc
     emit(EditingOrgProfileState());
   }
 
-
   FutureOr<void> onSubmitOrgProfile(
       SubmitOrgProfileEvent event, Emitter<OrganizerProfileState> emit) async {
     try {
@@ -63,19 +64,49 @@ class OrganizerProfileBloc
       authLayer.organizer!.name = event.name;
       authLayer.organizer!.description = event.description;
       authLayer.organizer!.contactNumber = event.contactNumber;
-      
-      // Update selected image with tempImageFile upon submission
-      selectedImageFile = tempImageFile;
-      authLayer.organizer!.image = selectedImageFile?.path ?? authLayer.organizer!.image;
-      
+
       authLayer.box.write('organizer', authLayer.organizer!.toJson());
       emit(SuccessOrgProfileState(imageFile: selectedImageFile));
     } catch (_) {}
   }
 
-  FutureOr<void> onUpdateProfileImage(
-      UpdateProfileImageEvent event, Emitter<OrganizerProfileState> emit) {
+  Future<void> onUpdateProfileImage(UpdateProfileImageEvent event,
+      Emitter<OrganizerProfileState> emit) async {
     selectedImageFile = event.imageFile;
+    
+    GetIt.I.get<AuthLayer>().organizer!.image =
+        selectedImageFile?.path ?? GetIt.I.get<AuthLayer>().organizer!.image;
+    try {
+      await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .upload('public/${selectedImageFile!.path.split('/').last}',
+              selectedImageFile!);
+    } catch (e) {
+      log("error aploading: $e");
+    }
+    try {
+      imageUrl = GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .storage
+          .from('organizer_images')
+          .getPublicUrl('public/${selectedImageFile!.path.split('/').last}');
+    } catch (e) {
+      log('error url: $e');
+    }
+    try {
+      await GetIt.I
+          .get<SupabaseLayer>()
+          .supabase
+          .from('organizer')
+          .update({'image': imageUrl}).eq(
+              'organizer_id', GetIt.I.get<AuthLayer>().organizer!.organizerId);
+    } catch (e) {
+      log("error updating: $e");
+    }
     emit(SuccessOrgProfileState(imageFile: selectedImageFile));
   }
 }
