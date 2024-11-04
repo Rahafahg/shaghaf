@@ -7,7 +7,8 @@ import 'package:shaghaf/extensions/screen_size.dart';
 
 class CategoryDropDown extends StatelessWidget {
   final TextEditingController controller;
-  const CategoryDropDown({super.key, required this.controller});
+  void Function(String?)? onSelected;
+  CategoryDropDown({super.key, required this.controller, required this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class CategoryDropDown extends StatelessWidget {
           height: 8,
         ),
         DropdownMenu(
+            onSelected: onSelected,
             controller: controller,
             hintText: "Category".tr(context: context),
             textStyle:

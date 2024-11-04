@@ -57,6 +57,8 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
       emit(ShowWorkshopsState());
     });
     on<SpecifyLocationEvent>(specifyLocation);
+
+    on<ChooseCategoryEvent>(chooseCategory);
   }
 
   FutureOr<void> submitWorkshopMethod(
@@ -149,5 +151,11 @@ class AddWorkshopBloc extends Bloc<AddWorkshopEvent, AddWorkshopState> {
     latitude = event.point.latitude;
     longitude = event.point.longitude;
     emit(SpecifyLocationState(point: event.point));
+  }
+
+  FutureOr<void> chooseCategory(
+      ChooseCategoryEvent event, Emitter<AddWorkshopState> emit) {
+    categoryController.text = event.category;
+    emit(ChooseCategoryState());
   }
 }

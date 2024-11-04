@@ -227,19 +227,55 @@ class AddWorkshopScreen extends StatelessWidget {
                                             type: "Workshop Des"
                                                 .tr(context: context),
                                             controller: bloc.descController),
-                                        CategoryDropDown(
-                                            controller:
-                                                bloc.categoryController),
-                                        bloc.categoryController.text ==
-                                                "Category".tr(context: context)
-                                            ? const SizedBox.shrink()
-                                            : Text(
-                                                "Category required"
-                                                    .tr(context: context),
-                                                style: const TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 10,
-                                                )),
+                                        BlocBuilder<AddWorkshopBloc,
+                                            AddWorkshopState>(
+                                          builder: (context, state) {
+                                            if (state is ChooseCategoryState ||
+                                                bloc.categoryController.text
+                                                    .isNotEmpty) {
+                                              return CategoryDropDown(
+                                                  controller:
+                                                      bloc.categoryController,
+                                                  onSelected: (category) {
+                                                    bloc.add(
+                                                        ChooseCategoryEvent(
+                                                            category:
+                                                                category!));
+                                                    log(bloc.categoryController
+                                                        .text);
+                                                  });
+                                            }
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CategoryDropDown(
+                                                    controller:
+                                                        bloc.categoryController,
+                                                    onSelected: (category) {
+                                                      bloc.add(
+                                                          ChooseCategoryEvent(
+                                                              category:
+                                                                  category!));
+                                                      log(bloc
+                                                          .categoryController
+                                                          .text);
+                                                    }),
+                                                bloc.categoryController.text ==
+                                                        "Category".tr(
+                                                            context: context)
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        "Category required".tr(
+                                                            context: context),
+                                                        style: const TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 10,
+                                                        ))
+                                              ],
+                                            );
+                                          },
+                                        ),
                                         AddField(
                                           type: 'Audience'.tr(context: context),
                                           controller: bloc.audienceController,
@@ -311,7 +347,7 @@ class AddWorkshopScreen extends StatelessWidget {
                                           bloc.dateController.text != "") {
                                         bloc.isOnline == true
                                             ? bloc.add(SubmitWorkshopEvent(
-                                              isSingleWorkShope:
+                                                isSingleWorkShope:
                                                     isSingleWorkShope,
                                                 isEdit: isEdit))
                                             : bloc.longitude != null &&
