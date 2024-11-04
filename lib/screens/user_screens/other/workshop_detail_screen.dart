@@ -127,8 +127,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           children: [
                             Text(workshop.title,
                                 style: const TextStyle(
-                                    color: Constants.textColor,
-                                    fontSize: 18)),
+                                    color: Constants.textColor, fontSize: 18)),
                             Row(
                               children: [
                                 const HugeIcon(
@@ -157,11 +156,11 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  category.categoryName,
+                                  category.categoryName.tr(context: context),
                                   style: const TextStyle(
-                                      color: Constants.textColor,
-                                      fontSize: 16,
-                                      fontFamily: "Poppins"),
+                                    color: Constants.textColor,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ],
                             ),
@@ -183,7 +182,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Text(
                                   workshop.organizer.name,
                                   style: const TextStyle(
-                                      fontSize: 11, fontFamily: "Poppins"),
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ],
                             ),

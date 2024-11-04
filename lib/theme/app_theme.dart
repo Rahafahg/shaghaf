@@ -15,12 +15,11 @@ ThemeData myappTheme(BuildContext context) {
         labelTextStyle: WidgetStateProperty.resolveWith((state) {
           if (state.contains(WidgetState.selected)) {
             return const TextStyle(
-                color: Constants.mainOrange,
-                fontSize: 12,
-                fontFamily: "Poppins");
+              color: Constants.mainOrange,
+              fontSize: 12,
+            );
           }
-          return const TextStyle(
-              color: Colors.grey, fontSize: 12, fontFamily: "Poppins");
+          return const TextStyle(color: Colors.grey, fontSize: 12);
         }),
       ),
       tabBarTheme: const TabBarTheme(
