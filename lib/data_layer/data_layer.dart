@@ -21,6 +21,7 @@ class DataLayer {
   List<OrganizerModel> organizers = [];
   Map<String, List<WorkshopGroupModel>> allOrgWorkshops = {};
   Map<String, int> organizersRating = {};
+  List<List<String>> orgProfit = [];
 }
 
 // function to get organizer workshops
@@ -113,9 +114,17 @@ getAllOrgRatings() {
   GetIt.I.get<DataLayer>().organizersRating = temp;
 }
 
-getOrgProfit() {
-  Map<String, double> temp = {};
-  for (var book in GetIt.I.get<DataLayer>().bookings.where((book)=>book.bookingDate.month==11)) {
-    log(book.toJson().toString());
+getOrgProfit(OrganizerModel organizer) {
+  List<List<String>> profit = [];
+  for (var book in GetIt.I.get<DataLayer>().bookings) {
+    for(var workshopGroup in GetIt.I.get<DataLayer>().workshops) {
+      for(var workshop in workshopGroup.workshops) {
+        if(workshop.workshopId == book.workshopId && workshopGroup.organizer.organizerId == organizer.organizerId) {
+          profit.add([workshop.date,book.totalPrice.toString()]);
+        }
+      }
+    }
   }
+  profit.sort((list1, list2)=>list1.first.compareTo(list2.first));
+  GetIt.I.get<DataLayer>().orgProfit = profit;
 }

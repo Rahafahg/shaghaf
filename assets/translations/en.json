@@ -140,5 +140,6 @@
     "Others":"Others",
     "map required":"You must locate address on the map first",
     "field not empty":"All field must not be empty",
-    "Login" : "Login"
+    "Login" : "Login",
+    "Choose an Organizer" : "Choose an Organizer"
 }

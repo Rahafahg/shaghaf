@@ -12,4 +12,7 @@ final class ErrorState extends AdminState {
   ErrorState({required this.msg});
 }
 
-final class SuccessState extends AdminState {}
+final class SuccessState extends AdminState {
+  final List<List<String>>? profit;
+  SuccessState({this.profit});
+}

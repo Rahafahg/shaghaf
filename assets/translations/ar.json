@@ -142,5 +142,6 @@
     "field not empty":"يجب تعبئة جميع المتطلبات",
     "Login" : "تسجيل الدخول",
     "email":"البريد الإلكتروني",
-    "phone number" : "رقم الهاتف"
+    "phone number" : "رقم الهاتف",
+    "Choose an Organizer" : "اختر جهة"
 }
