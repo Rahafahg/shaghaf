@@ -18,6 +18,12 @@ final class ChangeTypeEvent extends AddWorkshopEvent {
   ChangeTypeEvent({required this.type});
 }
 
+final class ChooseCategoryEvent extends AddWorkshopEvent {
+  final String category;
+  ChooseCategoryEvent({required this.category});
+}
+
+
 final class AddDateEvent extends AddWorkshopEvent {
   final String date;
   AddDateEvent({required this.date});

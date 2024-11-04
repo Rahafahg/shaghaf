@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
@@ -71,15 +72,43 @@ class OrganizerProfileScreen extends StatelessWidget {
                                     .setProfileImagePath(imageFile.path);
                               }
                             },
-                            child: BlocBuilder<OrganizerProfileBloc,
-                                OrganizerProfileState>(
+                            child:
+// Inside your BlocBuilder
+                                BlocBuilder<OrganizerProfileBloc,
+                                    OrganizerProfileState>(
                               builder: (context, state) {
                                 ImageProvider backgroundImage;
                                 final imagePath =
                                     authLayer.getProfileImagePath();
+
                                 if (state is SuccessOrgProfileState &&
                                     state.imageFile != null) {
-                                  backgroundImage = FileImage(state.imageFile!);
+                                  // backgroundImage = FileImage(state.imageFile!);
+                                  backgroundImage = FileImage(File(GetIt.I
+                                      .get<AuthLayer>()
+                                      .organizer!
+                                      .image));
+                                } else if (state is ErrorImageProfileState) {
+                                  SchedulerBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(state.msg)),
+                                    );
+                                  });
+                                  backgroundImage = FileImage(File(GetIt.I
+                                      .get<AuthLayer>()
+                                      .organizer!
+                                      .image));
+                                } else if (state is EditingOrgProfileState) {
+                                  backgroundImage = FileImage(File(GetIt.I
+                                      .get<AuthLayer>()
+                                      .organizer!
+                                      .image));
+                                } else if (state is LoadingOrgProfileState) {
+                                  backgroundImage = FileImage(File(GetIt.I
+                                      .get<AuthLayer>()
+                                      .organizer!
+                                      .image));
                                 } else if (imagePath != null) {
                                   backgroundImage = FileImage(File(imagePath));
                                 } else if (organizer?.image != null &&
@@ -119,7 +148,8 @@ class OrganizerProfileScreen extends StatelessWidget {
                             child: LottieBuilder.asset(
                                 "assets/lottie/loading.json"));
                       }
-                      if (state is SuccessOrgProfileState) {
+                      if (state is SuccessOrgProfileState ||
+                          state is ErrorImageProfileState) {
                         // Use the current organizer data
                         return Column(
                           children: [

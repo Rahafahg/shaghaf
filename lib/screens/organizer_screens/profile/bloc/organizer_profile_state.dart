@@ -12,6 +12,11 @@ final class ErrorProfileState extends OrganizerProfileState {
   ErrorProfileState({required this.msg});
 }
 
+final class ErrorImageProfileState extends OrganizerProfileState {
+  final String msg;
+  ErrorImageProfileState({required this.msg});
+}
+
 final class SuccessOrgProfileState extends OrganizerProfileState {
   final File? imageFile;
 

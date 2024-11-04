@@ -73,41 +73,45 @@ class OrganizerProfileBloc
   Future<void> onUpdateProfileImage(UpdateProfileImageEvent event,
       Emitter<OrganizerProfileState> emit) async {
     selectedImageFile = event.imageFile;
-    
-    GetIt.I.get<AuthLayer>().organizer!.image =
-        selectedImageFile?.path ?? GetIt.I.get<AuthLayer>().organizer!.image;
-    try {
-      await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .upload('public/${selectedImageFile!.path.split('/').last}',
-              selectedImageFile!);
-    } catch (e) {
-      log("error aploading: $e");
+    String format = selectedImageFile!.path.split('.').last.toLowerCase();
+    if (format == 'jpeg' || format == 'jpg' || format == 'png') {
+      GetIt.I.get<AuthLayer>().organizer!.image =
+          selectedImageFile?.path ?? GetIt.I.get<AuthLayer>().organizer!.image;
+      try {
+        await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .upload('public/${selectedImageFile!.path.split('/').last}',
+                selectedImageFile!);
+      } catch (e) {
+        log("error aploading: $e");
+      }
+      try {
+        imageUrl = GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .storage
+            .from('organizer_images')
+            .getPublicUrl('public/${selectedImageFile!.path.split('/').last}');
+      } catch (e) {
+        log('error url: $e');
+      }
+      try {
+        await GetIt.I
+            .get<SupabaseLayer>()
+            .supabase
+            .from('organizer')
+            .update({'image': imageUrl}).eq('organizer_id',
+                GetIt.I.get<AuthLayer>().organizer!.organizerId);
+      } catch (e) {
+        log("error updating: $e");
+      }
+      emit(SuccessOrgProfileState(imageFile: selectedImageFile));
+    } else {
+      emit(ErrorImageProfileState(msg: 'Your image format is not supported, try using jpeg, jpg or png'));
     }
-    try {
-      imageUrl = GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .storage
-          .from('organizer_images')
-          .getPublicUrl('public/${selectedImageFile!.path.split('/').last}');
-    } catch (e) {
-      log('error url: $e');
-    }
-    try {
-      await GetIt.I
-          .get<SupabaseLayer>()
-          .supabase
-          .from('organizer')
-          .update({'image': imageUrl}).eq(
-              'organizer_id', GetIt.I.get<AuthLayer>().organizer!.organizerId);
-    } catch (e) {
-      log("error updating: $e");
-    }
-    emit(SuccessOrgProfileState(imageFile: selectedImageFile));
   }
 }
 
