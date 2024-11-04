@@ -1,10 +1,9 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shaghaf/constants/constants.dart';
 
-class switchingLanguage extends StatelessWidget {
-  const switchingLanguage({super.key});
+class SwitchingLanguage extends StatelessWidget {
+  const SwitchingLanguage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,37 +16,28 @@ class switchingLanguage extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 4),
-                      blurRadius: 8,
-                      color: Color.fromARGB(104, 222, 101, 49),
-                      spreadRadius: 0)
-                ],
+                boxShadow: [BoxShadow(offset: Offset(0, 4),blurRadius: 8,color: Color.fromARGB(104, 222, 101, 49),spreadRadius: 0)],
               ),
               child: CircleAvatar(
-                backgroundColor: Constants.profileColor,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 child: IconButton(
+                  icon: const Icon(Icons.translate),
+                  color: Constants.mainOrange,
                   onPressed: () {
-                    //context.setLocale(Locale("en"));
-                    // Locale currentLocale = context.locale;
                     if (context.locale == const Locale("en")) {
                       context.setLocale(const Locale("ar"));
                     } else {
                       context.setLocale(const Locale("en"));
                     }
                   },
-                  icon: const Icon(Icons.translate),
-                  color: Constants.mainOrange,
                 ),
               ),
             ),
             const SizedBox(width: 15),
-            Text("Switch".tr(),
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Constants.textColor,
-                ))
+            Text(
+              "Switch".tr(),
+              style: TextStyle(fontSize: 16,color: Theme.of(context).textTheme.bodyLarge!.color)
+            ) // 17 pop ?
           ],
         ),
       ),

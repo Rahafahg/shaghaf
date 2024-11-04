@@ -22,7 +22,7 @@ class TicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Constants.ticketCardColor,
+          color: Theme.of(context).colorScheme.surfaceTint,
           borderRadius: BorderRadius.circular(20)),
       height: context.getHeight(divideBy: 1.5),
       width: context.getWidth(),

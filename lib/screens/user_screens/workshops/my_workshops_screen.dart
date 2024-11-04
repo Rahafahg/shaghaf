@@ -63,7 +63,7 @@ class MyWorkshopsScreen extends StatelessWidget {
       },
       builder: (context, index) => GetIt.I.get<AuthLayer>().user == null
           ? Scaffold(
-              backgroundColor: Constants.backgroundColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: SafeArea(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -78,14 +78,15 @@ class MyWorkshopsScreen extends StatelessWidget {
           : DefaultTabController(
               length: 2,
               child: Scaffold(
-                  backgroundColor: Constants.backgroundColor,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   appBar: AppBar(
                     forceMaterialTransparency: true,
                     centerTitle: true,
                     title: Text(
                       "My Workshops".tr(context: context),
-                      style: const TextStyle(
-                          fontSize: 20, color: Constants.textColor),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).textTheme.bodyLarge!.color),
                     ),
                     bottom: PreferredSize(
                         preferredSize: const Size(double.infinity, 60),

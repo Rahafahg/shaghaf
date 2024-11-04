@@ -17,7 +17,15 @@ class WorkshopCard extends StatelessWidget {
   final String? date;
   final double? price;
   final bool? isAttended;
-  const WorkshopCard({super.key,required this.workshop,this.shape = 'square',this.onTap,this.date,this.price,this.isAttended,});
+  const WorkshopCard({
+    super.key,
+    required this.workshop,
+    this.shape = 'square',
+    this.onTap,
+    this.date,
+    this.price,
+    this.isAttended,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +42,9 @@ class WorkshopCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 4,
-                          offset: const Offset(4, 2))
+                          color: Colors.grey.shade400,
+                          blurRadius: 2,
+                          offset: const Offset(2, 1))
                     ]),
                 child: Stack(
                   children: [
@@ -59,10 +67,10 @@ class WorkshopCard extends StatelessWidget {
                       right: 0,
                       left: 0,
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            color: Constants.cardColor),
+                                const BorderRadius.all(Radius.circular(10.0)),
+                            color: Theme.of(context).colorScheme.surface),
                         width: context.getWidth(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -91,8 +99,9 @@ class WorkshopCard extends StatelessWidget {
                               const SizedBox(height: 5),
                               Row(
                                 children: [
-                                  const Icon(Icons.calendar_today,
-                                      size: 16, color: Colors.grey),
+                                  Icon(Icons.calendar_today,
+                                      size: 16,
+                                      color: Theme.of(context).primaryColor),
                                   const SizedBox(width: 4),
                                   Text(workshop.workshops.first.date,
                                     style: const TextStyle(
@@ -127,24 +136,37 @@ class WorkshopCard extends StatelessWidget {
                 height: context.getHeight(divideBy: 6.2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: Constants.cardColor,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                   border: Border.all(color: Constants.appGreyColor),
-                  boxShadow: [BoxShadow(color: Colors.grey.shade300,blurRadius: 4,offset: const Offset(4, 8))],
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 3,
+                        offset: const Offset(2, 2))
+                  ],
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                      child: SizedBox(
-                        width: context.getWidth(divideBy: 3.5),
+                        borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10)),
                         child: SizedBox(
-                          width: context.getWidth(),
-                          height: context.getHeight(),
-                          child: Image.network(workshop.image,fit: BoxFit.cover,loadingBuilder:(context, child, loadingProgress) =>loadingProgress == null? child: const ShimmerEffect())
-                        ),
-                      )
-                    ),
+                          width: context.getWidth(divideBy: 3.5),
+                          child: SizedBox(
+                              width: context.getWidth(),
+                              height: context.getHeight(),
+                              child: Image.network(workshop.image,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) =>
+                                          loadingProgress == null
+                                              ? child
+                                              : const ShimmerEffect())),
+                        )),
                     const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,9 +188,13 @@ class WorkshopCard extends StatelessWidget {
                               ),
                               Row(
                                 children: [
-                                  const Icon(Icons.star,size: 16, color: Colors.orange),
+                                  const Icon(Icons.star,
+                                      size: 16, color: Colors.orange),
                                   const SizedBox(width: 4),
-                                  Text(rating,style: Theme.of(context).textTheme.bodySmall),
+                                  Text(rating,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
                                 ],
                               ),
                             ],
@@ -181,15 +207,22 @@ class WorkshopCard extends StatelessWidget {
                         Row(
                           children: [
                             CircleAvatar(
-                              radius: 12,
-                              backgroundImage: Image.network(
-                                fit: BoxFit.cover,
-                                workshop.workshops.first.instructorImage,
-                                loadingBuilder: (context, child,loadingProgress) =>loadingProgress == null? child: Image.asset("assets/images/default_organizer_image.png")
-                              ).image
-                            ),
+                                radius: 12,
+                                backgroundImage: Image.network(
+                                        fit: BoxFit.cover,
+                                        workshop.workshops.first.instructorImage,
+                                        loadingBuilder: (context, child,
+                                                loadingProgress) =>
+                                            loadingProgress == null
+                                                ? child
+                                                : Image.asset(
+                                                    "assets/images/default_organizer_image.png"))
+                                    .image),
                             const SizedBox(width: 4),
-                            Text(workshop.workshops.first.instructorName,style: Theme.of(context).textTheme.bodySmall,),
+                            Text(
+                              workshop.workshops.first.instructorName,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -199,11 +232,18 @@ class WorkshopCard extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.calendar_today,size: 16, color: Colors.grey),
+                                  Icon(Icons.calendar_today,
+                                      size: 16,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
                                   const SizedBox(width: 4),
                                   Text(
-                                    date != null && date!.isNotEmpty ? date! : workshop.workshops.first.date,
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    date != null && date!.isNotEmpty
+                                        ? date!
+                                        : workshop.workshops.first.date,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),

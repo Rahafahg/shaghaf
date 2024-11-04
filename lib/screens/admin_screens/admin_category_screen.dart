@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:shaghaf/constants/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
-import 'package:shaghaf/models/booking_model.dart';
 import 'package:shaghaf/models/categories_model.dart';
 import 'package:shaghaf/models/workshop_group_model.dart';
 import 'package:shaghaf/screens/admin_screens/bloc/admin_bloc.dart';
@@ -32,8 +30,6 @@ class AdminCategoryScreen extends StatelessWidget {
               return Center(child: LottieBuilder.asset("assets/lottie/loading.json"));
             }
             if (state is SuccessState) {
-              List<WorkshopGroupModel> workshops = GetIt.I.get<DataLayer>().allWorkshops;
-              List<BookingModel> bookings = GetIt.I.get<DataLayer>().bookings;
               List<CategoriesModel> categories = GetIt.I.get<DataLayer>().categories;
               Map<String, List<WorkshopGroupModel>> categoriesMap = GetIt.I.get<DataLayer>().workshopsByCategory;
               getBookedCategories();

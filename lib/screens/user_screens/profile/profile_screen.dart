@@ -11,6 +11,7 @@ import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => bloc.add(ViewUserProfileEvent()),
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomPaint(
                       size: Size(context.getWidth(), 200),
-                      painter: RPSCustomPainter(width: context.getWidth()),
+                      painter: RPSCustomPainter(width: context.getWidth(), context: context),
                     ),
                   ],
                 ),
@@ -45,9 +46,7 @@ class ProfileScreen extends StatelessWidget {
               BlocBuilder<UserProfileBloc, UserProfileState>(
                 builder: (context, state) {
                   if (state is LoadingProfileState) {
-                    return Center(
-                        child:
-                            LottieBuilder.asset("assets/lottie/loading.json"));
+                    return Center(child:LottieBuilder.asset("assets/lottie/loading.json"));
                   }
                   if (state is SuccessProfileState) {
                     return Column(
@@ -56,38 +55,20 @@ class ProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              user == null
-                                  ? "Hello, Guest"
-                                  : "${user.firstName} ${user.lastName}",
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                color: Constants.textColor,
-                                fontFamily: "Poppins",
-                              ),
+                              user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
+                              style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500,color: Theme.of(context).colorScheme.onSecondary,fontFamily: "Poppins",),
                             ),
-                            user == null
-                                ? const SizedBox.shrink()
-                                : IconButton(
-                                    onPressed: () {
-                                      bloc.add(EditUserProfileEvent(
-                                          firstName: user.firstName,
-                                          lastName: user.lastName,
-                                          phoneNumber: user.phoneNumber));
-                                    },
-                                    icon: const Icon(
-                                      Icons.mode_edit_outline_outlined,
-                                      size: 30,
-                                      color: Colors.black,
-                                    ))
+                            user == null ? const SizedBox.shrink()
+                            : IconButton(
+                              onPressed: ()=>bloc.add(EditUserProfileEvent(firstName: user.firstName,lastName: user.lastName,phoneNumber: user.phoneNumber)),
+                              icon: Icon(Icons.mode_edit_outline_outlined,size: 30,color: Theme.of(context).primaryColor)
+                            )
                           ],
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                          child: ProfileCard(
-                              text: user?.phoneNumber ?? "", icon: Icons.phone),
+                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          child: ProfileCard(text: user?.phoneNumber ?? "", icon: Icons.phone),
                         ),
                       ],
                     );
@@ -100,18 +81,15 @@ class ProfileScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              EditTextField(
-                                  controller: bloc.firstNameController),
+                              EditTextField(controller: bloc.firstNameController),
                               const SizedBox(width: 10), // Space between fields
-                              EditTextField(
-                                  controller: bloc.lastNameController),
+                              EditTextField(controller: bloc.lastNameController),
                             ],
                           ),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: Row(
@@ -128,9 +106,9 @@ class ProfileScreen extends StatelessWidget {
                                           spreadRadius: 0)
                                     ],
                                   ),
-                                  child: const CircleAvatar(
-                                    backgroundColor: Constants.profileColor,
-                                    child: Icon(
+                                  child: CircleAvatar(
+                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                    child: const Icon(
                                       Icons.phone,
                                       color: Constants.mainOrange,
                                     ),
@@ -167,10 +145,12 @@ class ProfileScreen extends StatelessWidget {
                             user == null
                                 ? "Hello, Guest"
                                 : "${user.firstName} ${user.lastName}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
-                              color: Constants.textColor,
+                              color: Theme.of(context).colorScheme.onSecondary,
+
+                              // color: Constants.textColor,
                             ),
                           ),
                           user == null
@@ -182,11 +162,9 @@ class ProfileScreen extends StatelessWidget {
                                         lastName: user.lastName,
                                         phoneNumber: user.phoneNumber));
                                   },
-                                  icon: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    size: 30,
-                                    color: Colors.black,
-                                  ))
+                                  icon: Icon(Icons.mode_edit_outline_outlined,
+                                      size: 30,
+                                      color: Theme.of(context).primaryColor))
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -213,13 +191,13 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     // Text("settings").tr(),
                     Text("settings".tr(context: context),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff666666),
-                        )),
+                        style: TextStyle(
+                            fontSize: 18,
+                            color:
+                                Theme.of(context).textTheme.bodyMedium!.color)),
                     const SizedBox(height: 30),
-                    const switchingLanguage(),
-                    ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
+                    const SwitchingLanguage(),
+                    const SwitchMoodButton()
                   ],
                 ),
               ),
@@ -236,7 +214,8 @@ class ProfileScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5)),
                           shadowColor: const Color.fromARGB(104, 222, 101, 49),
                           foregroundColor: Constants.appRedColor,
-                          backgroundColor: Constants.profileColor,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           elevation: 8,
                           fixedSize: const Size(130, 34)),
                       onPressed: () {

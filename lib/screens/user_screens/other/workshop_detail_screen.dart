@@ -125,15 +125,12 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(workshop.title,
-                                style: const TextStyle(
-                                    color: Constants.textColor,
-                                    fontSize: 18)),
+                            Text(workshop.title,style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 18)), // 20 pop ?
                             Row(
                               children: [
-                                const HugeIcon(
+                                HugeIcon(
                                   icon: HugeIcons.strokeRoundedUserGroup,
-                                  color: Constants.textColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 5),
                                 Text(workshop.targetedAudience)
@@ -158,9 +155,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName.tr(context: context),
-                                  style: const TextStyle(
-                                      color: Constants.textColor,
-                                      fontSize: 16),
+                                  style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 16),
                                 ),
                               ],
                             ),

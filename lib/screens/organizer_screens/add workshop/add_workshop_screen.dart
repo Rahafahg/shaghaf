@@ -39,7 +39,7 @@ class AddWorkshopScreen extends StatelessWidget {
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
-            backgroundColor: Constants.backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () => context.pop(),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:shaghaf/models/organizer_model.dart';
 import 'package:shaghaf/models/user_model.dart';

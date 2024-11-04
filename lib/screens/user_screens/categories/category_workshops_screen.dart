@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +24,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(
           preferredSize: Size(context.getWidth(), context.getHeight(divideBy: 13)),
           child: AppBar(
@@ -34,7 +33,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
             centerTitle: true,
             title: Text(
               category.categoryName.tr(context: context),
-              style: const TextStyle(fontSize: 20,color: Constants.textColor,),
+              style: TextStyle(fontSize: 20,color: Theme.of(context).textTheme.bodyLarge!.color,),
             ),
             bottom: const PreferredSize(
               preferredSize: Size.fromHeight(1),
@@ -59,14 +58,14 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                         child: SearchField(onChanged: (value) => bloc.add(CategorySearchEvent(searchTerm: value, category: category))),
                       ),
                       IconButton(
-                        icon: const HugeIcon(icon: HugeIcons.strokeRoundedFilterHorizontal,color: Constants.lightGreen),
+                        icon: HugeIcon(icon: HugeIcons.strokeRoundedFilterHorizontal,color: Theme.of(context).colorScheme.primary),
                         onPressed: () => showModalBottomSheet(
                           context: context,
                           builder: (context) => Container(
                             width: context.getWidth(),
                             height: context.getHeight(divideBy: 1.5),
                             padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(color: const Color(0xffF4F4F4),borderRadius:BorderRadius.circular(20)),
+                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface,borderRadius:BorderRadius.circular(20)),
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +90,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                     style: const TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
                                   ),
                                   Container(
-                                    decoration: BoxDecoration(borderRadius:BorderRadius.circular(10)),
+                                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius:BorderRadius.circular(10)),
                                     width: context.getWidth(divideBy: 2),
                                     child: TextField(
                                       readOnly: true,
@@ -108,7 +107,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                       }),
                                       decoration: InputDecoration(
                                         filled: true,
-                                        fillColor: Colors.white,
+                                        fillColor: Theme.of(context).colorScheme.primaryContainer,
                                         hintText: 'Select Date'.tr(),
                                         prefixIcon: const HugeIcon(icon: HugeIcons.strokeRoundedCalendar03,color:Constants.lightGreen),
                                       ),

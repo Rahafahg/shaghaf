@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/models/booking_model.dart';
@@ -23,13 +22,15 @@ class UserTicketScreen extends StatelessWidget {
             workshopGroup.workshopGroupId == workshop.workshopGroupId);
 
     return Scaffold(
-      backgroundColor: Constants.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
           forceMaterialTransparency: true,
           centerTitle: true,
           title: Text(
             "Ticket".tr(),
-            style: const TextStyle(fontSize: 20, color: Constants.textColor),
+            style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).textTheme.bodyLarge!.color),
           ),
           leading: IconButton(
             onPressed: onBack ??
