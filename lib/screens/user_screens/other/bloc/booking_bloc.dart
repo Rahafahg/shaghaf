@@ -19,7 +19,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc() : super(BookingInitial()) {
     on<GetBookingsEvent>((event, emit) async {
       if(GetIt.I.get<AuthLayer>().user != null) {
-        log('message getting bookings');
         await GetIt.I.get<SupabaseLayer>().getBookings();
       }
     });
@@ -88,7 +87,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           privateKey: dotenv.env['EMAILJS_PRIVATE_KEY'],
         ),
       );
-      log('SUCCESS!');
     } catch (error) {
       log('eroreta : $error');
     }

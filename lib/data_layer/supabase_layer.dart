@@ -114,13 +114,11 @@ class SupabaseLayer {
       GetIt.I.get<AuthLayer>().box.write('user', GetIt.I.get<AuthLayer>().user);
       OneSignal.Notifications.requestPermission(true);
       OneSignal.login(externalId);
-      log(GetIt.I.get<AuthLayer>().box.hasData('user').toString());
     }
     if (role == 'organizer') {
       final temp = await supabase.from('organizer').select().eq('organizer_id', response.user!.id);
       GetIt.I.get<AuthLayer>().organizer = OrganizerModel.fromJson(temp.first);
       GetIt.I.get<AuthLayer>().box.write('organizer', GetIt.I.get<AuthLayer>().organizer);
-      log(GetIt.I.get<AuthLayer>().box.hasData('organizer').toString());
     }
     return response;
   }
@@ -178,7 +176,6 @@ class SupabaseLayer {
 
   getAllCategories() async {
     final categoriesAsMap = await supabase.from('categories').select();
-    log(categoriesAsMap.toString());
     // Convert the map into a list of CategoriesModel
     final List<CategoriesModel> categories = categoriesAsMap.map<CategoriesModel>((category) {
       return CategoriesModel.fromJson(category);
@@ -193,7 +190,6 @@ class SupabaseLayer {
 
     // Assign the ordered categories to the DataLayer
     GetIt.I.get<DataLayer>().categories = orderedCategories;
-    log(GetIt.I.get<DataLayer>().categories.toString());
   }
 
   getAllOrganizers() async {
@@ -207,13 +203,10 @@ class SupabaseLayer {
 
   getBookings() async {
     final bookingAsMap = await supabase.from('booking').select().eq('user_id', GetIt.I.get<AuthLayer>().user!.userId);
-    log(bookingAsMap.toString());
     // Convert the map into a list of CategoriesModel
     GetIt.I.get<DataLayer>().bookings = bookingAsMap.map<BookingModel>((booking) {
       return BookingModel.fromJson(booking);
     }).toList();
-    log('bookings are : ');
-    log(GetIt.I.get<DataLayer>().bookings.length.toString());
     getBookedWorkshops();
   }
 
@@ -297,7 +290,6 @@ class SupabaseLayer {
       String? meetingUrl,
       String? latitude,
       String? longitude}) async {
-    log('add 1');
     String imageUrl = '';
     try {
       await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${workshopImage!.path.split('/').last}', workshopImage);
@@ -363,8 +355,6 @@ class SupabaseLayer {
     String? longitude,
     String? meetingUrl,
   }) async {
-    log('add 2');
-    log(workshopGroupId);
     String imageUrl = '';
     try {
       await GetIt.I.get<SupabaseLayer>().supabase.storage.from('organizer_images').upload('public/${instructorImage!.path.split('/').last}', instructorImage);
@@ -398,7 +388,6 @@ class SupabaseLayer {
           'latitude' : latitude,
           'longitude' : longitude
         });
-        log('$workshopGroupId successfull');
       } catch (e) {
         log(e.toString());
       }
@@ -423,7 +412,6 @@ class SupabaseLayer {
           'latitude' : latitude,
           'longitude' : longitude
         }).eq('workshop_id', workshopId!);
-        log('$workshopGroupId successfull');
       } catch (e) {
         log(e.toString());
       }
@@ -443,14 +431,11 @@ class SupabaseLayer {
 
   sendNotificationWithCategory({required String categoryId, String? title}) async {
     final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == categoryId);
-    log(category.categoryName.toString());
     List? data = await supabase.rpc('get_users_notify',params: {'category': category.categoryName.trim()});
     if(data==null) {
-      log('no users added this category');
       return;
     }
     final List<String> usersToNotify = data.cast<String>();
-    log(usersToNotify.toString());
     sendNotification(extrnalId: usersToNotify,category: category.categoryName,title: title);
   }
 

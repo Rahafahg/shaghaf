@@ -72,7 +72,6 @@ class WorkshopCard extends StatelessWidget {
                               Text(
                                 workshop.title,
                                 style: const TextStyle(
-                                    fontFamily: "Poppins",
                                     fontSize: 12,
                                     fontWeight: FontWeight.w200,
                                     overflow: TextOverflow.ellipsis),
@@ -84,10 +83,9 @@ class WorkshopCard extends StatelessWidget {
                                     .firstWhere((category) =>
                                         category.categoryId ==
                                         workshop.categoryId)
-                                    .categoryName,
+                                    .categoryName.tr(context: context),
                                 style: const TextStyle(
                                     fontSize: 10,
-                                    fontFamily: "Poppins",
                                     fontWeight: FontWeight.w300),
                               ),
                               const SizedBox(height: 5),
@@ -163,7 +161,7 @@ class WorkshopCard extends StatelessWidget {
                                   workshop.title,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w400,),
+                                  style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w400,),
                                 ),
                               ),
                               Row(
@@ -177,7 +175,7 @@ class WorkshopCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryId == workshop.categoryId).categoryName,
+                          GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryId == workshop.categoryId).categoryName.tr(context: context),
                           style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
                         ),
                         Row(

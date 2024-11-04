@@ -157,11 +157,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  category.categoryName,
+                                  category.categoryName.tr(context: context),
                                   style: const TextStyle(
                                       color: Constants.textColor,
-                                      fontSize: 16,
-                                      fontFamily: "Poppins"),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -540,7 +539,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                       var result = await BarcodeScanner
                                           .scan(); //barcode scanner
                                       log(result.type
-                                          .toString()); // The result type (barcode, cancelled, failed)	   print(result.rawContent); // The barcode content
+                                          .toString()); // The result type (barcode, cancelled, failed)
                                       log(result.format
                                           .toString()); // The barcode format (as enum)
                                       log(result.rawContent);

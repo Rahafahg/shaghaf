@@ -104,10 +104,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                         if (value == null) {
                                           return;
                                         }
-                                        log('hi');
                                         bloc.add(HandleDateEvent(date: value.toString().split(' ').first));
-                                        log(bloc.dateController.text);
-                                        log(value.toString());
                                       }),
                                       decoration: InputDecoration(
                                         filled: true,

@@ -14,13 +14,11 @@ class AuthLayer {
   AuthLayer() {
     // box.erase();
     if(box.hasData('onboarding')) {
-      log('onboarding already shown');
       onboarding = true;
     }
     if (box.hasData('fav')) {
       if (box.read('fav') == true) {
         didChooseFav = true;
-        log('user already chose fav ... moving to home');
       }
     }
     if (box.hasData('admin')) {
@@ -29,13 +27,9 @@ class AuthLayer {
     if (box.hasData('user')) {
       Map<String, dynamic> userAsMap = box.read('user');
       user = UserModel.fromJson(userAsMap);
-      log('user found ${user!.firstName}');
     } else if (box.hasData('organizer')) {
       Map<String, dynamic> organizerAsMap = box.read('organizer');
       organizer = OrganizerModel.fromJson(organizerAsMap);
-      log('organizer found ${organizer!.name}');
-    } else {
-      log('no account found');
     }
   }
 

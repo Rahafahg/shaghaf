@@ -39,7 +39,7 @@ class AddDateField extends StatelessWidget {
                           controller.text.toString().isEmpty
                               ? DateTime.now().toString()
                               : controller.text.toString()),
-                      firstDate: DateTime(2024),
+                      firstDate: DateTime.now().subtract(const Duration(days: 0)),
                       lastDate: DateTime(2026))
                   .then((value) {
                 if (value != null) {

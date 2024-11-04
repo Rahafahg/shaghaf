@@ -42,7 +42,6 @@ class MyWorkshopsScreen extends StatelessWidget {
       bloc: context.read<BookingBloc>(),
       listener: (context, state) {
         if (state is SuccessState) {
-          log('message3');
           for (var booking in GetIt.I.get<DataLayer>().bookings) {
             final workshopId = booking.workshopId;
             for (var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {

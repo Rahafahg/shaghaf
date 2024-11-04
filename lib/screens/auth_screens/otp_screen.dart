@@ -55,7 +55,6 @@ class OtpScreen extends StatelessWidget {
             }
             if (state is SuccessState) {
               if(isReset == true) {
-                log('yes it is reset');
                 context.pushRemove(screen: ResetPasswordScreen(email: email));
                 return;
               }

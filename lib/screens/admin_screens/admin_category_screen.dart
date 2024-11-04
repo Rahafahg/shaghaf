@@ -33,9 +33,7 @@ class AdminCategoryScreen extends StatelessWidget {
             }
             if (state is SuccessState) {
               List<WorkshopGroupModel> workshops = GetIt.I.get<DataLayer>().allWorkshops;
-              log(workshops.length.toString());
               List<BookingModel> bookings = GetIt.I.get<DataLayer>().bookings;
-              log(bookings.length.toString());
               List<CategoriesModel> categories = GetIt.I.get<DataLayer>().categories;
               Map<String, List<WorkshopGroupModel>> categoriesMap = GetIt.I.get<DataLayer>().workshopsByCategory;
               getBookedCategories();

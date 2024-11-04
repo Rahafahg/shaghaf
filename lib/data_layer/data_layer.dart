@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:shaghaf/data_layer/auth_layer.dart';
 import 'package:shaghaf/models/booking_model.dart';
@@ -33,7 +32,6 @@ getOrgWorkshops() {
     }
   }
   GetIt.I.get<DataLayer>().orgWorkshops = temp;
-  log('org workshops : ${GetIt.I.get<DataLayer>().orgWorkshops.length}');
 }
 
 getAllOrgWorkshops() {
@@ -46,7 +44,6 @@ getAllOrgWorkshops() {
       }
     }
   }
-  log(temp.toString());
   GetIt.I.get<DataLayer>().allOrgWorkshops = temp;
 }
 
@@ -62,7 +59,6 @@ List<Workshop> getBookedWorkshops() {
       }
     }
   }
-  log(bookedWorkshops.map((b)=>b.toJson()).toString());
   GetIt.I.get<DataLayer>().bookedWorkshops = bookedWorkshops;
   return bookedWorkshops;
 }
@@ -83,7 +79,6 @@ Map<String, List<WorkshopGroupModel>> groupworkshopsByCategory(List<WorkshopGrou
 
 getBookedCategories() {
   GetIt.I.get<DataLayer>().bookedCategories = { for (var category in GetIt.I.get<DataLayer>().categories.map((category)=>category.categoryName)) category : 0 };
-  log(GetIt.I.get<DataLayer>().bookedCategories.toString());
   for (var book in GetIt.I.get<DataLayer>().bookings) {
     for(var workshopGroup in GetIt.I.get<DataLayer>().allWorkshops) {
       if(workshopGroup.workshops.any((workshop)=>workshop.workshopId==book.workshopId)) {
@@ -92,23 +87,18 @@ getBookedCategories() {
       }
     }
   }
-  log(GetIt.I.get<DataLayer>().bookedCategories.toString());
 }
 
 getAllOrgRatings() {
   Map<String, int> temp = {};
   for (var organizerId in GetIt.I.get<DataLayer>().allOrgWorkshops.keys) {
     String orgName = GetIt.I.get<DataLayer>().organizers.firstWhere((org)=>org.organizerId==organizerId).name;
-    log(orgName);
     double sumRating = 0.0;
     if(GetIt.I.get<DataLayer>().allOrgWorkshops[organizerId]!.isNotEmpty) {
       for (var workshopGroup in GetIt.I.get<DataLayer>().allOrgWorkshops[organizerId]!) {
-        log('$orgName now in ${workshopGroup.title} ${workshopGroup.rating}');
         sumRating += workshopGroup.rating;
       }
-      log('sum is $sumRating');
       temp[orgName] = (sumRating/GetIt.I.get<DataLayer>().allOrgWorkshops[organizerId]!.length).ceil();
-      log(temp.toString());
     }
   }
   GetIt.I.get<DataLayer>().organizersRating = temp;
