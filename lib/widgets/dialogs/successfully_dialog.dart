@@ -12,7 +12,7 @@ void successfullyDialog(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10), // Optional: round corners
         ),
@@ -51,7 +51,7 @@ void successfullyDialog(
                     const SizedBox(
                       height: 40,
                     ),
-                     Text(
+                    Text(
                       "Process completed".tr(),
                       style: const TextStyle(color: Colors.black),
                     ),
