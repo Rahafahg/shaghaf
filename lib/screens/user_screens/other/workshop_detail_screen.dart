@@ -177,7 +177,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Text(
                                   workshop.organizer.name,
                                   style: const TextStyle(
-                                      fontSize: 11, fontFamily: "Poppins"),
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ],
                             ),

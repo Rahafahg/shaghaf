@@ -9,7 +9,7 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
     fontFamily: context.locale.languageCode == 'en' ? 'Poppins' : 'ReadexPro',
     scaffoldBackgroundColor: Constants.backgroundColor,
     primaryColor: Constants.mainOrange,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: Constants.mainOrange,
       onPrimary: Colors.white,
       secondary: Constants.lightGreen,
@@ -21,7 +21,7 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
       onSurface: Constants.textColor,
       surfaceTint: Constants.ticketCardColor
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyLarge: TextStyle(color: Constants.textColor),
       bodyMedium: TextStyle(color: Constants.lightTextColor),
       titleLarge: TextStyle(color: Constants.textColor),
@@ -29,12 +29,12 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
     navigationBarTheme: NavigationBarThemeData(
       indicatorColor: Colors.transparent,
       surfaceTintColor: Colors.white,
-      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
       indicatorShape: LinearBorder.top(
           side: const BorderSide(width: 2, color: Constants.mainOrange)),
       height: 53,
-      labelTextStyle: MaterialStateProperty.resolveWith((state) {
-        if (state.contains(MaterialState.selected)) {
+      labelTextStyle: WidgetStateProperty.resolveWith((state) {
+        if (state.contains(WidgetState.selected)) {
           return const TextStyle(
               color: Constants.mainOrange, fontSize: 12, fontFamily: "Poppins");
         }
@@ -47,21 +47,21 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
     ),
     dividerColor: Constants.dividerColor,
     cardColor: Constants.cardColor,
-    iconTheme: IconThemeData(color: Constants.mainOrange),
+    iconTheme: const IconThemeData(color: Constants.mainOrange),
   );
 
   // Define dark theme
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     fontFamily: context.locale.languageCode == 'en' ? 'Poppins' : 'ReadexPro',
-    scaffoldBackgroundColor: Color(0xff181818),
+    scaffoldBackgroundColor: const Color(0xff181818),
     primaryColor: Constants.mainOrange,
     colorScheme: ColorScheme.dark(
       primary: const Color.fromARGB(255, 225, 109, 59),
       onPrimary: Colors.pink,
       secondary: Constants.lightGreen,
       onSecondary: Colors.white,
-      primaryContainer: Color(0xff170d07),
+      primaryContainer: const Color(0xff170d07),
       //  background: Colors.black,
       onBackground: Colors.white,
       surface: Colors.grey[850]!,
@@ -69,19 +69,19 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
       surfaceTint:  Colors.grey[850]!
     ),
     textTheme: TextTheme(
-      bodyLarge: TextStyle(color: Colors.white),
+      bodyLarge: const TextStyle(color: Colors.white),
       bodyMedium: TextStyle(color: Colors.grey[300]),
-      titleLarge: TextStyle(color: Colors.white),
+      titleLarge: const TextStyle(color: Colors.white),
       
     ),
     navigationBarTheme: NavigationBarThemeData(
       indicatorColor: Colors.transparent,
       surfaceTintColor: Colors.black,
-      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
       indicatorShape: LinearBorder.top(
           side: const BorderSide(width: 2, color: Constants.mainOrange)),
       height: 53,
-      labelTextStyle: MaterialStateProperty.resolveWith((state) {
+      labelTextStyle: WidgetStateProperty.resolveWith((state) {
         if (state.contains(MaterialState.selected)) {
           return const TextStyle(
               color: Constants.mainOrange, fontSize: 12, fontFamily: "Poppins");
@@ -95,7 +95,7 @@ ThemeData myappTheme(BuildContext context, bool isDarkMode) {
     ),
     dividerColor: Constants.dividerColor,
     cardColor: Colors.grey[850],
-    iconTheme: IconThemeData(color: Constants.lightOrange),
+    iconTheme: const IconThemeData(color: Constants.lightOrange),
   );
 
   // Return light or dark theme based on isDarkMode
