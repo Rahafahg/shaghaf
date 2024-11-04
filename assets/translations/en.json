@@ -140,5 +140,6 @@
     "Social skills":"Social skills",
     "Others":"Others",
     "map required":"You must locate address on the map first",
-    "field not empty":"All field must not be empty"
+    "field not empty":"All field must not be empty",
+    "Continue":"Continue"
 }

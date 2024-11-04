@@ -126,15 +126,18 @@ class WorkshopDetailScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(workshop.title,
-                                style: const TextStyle(
-                                    color: Constants.textColor,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color,
                                     fontSize: 20,
                                     fontFamily: "Poppins")),
                             Row(
                               children: [
-                                const HugeIcon(
+                                HugeIcon(
                                   icon: HugeIcons.strokeRoundedUserGroup,
-                                  color: Constants.textColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 5),
                                 Text(workshop.targetedAudience)
@@ -159,8 +162,11 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName,
-                                  style: const TextStyle(
-                                      color: Constants.textColor,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color,
                                       fontSize: 16,
                                       fontFamily: "Poppins"),
                                 ),

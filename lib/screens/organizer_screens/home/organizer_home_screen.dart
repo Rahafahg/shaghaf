@@ -22,7 +22,7 @@ class OrganizerHomeScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2, // Number of tabs
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           centerTitle: true,
           forceMaterialTransparency: true,

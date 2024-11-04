@@ -26,7 +26,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(
           preferredSize:
               Size(context.getWidth(), context.getHeight(divideBy: 13)),
@@ -40,9 +40,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
             centerTitle: true,
             title: Text(
               category.categoryName.tr(context: context),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
-                color: Constants.textColor,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             bottom: const PreferredSize(
@@ -71,9 +71,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                 searchTerm: value, category: category))),
                       ),
                       IconButton(
-                          icon: const HugeIcon(
+                          icon: HugeIcon(
                               icon: HugeIcons.strokeRoundedFilterHorizontal,
-                              color: Constants.lightGreen),
+                              color: Theme.of(context).colorScheme.primary),
                           onPressed: () => showModalBottomSheet(
                               context: context,
                               builder: (context) => Container(
@@ -81,7 +81,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                     height: context.getHeight(divideBy: 1.5),
                                     padding: const EdgeInsets.all(16),
                                     decoration: BoxDecoration(
-                                        color: const Color(0xffF4F4F4),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     child: SingleChildScrollView(
@@ -126,6 +128,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             width:
@@ -157,7 +162,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                               readOnly: true,
                                               decoration: InputDecoration(
                                                 filled: true,
-                                                fillColor: Colors.white,
+                                                fillColor: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
                                                 hintText: 'Select Date'.tr(),
                                                 prefixIcon: const HugeIcon(
                                                     icon: HugeIcons

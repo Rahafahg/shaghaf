@@ -23,13 +23,15 @@ class UserTicketScreen extends StatelessWidget {
             workshopGroup.workshopGroupId == workshop.workshopGroupId);
 
     return Scaffold(
-      backgroundColor: Constants.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
           forceMaterialTransparency: true,
           centerTitle: true,
           title: Text(
             "Ticket".tr(),
-            style: const TextStyle(fontSize: 20, color: Constants.textColor),
+            style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).textTheme.bodyLarge!.color),
           ),
           leading: IconButton(
             onPressed: onBack ??

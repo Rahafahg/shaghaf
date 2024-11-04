@@ -24,7 +24,7 @@ class UserCategoriesScreen extends StatelessWidget {
           height: 50,
         ),
       ),
-      backgroundColor: Constants.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.all(16),

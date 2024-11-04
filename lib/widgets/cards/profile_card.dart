@@ -29,7 +29,7 @@ class ProfileCard extends StatelessWidget {
                 ],
               ),
               child: CircleAvatar(
-                backgroundColor: Constants.profileColor,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 child: Icon(
                   icon,
                   color: Constants.mainOrange,
@@ -38,9 +38,9 @@ class ProfileCard extends StatelessWidget {
             ),
             const SizedBox(width: 15),
             Text(text,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
-                  color: Constants.textColor,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontFamily: "Poppins",
                 ))
           ],
@@ -49,4 +49,3 @@ class ProfileCard extends StatelessWidget {
     );
   }
 }
-

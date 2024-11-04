@@ -12,6 +12,7 @@ import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/buttons/switch_language_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,7 +27,8 @@ class ProfileScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => bloc.add(ViewUserProfileEvent()),
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomPaint(
                       size: Size(context.getWidth(), 200),
-                      painter: RPSCustomPainter(width: context.getWidth()),
+                      painter: RPSCustomPainter(width: context.getWidth(), context: context),
                     ),
                   ],
                 ),
@@ -60,10 +62,11 @@ class ProfileScreen extends StatelessWidget {
                               user == null
                                   ? "Hello, Guest"
                                   : "${user.firstName} ${user.lastName}",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
-                                color: Constants.textColor,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                                 fontFamily: "Poppins",
                               ),
                             ),
@@ -76,10 +79,10 @@ class ProfileScreen extends StatelessWidget {
                                           lastName: user.lastName,
                                           phoneNumber: user.phoneNumber));
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.mode_edit_outline_outlined,
                                       size: 30,
-                                      color: Colors.black,
+                                      color: Theme.of(context).primaryColor,
                                     ))
                           ],
                         ),
@@ -129,8 +132,11 @@ class ProfileScreen extends StatelessWidget {
                                           spreadRadius: 0)
                                     ],
                                   ),
-                                  child: const CircleAvatar(
-                                    backgroundColor: Constants.profileColor,
+                                  child: CircleAvatar(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                    //  backgroundColor: Constants.profileColor,
                                     child: Icon(
                                       Icons.phone,
                                       color: Constants.mainOrange,
@@ -170,10 +176,12 @@ class ProfileScreen extends StatelessWidget {
                             user == null
                                 ? "Hello, Guest"
                                 : "${user.firstName} ${user.lastName}",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
-                              color: Constants.textColor,
+                              color: Theme.of(context).colorScheme.onSecondary,
+
+                              // color: Constants.textColor,
                             ),
                           ),
                           user == null
@@ -185,11 +193,9 @@ class ProfileScreen extends StatelessWidget {
                                         lastName: user.lastName,
                                         phoneNumber: user.phoneNumber));
                                   },
-                                  icon: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    size: 30,
-                                    color: Colors.black,
-                                  ))
+                                  icon: Icon(Icons.mode_edit_outline_outlined,
+                                      size: 30,
+                                      color: Theme.of(context).primaryColor))
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -216,13 +222,13 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     // Text("settings").tr(),
                     Text("settings".tr(context: context),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff666666),
-                        )),
+                        style: TextStyle(
+                            fontSize: 18,
+                            color:
+                                Theme.of(context).textTheme.bodyMedium!.color)),
                     const SizedBox(height: 30),
                     const switchingLanguage(),
-                    ProfileCard(text: "Mode".tr(), icon: Icons.dark_mode),
+                    SwitchMoodButton()
                   ],
                 ),
               ),
@@ -239,7 +245,8 @@ class ProfileScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5)),
                           shadowColor: const Color.fromARGB(104, 222, 101, 49),
                           foregroundColor: Constants.appRedColor,
-                          backgroundColor: Constants.profileColor,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           elevation: 8,
                           fixedSize: const Size(130, 34)),
                       onPressed: () {

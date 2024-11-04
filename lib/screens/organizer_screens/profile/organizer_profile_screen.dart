@@ -33,7 +33,7 @@ class OrganizerProfileScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => bloc.add(ViewOrgProfileEvent()),
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -51,7 +51,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                         CustomPaint(
                           size: Size(MediaQuery.of(context).size.width, 200),
                           painter: RPSCustomPainter(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.of(context).size.width, context: context,
                           ),
                         ),
                         Positioned(
@@ -232,8 +232,10 @@ class OrganizerProfileScreen extends StatelessWidget {
                             )),
                         const SizedBox(height: 30),
                         const switchingLanguage(),
-                       // ProfileCard(text: "Switch".tr(), icon: Icons.translate),
-                        ProfileCard(text: "Mode".tr(context: context), icon: Icons.dark_mode),
+                        // ProfileCard(text: "Switch".tr(), icon: Icons.translate),
+                        ProfileCard(
+                            text: "Mode".tr(context: context),
+                            icon: Icons.dark_mode),
                       ],
                     ),
                   ),

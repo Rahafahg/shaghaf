@@ -37,7 +37,7 @@ class UserHomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Constants.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // app bar
         appBar: PreferredSize(
           preferredSize:
@@ -46,7 +46,7 @@ class UserHomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 11, right: 16, left: 16),
             child: AppBar(
               forceMaterialTransparency: true,
-              backgroundColor: Constants.backgroundColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               leadingWidth: context.getWidth(),
               leading: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,9 +196,12 @@ class UserHomeScreen extends StatelessWidget {
                                     child: Text(
                                         "week Workshop".tr(context: context),
                                         textAlign: TextAlign.start,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 18,
-                                          color: Constants.textColor,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color,
                                         ))),
                               ),
                               InkWell(
@@ -282,9 +285,12 @@ class UserHomeScreen extends StatelessWidget {
                                   width: context.getWidth(),
                                   child: Text("Suggested".tr(context: context),
                                       textAlign: TextAlign.start,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
-                                        color: Constants.textColor,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .color,
                                       ))),
                               user == null
                                   ? const SizedBox.shrink()
