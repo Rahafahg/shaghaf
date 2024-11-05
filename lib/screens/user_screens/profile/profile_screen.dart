@@ -38,7 +38,8 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     CustomPaint(
                       size: Size(context.getWidth(), 200),
-                      painter: RPSCustomPainter(width: context.getWidth(), context: context),
+                      painter: RPSCustomPainter(
+                          width: context.getWidth(), context: context),
                     ),
                   ],
                 ),
@@ -46,7 +47,9 @@ class ProfileScreen extends StatelessWidget {
               BlocBuilder<UserProfileBloc, UserProfileState>(
                 builder: (context, state) {
                   if (state is LoadingProfileState) {
-                    return Center(child:LottieBuilder.asset("assets/lottie/loading.json"));
+                    return Center(
+                        child:
+                            LottieBuilder.asset("assets/lottie/loading.json"));
                   }
                   if (state is SuccessProfileState) {
                     return Column(
@@ -55,20 +58,36 @@ class ProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
-                              style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500,color: Theme.of(context).colorScheme.onSecondary,fontFamily: "Poppins",),
+                              user == null
+                                  ? "Hello, Guest"
+                                  : "${user.firstName} ${user.lastName}",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                                fontFamily: "Poppins",
+                              ),
                             ),
-                            user == null ? const SizedBox.shrink()
-                            : IconButton(
-                              onPressed: ()=>bloc.add(EditUserProfileEvent(firstName: user.firstName,lastName: user.lastName,phoneNumber: user.phoneNumber)),
-                              icon: Icon(Icons.mode_edit_outline_outlined,size: 30,color: Theme.of(context).primaryColor)
-                            )
+                            user == null
+                                ? const SizedBox.shrink()
+                                : IconButton(
+                                    onPressed: () => bloc.add(
+                                        EditUserProfileEvent(
+                                            firstName: user.firstName,
+                                            lastName: user.lastName,
+                                            phoneNumber: user.phoneNumber)),
+                                    icon: Icon(Icons.mode_edit_outline_outlined,
+                                        size: 30,
+                                        color: Theme.of(context).primaryColor))
                           ],
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                          child: ProfileCard(text: user?.phoneNumber ?? "", icon: Icons.phone),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          child: ProfileCard(
+                              text: user?.phoneNumber ?? "", icon: Icons.phone),
                         ),
                       ],
                     );
@@ -81,15 +100,18 @@ class ProfileScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              EditTextField(controller: bloc.firstNameController),
+                              EditTextField(
+                                  controller: bloc.firstNameController),
                               const SizedBox(width: 10), // Space between fields
-                              EditTextField(controller: bloc.lastNameController),
+                              EditTextField(
+                                  controller: bloc.lastNameController),
                             ],
                           ),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: Row(
@@ -102,12 +124,14 @@ class ProfileScreen extends StatelessWidget {
                                           offset: Offset(0, 4),
                                           blurRadius: 8,
                                           color:
-                                              Color.fromARGB(104, 222, 101, 49),
+                                              Color.fromARGB(104, 174, 76, 34),
                                           spreadRadius: 0)
                                     ],
                                   ),
                                   child: CircleAvatar(
-                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                     child: const Icon(
                                       Icons.phone,
                                       color: Constants.mainOrange,
@@ -212,7 +236,7 @@ class ProfileScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          shadowColor: const Color.fromARGB(104, 222, 101, 49),
+                          shadowColor: Color.fromARGB(104, 174, 76, 34),
                           foregroundColor: Constants.appRedColor,
                           backgroundColor:
                               Theme.of(context).colorScheme.primaryContainer,

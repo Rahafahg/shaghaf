@@ -275,7 +275,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      shadowColor: const Color.fromARGB(104, 222, 101, 49),
+                      shadowColor: Color.fromARGB(104, 174, 76, 34),
                       foregroundColor: Constants.appRedColor,
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,

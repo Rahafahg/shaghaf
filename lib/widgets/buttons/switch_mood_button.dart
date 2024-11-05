@@ -21,7 +21,7 @@ class SwitchMoodButton extends StatelessWidget {
                   BoxShadow(
                     offset: Offset(0, 4),
                     blurRadius: 8,
-                    color: Color.fromARGB(104, 222, 101, 49),
+                    color: Color.fromARGB(104, 174, 76, 34),
                     spreadRadius: 0,
                   ),
                 ],
@@ -41,9 +41,8 @@ class SwitchMoodButton extends StatelessWidget {
             Text(
               "Mode".tr(),
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 16,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
-                fontFamily: "Poppins",
               ),
             ),
           ],

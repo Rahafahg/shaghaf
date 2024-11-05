@@ -19,8 +19,8 @@ class CategoryDropDown extends StatelessWidget {
       children: [
         Text(
           "Workshop Category".tr(context: context),
-          style: const TextStyle(
-            color: Color(0xff313131),
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
             fontSize: 16,
           ),
         ),

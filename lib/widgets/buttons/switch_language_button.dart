@@ -16,7 +16,13 @@ class SwitchingLanguage extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(offset: Offset(0, 4),blurRadius: 8,color: Color.fromARGB(104, 222, 101, 49),spreadRadius: 0)],
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 4),
+                      blurRadius: 8,
+                      color: Color.fromARGB(104, 174, 76, 34),
+                      spreadRadius: 0)
+                ],
               ),
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -34,10 +40,13 @@ class SwitchingLanguage extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-            Text(
-              "Switch".tr(),
-              style: TextStyle(fontSize: 16,color: Theme.of(context).textTheme.bodyLarge!.color)
-            ) // 17 pop ?
+            Text("Switch".tr(),
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .color)) // 17 pop ?
           ],
         ),
       ),
