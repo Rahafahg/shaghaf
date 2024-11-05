@@ -26,11 +26,15 @@ class WorkShopForm extends StatelessWidget {
     ];
     return Column(
       children: [
-        AddDateField(controller: bloc.dateController, date: bloc.dateController.text),
-        TimeField(timeFromController: bloc.timeFromController,timeToController: bloc.timeToController,),
+        AddDateField(
+            controller: bloc.dateController, date: bloc.dateController.text),
+        TimeField(
+          timeFromController: bloc.timeFromController,
+          timeToController: bloc.timeToController,
+        ),
         BlocBuilder<AddWorkshopBloc, AddWorkshopState>(
-          bloc: bloc,
-          builder: (context, state) {
+            bloc: bloc,
+            builder: (context, state) {
               if (state is ChangeImageState) {
                 return AddField(
                   image: state.image,
@@ -87,9 +91,9 @@ class WorkShopForm extends StatelessWidget {
         SizedBox(
             width: context.getWidth(),
             child: Text("Type".tr(context: context),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
-                  color: Constants.textColor,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ))),
         ContainersTabBar(
             tabs: types,

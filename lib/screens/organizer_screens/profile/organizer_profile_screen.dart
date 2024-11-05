@@ -15,6 +15,7 @@ import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
 import 'package:shaghaf/widgets/buttons/main_button.dart';
+import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:shaghaf/widgets/text_fields/edit_org_text_field.dart';
@@ -52,7 +53,8 @@ class OrganizerProfileScreen extends StatelessWidget {
                         CustomPaint(
                           size: Size(MediaQuery.of(context).size.width, 200),
                           painter: RPSCustomPainter(
-                            width: MediaQuery.of(context).size.width, context: context,
+                            width: MediaQuery.of(context).size.width,
+                            context: context,
                           ),
                         ),
                         Positioned(
@@ -158,10 +160,12 @@ class OrganizerProfileScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   organizer?.name ?? "Organizer Name",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w500,
-                                    color: Constants.textColor,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
                                   ),
                                 ),
                                 IconButton(
@@ -173,19 +177,18 @@ class OrganizerProfileScreen extends StatelessWidget {
                                           organizer?.contactNumber ?? "",
                                     ));
                                   },
-                                  icon: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    size: 30,
-                                    color: Colors.black,
-                                  ),
+                                  icon: Icon(Icons.mode_edit_outline_outlined,
+                                      size: 30,
+                                      color: Theme.of(context).primaryColor),
                                 ),
                               ],
                             ),
                             Text(
                               organizer?.description ?? "Organizer Description",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
-                                color: Constants.textColor,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -254,16 +257,15 @@ class OrganizerProfileScreen extends StatelessWidget {
                             text: organizer?.email ?? "", icon: Icons.mail),
                         const SizedBox(height: 10),
                         Text("settings".tr(context: context),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff666666),
-                            )),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .color)),
                         const SizedBox(height: 30),
                         const SwitchingLanguage(),
-                        // ProfileCard(text: "Switch".tr(), icon: Icons.translate),
-                        ProfileCard(
-                            text: "Mode".tr(context: context),
-                            icon: Icons.dark_mode),
+                        const SwitchMoodButton()
                       ],
                     ),
                   ),
@@ -275,7 +277,8 @@ class OrganizerProfileScreen extends StatelessWidget {
                       ),
                       shadowColor: const Color.fromARGB(104, 222, 101, 49),
                       foregroundColor: Constants.appRedColor,
-                      backgroundColor: Constants.profileColor,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
                       elevation: 8,
                       fixedSize: const Size(130, 34),
                     ),

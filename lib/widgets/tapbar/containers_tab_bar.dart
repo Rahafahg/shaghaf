@@ -40,7 +40,9 @@ class ContainersTabBar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
               decoration: BoxDecoration(
-                color: isSelected ? Constants.mainOrange : Colors.white,
+                color: isSelected
+                    ? Constants.mainOrange
+                    : Theme.of(context).colorScheme.onPrimaryFixed,
                 border: Border.all(color: Constants.mainOrange),
                 borderRadius: BorderRadius.circular(10),
               ),

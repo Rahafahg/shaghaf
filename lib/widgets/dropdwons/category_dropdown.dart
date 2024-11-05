@@ -8,7 +8,8 @@ import 'package:shaghaf/extensions/screen_size.dart';
 class CategoryDropDown extends StatelessWidget {
   final TextEditingController controller;
   final void Function(String?)? onSelected; // is it final ?
-  const CategoryDropDown({super.key, required this.controller, required this.onSelected});
+  const CategoryDropDown(
+      {super.key, required this.controller, required this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -18,31 +19,39 @@ class CategoryDropDown extends StatelessWidget {
       children: [
         Text(
           "Workshop Category".tr(context: context),
-          style: const TextStyle(color: Color(0xff313131),fontSize: 16,),
-        ),
-        const SizedBox(height: 8,),
-        DropdownMenu(
-          onSelected: onSelected,
-          controller: controller,
-          hintText: "Category".tr(context: context),
-          textStyle: const TextStyle(fontSize: 15, color: Constants.textColor),
-          inputDecorationTheme: const InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.white,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(13.0)),
-              borderSide: BorderSide(color: Constants.mainOrange)
-            ),
+          style: const TextStyle(
+            color: Color(0xff313131),
+            fontSize: 16,
           ),
-          width: context.getWidth(divideBy: 1.1),
-          menuHeight: 150,
-          menuStyle: MenuStyle(backgroundColor: WidgetStateProperty.all(Colors.white)),
-          dropdownMenuEntries: List.generate(categories.length,(index) => DropdownMenuEntry(
-            value: categories[index].categoryName,
-            label: categories[index].categoryName
-          )
-        )
-      )],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        DropdownMenu(
+            onSelected: onSelected,
+            controller: controller,
+            hintText: "Category".tr(context: context),
+            textStyle:
+                const TextStyle(fontSize: 15, color: Constants.textColor),
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(13.0)),
+                  borderSide: BorderSide(color: Constants.mainOrange)),
+            ),
+            width: context.getWidth(divideBy: 1.1),
+            menuHeight: 150,
+            menuStyle: MenuStyle(
+                backgroundColor: WidgetStateProperty.all(
+              Theme.of(context).colorScheme.onSecondaryContainer,
+            )),
+            dropdownMenuEntries: List.generate(
+                categories.length,
+                (index) => DropdownMenuEntry(
+                    value: categories[index].categoryName,
+                    label: categories[index].categoryName)))
+      ],
     );
   }
 }

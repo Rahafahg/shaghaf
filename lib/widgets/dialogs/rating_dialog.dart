@@ -30,7 +30,8 @@ Future<dynamic> ratingDialog(
                       height: context.getHeight(divideBy: 10),
                       width: context.getWidth(),
                       decoration: BoxDecoration(
-                          color: Constants.ticketCardColor,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                           borderRadius: BorderRadius.circular(25)),
                     ),
                     Positioned(
@@ -50,18 +51,24 @@ Future<dynamic> ratingDialog(
                       Row(
                         children: [
                           Text("RateQ".tr(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                color: Constants.textColor,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color,
                               )),
                           SizedBox(
                             width: context.getWidth(divideBy: 3.1),
                             child: Text(" ${workshop.title}",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 18,
-                                  color: Constants.textColor,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .color,
                                 )),
                           ),
                         ],

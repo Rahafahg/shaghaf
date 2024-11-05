@@ -42,8 +42,8 @@ class WorkshopCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey.shade400,
-                          blurRadius: 2,
+                          color: Theme.of(context).colorScheme.onTertiary,
+                          blurRadius: 10,
                           offset: const Offset(2, 1))
                     ]),
                 child: Stack(
@@ -70,7 +70,8 @@ class WorkshopCard extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10.0)),
-                            color: Theme.of(context).colorScheme.surface),
+                            color:
+                                Theme.of(context).colorScheme.onInverseSurface),
                         width: context.getWidth(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -91,10 +92,10 @@ class WorkshopCard extends StatelessWidget {
                                     .firstWhere((category) =>
                                         category.categoryId ==
                                         workshop.categoryId)
-                                    .categoryName.tr(context: context),
+                                    .categoryName
+                                    .tr(context: context),
                                 style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w300),
+                                    fontSize: 10, fontWeight: FontWeight.w300),
                               ),
                               const SizedBox(height: 5),
                               Row(
@@ -103,7 +104,8 @@ class WorkshopCard extends StatelessWidget {
                                       size: 16,
                                       color: Theme.of(context).primaryColor),
                                   const SizedBox(width: 4),
-                                  Text(workshop.workshops.first.date,
+                                  Text(
+                                    workshop.workshops.first.date,
                                     style: const TextStyle(
                                         fontFamily: "Poppins",
                                         fontSize: 8,
@@ -136,7 +138,7 @@ class WorkshopCard extends StatelessWidget {
                 height: context.getHeight(divideBy: 6.2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
-                  color: Theme.of(context).colorScheme.primaryContainer,
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                   border: Border.all(color: Constants.appGreyColor),
                   boxShadow: [
                     BoxShadow(
@@ -183,7 +185,10 @@ class WorkshopCard extends StatelessWidget {
                                   workshop.title,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w400,),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
                               Row(
@@ -201,8 +206,15 @@ class WorkshopCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          GetIt.I.get<DataLayer>().categories.firstWhere((category) =>category.categoryId == workshop.categoryId).categoryName.tr(context: context),
-                          style: const TextStyle(fontSize: 14, color: Constants.mainOrange),
+                          GetIt.I
+                              .get<DataLayer>()
+                              .categories
+                              .firstWhere((category) =>
+                                  category.categoryId == workshop.categoryId)
+                              .categoryName
+                              .tr(context: context),
+                          style: const TextStyle(
+                              fontSize: 14, color: Constants.mainOrange),
                         ),
                         Row(
                           children: [

@@ -22,7 +22,7 @@ class UserCategoriesScreen extends StatelessWidget {
               forceMaterialTransparency: true,
               centerTitle: true,
               title: Image.asset('assets/images/logo.png', height: 50)),
-          backgroundColor: Constants.backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Padding(
                 padding: const EdgeInsets.all(16),

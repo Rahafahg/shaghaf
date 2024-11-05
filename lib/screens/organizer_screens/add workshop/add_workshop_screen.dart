@@ -44,7 +44,7 @@ class AddWorkshopScreen extends StatelessWidget {
               leading: IconButton(
                 onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back_ios,
-                    color: Constants.textColor),
+                    color: Constants.mainOrange),
               ),
               forceMaterialTransparency: true,
               title: Text(isEdit == false
@@ -158,7 +158,9 @@ class AddWorkshopScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: kElevationToShadow[1],
-                                      color: Constants.cardColor),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onInverseSurface),
                                   child: Form(
                                     key: basicInfoKey,
                                     child: Column(
@@ -298,7 +300,9 @@ class AddWorkshopScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: kElevationToShadow[1],
-                                    color: Constants.cardColor,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                   ),
                                   child: Form(
                                       key: detalsInfoKey,
@@ -326,7 +330,9 @@ class AddWorkshopScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: kElevationToShadow[1],
-                                    color: Constants.cardColor,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                   ),
                                   child: Form(
                                     key: detalsInfoKey,

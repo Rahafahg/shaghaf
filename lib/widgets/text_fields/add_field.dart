@@ -33,9 +33,9 @@ class AddField extends StatelessWidget {
                   ? context.getWidth(divideBy: 3)
                   : context.getWidth(),
               child: Text(type,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: Constants.textColor,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ))),
           const SizedBox(height: 8),
           type == 'Add Photo'.tr(context: context) ||
@@ -53,9 +53,11 @@ class AddField extends StatelessWidget {
                         readOnly: true,
                         maxLines: 5,
                         minLines: 3,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white70,
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(Radius.circular(
@@ -129,7 +131,8 @@ class AddField extends StatelessWidget {
                       hintStyle: const TextStyle(
                           fontSize: 13, color: Constants.appGreyColor),
                       filled: true,
-                      fillColor: Colors.white70,
+                      fillColor:
+                          Theme.of(context).colorScheme.onSecondaryContainer,
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 14.0), // Reducing height
                       enabledBorder: const OutlineInputBorder(

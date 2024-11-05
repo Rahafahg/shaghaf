@@ -48,9 +48,10 @@ class TimeField extends StatelessWidget {
                         log(timeFromController.text);
                       }
                     }),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white70,
+                      fillColor:
+                          Theme.of(context).colorScheme.onSecondaryContainer,
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 16.0), // Reducing height
                       border: OutlineInputBorder(
@@ -86,9 +87,10 @@ class TimeField extends StatelessWidget {
                         log(timeToController.text);
                       }
                     }),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white70,
+                      fillColor:
+                          Theme.of(context).colorScheme.onSecondaryContainer,
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius:

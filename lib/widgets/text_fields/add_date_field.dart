@@ -39,7 +39,8 @@ class AddDateField extends StatelessWidget {
                           controller.text.toString().isEmpty
                               ? DateTime.now().toString()
                               : controller.text.toString()),
-                      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+                      firstDate:
+                          DateTime.now().subtract(const Duration(days: 0)),
                       lastDate: DateTime(2026))
                   .then((value) {
                 if (value != null) {
@@ -50,7 +51,7 @@ class AddDateField extends StatelessWidget {
             },
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white70,
+              fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
               border: const OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(

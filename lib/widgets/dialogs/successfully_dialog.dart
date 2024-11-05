@@ -4,7 +4,8 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 
-void successfullyDialog({required BuildContext context, required String title}) {
+void successfullyDialog(
+    {required BuildContext context, required String title}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -33,10 +34,10 @@ void successfullyDialog({required BuildContext context, required String title}) 
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -50,7 +51,8 @@ void successfullyDialog({required BuildContext context, required String title}) 
                     ),
                     Text(
                       "Process completed".tr(),
-                      style: const TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyLarge!.color),
                     ),
                   ],
                 ),
