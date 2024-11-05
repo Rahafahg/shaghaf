@@ -94,6 +94,14 @@ class AddField extends StatelessWidget {
                       if (text!.isEmpty) {
                         return "$type $msg";
                       }
+                      if (type == "Meeting Link".tr(context: context)) {
+                        RegExp reg = RegExp(
+                            r"https:\/\/[\w-]+\.zoom\.us\/(j|my)\/[\w\d]+(\?pwd=[A-Za-z0-9._-]+)?");
+                        bool valid = reg.hasMatch(text);
+                        if (!valid) {
+                          return "Only zoom meetings are accepted";
+                        }
+                      }
                       return null;
                     },
                     autovalidateMode: AutovalidateMode.onUnfocus,
