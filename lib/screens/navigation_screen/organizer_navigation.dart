@@ -11,6 +11,7 @@ import 'package:shaghaf/screens/organizer_screens/add%20workshop/bloc/add_worksh
 import 'package:shaghaf/screens/organizer_screens/home/organizer_home_screen.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/bloc/organizer_profile_bloc.dart';
 import 'package:shaghaf/screens/organizer_screens/profile/organizer_profile_screen.dart';
+import 'package:sizer/sizer.dart';
 
 class OrgNavigationScreen extends StatelessWidget {
   const OrgNavigationScreen({super.key});
@@ -74,7 +75,9 @@ class OrgNavigationScreen extends StatelessWidget {
                   onDestinationSelected: (value) => context
                       .read<NavigationBloc>()
                       .add(SwitchScreenEvent(targetPage: value)),
-                  height: context.getHeight(divideBy: 16),
+                  height: context.getHeight(
+                      divideBy:
+                          Device.screenType == ScreenType.tablet ? 23 : 16),
                   destinations: List.generate(tabs.length, (index) {
                     return NavigationDestination(
                       label: tabs[index],

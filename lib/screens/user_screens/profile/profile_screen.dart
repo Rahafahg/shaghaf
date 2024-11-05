@@ -15,6 +15,7 @@ import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,19 +32,24 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: context.getWidth(),
-                height: context.getHeight(divideBy: 3.5),
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      size: Size(context.getWidth(), 200),
-                      painter: RPSCustomPainter(
-                          width: context.getWidth(), context: context),
+              Device.screenType == ScreenType.tablet
+                  ? SizedBox(
+                      width: context.getWidth(),
+                      height: context.getHeight(divideBy: 3.5),
+                    )
+                  : SizedBox(
+                      width: context.getWidth(),
+                      height: context.getHeight(divideBy: 3.5),
+                      child: Stack(
+                        children: [
+                          CustomPaint(
+                            size: Size(context.getWidth(), 200),
+                            painter: RPSCustomPainter(
+                                width: context.getWidth(), context: context),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
               BlocBuilder<UserProfileBloc, UserProfileState>(
                 builder: (context, state) {
                   if (state is LoadingProfileState) {
@@ -66,7 +72,6 @@ class ProfileScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 color:
                                     Theme.of(context).colorScheme.onSecondary,
-                                fontFamily: "Poppins",
                               ),
                             ),
                             user == null

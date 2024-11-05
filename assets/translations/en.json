@@ -146,5 +146,6 @@
     "Meeting Url":"Meeting Url",
     "Booking number":"Booking number:",
     "Register attendee": "Register attendee",
-    "Enter Attendee booking id": "Enter Attendee booking id"
+    "Enter Attendee booking id": "Enter Attendee booking id",
+    "copied":" copied to Clipboard"
 }

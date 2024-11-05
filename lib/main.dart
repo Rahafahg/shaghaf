@@ -13,6 +13,7 @@ import 'package:shaghaf/screens/other_screens/select_categories_screen.dart';
 import 'package:shaghaf/services/setup.dart';
 import 'package:shaghaf/theme/app_theme.dart';
 import 'package:shaghaf/theme/bloc/theme_bloc.dart';
+import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,29 +45,30 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, ThemeState) {
-        return MaterialApp(
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
+        return Sizer(builder: (context, orientation, screenType) {
+          return MaterialApp(
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
               theme: myappTheme(
-              context,
-              ThemeState.themeMode ==
-                  ThemeMode.dark), // Ensure this returns the correct theme
-          darkTheme: myappTheme(context, true),
-          themeMode: ThemeState.themeMode,
-            debugShowCheckedModeBanner: false,
-            home: GetIt.I.get<AuthLayer>().admin == true
-                ? const AdminNavigationScreen()
-                : GetIt.I.get<AuthLayer>().organizer != null
-                    ? const OrgNavigationScreen()
-                    : GetIt.I.get<AuthLayer>().user != null
-                        ? GetIt.I.get<AuthLayer>().didChooseFav
-                            ? const NavigationScreen()
-                            : const SelectCategoriesScreen()
-                        : GetIt.I.get<AuthLayer>().onboarding
-                            ? const LoginScreen()
-                            : const OnboardingScreen()
-                            );
+                  context,
+                  ThemeState.themeMode ==
+                      ThemeMode.dark), // Ensure this returns the correct theme
+              darkTheme: myappTheme(context, true),
+              themeMode: ThemeState.themeMode,
+              debugShowCheckedModeBanner: false,
+              home: GetIt.I.get<AuthLayer>().admin == true
+                  ? const AdminNavigationScreen()
+                  : GetIt.I.get<AuthLayer>().organizer != null
+                      ? const OrgNavigationScreen()
+                      : GetIt.I.get<AuthLayer>().user != null
+                          ? GetIt.I.get<AuthLayer>().didChooseFav
+                              ? const NavigationScreen()
+                              : const SelectCategoriesScreen()
+                          : GetIt.I.get<AuthLayer>().onboarding
+                              ? const LoginScreen()
+                              : const OnboardingScreen());
+        });
       },
     );
   }

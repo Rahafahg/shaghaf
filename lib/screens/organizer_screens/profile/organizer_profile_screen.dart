@@ -19,6 +19,7 @@ import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:shaghaf/widgets/text_fields/edit_org_text_field.dart';
+import 'package:sizer/sizer.dart';
 
 class OrganizerProfileScreen extends StatelessWidget {
   const OrganizerProfileScreen({super.key});
@@ -50,13 +51,19 @@ class OrganizerProfileScreen extends StatelessWidget {
                     height: context.getHeight(divideBy: 3.5),
                     child: Stack(
                       children: [
-                        CustomPaint(
-                          size: Size(MediaQuery.of(context).size.width, 200),
-                          painter: RPSCustomPainter(
-                            width: MediaQuery.of(context).size.width,
-                            context: context,
-                          ),
-                        ),
+                        Device.screenType == ScreenType.tablet
+                            ? SizedBox(
+                                width: context.getWidth(),
+                                height: context.getHeight(divideBy: 3.5),
+                              )
+                            : CustomPaint(
+                                size: Size(
+                                    MediaQuery.of(context).size.width, 200),
+                                painter: RPSCustomPainter(
+                                  width: MediaQuery.of(context).size.width,
+                                  context: context,
+                                ),
+                              ),
                         Positioned(
                           bottom: 0,
                           left: 10,

@@ -15,6 +15,7 @@ import 'package:shaghaf/screens/user_screens/other/workshop_detail_screen.dart';
 import 'package:shaghaf/widgets/cards/workshope_card.dart';
 import 'package:shaghaf/widgets/tapbar/containers_tab_bar.dart';
 import 'package:shaghaf/widgets/text_fields/search_field.dart';
+import 'package:sizer/sizer.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -92,252 +93,254 @@ class UserHomeScreen extends StatelessWidget {
                 String rating =
                     "${workshopOfTheWeek.rating.toString().split(".")[0]}.$fraction";
                 // body
-                return SingleChildScrollView(
-                    child: Column(children: [
-                  // search bar
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 12, 16, 0),
-                    child: SizedBox(
-                        height: 40,
-                        child: SearchField(
-                            onChanged: (value) =>
-                                bloc.add(HomeSearchEvent(search: value)))),
-                  ),
-                  state.workshops.isEmpty && state.search == true
-                      ? Column(
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(16),
-                                width: context.getWidth(),
-                                child: Row(
-                                  children: [
-                                    Text("Search results".tr(context: context),
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Constants.textColor,
-                                        )),
-                                    Text('${state.searchTerm}',
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          color: Constants.textColor,
-                                        ))
-                                  ],
-                                )),
-                            SizedBox(
-                                height: context.getHeight(divideBy: 2),
-                                child: Center(
-                                    child: Text(
-                                        "No results".tr(context: context)))),
-                          ],
-                        )
-                      : state.workshops.isNotEmpty && state.search == true
-                          // "search results"
-                          ? SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.all(16),
-                                      width: context.getWidth(),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                              "Search results"
-                                                  .tr(context: context),
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Constants.textColor,
-                                              )),
-                                          Text('${state.searchTerm}',
-                                              textAlign: TextAlign.start,
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Constants.textColor,
-                                              ))
-                                        ],
-                                      )),
-                                  ListView.separated(
-                                    shrinkWrap: true,
-                                    itemCount: state.workshops.length,
-                                    itemBuilder: (context, index) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: WorkshopCard(
-                                        workshop: state.workshops[index],
-                                        shape: 'rect',
-                                        onTap: () => context.push(
-                                            screen: WorkshopDetailScreen(
-                                                workshop:
-                                                    state.workshops[index])),
-                                      ),
-                                    ),
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 20),
-                                  )
-                                ],
-                              ),
-                            )
-                          : Column(children: [
-                              // workshop of the week
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                                child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, bottom: 12),
-                                    width: context.getWidth(),
-                                    child: Text(
-                                        "week Workshop".tr(context: context),
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .color,
-                                        ))),
-                              ),
-                              InkWell(
-                                onTap: () => context.push(
-                                    screen: WorkshopDetailScreen(
-                                        workshop: workshopOfTheWeek)),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                                  child: Stack(
-                                    alignment: Alignment.center,
+                return RefreshIndicator(
+                  onRefresh: () async => bloc.add(GetWorkshopsEvent()),
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+                    // search bar
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 12, 16, 0),
+                      child: SizedBox(
+                          height: 40,
+                          child: SearchField(
+                              onChanged: (value) =>
+                                  bloc.add(HomeSearchEvent(search: value)))),
+                    ),
+                    state.workshops.isEmpty && state.search == true
+                        ? Column(
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.all(16),
+                                  width: context.getWidth(),
+                                  child: Row(
                                     children: [
-                                      SizedBox(
+                                      Text(
+                                          "Search results".tr(context: context),
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Constants.textColor,
+                                          )),
+                                      Text('${state.searchTerm}',
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Constants.textColor,
+                                          ))
+                                    ],
+                                  )),
+                              SizedBox(
+                                  height: context.getHeight(divideBy: 2),
+                                  child: Center(
+                                      child: Text(
+                                          "No results".tr(context: context)))),
+                            ],
+                          )
+                        : state.workshops.isNotEmpty && state.search == true
+                            // "search results"
+                            ? SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        padding: const EdgeInsets.all(16),
                                         width: context.getWidth(),
-                                        // height: 200,
-                                        height: context.getHeight(divideBy: 4),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Container(
-                                              height: context.getHeight(),
-                                              width: context.getWidth(),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withOpacity(0.35),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        workshopOfTheWeek
-                                                            .image),
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                              child: Container(
-                                                height: context.getHeight(),
-                                                width: context.getWidth(),
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                10)),
-                                                    color: Colors.black
-                                                        .withOpacity(0.25)),
-                                                child: Text(
-                                                    workshopOfTheWeek.title,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 22,
-                                                        fontFamily: "Poppins")),
-                                              )),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 10,
-                                        right: 18,
                                         child: Row(
                                           children: [
                                             Text(
-                                              rating.toString(),
-                                              style: const TextStyle(
-                                                  color:
-                                                      Constants.backgroundColor,
-                                                  fontSize: 16),
-                                            ),
-                                            const Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                            ),
+                                                "Search results"
+                                                    .tr(context: context),
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Constants.textColor,
+                                                )),
+                                            Text('${state.searchTerm}',
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Constants.textColor,
+                                                ))
                                           ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                                  width: context.getWidth(),
-                                  child: Text("Suggested".tr(context: context),
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .color,
-                                      ))),
-                              user == null
-                                  ? const SizedBox.shrink()
-                                  : ContainersTabBar(
-                                      tabs: categories,
-                                      selectedTab: selectedCategory,
-                                      onTap: (index) => bloc.add(
-                                          ChangeCategoryEvent(
-                                              category: categories[index])),
-                                    ),
-                              // suggested for you
-                              selectedCategory == "All"
-                                  ? GridView.builder(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 5, 16, 16),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 20,
-                                              mainAxisSpacing: 20,
-                                              childAspectRatio: 0.91),
-                                      // Vertical spacing between cards
-
+                                        )),
+                                    ListView.separated(
                                       shrinkWrap: true,
-                                      itemCount: workshops.length,
-                                      itemBuilder: (context, index) => WorkshopCard(
+                                      itemCount: state.workshops.length,
+                                      itemBuilder: (context, index) => Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: WorkshopCard(
+                                          workshop: state.workshops[index],
+                                          shape: 'rect',
                                           onTap: () => context.push(
                                               screen: WorkshopDetailScreen(
-                                                  workshop: workshops[index])),
-                                          workshop: workshops[index]))
-                                  : GridView.builder(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16, 5, 16, 16),
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 20,
-                                              mainAxisSpacing: 20,
-                                              childAspectRatio: 0.91),
-                                      shrinkWrap: true,
-                                      itemCount: groupedworkshops[selectedCategory]?.length ??
-                                          0,
-                                      itemBuilder: (context, index) => WorkshopCard(
-                                          onTap: () => context.push(
-                                              screen: WorkshopDetailScreen(workshop: groupedworkshops[selectedCategory]![index])),
-                                          workshop: groupedworkshops[selectedCategory]![index])),
-                            ])
-                ]));
+                                                  workshop:
+                                                      state.workshops[index])),
+                                        ),
+                                      ),
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(height: 20),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Column(children: [
+                                // workshop of the week
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                                  child: Container(
+                                      padding: const EdgeInsets.only(
+                                          top: 15, bottom: 12),
+                                      width: context.getWidth(),
+                                      child: Text(
+                                          "week Workshop".tr(context: context),
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .color,
+                                          ))),
+                                ),
+                                InkWell(
+                                  onTap: () => context.push(
+                                      screen: WorkshopDetailScreen(
+                                          workshop: workshopOfTheWeek)),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: context.getWidth(),
+                                          // height: 200,
+                                          height:
+                                              context.getHeight(divideBy: 4),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: Container(
+                                                height: context.getHeight(),
+                                                width: context.getWidth(),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.35),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          workshopOfTheWeek
+                                                              .image),
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                child: Container(
+                                                  height: context.getHeight(),
+                                                  width: context.getWidth(),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                      color: Colors.black
+                                                          .withOpacity(0.25)),
+                                                  child: Text(
+                                                      workshopOfTheWeek.title,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22,
+                                                      )),
+                                                )),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 10,
+                                          right: 18,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                rating.toString(),
+                                                style: const TextStyle(
+                                                    color: Constants
+                                                        .backgroundColor,
+                                                    fontSize: 16),
+                                              ),
+                                              const Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                                    width: context.getWidth(),
+                                    child:
+                                        Text("Suggested".tr(context: context),
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .color,
+                                            ))),
+                                user == null
+                                    ? const SizedBox.shrink()
+                                    : ContainersTabBar(
+                                        tabs: categories,
+                                        selectedTab: selectedCategory,
+                                        onTap: (index) => bloc.add(
+                                            ChangeCategoryEvent(
+                                                category: categories[index])),
+                                      ),
+                                // suggested for you
+                                selectedCategory == "All"
+                                    ? GridView.builder(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 5, 16, 16),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            crossAxisSpacing:
+                                                Device.screenType == ScreenType.tablet
+                                                    ? 60
+                                                    : 20,
+                                            mainAxisSpacing: 20,
+                                            childAspectRatio:
+                                                Device.screenType == ScreenType.tablet
+                                                    ? 1.9
+                                                    : 0.92),
+                                        // Vertical spacing between cards
+
+                                        shrinkWrap: true,
+                                        itemCount: workshops.length,
+                                        itemBuilder: (context, index) => WorkshopCard(
+                                            onTap: () => context.push(
+                                                screen: WorkshopDetailScreen(
+                                                    workshop:
+                                                        workshops[index])),
+                                            workshop: workshops[index]))
+                                    : GridView.builder(
+                                        padding: const EdgeInsets.fromLTRB(16, 5, 16, 16),
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: Device.screenType == ScreenType.tablet ? 60 : 20, mainAxisSpacing: 20, childAspectRatio: Device.screenType == ScreenType.tablet ? 1.9 : 0.92),
+                                        shrinkWrap: true,
+                                        itemCount: groupedworkshops[selectedCategory]?.length ?? 0,
+                                        itemBuilder: (context, index) => WorkshopCard(onTap: () => context.push(screen: WorkshopDetailScreen(workshop: groupedworkshops[selectedCategory]![index])), workshop: groupedworkshops[selectedCategory]![index])),
+                              ])
+                  ])),
+                );
               }
               return const Center(child: Text('something went wrong'));
             },
