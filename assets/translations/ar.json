@@ -146,5 +146,7 @@
     "Choose an Organizer" : "اختر جهة",
     "Continue":"ابدا",
     "Meeting Url":"رابط الحجز",
-    "Booking number":"رقم الحجز: "
+    "Booking number":"رقم الحجز: ",
+    "Register attendee": "تحضير طالب",
+    "Enter Attendee booking id": "ادخل رقم حجز الطالب"
 }
