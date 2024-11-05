@@ -129,24 +129,26 @@ class MyWorkshopsScreen extends StatelessWidget {
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(height: 20),
                                 itemBuilder: (context, index) => WorkshopCard(
-                                  price: incomingWorkshops[index].price,
-                                  shape: 'rect',
-                                  workshop: GetIt.I
-                                      .get<DataLayer>()
-                                      .allWorkshops
-                                      .firstWhere((workshopGroup) =>
-                                          workshopGroup.workshopGroupId ==
-                                          incomingWorkshops[index]
-                                              .workshopGroupId),
-                                  date: incomingWorkshops[index].date,
-                                  onTap: () => context.push(
-                                      screen: UserTicketScreen(
-                                          workshop: incomingWorkshops[index],
-                                          booking: GetIt.I
-                                              .get<DataLayer>()
-                                              .bookings[index],
-                                          onBack: () => context.pop())),
-                                ),
+                                    price: incomingWorkshops[index].price,
+                                    shape: 'rect',
+                                    workshop: GetIt.I
+                                        .get<DataLayer>()
+                                        .allWorkshops
+                                        .firstWhere((workshopGroup) =>
+                                            workshopGroup.workshopGroupId ==
+                                            incomingWorkshops[index]
+                                                .workshopGroupId),
+                                    date: incomingWorkshops[index].date,
+                                    onTap: () {
+                                      context.push(
+                                          screen: UserTicketScreen(
+                                              workshop:
+                                                  incomingWorkshops[index],
+                                              booking: GetIt.I
+                                                  .get<DataLayer>()
+                                                  .bookings.firstWhere((booking) => booking.workshopId == incomingWorkshops[index].workshopId),
+                                              onBack: () => context.pop()));
+                                    }),
                               )
                             : SizedBox(
                                 height: context.getHeight(),
