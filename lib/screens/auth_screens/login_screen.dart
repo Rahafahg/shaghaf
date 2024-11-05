@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shaghaf/constants/constants.dart';
+import 'package:shaghaf/data_layer/supabase_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';
 import 'package:shaghaf/screens/auth_screens/bloc/auth_bloc.dart';
@@ -30,7 +32,7 @@ class LoginScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final bloc = context.read<AuthBloc>();
         return BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is ErrorState) {
               context.pop();
               showDialog(
@@ -47,10 +49,10 @@ class LoginScreen extends StatelessWidget {
             }
             if (state is SuccessState) {
               context.pop();
+              state.role == 'user' ? await GetIt.I.get<SupabaseLayer>().getBookings() : null;
               context.pushRemove(
-                  screen: state.role == 'user'
-                      ? const NavigationScreen()
-                      : state.role=='admin' ? const AdminNavigationScreen() : const OrgNavigationScreen());
+                  screen: state.role == 'user' ?  const NavigationScreen()
+                  : state.role=='admin' ? const AdminNavigationScreen() : const OrgNavigationScreen());
             }
           },
           child: GestureDetector(
