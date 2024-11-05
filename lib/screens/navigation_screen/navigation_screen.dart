@@ -13,13 +13,19 @@ import 'package:shaghaf/screens/user_screens/profile/bloc/profile_bloc.dart';
 import 'package:shaghaf/screens/user_screens/workshops/my_workshops_screen.dart';
 import 'package:shaghaf/screens/user_screens/profile/profile_screen.dart';
 import 'package:shaghaf/screens/user_screens/categories/user_categories_screen.dart';
+import 'package:sizer/sizer.dart';
 
 class NavigationScreen extends StatelessWidget {
   const NavigationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<IconData> tabsIcons = [HugeIcons.strokeRoundedHome09, HugeIcons.strokeRoundedMenuSquare, HugeIcons.strokeRoundedFile02, HugeIcons.strokeRoundedUser];
+    List<IconData> tabsIcons = [
+      HugeIcons.strokeRoundedHome09,
+      HugeIcons.strokeRoundedMenuSquare,
+      HugeIcons.strokeRoundedFile02,
+      HugeIcons.strokeRoundedUser
+    ];
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -56,7 +62,12 @@ class NavigationScreen extends StatelessWidget {
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             context.locale;
-            List<String> tabs = ["Home".tr(), "Categories".tr(), "Workshops".tr(), "Profile".tr()];
+            List<String> tabs = [
+              "Home".tr(),
+              "Categories".tr(),
+              "Workshops".tr(),
+              "Profile".tr()
+            ];
             return Container(
               padding: const EdgeInsets.only(top: 0.3, bottom: 4),
               decoration: const BoxDecoration(
@@ -68,7 +79,9 @@ class NavigationScreen extends StatelessWidget {
                   onDestinationSelected: (value) => context
                       .read<NavigationBloc>()
                       .add(SwitchScreenEvent(targetPage: value)),
-                  height: context.getHeight(divideBy: 16),
+                  height: context.getHeight(
+                      divideBy:
+                          Device.screenType == ScreenType.tablet ? 23 : 16),
                   destinations: List.generate(tabs.length, (index) {
                     return NavigationDestination(
                       label: tabs[index],

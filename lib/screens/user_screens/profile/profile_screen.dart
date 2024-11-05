@@ -15,6 +15,7 @@ import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:sizer/sizer.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,22 +32,30 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: context.getWidth(),
-                height: context.getHeight(divideBy: 3.5),
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      size: Size(context.getWidth(), 200),
-                      painter: RPSCustomPainter(width: context.getWidth(), context: context),
+              Device.screenType == ScreenType.tablet
+                  ? SizedBox(
+                      width: context.getWidth(),
+                      height: context.getHeight(divideBy: 3.5),
+                    )
+                  : SizedBox(
+                      width: context.getWidth(),
+                      height: context.getHeight(divideBy: 3.5),
+                      child: Stack(
+                        children: [
+                          CustomPaint(
+                            size: Size(context.getWidth(), 200),
+                            painter: RPSCustomPainter(
+                                width: context.getWidth(), context: context),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
               BlocBuilder<UserProfileBloc, UserProfileState>(
                 builder: (context, state) {
                   if (state is LoadingProfileState) {
-                    return Center(child:LottieBuilder.asset("assets/lottie/loading.json"));
+                    return Center(
+                        child:
+                            LottieBuilder.asset("assets/lottie/loading.json"));
                   }
                   if (state is SuccessProfileState) {
                     return Column(
@@ -55,20 +64,35 @@ class ProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              user == null ? "Hello, Guest" : "${user.firstName} ${user.lastName}",
-                              style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500,color: Theme.of(context).colorScheme.onSecondary,fontFamily: "Poppins",),
+                              user == null
+                                  ? "Hello, Guest"
+                                  : "${user.firstName} ${user.lastName}",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w500,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                              ),
                             ),
-                            user == null ? const SizedBox.shrink()
-                            : IconButton(
-                              onPressed: ()=>bloc.add(EditUserProfileEvent(firstName: user.firstName,lastName: user.lastName,phoneNumber: user.phoneNumber)),
-                              icon: Icon(Icons.mode_edit_outline_outlined,size: 30,color: Theme.of(context).primaryColor)
-                            )
+                            user == null
+                                ? const SizedBox.shrink()
+                                : IconButton(
+                                    onPressed: () => bloc.add(
+                                        EditUserProfileEvent(
+                                            firstName: user.firstName,
+                                            lastName: user.lastName,
+                                            phoneNumber: user.phoneNumber)),
+                                    icon: Icon(Icons.mode_edit_outline_outlined,
+                                        size: 30,
+                                        color: Theme.of(context).primaryColor))
                           ],
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                          child: ProfileCard(text: user?.phoneNumber ?? "", icon: Icons.phone),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          child: ProfileCard(
+                              text: user?.phoneNumber ?? "", icon: Icons.phone),
                         ),
                       ],
                     );
@@ -81,15 +105,18 @@ class ProfileScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              EditTextField(controller: bloc.firstNameController),
+                              EditTextField(
+                                  controller: bloc.firstNameController),
                               const SizedBox(width: 10), // Space between fields
-                              EditTextField(controller: bloc.lastNameController),
+                              EditTextField(
+                                  controller: bloc.lastNameController),
                             ],
                           ),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: Row(
@@ -107,7 +134,9 @@ class ProfileScreen extends StatelessWidget {
                                     ],
                                   ),
                                   child: CircleAvatar(
-                                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                     child: const Icon(
                                       Icons.phone,
                                       color: Constants.mainOrange,

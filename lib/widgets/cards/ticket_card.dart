@@ -83,6 +83,8 @@ class TicketCard extends StatelessWidget {
                     onPressed: () async {
                       await Clipboard.setData(
                           ClipboardData(text: booking.qrCode));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("copied".tr(context: context))));
                     },
                     icon: const Icon(HugeIcons.strokeRoundedCopy01))
               ],
@@ -111,9 +113,11 @@ class TicketCard extends StatelessWidget {
                     Row(
                       children: [
                         Text("From".tr()),
-                        Text(workshop.fromTime),
                         const SizedBox(width: 5),
+                        Text(workshop.fromTime),
+                        const SizedBox(width: 10),
                         Text("To".tr()),
+                        const SizedBox(width: 5),
                         Text(workshop.toTime),
                       ],
                     )
@@ -135,6 +139,18 @@ class TicketCard extends StatelessWidget {
                           const SizedBox(width: 5),
                           Text("Meeting Url".tr(context: context),
                               style: const TextStyle(fontSize: 16)),
+                          IconButton(
+                              onPressed: () async {
+                                if (workshop.meetingUrl != null) {
+                                  await Clipboard.setData(ClipboardData(
+                                      text: workshop.meetingUrl!));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "copied".tr(context: context))));
+                                }
+                              },
+                              icon: const Icon(HugeIcons.strokeRoundedCopy01))
                         ],
                       ),
                       const SizedBox(height: 10),
@@ -148,11 +164,12 @@ class TicketCard extends StatelessWidget {
                           }
                         },
                         child: Text(workshop.meetingUrl ?? "",
-                            style: const TextStyle(fontSize: 16)),
+                            style: const TextStyle(
+                                fontSize: 16, color: Constants.lightOrange)),
                       ),
                     ],
                   )
-                : const SizedBox.shrink()
+                : const SizedBox.shrink(),
           ],
         ),
       ),

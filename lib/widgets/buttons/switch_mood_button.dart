@@ -43,7 +43,6 @@ class SwitchMoodButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: 17,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
-                fontFamily: "Poppins",
               ),
             ),
           ],

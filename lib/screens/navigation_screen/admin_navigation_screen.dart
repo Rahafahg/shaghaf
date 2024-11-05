@@ -12,6 +12,7 @@ import 'package:shaghaf/screens/admin_screens/admin_category_screen.dart';
 import 'package:shaghaf/screens/admin_screens/bloc/admin_bloc.dart';
 import 'package:shaghaf/screens/auth_screens/login_screen.dart';
 import 'package:shaghaf/screens/navigation_screen/bloc/navigation_bloc.dart';
+import 'package:sizer/sizer.dart';
 
 class AdminNavigationScreen extends StatelessWidget {
   const AdminNavigationScreen({super.key});
@@ -26,14 +27,25 @@ class AdminNavigationScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
-        BlocProvider(create: (context) => AdminBloc()..add(GetAdminDataEvent())),
+        BlocProvider(
+            create: (context) => AdminBloc()..add(GetAdminDataEvent())),
         //other blocs can be added here
       ],
       child: Scaffold(
         backgroundColor: Constants.backgroundColor,
         appBar: AppBar(
-          leading: IconButton(onPressed: (){GetIt.I.get<AuthLayer>().box.remove('admin');context.pushRemove(screen: const LoginScreen());}, icon: const Icon(HugeIcons.strokeRoundedLogout01)),
-          actions: [IconButton(onPressed: ()=> context.setLocale(Locale(context.locale == const Locale("en") ? "ar" : "en")), icon: const Icon(Icons.translate))],
+          leading: IconButton(
+              onPressed: () {
+                GetIt.I.get<AuthLayer>().box.remove('admin');
+                context.pushRemove(screen: const LoginScreen());
+              },
+              icon: const Icon(HugeIcons.strokeRoundedLogout01)),
+          actions: [
+            IconButton(
+                onPressed: () => context.setLocale(
+                    Locale(context.locale == const Locale("en") ? "ar" : "en")),
+                icon: const Icon(Icons.translate))
+          ],
           backgroundColor: Constants.backgroundColor,
           centerTitle: true,
           forceMaterialTransparency: true,
@@ -41,7 +53,8 @@ class AdminNavigationScreen extends StatelessWidget {
             'assets/images/logo.png',
             height: 60,
             alignment: Alignment.centerLeft, // Align logo to the left
-          ),),
+          ),
+        ),
         body: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             return IndexedStack(
@@ -57,7 +70,10 @@ class AdminNavigationScreen extends StatelessWidget {
         bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
             context.locale;
-            List<String> tabs = ['Categories'.tr(context: context), 'Organizers'.tr(context: context)];
+            List<String> tabs = [
+              'Categories'.tr(context: context),
+              'Organizers'.tr(context: context)
+            ];
             return Container(
               padding: const EdgeInsets.only(top: 0.3, bottom: 4),
               decoration: const BoxDecoration(
@@ -69,7 +85,9 @@ class AdminNavigationScreen extends StatelessWidget {
                   onDestinationSelected: (value) => context
                       .read<NavigationBloc>()
                       .add(SwitchScreenEvent(targetPage: value)),
-                  height: context.getHeight(divideBy: 16),
+                  height: context.getHeight(
+                      divideBy:
+                          Device.screenType == ScreenType.tablet ? 23 : 16),
                   destinations: List.generate(tabs.length, (index) {
                     return NavigationDestination(
                       label: tabs[index],
