@@ -50,8 +50,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         if (bookingAsMap != null) {
           final booking = BookingModel.fromJson(bookingAsMap);
           GetIt.I.get<SupabaseLayer>().getBookings();
-          await sendTicketToEmail(
-              booking: booking, group: event.group, specific: event.workshop);
+          await sendTicketToEmail(booking: booking, group: event.group, specific: event.workshop);
           emit(SuccessState(booking: booking));
         } else {
           log('Failed to save booking. Please try again.');
@@ -71,16 +70,16 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         dotenv.env['EMAILJS_SERVICE_ID']!,
         dotenv.env['EMAILJS_TEMPLATE_ID']!,
         {
-          'booking_id': booking.bookingId,
+          'booking_id': booking.qrCode,
           'booking_date': booking.bookingDate.toString(),
           'tickets': booking.numberOfTickets,
           'workshop_name': group.title,
           'workshop_date': specific.date,
           'from': specific.fromTime,
           'to': specific.toTime,
-          'to_name': GetIt.I.get<AuthLayer>().user?.firstName,
-          'to_email': GetIt.I.get<AuthLayer>().user?.email ??
-              'yaserkhayyat2017@gmail.com',
+          'to_name': '${GetIt.I.get<AuthLayer>().user?.firstName} ${GetIt.I.get<AuthLayer>().user?.lastName}',
+          'to_email': GetIt.I.get<AuthLayer>().user?.email,
+          'link' : specific.isOnline ? specific.meetingUrl : 'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}'
         },
         emailjs.Options(
           publicKey: dotenv.env['EMAILJS_PUBLIC_KEY'],
