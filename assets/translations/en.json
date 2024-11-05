@@ -142,5 +142,7 @@
     "field not empty":"All field must not be empty",
     "Login" : "Login",
     "Choose an Organizer" : "Choose an Organizer",
-    "Continue":"Continue"
+    "Continue":"Continue",
+    "Meeting Url":"Meeting Url",
+    "Booking number":"Booking number:"
 }
