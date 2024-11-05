@@ -22,6 +22,7 @@ import 'package:shaghaf/widgets/buttons/main_button.dart';
 import 'package:shaghaf/widgets/cards/ticket_card.dart';
 import 'package:shaghaf/widgets/cards/user_review_card.dart';
 import 'package:shaghaf/widgets/dialogs/error_dialog.dart';
+import 'package:shaghaf/widgets/dialogs/register_attendee.dart';
 import 'package:shaghaf/widgets/dialogs/show_user_review.dart';
 import 'package:shaghaf/widgets/dialogs/moyasar.dart';
 import 'package:shaghaf/widgets/maps/user_map.dart';
@@ -125,7 +126,13 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(workshop.title,style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 18)), // 20 pop ?
+                            Text(workshop.title,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color,
+                                    fontSize: 18)), // 20 pop ?
                             Row(
                               children: [
                                 HugeIcon(
@@ -155,7 +162,12 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName.tr(context: context),
-                                  style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 16),
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color,
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -527,7 +539,50 @@ class WorkshopDetailScreen extends StatelessWidget {
                             ? (specific.isOnline == true ||
                                     DateTime.now()
                                         .isAfter(DateTime.parse(specific.date)))
-                                ? const SizedBox.shrink()
+                                ? (specific.isOnline == false ||
+                                        DateTime.now().isAfter(
+                                            DateTime.parse(specific.date)))
+                                    ? const SizedBox.shrink()
+                                    : MainButton(
+                                        text: 'Register attendee'.tr(),
+                                        width: context.getWidth(),
+                                        onPressed: () async {
+                                          final List<Map<String, dynamic>> response =
+                                              await registerAttendee(
+                                                  context: context,
+                                                  workshop: workshop,
+                                                  specific: specific);
+
+                                          if (response.isNotEmpty) {
+                                            log(response.first.toString());
+                                            final booking =
+                                                BookingModel.fromJson(
+                                                    response.first);
+                                            showModalBottomSheet(
+                                                backgroundColor:
+                                                    Constants.ticketCardColor,
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: TicketCard(
+                                                        workshopGroup: workshop,
+                                                        booking: booking,
+                                                        workshop: specific),
+                                                  );
+                                                });
+                                          } else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    ErrorDialog(
+                                                        msg: "Invalid qr code"
+                                                            .tr()));
+                                          }
+                                        },
+                                      )
                                 : MainButton(
                                     text: "Scan Now".tr(),
                                     width: context.getWidth(),

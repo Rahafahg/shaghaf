@@ -142,5 +142,7 @@
     "field not empty":"All field must not be empty",
     "Login" : "Login",
     "Choose an Organizer" : "Choose an Organizer",
-    "Continue":"Continue"
+    "Continue":"Continue",
+    "Register attendee": "Register attendee",
+    "Enter Attendee booking id": "Enter Attendee booking id"
 }

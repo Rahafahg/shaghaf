@@ -144,5 +144,7 @@
     "email":"البريد الإلكتروني",
     "phone number" : "رقم الهاتف",
     "Choose an Organizer" : "اختر جهة",
-    "Continue":"ابدا"
+    "Continue":"ابدا",
+    "Register attendee": "تحضير طالب",
+    "Enter Attendee booking id": "ادخل رقم حجز الطالب"
 }
