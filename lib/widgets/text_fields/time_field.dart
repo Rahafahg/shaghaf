@@ -87,10 +87,11 @@ class TimeField extends StatelessWidget {
                         log(timeToController.text);
                       }
                     }),
-                    decoration: InputDecoration(
+                    decoration:  InputDecoration(
                       filled: true,
-                      fillColor:
-                          Theme.of(context).colorScheme.onSecondaryContainer,
+                       fillColor: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                       border: OutlineInputBorder(
                           borderSide: BorderSide.none,
                           borderRadius:

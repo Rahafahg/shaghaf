@@ -50,8 +50,8 @@ class AddDateField extends StatelessWidget {
               });
             },
             decoration: InputDecoration(
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
+              // filled: true,
+              // fillColor: Theme.of(context).colorScheme.onSecondaryContainer,
               border: const OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(

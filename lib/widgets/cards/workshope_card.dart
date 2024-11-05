@@ -139,10 +139,14 @@ class WorkshopCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: Theme.of(context).colorScheme.onInverseSurface,
-                  border: Border.all(color: Constants.appGreyColor),
+                  border: Border.all(
+                      color:
+                          Theme.of(context).colorScheme.onPrimaryFixedVariant),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.grey.shade300,
+                        color:
+                            Theme.of(context).colorScheme.onPrimaryFixedVariant,
+                        //  color: Colors.grey.shade300,
                         blurRadius: 3,
                         offset: const Offset(2, 2))
                   ],
