@@ -38,37 +38,23 @@ class WorkshopDetailScreen extends StatelessWidget {
     String pay = "Pay".tr(context: context);
     String sr = "SR".tr(context: context);
     final organizer = GetIt.I.get<AuthLayer>().organizer;
-    final category = GetIt.I
-        .get<DataLayer>()
-        .categories
-        .firstWhere((category) => category.categoryId == workshop.categoryId);
-    String selectedDate = int.parse(date != null && date!.isNotEmpty
-            ? date!.split('-').last
-            : workshop.workshops.first.date.split('-').last)
-        .toString();
-    Workshop specific = workshop.workshops
-        .where((workshop) => workshop.date.contains(selectedDate))
-        .toList()
-        .first;
+    final category = GetIt.I.get<DataLayer>().categories.firstWhere((category) => category.categoryId == workshop.categoryId);
+    String selectedDate = int.parse(date != null && date!.isNotEmpty ? date!.split('-').last : workshop.workshops.first.date.split('-').last).toString();
+    Workshop specific = workshop.workshops.where((workshop) => workshop.date.contains(selectedDate)).toList().first;
     List<UserReviewModel> workshopReview = [];
     for (UserReviewModel userReview in GetIt.I.get<DataLayer>().reviews) {
       if (userReview.workshopGroupId == workshop.workshopGroupId) {
         workshopReview.add(userReview);
-        log(userReview.toJson().toString());
       }
     }
     return BlocProvider(
-      create: (context) => BookingBloc()
-        ..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
+      create: (context) => BookingBloc()..add(UpdateDayEvent(selectedDate: selectedDate, specific: specific)),
       child: Builder(builder: (context) {
-        log(specific.instructorName);
         final bloc = context.read<BookingBloc>();
         return BlocListener<BookingBloc, BookingState>(
           listener: (context, state) {
             if (state is SuccessState) {
-              context.pushReplacement(
-                  screen: UserTicketScreen(
-                      workshop: specific, booking: state.booking));
+              context.pushReplacement(screen: UserTicketScreen(workshop: specific, booking: state.booking));
             }
           },
           child: Scaffold(
@@ -79,38 +65,20 @@ class WorkshopDetailScreen extends StatelessWidget {
                   // workshop image
                   Stack(
                     children: [
-                      Image.network(
-                        workshop.image,
-                        width: context.getWidth(),
-                        height: context.getHeight(divideBy: 3),
-                        fit: BoxFit.cover,
-                      ),
+                      Image.network(workshop.image,width: context.getWidth(),height: context.getHeight(divideBy: 3),fit: BoxFit.cover,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 32),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: () => context.pop(),
-                                icon: const Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.lightGreen,
-                                  size: 28,
-                                )),
-                            organizer == null
-                                ? const SizedBox.shrink()
-                                : IconButton(
-                                    onPressed: () => context.push(
-                                        screen: AddWorkshopScreen(
-                                            isSingleWorkShope: true,
-                                            workshop: specific,
-                                            isEdit: true)),
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.lightGreen,
-                                      size: 28,
-                                    ))
+                              onPressed: () => context.pop(),
+                              icon: const Icon(Icons.arrow_back_ios,color: Colors.lightGreen,size: 28)
+                            ),
+                            organizer == null ? const SizedBox.shrink() : IconButton(
+                              onPressed: () => context.push(screen: AddWorkshopScreen(isSingleWorkShope: true,workshop: specific,isEdit: true)),
+                              icon: const Icon(Icons.edit,color: Colors.lightGreen,size: 28)
+                            )
                           ],
                         ),
                       )
@@ -126,19 +94,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(workshop.title,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .color,
-                                    fontSize: 18)), // 20 pop ?
+                            Text(workshop.title,style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 18)), // 20 pop ?
                             Row(
                               children: [
-                                HugeIcon(
-                                  icon: HugeIcons.strokeRoundedUserGroup,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                                HugeIcon(icon: HugeIcons.strokeRoundedUserGroup,color: Theme.of(context).primaryColor),
                                 const SizedBox(width: 5),
                                 Text(workshop.targetedAudience)
                               ],
@@ -155,19 +114,13 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Container(
                                   height: 35,
                                   width: 35,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12)),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
                                   child: Image.asset(category.icon),
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
                                   category.categoryName.tr(context: context),
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .color,
-                                      fontSize: 16),
+                                  style: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color,fontSize: 16),
                                 ),
                               ],
                             ),
@@ -176,36 +129,24 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        NetworkImage(workshop.organizer.image),
-                                  ),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),),
+                                  child: CircleAvatar(radius: 50,backgroundImage:NetworkImage(workshop.organizer.image)),
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
                                   workshop.organizer.name,
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                  ),
+                                  style: const TextStyle(fontSize: 11),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        const Divider(
-                            color: Constants.dividerColor, thickness: 1),
+                        const Divider(color: Constants.dividerColor, thickness: 1),
                         // desc
                         Text("Description".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         const SizedBox(height: 5),
-                        Text(workshop.description,
-                            style: const TextStyle(
-                                color: Constants.lightTextColor, fontSize: 14)),
-                        const Divider(
-                            color: Constants.dividerColor, thickness: 1),
+                        Text(workshop.description,style: const TextStyle(color: Constants.lightTextColor, fontSize: 14)),
+                        const Divider(color: Constants.dividerColor, thickness: 1),
                         // instructor
                         Text("Instructor".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         const SizedBox(height: 10),
@@ -215,164 +156,102 @@ class WorkshopDetailScreen extends StatelessWidget {
                               if (state.specific != null) {
                                 specific = state.specific!;
                                 return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                            child: CircleAvatar(
-                                              radius: 50,
-                                              backgroundImage: NetworkImage(
-                                                state.specific!.instructorImage,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            state.specific!.instructorName,
-                                            style:
-                                                const TextStyle(fontSize: 16),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        specific.instructorDescription,
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Constants.lightTextColor),
-                                      ),
-                                    ]);
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(borderRadius:BorderRadius.circular(50)),
+                                          child: CircleAvatar(radius: 50,backgroundImage: NetworkImage(state.specific!.instructorImage)),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(state.specific!.instructorName,style: const TextStyle(fontSize: 16)),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(specific.instructorDescription,style: const TextStyle(fontSize: 14,color: Constants.lightTextColor)),
+                                  ]
+                                );
                               }
                             }
                             return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: NetworkImage(
-                                            specific.instructorImage,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(specific.instructorName,
-                                          style: const TextStyle(fontSize: 16)),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    specific.instructorDescription,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Constants.lightTextColor),
-                                  ),
-                                ]);
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(borderRadius:BorderRadius.circular(50),),
+                                      child: CircleAvatar(radius: 50,backgroundImage: NetworkImage(specific.instructorImage)),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(specific.instructorName,style: const TextStyle(fontSize: 16)),
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                                Text(specific.instructorDescription,style: const TextStyle(fontSize: 14,color: Constants.lightTextColor)),
+                              ]
+                            );
                           },
                         ),
-                        const Divider(
-                          color: Constants.dividerColor,
-                          thickness: 1,
-                        ),
+                        const Divider(color: Constants.dividerColor,thickness: 1,),
+                        // available days + add day
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Available Days".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
-                            organizer != null
-                                ? TextButton(
-                                    style: ButtonStyle(
-                                        foregroundColor:
-                                            WidgetStateProperty.all(
-                                                Constants.lightOrange)),
-                                    onPressed: () => context.push(
-                                            screen: AddWorkshopScreen(
-                                          isSingleWorkShope: true,
-                                          workshop: specific,
-                                        )),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.add),
-                                        Text("Add day".tr()),
-                                      ],
-                                    ))
-                                : const Text("")
+                            organizer != null ? TextButton(
+                              style: ButtonStyle(foregroundColor:WidgetStateProperty.all(Constants.lightOrange)),
+                              onPressed: () => context.push(screen: AddWorkshopScreen(isSingleWorkShope: true,workshop: specific,)),
+                              child: Row(children: [const Icon(Icons.add),Text("Add day".tr())])
+                            )
+                            : const Text("")
                           ],
                         ),
                         const SizedBox(height: 10),
+                        // select day
                         DateRadioButton(
-                            workshop: workshop.workshops,
-                            selectedDate: selectedDate,
-                            onTap: (chosenDay) {
-                              selectedDate = chosenDay.split(' ')[1];
-                              bloc.add(UpdateDayEvent(
-                                selectedDate: chosenDay.split(' ')[1],
-                                specific: workshop.workshops
-                                    .where((workshop) =>
-                                        workshop.date.contains(selectedDate))
-                                    .toList()
-                                    .last,
-                              ));
-                              log(selectedDate);
-                            }),
-                        const SizedBox(
-                          height: 20,
+                          workshop: workshop.workshops,
+                          selectedDate: selectedDate,
+                          onTap: (chosenDay) {
+                            selectedDate = chosenDay.split(' ')[1];
+                            bloc.add(UpdateDayEvent(
+                              selectedDate: chosenDay.split(' ')[1],
+                              specific: workshop.workshops.where((workshop) =>workshop.date.contains(selectedDate)).toList().last,
+                            ));
+                            log(selectedDate);
+                          }
                         ),
+                        const SizedBox(height: 20),
                         // available seats
                         Text("Available Seats".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                            const HugeIcon(
-                                icon: HugeIcons.strokeRoundedSeatSelector,
-                                color: Constants.mainOrange),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            const HugeIcon(icon: HugeIcons.strokeRoundedSeatSelector,color: Constants.mainOrange),
+                            const SizedBox(width: 10,),
                             BlocBuilder<BookingBloc, BookingState>(
                               builder: (context, state) {
                                 if (state is ChangeQuantityState) {
                                   if (state.specific != null) {
                                     specific = state.specific!;
-                                    return Text(
-                                        "${specific.availableSeats}/${specific.numberOfSeats}");
+                                    return Text("${specific.availableSeats}/${specific.numberOfSeats}");
                                   }
                                 }
-                                return Text(
-                                    "${specific.availableSeats}/${specific.numberOfSeats}");
+                                return Text("${specific.availableSeats}/${specific.numberOfSeats}");
                               },
                             ),
                           ],
                         ),
-                        const Divider(
-                          color: Constants.dividerColor,
-                          thickness: 1,
-                        ),
+                        const Divider(color: Constants.dividerColor,thickness: 1,),
                         // location
                         Text("Location".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         Row(
                           children: [
-                            const HugeIcon(
-                              icon: HugeIcons.strokeRoundedLocation01,
-                              color: Constants.mainOrange,
-                            ),
+                            const HugeIcon(icon: HugeIcons.strokeRoundedLocation01,color: Constants.mainOrange,),
                             const SizedBox(width: 8),
                             // venue name and type
                             BlocBuilder<BookingBloc, BookingState>(
@@ -383,18 +262,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                     return Expanded(
                                       child: ListTile(
                                         contentPadding: EdgeInsets.zero,
-                                        title: Text(state.specific!.isOnline
-                                            ? 'Online'.tr(context: context)
-                                            : state.specific!.venueName ??
-                                                "To be determained later"),
+                                        title: Text(state.specific!.isOnline ? 'Online'.tr(context: context) : state.specific!.venueName ?? "To be determained later"),
                                         subtitle: Text(
-                                          specific.isOnline
-                                              ? 'Online'.tr(context: context)
-                                              : specific.venueType ??
-                                                  "To be determained later",
-                                          style: const TextStyle(
-                                              color: Constants.lightTextColor,
-                                              fontSize: 14),
+                                          specific.isOnline ? 'Online'.tr(context: context) : specific.venueType ?? "To be determained later",
+                                          style: const TextStyle(color: Constants.lightTextColor,fontSize: 14),
                                         ),
                                       ),
                                     );
@@ -403,18 +274,10 @@ class WorkshopDetailScreen extends StatelessWidget {
                                 return Expanded(
                                   child: ListTile(
                                     contentPadding: EdgeInsets.zero,
-                                    title: Text(specific.isOnline
-                                        ? 'Online'.tr(context: context)
-                                        : specific.venueName ??
-                                            "To be determained later"),
+                                    title: Text(specific.isOnline ? 'Online'.tr(context: context) : specific.venueName ?? "To be determained later"),
                                     subtitle: Text(
-                                      specific.isOnline
-                                          ? 'Online'.tr(context: context)
-                                          : specific.venueType ??
-                                              "To be determained later",
-                                      style: const TextStyle(
-                                          color: Constants.lightTextColor,
-                                          fontSize: 14),
+                                      specific.isOnline ? 'Online'.tr(context: context) : specific.venueType ?? "To be determained later",
+                                      style: const TextStyle(color: Constants.lightTextColor,fontSize: 14),
                                     ),
                                   ),
                                 );
@@ -428,302 +291,199 @@ class WorkshopDetailScreen extends StatelessWidget {
                             if (state is ChangeQuantityState) {
                               if (state.specific != null) {
                                 specific = state.specific!;
-                                log(specific.date);
                                 return state.specific!.isOnline ||
-                                        state.specific?.latitude == null ||
-                                        state.specific!.latitude!.isEmpty
-                                    ? const SizedBox.shrink()
-                                    : Stack(children: [
-                                        SizedBox(
-                                          height:
-                                              context.getHeight(divideBy: 3),
-                                          width: context.getWidth(),
-                                          child: UserMap(
-                                            lat: double.parse(
-                                                specific.latitude!),
-                                            lng: double.parse(
-                                                specific.longitude!),
-                                          ),
-                                        ),
-                                        Positioned(
-                                            bottom: 7,
-                                            left: 10,
-                                            child: MainButton(
-                                                onPressed: () async {
-                                                  final Uri url = Uri.parse(
-                                                      'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
-                                                  if (!await launchUrl(url)) {
-                                                    throw Exception(
-                                                        'Could not launch $url');
-                                                  }
-                                                },
-                                                fontSize: 12,
-                                                text: "Open maps".tr()))
-                                      ]);
-                              }
-                            }
-                            return specific.isOnline ||
-                                    specific.latitude == null ||
-                                    specific.latitude!.isEmpty
-                                ? const SizedBox.shrink()
-                                : Stack(children: [
+                                state.specific?.latitude == null ||
+                                state.specific!.latitude!.isEmpty ? const SizedBox.shrink()
+                                : Stack(
+                                  children: [
                                     SizedBox(
                                       height: context.getHeight(divideBy: 3),
                                       width: context.getWidth(),
-                                      child: UserMap(
-                                        lat: double.parse(specific.latitude!),
-                                        lng: double.parse(specific.longitude!),
-                                      ),
+                                      child: UserMap(lat: double.parse(specific.latitude!),lng: double.parse(specific.longitude!)),
                                     ),
                                     Positioned(
-                                        bottom: 7,
-                                        left: 10,
-                                        child: MainButton(
-                                            onPressed: () async {
-                                              final Uri url = Uri.parse(
-                                                  'https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
-                                              if (!await launchUrl(url)) {
-                                                throw Exception(
-                                                    'Could not launch $url');
-                                              }
-                                            },
-                                            fontSize: 12,
-                                            text: "Open maps".tr()))
-                                  ]);
-                          },
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        workshopReview.isNotEmpty
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Users Review".tr()),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: List.generate(
-                                          workshopReview.length,
-                                          (index) => GestureDetector(
-                                                onTap: () {
-                                                  UserReviewModel review =
-                                                      workshopReview[index];
-
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return ShowUserReview(
-                                                            review: review);
-                                                      });
-                                                },
-                                                child: UserReviewCard(
-                                                    index: index,
-                                                    workshopReview:
-                                                        workshopReview),
-                                              )),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : const Text(""),
-                        // scan for organizers "if exist"
-                        organizer != null
-                            ? (specific.isOnline == true ||
-                                    DateTime.now()
-                                        .isAfter(DateTime.parse(specific.date)))
-                                ? (specific.isOnline == false ||
-                                        DateTime.now().isAfter(
-                                            DateTime.parse(specific.date)))
-                                    ? const SizedBox.shrink()
-                                    : MainButton(
-                                        text: 'Register attendee'.tr(),
-                                        width: context.getWidth(),
+                                      bottom: 7,
+                                      left: 10,
+                                      child: MainButton(
+                                        fontSize: 12,
+                                        text: "Open maps".tr(),
                                         onPressed: () async {
-                                          final List<Map<String, dynamic>> response =
-                                              await registerAttendee(
-                                                  context: context,
-                                                  workshop: workshop,
-                                                  specific: specific);
-
-                                          if (response.isNotEmpty) {
-                                            log(response.first.toString());
-                                            final booking =
-                                                BookingModel.fromJson(
-                                                    response.first);
-                                            showModalBottomSheet(
-                                                backgroundColor:
-                                                    Constants.ticketCardColor,
-                                                context: context,
-                                                builder: (context) {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: TicketCard(
-                                                        workshopGroup: workshop,
-                                                        booking: booking,
-                                                        workshop: specific),
-                                                  );
-                                                });
-                                          } else {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    ErrorDialog(
-                                                        msg: "Invalid qr code"
-                                                            .tr()));
+                                          final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
+                                          if (!await launchUrl(url)) {
+                                            throw Exception('Could not launch $url');
                                           }
                                         },
                                       )
-                                : MainButton(
-                                    text: "Scan Now".tr(),
-                                    width: context.getWidth(),
+                                    )
+                                  ]
+                                );
+                              }
+                            }
+                            return specific.isOnline ||
+                            specific.latitude == null ||
+                            specific.latitude!.isEmpty ? const SizedBox.shrink()
+                            : Stack(
+                              children: [
+                                SizedBox(
+                                  height: context.getHeight(divideBy: 3),
+                                  width: context.getWidth(),
+                                  child: UserMap(lat: double.parse(specific.latitude!),lng: double.parse(specific.longitude!),),
+                                ),
+                                Positioned(
+                                  bottom: 7,
+                                  left: 10,
+                                  child: MainButton(
+                                    fontSize: 12,
+                                    text: "Open maps".tr(),
                                     onPressed: () async {
-                                      var result = await BarcodeScanner
-                                          .scan(); //barcode scanner
-                                      log(result.type
-                                          .toString()); // The result type (barcode, cancelled, failed)
-                                      log(result.format
-                                          .toString()); // The barcode format (as enum)
-                                      log(result.rawContent);
-                                      final response = await GetIt.I
-                                          .get<SupabaseLayer>()
-                                          .supabase
-                                          .from('booking')
-                                          .update({'is_attended': true}).match({
-                                        'workshop_id': specific.workshopId,
-                                        'qr_code': result.rawContent,
-                                        'is_attended': false
-                                      }).select();
-                                      if (response.isNotEmpty) {
-                                        log(response.first.toString());
-                                        final booking = BookingModel.fromJson(
-                                            response.first);
-                                        showModalBottomSheet(
-                                            backgroundColor:
-                                                Constants.ticketCardColor,
-                                            context: context,
-                                            builder: (context) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(16.0),
-                                                child: TicketCard(
-                                                    workshopGroup: workshop,
-                                                    booking: booking,
-                                                    workshop: specific),
-                                              );
-                                            });
-                                      } else {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => ErrorDialog(
-                                                msg: "Invalid qr code".tr()));
+                                      final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=${specific.latitude},${specific.longitude}');
+                                      if (!await launchUrl(url)) {
+                                        throw Exception('Could not launch $url');
                                       }
-                                    })
-                            // pay for users
-                            : BlocBuilder<BookingBloc, BookingState>(
-                                builder: (context, state) {
-                                  if (state is ChangeQuantityState) {
-                                    return GetIt.I.get<AuthLayer>().user == null
-                                        ? const SizedBox.shrink()
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              // plus or minus
-                                              Row(
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        bloc.add(
-                                                            AddQuantityEvent());
-                                                        log(bloc.quantity
-                                                            .toString());
-                                                      },
-                                                      icon: const HugeIcon(
-                                                          icon: HugeIcons
-                                                              .strokeRoundedPlusSignSquare,
-                                                          color: Constants
-                                                              .mainOrange)),
-                                                  Text("${state.quantity}"),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        bloc.add(
-                                                            ReduceQuantityEvent());
-                                                        log(bloc.quantity
-                                                            .toString());
-                                                      },
-                                                      icon: const HugeIcon(
-                                                          icon: HugeIcons
-                                                              .strokeRoundedMinusSignSquare,
-                                                          color: Constants
-                                                              .mainOrange))
-                                                ],
-                                              ),
-                                              // pay button with moyasar
-                                              MainButton(
-                                                text:
-                                                    "$pay ${specific.price * state.quantity} $sr",
-                                                onPressed: () => moyasar(
-                                                    context,
-                                                    specific,
-                                                    bloc,
-                                                    workshop),
-                                              )
-                                            ],
-                                          );
+                                    },
+                                  )
+                                )
+                              ]
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 30,),
+                        // reviews "if exist"
+                        workshopReview.isNotEmpty ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Users Review".tr()),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: List.generate(workshopReview.length,(index) => GestureDetector(
+                                  onTap: () {
+                                    UserReviewModel review = workshopReview[index];
+                                    showDialog(
+                                      context: context,
+                                      builder: (context)=> ShowUserReview(review: review)
+                                    );
+                                  },
+                                  child: UserReviewCard(index: index,workshopReview:workshopReview),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ) : const Text(""),
+                        // scan for organizers "if exist"
+                        organizer != null ?
+                          (specific.isOnline == true || DateTime.now().isAfter(DateTime.parse(specific.date))) ?
+                            (specific.isOnline == false || DateTime.now().isAfter(DateTime.parse(specific.date))) ? const SizedBox.shrink()
+                            : MainButton(
+                              text: 'Register attendee'.tr(),
+                              width: context.getWidth(),
+                              onPressed: () async {
+                                final List<Map<String, dynamic>> response = await registerAttendee(context: context,workshop: workshop,specific: specific);
+                                if (response.isNotEmpty) {
+                                  log(response.first.toString());
+                                  final booking = BookingModel.fromJson(response.first);
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Constants.ticketCardColor,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: TicketCard(workshopGroup: workshop,booking: booking,workshop: specific),
+                                      );
+                                    }
+                                  );
+                                }
+                                else {showDialog(context: context,builder: (context) => ErrorDialog(msg: "Invalid qr code".tr()));}
+                              },
+                            )
+                          : MainButton(
+                            text: "Scan Now".tr(),
+                            width: context.getWidth(),
+                            onPressed: () async {
+                              var result = await BarcodeScanner.scan(); //barcode scanner
+                              log(result.type.toString()); // The result type (barcode, cancelled, failed)
+                              log(result.format.toString()); // The barcode format (as enum)
+                              log(result.rawContent);
+                              final response = await GetIt.I.get<SupabaseLayer>().supabase.from('booking').update({'is_attended': true}).match({
+                                'workshop_id': specific.workshopId,
+                                'qr_code': result.rawContent,
+                                'is_attended': false
+                              }).select();
+                              if (response.isNotEmpty) {
+                                log(response.first.toString());
+                                final booking = BookingModel.fromJson(response.first);
+                                showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: Constants.ticketCardColor,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: TicketCard(workshopGroup: workshop,booking: booking,workshop: specific),
+                                    );
                                   }
-                                  // pay for users
-                                  return GetIt.I.get<AuthLayer>().user == null
-                                      ? const SizedBox.shrink()
-                                      : Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // plus or minus
-                                            Row(
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      bloc.add(
-                                                          AddQuantityEvent());
-                                                      log(bloc.quantity
-                                                          .toString());
-                                                    },
-                                                    icon: const HugeIcon(
-                                                        icon: HugeIcons
-                                                            .strokeRoundedPlusSignSquare,
-                                                        color: Constants
-                                                            .mainOrange)),
-                                                Text("${bloc.quantity}"),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      bloc.add(
-                                                          ReduceQuantityEvent());
-                                                      log(bloc.quantity
-                                                          .toString());
-                                                    },
-                                                    icon: const HugeIcon(
-                                                        icon: HugeIcons
-                                                            .strokeRoundedMinusSignSquare,
-                                                        color: Constants
-                                                            .mainOrange))
-                                              ],
-                                            ),
-                                            // pay button with moyasar
-                                            MainButton(
-                                                text:
-                                                    "Pay ${specific.price * bloc.quantity} SR",
-                                                onPressed: () => moyasar(
-                                                    context,
-                                                    specific,
-                                                    bloc,
-                                                    workshop))
-                                          ],
-                                        );
-                                },
-                              )
+                                );
+                              }
+                              else {showDialog(context: context,builder: (context) => ErrorDialog(msg: "Invalid qr code".tr()));}
+                            }
+                          )
+                        // pay for users
+                        : BlocBuilder<BookingBloc, BookingState>(
+                          builder: (context, state) {
+                            if (state is ChangeQuantityState) {
+                              return GetIt.I.get<AuthLayer>().user == null ? const SizedBox.shrink()
+                              : Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // plus or minus
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {bloc.add(AddQuantityEvent());log(bloc.quantity.toString());},
+                                        icon: const HugeIcon(icon: HugeIcons.strokeRoundedPlusSignSquare,color: Constants.mainOrange)
+                                      ),
+                                      Text("${state.quantity}"),
+                                      IconButton(
+                                        onPressed: () {bloc.add(ReduceQuantityEvent());log(bloc.quantity.toString());},
+                                        icon: const HugeIcon(icon: HugeIcons.strokeRoundedMinusSignSquare,color: Constants.mainOrange)
+                                      )
+                                    ],
+                                  ),
+                                  // pay button with moyasar
+                                  MainButton(
+                                    text: "$pay ${specific.price * state.quantity} $sr",
+                                    onPressed: () => moyasar(context,specific,bloc,workshop),
+                                  )
+                                ],
+                              );
+                            }
+                            // pay for users
+                            return GetIt.I.get<AuthLayer>().user == null ? const SizedBox.shrink()
+                            : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // plus or minus
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {bloc.add(AddQuantityEvent());log(bloc.quantity.toString());},
+                                      icon: const HugeIcon(icon: HugeIcons.strokeRoundedPlusSignSquare,color: Constants.mainOrange)
+                                    ),
+                                    Text("${bloc.quantity}"),
+                                    IconButton(
+                                      onPressed: () {bloc.add(ReduceQuantityEvent());log(bloc.quantity.toString());},
+                                      icon: const HugeIcon(icon: HugeIcons.strokeRoundedMinusSignSquare,color: Constants.mainOrange)
+                                    )
+                                  ],
+                                ),
+                                // pay button with moyasar
+                                MainButton(
+                                  text: "Pay ${specific.price * bloc.quantity} SR",
+                                  onPressed: () => moyasar(context,specific,bloc,workshop)
+                                )
+                              ],
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),

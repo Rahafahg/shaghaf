@@ -80,10 +80,10 @@ class AuthField extends StatelessWidget {
             : TextFormField(
                 controller: controller,
                 obscureText: type == 'Password'.tr(),
-                minLines: type == 'Description'.tr()
+                minLines: type == 'Description'.tr() || type == 'DescriptionR'.tr()
                     ? 3
                     : 1, // Minimum lines for Description
-                maxLines: type == 'Description'.tr()
+                maxLines: type == 'Description'.tr() || type == 'DescriptionR'.tr()
                     ? 5
                     : 1, // Max lines for Description, can adjust if needed
                 style: const TextStyle(fontSize: 14, fontFamily: "Poppins"),

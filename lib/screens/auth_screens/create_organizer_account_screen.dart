@@ -117,7 +117,7 @@ class CreateOrganizerAccountScreen extends StatelessWidget {
                                       },
                                     ),
                                     const SizedBox(height: 20),
-                                    AuthField(type: 'Description'.tr(),controller: descriptionController,),
+                                    AuthField(type: 'DescriptionR'.tr(),controller: descriptionController,),
                                     const SizedBox(height: 20),
                                     MainButton(
                                       text: "Sign Up".tr(),

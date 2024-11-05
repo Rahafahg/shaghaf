@@ -70,8 +70,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                               if (pickedFile != null) {
                                 final imageFile = File(pickedFile.path);
                                 bloc.add(UpdateProfileImageEvent(imageFile));
-                                await authLayer
-                                    .setProfileImagePath(imageFile.path);
+                                await authLayer.setProfileImagePath(imageFile.path);
                               }
                             },
                             child:
@@ -90,7 +89,12 @@ class OrganizerProfileScreen extends StatelessWidget {
                                       .get<AuthLayer>()
                                       .organizer!
                                       .image));
-                                } else if (state is ErrorImageProfileState) {
+                                
+                                }
+                                else if(state is SuccessOrgProfileState && state.imageFile==null) {
+                                  backgroundImage = const AssetImage('assets/images/default_organizer_image.png');
+                                }
+                                else if (state is ErrorImageProfileState) {
                                   SchedulerBinding.instance
                                       .addPostFrameCallback((_) {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -102,7 +106,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                                       .organizer!
                                       .image));
                                 } else if (state is EditingOrgProfileState) {
-                                  backgroundImage = FileImage(File(GetIt.I
+                                  backgroundImage = GetIt.I.get<AuthLayer>().organizer!.image.isEmpty ? AssetImage('assets/images/default_organizer_image.png') : FileImage(File(GetIt.I
                                       .get<AuthLayer>()
                                       .organizer!
                                       .image));
@@ -275,7 +279,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      shadowColor: Color.fromARGB(104, 174, 76, 34),
+                      shadowColor: const Color.fromARGB(104, 174, 76, 34),
                       foregroundColor: Constants.appRedColor,
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,

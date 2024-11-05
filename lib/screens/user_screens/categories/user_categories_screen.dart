@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shaghaf/constants/constants.dart';
 import 'package:shaghaf/data_layer/data_layer.dart';
 import 'package:shaghaf/extensions/screen_nav.dart';
 import 'package:shaghaf/extensions/screen_size.dart';

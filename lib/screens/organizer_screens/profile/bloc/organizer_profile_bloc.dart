@@ -75,8 +75,6 @@ class OrganizerProfileBloc
     selectedImageFile = event.imageFile;
     String format = selectedImageFile!.path.split('.').last.toLowerCase();
     if (format == 'jpeg' || format == 'jpg' || format == 'png') {
-      GetIt.I.get<AuthLayer>().organizer!.image =
-          selectedImageFile?.path ?? GetIt.I.get<AuthLayer>().organizer!.image;
       try {
         await GetIt.I
             .get<SupabaseLayer>()
@@ -85,6 +83,7 @@ class OrganizerProfileBloc
             .from('organizer_images')
             .upload('public/${selectedImageFile!.path.split('/').last}',
                 selectedImageFile!);
+      GetIt.I.get<AuthLayer>().organizer!.image = selectedImageFile?.path ?? GetIt.I.get<AuthLayer>().organizer!.image;
       } catch (e) {
         log("error aploading: $e");
       }
@@ -108,7 +107,7 @@ class OrganizerProfileBloc
       } catch (e) {
         log("error updating: $e");
       }
-      emit(SuccessOrgProfileState(imageFile: selectedImageFile));
+      emit(SuccessOrgProfileState(imageFile: File(imageUrl!)));
     } else {
       emit(ErrorImageProfileState(msg: 'Your image format is not supported, try using jpeg, jpg or png'));
     }
