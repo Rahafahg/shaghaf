@@ -71,7 +71,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         dotenv.env['EMAILJS_TEMPLATE_ID']!,
         {
           'booking_id': booking.qrCode,
-          'booking_date': booking.bookingDate.toString(),
+          'booking_date': booking.bookingDate.toString().split('.').first,
           'tickets': booking.numberOfTickets,
           'workshop_name': group.title,
           'workshop_date': specific.date,

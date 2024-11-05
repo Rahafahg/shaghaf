@@ -199,7 +199,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         const Divider(
                             color: Constants.dividerColor, thickness: 1),
                         // desc
-                        Text("Description".tr()),
+                        Text("Description".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         const SizedBox(height: 5),
                         Text(workshop.description,
                             style: const TextStyle(
@@ -207,9 +207,8 @@ class WorkshopDetailScreen extends StatelessWidget {
                         const Divider(
                             color: Constants.dividerColor, thickness: 1),
                         // instructor
-                        Text(
-                          "Instructor".tr(),
-                        ),
+                        Text("Instructor".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
+                        const SizedBox(height: 10),
                         BlocBuilder<BookingBloc, BookingState>(
                           builder: (context, state) {
                             if (state is ChangeQuantityState) {
@@ -294,9 +293,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Available Days".tr(),
-                            ),
+                            Text("Available Days".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                             organizer != null
                                 ? TextButton(
                                     style: ButtonStyle(
@@ -337,9 +334,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           height: 20,
                         ),
                         // available seats
-                        Text(
-                          "Available Seats".tr(),
-                        ),
+                        Text("Available Seats".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         const SizedBox(
                           height: 10,
                         ),
@@ -371,9 +366,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                           thickness: 1,
                         ),
                         // location
-                        Text(
-                          "Location".tr(),
-                        ),
+                        Text("Location".tr(), style: const TextStyle(color: Colors.black, fontSize: 16)),
                         Row(
                           children: [
                             const HugeIcon(
