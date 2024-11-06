@@ -17,25 +17,41 @@ class AdminCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // handle me later
-    List<Color> colors = [Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.lime, Colors.blueGrey, Colors.brown, Colors.purple];
+    List<Color> colors = [
+      Color.fromARGB(255, 241, 233, 128),
+      Color(0xff8ECDDD),
+      Color(0xffFF9874),
+      Color(0xffFEB941),
+      Color(0xff5B99C2),
+      Color(0xffADE498),
+      Color(0xffD78BFF),
+      Color.fromARGB(255, 191, 65, 81)
+    ];
     return Scaffold(
       backgroundColor: Constants.backgroundColor,
       body: SafeArea(
         child: BlocBuilder<AdminBloc, AdminState>(
           builder: (context, state) {
             if (state is ErrorState) {
-              return Center(child: Text(state.msg,style: const TextStyle(fontFamily: "Poppins", fontSize: 20)));
+              return Center(
+                  child: Text(state.msg,
+                      style: const TextStyle(
+                          fontFamily: "Poppins", fontSize: 20)));
             }
             if (state is LoadingState) {
-              return Center(child: LottieBuilder.asset("assets/lottie/loading.json"));
+              return Center(
+                  child: LottieBuilder.asset("assets/lottie/loading.json"));
             }
             if (state is SuccessState) {
-              List<CategoriesModel> categories = GetIt.I.get<DataLayer>().categories;
-              Map<String, List<WorkshopGroupModel>> categoriesMap = GetIt.I.get<DataLayer>().workshopsByCategory;
+              List<CategoriesModel> categories =
+                  GetIt.I.get<DataLayer>().categories;
+              Map<String, List<WorkshopGroupModel>> categoriesMap =
+                  GetIt.I.get<DataLayer>().workshopsByCategory;
               getBookedCategories();
-              Map<String, int> bookedCategories = GetIt.I.get<DataLayer>().bookedCategories;
+              Map<String, int> bookedCategories =
+                  GetIt.I.get<DataLayer>().bookedCategories;
               List<int> vals = bookedCategories.values.toList();
-              vals.sort((v1,v2)=>v1.compareTo(v2));
+              vals.sort((v1, v2) => v1.compareTo(v2));
               int maxY = vals.last + 5;
               return Padding(
                 padding: const EdgeInsets.all(16),
@@ -43,44 +59,64 @@ class AdminCategoryScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Categories Statistics'.tr(context: context), style: const TextStyle(fontSize: 24)),
+                      Text('Categories Statistics'.tr(context: context),
+                          style: const TextStyle(fontSize: 24)),
                       Container(
                         width: context.getWidth(),
                         padding: const EdgeInsets.all(16),
                         margin: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Constants.backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [BoxShadow(color: Colors.black45, offset: Offset(2, 2), blurRadius: 10)]
-                        ),
+                            color: Constants.backgroundColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black45,
+                                  offset: Offset(2, 2),
+                                  blurRadius: 10)
+                            ]),
                         child: Column(
                           children: [
-                            Text("Number of workshops by category".tr(context: context)),
-                            const SizedBox(height: 20,),
+                            Text("Number of workshops by category"
+                                .tr(context: context)),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             SizedBox(
                               height: 200,
                               child: PieChart(
                                 PieChartData(
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 0,
-                                  sections: List.generate(categories.length, (index){
-                                    return PieChartSectionData(
-                                      value: categoriesMap[categories[index].categoryName]!.length.toDouble(),
-                                      color: colors[index],
-                                      radius: 100,
-                                      title: categoriesMap[categories[index].categoryName]!.length.toString()
-                                    );
-                                  })
-                                ),
+                                    sectionsSpace: 0,
+                                    centerSpaceRadius: 0,
+                                    sections: List.generate(categories.length,
+                                        (index) {
+                                      return PieChartSectionData(
+                                          value: categoriesMap[categories[index]
+                                                  .categoryName]!
+                                              .length
+                                              .toDouble(),
+                                          color: colors[index],
+                                          radius: 100,
+                                          title: categoriesMap[categories[index]
+                                                  .categoryName]!
+                                              .length
+                                              .toString());
+                                    })),
                               ),
                             ),
                             const SizedBox(height: 20),
                             Column(
-                              children: List.generate(categories.length, (index){
+                              children:
+                                  List.generate(categories.length, (index) {
                                 return Row(
                                   children: [
-                                    Container(width: 5,height: 5,color: colors[index],),
-                                    const SizedBox(width: 10,),
+                                    Container(
+                                      width: 5,
+                                      height: 5,
+                                      color: colors[index],
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
                                     Text(categories[index].categoryName.tr())
                                   ],
                                 );
@@ -91,58 +127,81 @@ class AdminCategoryScreen extends StatelessWidget {
                       ),
                       Container(
                         width: context.getWidth(),
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
                         decoration: BoxDecoration(
-                          color: Constants.backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [BoxShadow(color: Colors.black45, offset: Offset(2, 2), blurRadius: 10)]
-                        ),
+                            color: Constants.backgroundColor,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.black45,
+                                  offset: Offset(2, 2),
+                                  blurRadius: 10)
+                            ]),
                         margin: const EdgeInsets.all(16),
                         child: Column(
                           children: [
                             Text("Most Booked Categories".tr(context: context)),
-                            const SizedBox(height: 20,),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             SizedBox(
                               height: 300,
                               width: context.getWidth(),
-                              child: BarChart(
-                                BarChartData(
+                              child: BarChart(BarChartData(
                                   maxY: maxY.toDouble(),
                                   alignment: BarChartAlignment.spaceAround,
                                   titlesData: const FlTitlesData(
-                                    topTitles: AxisTitles(),
-                                    bottomTitles: AxisTitles(sideTitles: SideTitles(reservedSize: 80,showTitles: true,getTitlesWidget: bottomTitles))
-                                  ),
-                                  backgroundColor: Constants.categoryColor_1.withOpacity(.3),
+                                      topTitles: AxisTitles(),
+                                      bottomTitles: AxisTitles(
+                                          sideTitles: SideTitles(
+                                              reservedSize: 80,
+                                              showTitles: true,
+                                              getTitlesWidget: bottomTitles))),
+                                  backgroundColor:
+                                      Constants.categoryColor_1.withOpacity(.3),
                                   barTouchData: BarTouchData(
-                                    touchTooltipData: BarTouchTooltipData(
-                                      tooltipBorder: const BorderSide(color: Colors.black45),
-                                      tooltipPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                                      tooltipRoundedRadius: 20,
-                                      getTooltipColor: (group) => Colors.white,
-                                    )
-                                  ),
-                                  barGroups: List.generate(bookedCategories.length, (index) {
-                                    final categoryName = bookedCategories.keys.toList()[index];
-                                    final categoryValue = bookedCategories[categoryName]!;
+                                      touchTooltipData: BarTouchTooltipData(
+                                    tooltipBorder:
+                                        const BorderSide(color: Colors.black45),
+                                    tooltipPadding: const EdgeInsets.symmetric(
+                                        vertical: 3, horizontal: 8),
+                                    tooltipRoundedRadius: 20,
+                                    getTooltipColor: (group) => Colors.white,
+                                  )),
+                                  barGroups: List.generate(
+                                      bookedCategories.length, (index) {
+                                    final categoryName =
+                                        bookedCategories.keys.toList()[index];
+                                    final categoryValue =
+                                        bookedCategories[categoryName]!;
                                     return BarChartGroupData(
-                                      x: index, // this is index not value
-                                      barRods: [BarChartRodData(width: 10,borderRadius: const BorderRadius.all(Radius.zero),toY: categoryValue.toDouble(),color: Constants.mainOrange)]
-                                    );
-                                  })
-                                )
-                              ),
+                                        x: index, // this is index not value
+                                        barRods: [
+                                          BarChartRodData(
+                                              width: 10,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.zero),
+                                              toY: categoryValue.toDouble(),
+                                              color: Constants.mainOrange)
+                                        ]);
+                                  }))),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 50,),
+                      const SizedBox(
+                        height: 50,
+                      ),
                     ],
                   ),
                 ),
               );
             }
-            return const Center(child: Text("Something went wrong"),);
+            return const Center(
+              child: Text("Something went wrong"),
+            );
           },
         ),
       ),
@@ -155,6 +214,8 @@ Widget bottomTitles(double value, TitleMeta meta) {
   text = GetIt.I.get<DataLayer>().bookedCategories.keys.toList()[value.toInt()];
   return SideTitleWidget(
     axisSide: meta.axisSide,
-    child: RotatedBox(quarterTurns: 3, child: Text(text, style: const TextStyle(fontSize: 10))),
+    child: RotatedBox(
+        quarterTurns: 3,
+        child: Text(text, style: const TextStyle(fontSize: 10))),
   );
 }
