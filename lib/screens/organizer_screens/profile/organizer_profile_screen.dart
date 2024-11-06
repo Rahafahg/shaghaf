@@ -19,7 +19,6 @@ import 'package:shaghaf/widgets/buttons/switch_mood_button.dart';
 import 'package:shaghaf/widgets/cards/profile_card.dart';
 import 'package:shaghaf/widgets/chapes/profile_shape.dart';
 import 'package:shaghaf/widgets/text_fields/edit_org_text_field.dart';
-import 'package:sizer/sizer.dart';
 
 class OrganizerProfileScreen extends StatelessWidget {
   const OrganizerProfileScreen({super.key});
@@ -51,19 +50,13 @@ class OrganizerProfileScreen extends StatelessWidget {
                     height: context.getHeight(divideBy: 3.5),
                     child: Stack(
                       children: [
-                        Device.screenType == ScreenType.tablet
-                            ? SizedBox(
-                                width: context.getWidth(),
-                                height: context.getHeight(divideBy: 3.5),
-                              )
-                            : CustomPaint(
-                                size: Size(
-                                    MediaQuery.of(context).size.width, 200),
-                                painter: RPSCustomPainter(
-                                  width: MediaQuery.of(context).size.width,
-                                  context: context,
-                                ),
-                              ),
+                        CustomPaint(
+                          size: Size(MediaQuery.of(context).size.width, 200),
+                          painter: RPSCustomPainter(
+                            width: MediaQuery.of(context).size.width,
+                            context: context,
+                          ),
+                        ),
                         Positioned(
                           bottom: 0,
                           left: 10,
@@ -77,7 +70,8 @@ class OrganizerProfileScreen extends StatelessWidget {
                               if (pickedFile != null) {
                                 final imageFile = File(pickedFile.path);
                                 bloc.add(UpdateProfileImageEvent(imageFile));
-                                await authLayer.setProfileImagePath(imageFile.path);
+                                await authLayer
+                                    .setProfileImagePath(imageFile.path);
                               }
                             },
                             child:
@@ -96,7 +90,6 @@ class OrganizerProfileScreen extends StatelessWidget {
                                       .get<AuthLayer>()
                                       .organizer!
                                       .image));
-                                
                                 }
                                 else if(state is SuccessOrgProfileState && state.imageFile==null) {
                                   backgroundImage = const AssetImage('assets/images/default_organizer_image.png');
@@ -113,7 +106,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                                       .organizer!
                                       .image));
                                 } else if (state is EditingOrgProfileState) {
-                                  backgroundImage = GetIt.I.get<AuthLayer>().organizer!.image.isEmpty ? AssetImage('assets/images/default_organizer_image.png') : FileImage(File(GetIt.I
+                                  backgroundImage = FileImage(File(GetIt.I
                                       .get<AuthLayer>()
                                       .organizer!
                                       .image));
@@ -286,7 +279,7 @@ class OrganizerProfileScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      shadowColor: const Color.fromARGB(104, 174, 76, 34),
+                      shadowColor: const Color.fromARGB(104, 222, 101, 49),
                       foregroundColor: Constants.appRedColor,
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,
