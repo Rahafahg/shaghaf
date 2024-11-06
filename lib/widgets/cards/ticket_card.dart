@@ -15,11 +15,13 @@ class TicketCard extends StatelessWidget {
     required this.workshopGroup,
     required this.booking,
     required this.workshop,
+    this.frombarcode = false,
   });
 
   final WorkshopGroupModel workshopGroup;
   final BookingModel booking;
   final Workshop workshop;
+  final bool? frombarcode;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +29,13 @@ class TicketCard extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceTint,
           borderRadius: BorderRadius.circular(20)),
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
       width: context.getWidth(),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             Center(
               child: Container(
                 height: context.getHeight(divideBy: 4),
@@ -90,83 +91,96 @@ class TicketCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 15),
-            const Divider(),
-            const SizedBox(height: 15),
-            Text(workshopGroup.title, style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_today,
-                        size: 16, color: Constants.mainOrange),
-                    const SizedBox(width: 5),
-                    Text(workshop.date)
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.watch_later_outlined,
-                        size: 16, color: Constants.mainOrange),
-                    const SizedBox(width: 5),
-                    Row(
-                      children: [
-                        Text("From".tr()),
-                        const SizedBox(width: 5),
-                        Text(workshop.fromTime),
-                        const SizedBox(width: 10),
-                        Text("To".tr()),
-                        const SizedBox(width: 5),
-                        Text(workshop.toTime),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
-            workshop.isOnline == true
+            frombarcode == false
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Divider(),
                       const SizedBox(height: 15),
-                      Row(
+                      Text(workshopGroup.title,
+                          style: const TextStyle(fontSize: 20)),
+                      const SizedBox(height: 10),
+                      Column(
                         children: [
-                          const Icon(
-                            HugeIcons.strokeRoundedVideo02,
-                            size: 16,
+                          Row(
+                            children: [
+                              const Icon(Icons.calendar_today,
+                                  size: 16, color: Constants.mainOrange),
+                              const SizedBox(width: 5),
+                              Text(workshop.date)
+                            ],
                           ),
-                          const SizedBox(width: 5),
-                          Text("Meeting Url".tr(context: context),
-                              style: const TextStyle(fontSize: 16)),
-                          IconButton(
-                              onPressed: () async {
-                                if (workshop.meetingUrl != null) {
-                                  await Clipboard.setData(ClipboardData(
-                                      text: workshop.meetingUrl!));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              "copied".tr(context: context))));
-                                }
-                              },
-                              icon: const Icon(HugeIcons.strokeRoundedCopy01))
+                          Row(
+                            children: [
+                              const Icon(Icons.watch_later_outlined,
+                                  size: 16, color: Constants.mainOrange),
+                              const SizedBox(width: 5),
+                              Row(
+                                children: [
+                                  Text("From".tr()),
+                                  const SizedBox(width: 5),
+                                  Text(workshop.fromTime),
+                                  const SizedBox(width: 10),
+                                  Text("To".tr()),
+                                  const SizedBox(width: 5),
+                                  Text(workshop.toTime),
+                                ],
+                              )
+                            ],
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      InkWell(
-                        onTap: () async {
-                          if (workshop.meetingUrl != null) {
-                            final Uri url = Uri.parse(workshop.meetingUrl!);
-                            if (!await launchUrl(url)) {
-                              throw Exception('Could not launch $url');
-                            }
-                          }
-                        },
-                        child: Text(workshop.meetingUrl ?? "",
-                            style: const TextStyle(
-                                fontSize: 16, color: Constants.lightOrange)),
-                      ),
+                      workshop.isOnline == true
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 15),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      HugeIcons.strokeRoundedVideo02,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text("Meeting Url".tr(context: context),
+                                        style: const TextStyle(fontSize: 16)),
+                                    IconButton(
+                                        onPressed: () async {
+                                          if (workshop.meetingUrl != null) {
+                                            await Clipboard.setData(
+                                                ClipboardData(
+                                                    text:
+                                                        workshop.meetingUrl!));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text("copied".tr(
+                                                        context: context))));
+                                          }
+                                        },
+                                        icon: const Icon(
+                                            HugeIcons.strokeRoundedCopy01))
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                InkWell(
+                                  onTap: () async {
+                                    if (workshop.meetingUrl != null) {
+                                      final Uri url =
+                                          Uri.parse(workshop.meetingUrl!);
+                                      if (!await launchUrl(url)) {
+                                        throw Exception(
+                                            'Could not launch $url');
+                                      }
+                                    }
+                                  },
+                                  child: Text(workshop.meetingUrl ?? "",
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Constants.lightOrange)),
+                                ),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   )
                 : const SizedBox.shrink(),

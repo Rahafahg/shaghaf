@@ -418,7 +418,7 @@ class WorkshopDetailScreen extends StatelessWidget {
                                   builder: (context) {
                                     return Padding(
                                       padding: const EdgeInsets.all(16.0),
-                                      child: TicketCard(workshopGroup: workshop,booking: booking,workshop: specific),
+                                      child: TicketCard(workshopGroup: workshop,booking: booking,workshop: specific,frombarcode: true),
                                     );
                                   }
                                 );
