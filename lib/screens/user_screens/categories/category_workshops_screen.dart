@@ -75,11 +75,11 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         "Filter Workshops".tr(),
-                                        style: const TextStyle(fontFamily: "Poppins",fontSize: 20,fontWeight:FontWeight.w500),
+                                        style: const TextStyle(fontSize: 20,fontWeight:FontWeight.w500),
                                       ),
                                       TextButton(
                                         onPressed: () => bloc.add(ResetFilterEvent()),
-                                        child: Text("reset".tr(),style: const TextStyle(color: Constants.mainOrange,fontFamily:"Poppins"))
+                                        child: Text("reset".tr(),style: const TextStyle(color: Constants.mainOrange))
                                       )
                                     ],
                                   ),
@@ -87,8 +87,9 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   const SizedBox(height: 16),
                                   Text(
                                     "Date".tr(),
-                                    style: const TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
+                                    style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                                   ),
+                                  const SizedBox(height: 8,),
                                   Container(
                                     decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer, borderRadius:BorderRadius.circular(10)),
                                     width: context.getWidth(divideBy: 2),
@@ -116,7 +117,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   const SizedBox(height: 16,),
                                   Text(
                                     "Type".tr(),
-                                    style: const TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
+                                    style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                                   ),
                                   BlocBuilder<CategoriesBloc,CategoriesState>(
                                     bloc: bloc,
@@ -131,7 +132,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   const SizedBox(height: 16),
                                   Text(
                                     "Fliter Ratings".tr(),
-                                    style: const TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
+                                    style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                                   ),
                                   BlocBuilder<CategoriesBloc,CategoriesState>(
                                     bloc: bloc,
@@ -146,7 +147,7 @@ class CategoryWorkshopsScreen extends StatelessWidget {
                                   const SizedBox(height: 16),
                                   Text(
                                     "Price Range".tr(),
-                                    style: const TextStyle(fontFamily: "Poppins",fontSize: 16,fontWeight: FontWeight.w500),
+                                    style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
                                   ),
                                   BlocBuilder<CategoriesBloc,CategoriesState>(
                                     bloc: bloc,

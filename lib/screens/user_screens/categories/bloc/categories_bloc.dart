@@ -13,7 +13,7 @@ part 'categories_state.dart';
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   final TextEditingController dateController = TextEditingController();
   List<WorkshopGroupModel> workshops = [];
-  List<String> types = ['All', 'In-Site', 'Online'];
+  List<String> types = ['All', 'InSite', 'Online'];
   String selectedType = 'All';
   List<String> ratingsList = ['All', 'Top-Rated'];
   String ratingType = 'All';
