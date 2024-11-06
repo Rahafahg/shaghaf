@@ -81,7 +81,7 @@ class NavigationScreen extends StatelessWidget {
                       .add(SwitchScreenEvent(targetPage: value)),
                   height: context.getHeight(
                       divideBy:
-                          Device.screenType == ScreenType.tablet ? 23 : 16),
+                          Device.screenType == ScreenType.tablet ? 20 : 16),
                   destinations: List.generate(tabs.length, (index) {
                     return NavigationDestination(
                       label: tabs[index],
