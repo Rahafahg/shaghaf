@@ -319,7 +319,7 @@ class UserHomeScreen extends StatelessWidget {
                                             mainAxisSpacing: 20,
                                             childAspectRatio:
                                                 Device.screenType == ScreenType.tablet
-                                                    ? 1.9
+                                                    ? 1.3
                                                     : 0.92),
                                         // Vertical spacing between cards
 
