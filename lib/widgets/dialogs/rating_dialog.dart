@@ -58,19 +58,19 @@ Future<dynamic> ratingDialog(
                                     .bodyLarge!
                                     .color,
                               )),
-                          SizedBox(
-                            width: context.getWidth(divideBy: 3.1),
-                            child: Text(" ${workshop.title}",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .color,
-                                )),
-                          ),
+                          // SizedBox(
+                          //   width: context.getWidth(divideBy: 3.1),
+                          //   child: Text(" ${workshop.title}",
+                          //       overflow: TextOverflow.ellipsis,
+                          //       maxLines: 1,
+                          //       style: TextStyle(
+                          //         fontSize: 18,
+                          //         color: Theme.of(context)
+                          //             .textTheme
+                          //             .bodyLarge!
+                          //             .color,
+                          //       )),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 16),
