@@ -265,7 +265,7 @@ class WorkshopCard extends StatelessWidget {
                               ),
                               isAttended == true
                                   ? SizedBox(
-                                      width: context.getWidth(divideBy: 7),
+                                      width: context.getWidth(divideBy: 6),
                                       height: context.getHeight(divideBy: 27),
                                       child: TextButton(
                                           onPressed: () => ratingDialog(
