@@ -93,16 +93,28 @@ $ git push
 ```
 
 ### 7. Output
+Here are some screenshots of Shaghaf.
 
-![alt text](readme_media/userhome.png)
-![organizer_home](readme_media/org1.png)
-![organizer_add](readme_media/orgadd.png)
-![user_favorite_categories](readme_media/favcat.png)
+<img src='./readme_media/on1.jpg' width=100>
+<img src='./readme_media/on2.jpg' width=100>
+<img src='./readme_media/on3.jpg' width=100>
+<img src='./readme_media/favcat.png' width=125>
+<img src='./readme_media/userhome.png' width=110>
+<img src='./readme_media/org1.png' width=110>
+<img src='./readme_media/orgadd.png' width=120>
+<img src='./readme_media/admin.jpg' width=100>
 
 ### 8. Figma file
 It has been a long journey !\
 Dive into its details by visiting the link
  - https://www.figma.com/design/tlR7qSjkKKMWrbuDuFZqFJ/coffee-app?node-id=0-1&t=lkJgK6SliNRboBha-1
+
+### 9. Prototype Video
+Visit https://drive.google.com/file/d/1Vz3QAWxVTgS90zkoGiJKBXJQaQHKC7gQ/view?usp=drive_link
+
+
+### 10. Slides
+Visit https://drive.google.com/file/d/1tnBvxaicow99RkNbgAc4mzBbywc8Rg0n/view?usp=drivesdk
 
 Thank you for reading 🧡
 
