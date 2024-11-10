@@ -119,7 +119,7 @@ Visit https://drive.google.com/file/d/1tnBvxaicow99RkNbgAc4mzBbywc8Rg0n/view?usp
 Thank you for reading 🧡
 
 ### Team Members 
-- Yaser Alkhayyat 👨🏻‍💻
+- <a href="https://bind.link/@yaserkh">Yaser Alkhayyat 👨🏻‍💻</a>
 - Najwa Aldahri 👩🏻‍💻
 - Rahaf Alghamdi 👩🏻‍💻
 - Turki Aloufi 👨🏻‍💻
