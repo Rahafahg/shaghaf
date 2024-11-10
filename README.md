@@ -106,22 +106,21 @@ Here are some screenshots of Shaghaf.
 
 ### 8. Figma file
 It has been a long journey !\
-Dive into its details by visiting the link
- - https://www.figma.com/design/tlR7qSjkKKMWrbuDuFZqFJ/coffee-app?node-id=0-1&t=lkJgK6SliNRboBha-1
+<a href="https://www.figma.com/design/tlR7qSjkKKMWrbuDuFZqFJ/coffee-app?node-id=0-1&t=lkJgK6SliNRboBha-1"> Click Here </a> to dive into its details.
 
 ### 9. Prototype Video
-Visit https://drive.google.com/file/d/1Vz3QAWxVTgS90zkoGiJKBXJQaQHKC7gQ/view?usp=drive_link
+<a href="https://drive.google.com/file/d/1Vz3QAWxVTgS90zkoGiJKBXJQaQHKC7gQ/view?usp=drive_link"> Click to view video </a>
 
 
 ### 10. Slides
-Visit https://drive.google.com/file/d/1tnBvxaicow99RkNbgAc4mzBbywc8Rg0n/view?usp=drivesdk
+<a href="https://drive.google.com/file/d/1tnBvxaicow99RkNbgAc4mzBbywc8Rg0n/view?usp=drivesdk"> Click to view slides </a>
 
 Thank you for reading 🧡
 
 ### Team Members 
 - <a href="https://bind.link/@yaserkh">Yaser Alkhayyat 👨🏻‍💻</a>
-- Najwa Aldahri 👩🏻‍💻
-- Rahaf Alghamdi 👩🏻‍💻
-- Turki Aloufi 👨🏻‍💻
+- <a href="https://bind.link/@najwa-aldahri"> Najwa Aldahri 👩🏻‍💻</a>
+- <a href="https://bind.link/@rahaf"> Rahaf Alghamdi 👩🏻‍💻 </a>
+- <a href="https://bind.link/@turki-aloufi"> Turki Aloufi 👨🏻‍💻</a>
 
 **Shaghaf 2024 ©️**
