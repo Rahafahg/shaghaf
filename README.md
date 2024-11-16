@@ -106,7 +106,7 @@ Here are some screenshots of Shaghaf.
 
 ### 8. Figma file
 It has been a long journey !\
-<a href="https://www.figma.com/design/tlR7qSjkKKMWrbuDuFZqFJ/coffee-app?node-id=0-1&t=lkJgK6SliNRboBha-1"> Click Here </a> to dive into its details.
+<a href="https://www.figma.com/design/2qczeUW23SG5NWNI5ul233/Final-Project🌻?node-id=0-1&t=qTwM5BkCSzUsquMX-1"> Click Here </a> to dive into its details.
 
 ### 9. Prototype Video
 <a href="https://drive.google.com/file/d/1Vz3QAWxVTgS90zkoGiJKBXJQaQHKC7gQ/view?usp=drive_link"> Click to view video </a>
