@@ -95,14 +95,10 @@ $ git push
 ### 7. Output
 Here are some screenshots of Shaghaf.
 
-<img src='./readme_media/on1.jpg' width=100>
-<img src='./readme_media/on2.jpg' width=100>
-<img src='./readme_media/on3.jpg' width=100>
-<img src='./readme_media/favcat.png' width=125>
-<img src='./readme_media/userhome.png' width=110>
-<img src='./readme_media/org1.png' width=110>
-<img src='./readme_media/orgadd.png' width=120>
-<img src='./readme_media/admin.jpg' width=100>
+![Colorful Watercolor Creative Project Presentation](https://github.com/user-attachments/assets/925d368b-8fa4-4a94-ad46-6e5ba2ce9959)
+
+![Colorful Watercolor Creative Project Presentation (1)](https://github.com/user-attachments/assets/7e75c15a-1c25-40f3-b2e2-9a208600ac30)
+
 
 ### 8. Figma file
 It has been a long journey !\
